@@ -1,0 +1,122 @@
+/* Paleta basada en Identidad Visual */
+:root {
+  --beige: #d9b88f;
+  --orange: #e87722;
+  --brown-dark: #3c2f2f;
+  --olive: #556b2f;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--beige);
+  color: var(--brown-dark);
+}
+
+/* Secciones */
+.section {
+  padding: 80px 20px;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: 'Impact', sans-serif; /* Reemplazar por tipografía oficial */
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.btn-primary:hover {
+  transform: scale(1.1);
+}
+
+/* Barra lateral */
+#sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  background: var(--brown-dark);
+  transition: width 0.3s;
+  overflow: hidden;
+  z-index: 1000;
+}
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 60px;
+}
+#sidebar li {
+  margin: 20px 0;
+  text-align: center;
+}
+#sidebar a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 24px;
+  display: block;
+  padding: 10px;
+}
+#toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--orange);
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Cartas de integrantes */
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.card {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Noticias estilo chat */
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.bubble {
+  padding: 15px;
+  border-radius: 12px;
+  max-width: 60%;
+}
+.bubble.left {
+  background: var(--olive);
+  color: var(--white);
+  align-self: flex-start;
+}
+.bubble.right {
+  background: var(--orange);
+  color: var(--white);
+  align-self: flex-end;
+}
+.author {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
