@@ -7,9 +7,13 @@
   --white: #ffffff;
 }
 
+/* Import de las fuentes de la Identidad Visual */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@400;600&display=swap');
+
+
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   background-color: var(--beige);
   color: var(--brown-dark);
 }
@@ -21,7 +25,7 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Impact', sans-serif; /* Reemplazar por tipografía oficial */
+  font-family: 'Luckiest Guy', cursive; /* Reemplazar por tipografía oficial */
   margin-bottom: 20px;
 }
 
@@ -44,39 +48,35 @@ h1, h2, h3 {
   position: fixed;
   left: 0;
   top: 0;
-  width: 60px;
+  width: 0; /* invisible por defecto */
   height: 100%;
   background: var(--brown-dark);
   transition: width 0.3s;
   overflow: hidden;
   z-index: 1000;
 }
+
+#sidebar.expanded {
+  width: 200px; /* ancho al expandirse */
+}
+
 #sidebar ul {
   list-style: none;
   padding: 0;
-  margin-top: 60px;
+  margin: 60px 0 0 0;
 }
+
 #sidebar li {
   margin: 20px 0;
-  text-align: center;
+  text-align: left;
 }
+
 #sidebar a {
   color: var(--white);
   text-decoration: none;
   font-size: 24px;
   display: block;
-  padding: 10px;
-}
-#toggle-btn {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: var(--orange);
-  border: none;
-  color: var(--white);
-  font-size: 20px;
-  padding: 5px 10px;
-  cursor: pointer;
+  padding: 10px 20px;
 }
 
 /* Cartas de integrantes */

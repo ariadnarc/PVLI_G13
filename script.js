@@ -1,13 +1,15 @@
-// Toggle barra lateral
 const sidebar = document.getElementById("sidebar");
-const toggleBtn = document.getElementById("toggle-btn");
 
-toggleBtn.addEventListener("click", () => {
-  if (sidebar.style.width === "200px") {
-    sidebar.style.width = "60px";
-  } else {
-    sidebar.style.width = "200px";
+// Detecta cuando el ratón entra al borde izquierdo (0–10px de la pantalla)
+document.addEventListener("mousemove", (e) => {
+  if (e.clientX <= 10) {
+    sidebar.classList.add("expanded");
   }
+});
+
+// Oculta la barra cuando el ratón sale de ella
+sidebar.addEventListener("mouseleave", () => {
+  sidebar.classList.remove("expanded");
 });
 
 // Placeholder: lógica para el juego en canvas
