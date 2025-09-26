@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat-astrophic Games</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <!-- Barra lateral -->
+  <nav id="sidebar">
+    <button id="toggle-btn">☰</button>
+    <ul>
+      <li><a href="#Home">🏠</a></li>
+      <li><a href="#About">👥</a></li>
+      <li><a href="#Game">🎮</a></li>
+      <li><a href="#News">💬</a></li>
+      <li><a href="#Contact">📱</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main>
+    <!-- Home -->
+    <section id="home" class="section home">
+      <h1>Cat-astrophic Games</h1>
+      <button class="btn-primary">🎮 Jugar Ahora</button>
+    </section>
+
+    <!-- Sobre Nosotros -->
+    <section id="about" class="section about">
+      <h2>Sobre Nosotros</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Juan</h3>
+          <p>Rol: Programador</p>
+        </div>
+        <div class="card">
+          <h3>Blanca</h3>
+          <p>Rol: Programadora / Redes</p>
+        </div>
+        <div class="card">
+          <h3>Ariadna</h3>
+          <p>Rol: Diseñador / Programadora</p>
+        </div>
+        <div class="card">
+          <h3>David</h3>
+          <p>Rol: Diseñador / Programador</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Juego -->
+    <section id="game" class="section game">
+      <h2>Nombre del Juego</h2>
+      <canvas id="gameCanvas" width="600" height="400">
+        Mensaje.
+      </canvas>
+    </section>
+
+    <!-- Noticias estilo chat -->
+    <section id="news" class="section news">
+      <h2>Noticias y Avances</h2>
+      <div class="chat">
+        <div class="bubble left">
+          <span class="author">👾 David</span>
+          ¡Tenemos Página web!
+        </div>
+        <div class="bubble right">
+          <span class="author">🎨 Blanca</span>
+          Ya puedes seguirnos en nuestro Instagram! @cat_astrophicgames 😸
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contact" class="section contact">
+      <h2>Contacto</h2>
+      <p>Síguenos en <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr" target="_blank">Instagram</a></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
