@@ -74,9 +74,35 @@ h1, h2, h3 {
 #sidebar a {
   color: var(--white);
   text-decoration: none;
-  font-size: 24px;
-  display: block;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;  /* separación entre icono y texto */
   padding: 10px 20px;
+  white-space: nowrap; /* evita que el texto salte de línea */
+}
+
+#sidebar .icon {
+  font-size: 22px; /* tamaño del icono */
+}
+
+#sidebar .label {
+  opacity: 0;  /* oculto al inicio */
+  transition: opacity 0.3s;
+}
+
+/* Cuando la barra esté expandida, mostramos los textos */
+#sidebar.expanded .label {
+  opacity: 1;
+}
+
+main {
+  margin-left: 0;
+  transition: margin-left 0.3s;
+}
+
+#sidebar.expanded ~ main {
+  margin-left: 200px; /* mismo ancho que la barra expandida */
 }
 
 /* Cartas de integrantes */
@@ -119,4 +145,35 @@ h1, h2, h3 {
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
+}
+
+/* Contacto */
+.socials {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.socials li {
+  display: inline-block;
+}
+
+.socials a {
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s;
+}
+
+.socials a:hover {
+  color: var(--olive);
+}
+
+.socials i {
+  font-size: 1.5rem;
 }

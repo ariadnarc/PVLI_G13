@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cat-astrophic Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> <!-- Para meter las fuentes de la Identidad visual del Estudio -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Para usar iconos vectoriales de RRSS -->
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
   <!-- Barra lateral -->
   <nav id="sidebar">
-    <button id="toggle-btn">☰</button>
     <ul>
-      <li><a href="#Home">🏠</a></li>
-      <li><a href="#About">👥</a></li>
-      <li><a href="#Game">🎮</a></li>
-      <li><a href="#News">💬</a></li>
-      <li><a href="#Contact">📱</a></li>
+      <li><a href="#home"><span class="icon">🏠</span><span class="label">Home</span></a></li>
+      <li><a href="#about"><span class="icon">👥</span><span class="label">Sobre Nosotros</span></a></li>
+      <li><a href="#game"><span class="icon">🎮</span><span class="label">Juego</span></a></li>
+      <li><a href="#news"><span class="icon">💬</span><span class="label">Noticias</span></a></li>
+      <li><a href="#contact"><span class="icon">📱</span><span class="label">Contacto</span></a></li>
     </ul>
   </nav>
 
@@ -23,7 +24,8 @@
   <main>
     <!-- Home -->
     <section id="home" class="section home">
-      <h1>Cat-astrophic Games</h1>
+      <h1 class="title">Cat-astrophic Games</h1>
+      <h2 class="subtitle">[Nombre Provisional del Juego]</h2>
       <button class="btn-primary">🎮 Jugar Ahora</button>
     </section>
 
@@ -37,24 +39,32 @@
         </div>
         <div class="card">
           <h3>Blanca</h3>
-          <p>Rol: Programadora / Redes</p>
+          <p>Rol: Programadora, Community Manager</p>
         </div>
         <div class="card">
           <h3>Ariadna</h3>
-          <p>Rol: Diseñador / Programadora</p>
+          <p>Rol: Programadora, Diseñadora</p>
         </div>
         <div class="card">
           <h3>David</h3>
-          <p>Rol: Diseñador / Programador</p>
+          <p>Rol: Programador, Diseñador</p>
         </div>
+      </div>
+      <div class="credits">
+        <h3>Créditos</h3>
+        <p>Desarrollado por el equipo de Cat-astrophic Games, 2025.</p>
       </div>
     </section>
 
     <!-- Juego -->
     <section id="game" class="section game">
-      <h2>Nombre del Juego</h2>
+      <h2>[Nombre del Juego]</h2>
+      <p class="game-desc">
+        Un breve texto aquí describiendo la historia, jugabilidad o mecánica principal del juego.
+        (Ejemplo: "Un juego de aventuras retro donde un gato hacker lucha contra errores digitales").
+      </p>
       <canvas id="gameCanvas" width="600" height="400">
-        Mensaje.
+        Tu navegador no soporta canvas.
       </canvas>
     </section>
 
@@ -63,12 +73,12 @@
       <h2>Noticias y Avances</h2>
       <div class="chat">
         <div class="bubble left">
-          <span class="author">👾 David</span>
-          ¡Tenemos Página web!
+          <span class="author">👾 Dev1:</span>
+          ¡Hemos añadido nuevas animaciones al personaje!
         </div>
         <div class="bubble right">
-          <span class="author">🎨 Blanca</span>
-          Ya puedes seguirnos en nuestro Instagram! @cat_astrophicgames 😸
+          <span class="author">🎨 Artista:</span>
+          Hoy terminé el diseño del nivel 1, quedó brutal 😸
         </div>
       </div>
     </section>
@@ -76,7 +86,24 @@
     <!-- Contacto -->
     <section id="contact" class="section contact">
       <h2>Contacto</h2>
-      <p>Síguenos en <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr" target="_blank">Instagram</a></p>
+        <p>Síguenos en:</p>
+        <ul class="socials">
+          <li>
+            <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr " target="_blank">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+          </li>
+          <li>
+            <a href="https://x.com/cat_astrophicos" target="_blank">
+              <i class="fa-brands fa-x-twitter"></i> X
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/ariadnarc/PVLI_G13" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </li>
+        </ul>
     </section>
   </main>
 
