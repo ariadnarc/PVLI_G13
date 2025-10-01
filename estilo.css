@@ -1,32 +1,43 @@
 /* Paleta basada en Identidad Visual */
 :root {
   --beige: #d9b88f;
+  --marron-apagado: #7a5a3e;
+  --marron-apagado-oscuro: #574435;
   --orange: #e87722;
   --brown-dark: #3c2f2f;
   --olive: #556b2f;
   --white: #ffffff;
 }
 
-/* Import de las fuentes de la Identidad Visual */
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@400;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap');
 
 body {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  background-color: var(--beige);
-  color: var(--brown-dark);
+  font-family: 'Comfortaa', sans-serif;
+  /*background-color: var(--beige);*/
+  background-image: url("Identidad-visual/Patrones-1.png");
+  background-repeat: repeat;
+  background-size: 1000px;
+  color: var(--white);
 }
 
 /* Secciones */
 .section {
-  padding: 80px 20px;
-  min-height: 100vh;
+  max-width: 1500px;   /* ancho máximo de cada bloque */
+  max-height: auto;
+  margin: 40px auto;   /* centrado horizontal y hueco entre secciones */
+  padding: 40px 40px;  /* espacio interno */
+  border-radius: 20px; /* esquinas redondeadas */
+  box-shadow: 0 4px 10px var(--white); /* sombra ligera */
+
+  /* Fondo sólido de la paleta */
+  background-color: var(--brown-dark);
 }
 
 h1, h2, h3 {
-  font-family: 'Luckiest Guy', cursive; /* Reemplazar por tipografía oficial */
+  font-family: 'Luckiest Guy', cursive;
   margin-bottom: 20px;
+  color: var(--orange);
 }
 
 .btn-primary {
@@ -57,7 +68,7 @@ h1, h2, h3 {
 }
 
 #sidebar.expanded {
-  width: 200px; /* ancho al expandirse */
+  width: 220px; /* ancho al expandirse */
 }
 
 #sidebar ul {
@@ -102,7 +113,7 @@ main {
 }
 
 #sidebar.expanded ~ main {
-  margin-left: 200px; /* mismo ancho que la barra expandida */
+  margin-left: 220px; /* mismo ancho que la barra expandida */
 }
 
 /* Cartas de integrantes */
@@ -115,6 +126,7 @@ main {
   background: var(--white);
   padding: 20px;
   border-radius: 12px;
+  color: var(--olive);
   box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
   flex: 1;
   min-width: 200px;
@@ -137,7 +149,7 @@ main {
   align-self: flex-start;
 }
 .bubble.right {
-  background: var(--orange);
+  background: var(--marron-apagado);
   color: var(--white);
   align-self: flex-end;
 }
