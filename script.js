@@ -68,3 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 3000);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const playBtn = document.getElementById('playBtn');
+  const target = document.getElementById('game');
+
+  if (!playBtn || !target) return;
+
+  playBtn.addEventListener('click', (e) => {
+    // Opcional: animaciones antes de scrollear (por ejemplo cerrar splash, encoger logo...)
+    // logo.classList.add('shrink');
+
+    // Scroll suave al elemento
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
