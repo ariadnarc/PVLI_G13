@@ -1,3 +1,4 @@
+/* Barra lateral */ 
 const sidebar = document.getElementById("sidebar");
 
 // Mostrar barra si el ratón toca el borde izquierdo (0–10px)
@@ -11,6 +12,45 @@ document.addEventListener("mousemove", (e) => {
 sidebar.addEventListener("mouseleave", () => {
   sidebar.classList.remove("expanded");
 });
+
+/* Sección Home */ 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.querySelector(".logo");
+  const playBtn = document.querySelector(".play-btn");
+
+  // Paso 1: mostrar logo
+  setTimeout(() => {
+    logo.classList.add("show");
+  }, 300);
+
+  // Paso 2: mostrar botón después
+  setTimeout(() => {
+    playBtn.classList.add("show");
+  }, 1500);
+
+  // Paso 3: reducimos tamaño del Logo
+  setTimeout(() => {
+    logo.classList.add("shrink");
+  }, 3000);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const playBtn = document.getElementById('playBtn');
+  const target = document.getElementById('game');
+
+  if (!playBtn || !target) return;
+
+  playBtn.addEventListener('click', (e) => {
+    // Opcional: animaciones antes de scrollear (por ejemplo cerrar splash, encoger logo...)
+    // logo.classList.add('shrink');
+
+    // Scroll suave al elemento
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* Sección Juego */
 
 // Placeholder para el juego
 const canvas = document.getElementById("gameCanvas");
@@ -48,38 +88,5 @@ img.onload = function() {
     ctx.drawImage(img, imgX, imgY, 320, 180);
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const logo = document.querySelector(".logo");
-  const playBtn = document.querySelector(".play-btn");
 
-  // Paso 1: mostrar logo
-  setTimeout(() => {
-    logo.classList.add("show");
-  }, 300);
-
-  // Paso 2: mostrar botón después
-  setTimeout(() => {
-    playBtn.classList.add("show");
-  }, 1500);
-
-  // Paso 3: reducimos tamaño del Logo
-  setTimeout(() => {
-    logo.classList.add("shrink");
-  }, 3000);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const playBtn = document.getElementById('playBtn');
-  const target = document.getElementById('game');
-
-  if (!playBtn || !target) return;
-
-  playBtn.addEventListener('click', (e) => {
-    // Opcional: animaciones antes de scrollear (por ejemplo cerrar splash, encoger logo...)
-    // logo.classList.add('shrink');
-
-    // Scroll suave al elemento
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
 
