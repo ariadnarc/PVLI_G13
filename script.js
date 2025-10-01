@@ -48,3 +48,23 @@ img.onload = function() {
     ctx.drawImage(img, imgX, imgY, 320, 180);
 };
 
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.querySelector(".logo");
+  const playBtn = document.querySelector(".play-btn");
+
+  // Paso 1: mostrar logo
+  setTimeout(() => {
+    logo.classList.add("show");
+  }, 300);
+
+  // Paso 2: mostrar botón después
+  setTimeout(() => {
+    playBtn.classList.add("show");
+  }, 1500);
+
+  // Paso 3: reducimos tamaño del Logo
+  setTimeout(() => {
+    logo.classList.add("shrink");
+  }, 3000);
+});
+
