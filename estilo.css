@@ -173,16 +173,15 @@ main {
   margin-left: 220px; /* mismo ancho que la barra expandida */
 }
 
-#juego {
+#game {
   display: flex;
   flex-direction: column;   /* título arriba, canvas abajo */
   align-items: center;      /* centra horizontalmente */
-  justify-content: center;  /* centra verticalmente */
   text-align: center;
   height: 100vh;            /* ocupa toda la pantalla */
 }
 
-#juego h2 {
+#game h2 {
   margin-bottom: 20px;      /* espacio entre título y canvas */
 }
 
