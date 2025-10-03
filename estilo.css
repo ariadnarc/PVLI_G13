@@ -99,7 +99,7 @@ body {
   min-height: 80vh;   /* cada sección ocupa al menos el alto de la pantalla */
   max-width: 1500px;   /* ancho máximo de cada bloque */
   margin: 40px auto;   /* centrado horizontal y hueco entre secciones */
-  padding: 40px 40px;  /* espacio interno */
+  padding: 10px 40px;  /* espacio interno */
   border-radius: 20px; /* esquinas redondeadas */
   box-shadow: 0 4px 10px var(--white); /* sombra ligera */
 
@@ -107,10 +107,23 @@ body {
   background-color: var(--brown-dark);
 }
 
+/* Textos y títulos */
 h1, h2, h3 {
   font-family: 'Luckiest Guy', cursive;
   margin-bottom: 20px;
   color: var(--orange);
+}
+
+h1, h2 {
+  font-size: 70px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+p {
+  font-size: 25px;
 }
 
 /* Barra lateral */
@@ -175,6 +188,7 @@ main {
   margin-left: 220px; /* mismo ancho que la barra expandida */
 }
 
+/* Seccion Game */
 #game {
   display: flex;
   flex-direction: column;   /* título arriba, canvas abajo */
@@ -193,7 +207,7 @@ main {
   background-color: var(--beige);      /* opcional: color de fondo */
 }
 
-/* Cartas de integrantes */
+/* Seccion Sobre nosotros */
 .cards {
   display: flex;
   gap: 20px;
@@ -209,16 +223,25 @@ main {
   min-width: 200px;
 }
 
-/* Noticias estilo chat */
+/* Usar esto con el logo secundario para ponerlo en la esquina inferior derecha */
+/*.secondary-logo {
+  margin-left: 50px;
+  position: fixed;
+  bottom: 0;
+}*/
+
+/* Seccion Noticias y Avances */
 .chat {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
 }
 .bubble {
+  font-size: 20px;
   padding: 15px;
   border-radius: 12px;
-  max-width: 60%;
+  max-width: 45%;
+
 }
 .bubble.left {
   background: var(--olive);
@@ -231,12 +254,13 @@ main {
   align-self: flex-end;
 }
 .author {
+  font-size: 30px;
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
 }
 
-/* Contacto */
+/* Seccion Contacto */
 .socials {
   list-style: none;
   padding: 0;
@@ -246,6 +270,7 @@ main {
 
 .socials li {
   display: inline-block;
+  
 }
 
 .socials a {
