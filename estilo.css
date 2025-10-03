@@ -265,29 +265,29 @@ main {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 20px;
+  gap: 5vh;
 }
 
 .socials li {
   display: inline-block;
-  
 }
 
 .socials a {
   color: var(--orange);
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 2rem;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   transition: color 0.3s;
 }
 
 .socials a:hover {
   color: var(--olive);
+  transform: scale(1.05);
 }
 
 .socials i {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
 }
