@@ -19,9 +19,11 @@ body {
   margin: 0;
   font-family: 'Comfortaa', sans-serif;
   /*background-color: var(--beige);*/
-  background-image: url("Identidad-visual/Patrones-1.png");
-  background-repeat: repeat;
-  background-size: 1000px;
+  background-image: url("Identidad-visual/Patrones1.png");
+  background-repeat: no-repeat;     /* no repetir */
+  background-size: cover;           /* cubrir toda la pantalla */
+  background-position: center;      /* centrar la imagen */
+  background-attachment: fixed;     /* opcional: hace efecto "parallax" al hacer scroll */
   color: var(--white);
 }
 
