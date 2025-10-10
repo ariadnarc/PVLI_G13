@@ -75,7 +75,7 @@ body {
 
 /* Aparición progresiva */
 .logo.show {
-  max-height: 60vh;   /* nunca sobrepasa el alto de pantalla */
+  max-height: 60%;   /* nunca sobrepasa el alto de pantalla */
   width: auto;
   animation: fadeInScaleLogo 3s forwards;
 }
@@ -96,7 +96,7 @@ body {
 
 /* Secciones */
 .section {
-  min-height: 80vh;   /* cada sección ocupa al menos el alto de la pantalla */
+  min-height: 80%;   /* cada sección ocupa al menos el alto de la pantalla */
   max-width: 1500px;   /* ancho máximo de cada bloque */
   margin: 40px auto;   /* centrado horizontal y hueco entre secciones */
   padding: 10px 40px;  /* espacio interno */
@@ -194,7 +194,7 @@ main {
   flex-direction: column;   /* título arriba, canvas abajo */
   align-items: center;      /* centra horizontalmente */
   text-align: center;
-  height: 100vh;            /* ocupa toda la pantalla */
+  height: 100%;            /* ocupa toda la pantalla */
 }
 
 #game h2 {
@@ -265,7 +265,7 @@ main {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 5vh;
+  gap: 5%;
 }
 
 .socials li {
