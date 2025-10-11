@@ -22,7 +22,7 @@ body {
   margin: 0;
   font-family: 'Comfortaa', sans-serif;
   /*background-color: var(--beige);*/
-  background-image: url("assets/Identidad-visual/Patrones1.png");
+  background-image: url("Identidad-visual/Patrones1.png");
   background-repeat: no-repeat;     /* no repetir */
   background-size: cover;           /* cubrir toda la pantalla */
   background-position: center;      /* centrar la imagen */
@@ -35,7 +35,6 @@ body {
 .home-content {
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -79,7 +78,7 @@ body {
 
 /* Aparición progresiva */
 .logo.show {
-  max-height: 70vh;   /* nunca sobrepasa el alto de pantalla */
+  max-height: 60%;   /* nunca sobrepasa el alto de pantalla */
   width: auto;
   animation: fadeInScaleLogo 3s forwards;
 }
@@ -100,11 +99,10 @@ body {
 
 /* Secciones */
 .section {
-  min-height: 80vh;   /* cada sección ocupa al menos el alto de la pantalla */
-  max-height: 90vh; 
+  min-height: 80%;   /* cada sección ocupa al menos el alto de la pantalla */
   max-width: 1500px;   /* ancho máximo de cada bloque */
   margin: 40px auto;   /* centrado horizontal y hueco entre secciones */
-  padding: 20px 40px;  /* espacio interno */
+  padding: 10px 40px;  /* espacio interno */
   border-radius: 20px; /* esquinas redondeadas */
   box-shadow: 0 4px 10px var(--white); /* sombra ligera */
 
@@ -115,7 +113,7 @@ body {
 /* Textos y títulos */
 h1, h2, h3 {
   font-family: 'Luckiest Guy', cursive;
-  /*margin-bottom: 20px;*/
+  margin-bottom: 20px;
   color: var(--orange);
 }
 

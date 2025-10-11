@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* Sección Juego */
 
-/*
 // Placeholder para el juego
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -78,7 +77,7 @@ ctx.fillText("Juego en mantenimiento... Cargando nada", centerX, centerY);
 
 // Crear objeto de imagen
 const img = new Image();
-img.src = "assets/Identidad-visual/Icono-basico-sin-fondo.png";
+img.src = "Identidad-visual/Icono-basico-sin-fondo.png";
 
 // Cuando la imagen cargue, dibujarla en el canvas
 img.onload = function() {
@@ -88,7 +87,6 @@ img.onload = function() {
 
     ctx.drawImage(img, imgX, imgY, 320, 180);
 };
-*/
 
 
 
