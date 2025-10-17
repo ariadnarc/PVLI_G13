@@ -77,7 +77,7 @@ ctx.fillText("Juego en mantenimiento... Cargando nada", centerX, centerY);
 
 // Crear objeto de imagen
 const img = new Image();
-img.src = "Identidad-visual/Icono-basico-sin-fondo.png";
+img.src = "assets/identidad-visual/Icono-basico-sin-fondo.png";
 
 // Cuando la imagen cargue, dibujarla en el canvas
 img.onload = function() {
