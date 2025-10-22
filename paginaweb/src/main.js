@@ -20,7 +20,7 @@ function create() {
     fontFamily: 'Comfortaa',
     fontSize: '50px',
     color: '#3c2f2f'
-  }).setOrigin(0.5);
+  });
 }
 
 function update() {}

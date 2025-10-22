@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* Sección Juego */
 
-// Placeholder para el juego
+/*// Placeholder para el juego
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -86,7 +86,7 @@ img.onload = function() {
     const imgY = (canvas.height - 180 + 250) / 2;
 
     ctx.drawImage(img, imgX, imgY, 320, 180);
-};
+};*/
 
 
 
