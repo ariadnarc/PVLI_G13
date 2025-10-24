@@ -1,4 +1,4 @@
-import Phaser from 'src/lib/phaser.js';
+import Phaser from '.lib/phaser.js';
 import GameTitle from './scenes/GameTitle.js';
 import GameScene from './scenes/GameScene.js';
 
@@ -11,4 +11,9 @@ const config = {
   scene: [GameTitle, GameScene],
 };
 
-const game = new Phaser.Game(config);
+// Condicional que obliga a buscar el canvas q tenemos en el index
+if (config.canvas) {
+  new Phaser.Game(config);
+} else {
+  console.error("No se encontró el canvas con id 'gameCanvas'");
+}
