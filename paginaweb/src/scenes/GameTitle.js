@@ -9,7 +9,7 @@ export default class GameTitle extends Phaser.Scene {
     const centerY = this.scale.height / 2;
 
     // Título
-    this.add.text(centerX, centerY - 100, 'Mi Juego', {
+    this.add.text(centerX, centerY - 100, 'Wally like an Egyptian', {
       fontFamily: 'Comfortaa',
       fontSize: '64px',
       color: '#3c2f2f',
