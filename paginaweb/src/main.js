@@ -1,4 +1,3 @@
-import Phaser from '.lib/phaser.js';
 import GameTitle from './scenes/GameTitle.js';
 import GameScene from './scenes/GameScene.js';
 
