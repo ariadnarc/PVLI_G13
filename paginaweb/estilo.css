@@ -1,3 +1,6 @@
+/*Hola*/
+/*miau miau*/
+
 /* Paleta basada en Identidad Visual */
 :root {
   --beige: #d9b88f;
@@ -19,7 +22,7 @@ body {
   margin: 0;
   font-family: 'Comfortaa', sans-serif;
   /*background-color: var(--beige);*/
-  background-image: url("Identidad-visual/Patrones1.png");
+  background-image: url("assets/identidad-visual/Patrones1.png");
   background-repeat: no-repeat;     /* no repetir */
   background-size: cover;           /* cubrir toda la pantalla */
   background-position: center;      /* centrar la imagen */
@@ -35,7 +38,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  height: 100%;
+  max-height: 90vh;
   position: relative;
 }
 
@@ -75,7 +78,7 @@ body {
 
 /* Aparición progresiva */
 .logo.show {
-  max-height: 60%;   /* nunca sobrepasa el alto de pantalla */
+  max-height: 80vh;   /* nunca sobrepasa el alto de pantalla */
   width: auto;
   animation: fadeInScaleLogo 3s forwards;
 }
@@ -96,8 +99,8 @@ body {
 
 /* Secciones */
 .section {
-  min-height: 80%;   /* cada sección ocupa al menos el alto de la pantalla */
-  max-width: 1500px;   /* ancho máximo de cada bloque */
+  min-height: 90vh;   /* cada sección ocupa al menos el alto de la pantalla */
+  max-width: 70%;   /* ancho máximo de cada bloque */
   margin: 40px auto;   /* centrado horizontal y hueco entre secciones */
   padding: 10px 40px;  /* espacio interno */
   border-radius: 20px; /* esquinas redondeadas */
@@ -205,6 +208,8 @@ main {
   border: 2px solid var(--dark-brown); /* opcional: borde para destacar */
   border-radius: 12px;                 /* opcional: esquinas redondeadas */
   background-color: var(--beige);      /* opcional: color de fondo */
+  width: 85%;
+  height: 50%;
 }
 
 /* Seccion Sobre nosotros */
@@ -240,7 +245,7 @@ main {
   font-size: 20px;
   padding: 15px;
   border-radius: 12px;
-  max-width: 45%;
+  max-width: 45vh;
 
 }
 .bubble.left {

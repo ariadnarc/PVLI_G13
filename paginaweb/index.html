@@ -7,7 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap" rel="stylesheet"> <!-- Para meter las fuentes de la Identidad visual del Estudio -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Para usar iconos vectoriales de RRSS -->
   <link rel="stylesheet" href="estilo.css">
-</head>
+  <script src = "src/lib/phaser.js"></script>
+</head> 
 <body>
   <!-- Barra lateral -->
   <nav id="sidebar">
@@ -26,7 +27,7 @@
     <section id="home" class="section home">
       <div class="home-content">
         <!-- Logo del estudio con el nombre -->
-        <img src="Identidad-visual/Logo-Nombre.png" alt="Logo Cat-astrophic Games" class="logo">
+        <img src="assets/identidad-visual/Logo-Nombre.png" alt="Logo Cat-astrophic Games" class="logo">
 
         <!-- Botón de jugar -->
         <button id="playBtn" class="play-btn">Jugar</button>
@@ -69,7 +70,7 @@
         Nuestro juego trata sobre una aventura en la que el objetivo principal es encontrar a Wally dentro de una pirámide del antiguo Egipto. 
         Para conseguirlo, el jugador debe seguir una serie de pistas escritas en alfabeto jeroglífico, lo que hará que necesite derribar las fronteras del lenguaje para poder avanzar.
       </p>
-      <canvas id="gameCanvas" width="1200" height="600">
+      <canvas id="gameCanvas">
         Tu navegador no soporta canvas.
       </canvas>
     </section>
@@ -93,7 +94,7 @@
         </div>
         <div class="bubble right">
           <span class="author">👾 Ariadna:</span>
-          ¡El nombre de nuestro juego será "Wally like an Egyoptian"! Esto se debe a la inspiración de la canción
+          ¡El nombre de nuestro juego será "Wally like an Egyptian"! Esto se debe a la inspiración de la canción
               "Walk like an Egyptian" y a Wally, que será un NPC clave en la historia del juego.
         </div>
       </div>
@@ -122,12 +123,12 @@
         </ul>
     </section>
 
+    <script src="script.js"></script>
+    <script type="module" src="src/main.js"></script>
     <!-- Logo secundario 
     <section id="secondarylogo" class="secondary-logo">
       <img src="Identidad-visual/secondary-logo.png" alt="Logo Secundario Cat-astrophic Games" class="logo2" width="200" height="100">
     </section> -->
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
