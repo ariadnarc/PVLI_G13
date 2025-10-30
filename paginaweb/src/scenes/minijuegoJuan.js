@@ -3,6 +3,10 @@ export default class GameScene extends Phaser.Scene {
     super('minijuegoJuan');
   }
 
+  preload(){
+    this.load.image('player', 'assets/sprites/playerj.pnj')
+  }
+
   create() {
 
     // fondo
@@ -13,11 +17,15 @@ export default class GameScene extends Phaser.Scene {
     const centerY = this.cameras.main.centerY;
 
     // jugador
-    this.player = this.add.rectangle(600, 300, 50, 50, 0x00000FF);
+    this.player = this.physics.add.sprite(this.borde.x, this.borde.y, 'playerj');
 
     // borde de la zona de juego
     this.borde = this.add.rectangle(centerX, centerY + 120, 450, 300);
     this.borde.setStrokeStyle(4, 0xFFFFFF);
+    this.physics.add.existing(this.borde, true);
+
+    // collider jugador-borde
+    this.physics.add.collider(this.player, this.borde);
 
     // teclas
     this.cursors = this.input.keyboard.createCursorKeys();
