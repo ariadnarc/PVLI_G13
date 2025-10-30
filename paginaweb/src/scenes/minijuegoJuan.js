@@ -4,7 +4,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload(){
-    this.load.image('playerj', 'assets/sprites/playerj.png')
+    //this.load.image('playerj', './assets/sprites/playerj.png')
   }
 
   create() {
@@ -19,11 +19,11 @@ export default class GameScene extends Phaser.Scene {
     // borde de la zona de juego (antes del player ya que las pos del player se basa en este rect)
     this.borde = this.add.rectangle(centerX, centerY + 120, 450, 300);
     this.borde.setStrokeStyle(4, 0xFFFFFF);
-    this.physics.add(this.borde, true);
+    // this.physics.add(this.borde, true);
 
     // jugador
-    this.player = this.physics.add.sprite(this.borde.x, this.borde.y, 'playerj');
-    this.player.setDisplaySize (50,50);
+    this.player = this.add.rectangle(this.borde.x, this.borde.y, 50, 50, 0x0000FF);
+    this.player.setDisplaySize (500,500);
 
     // collider jugador-borde
     this.physics.add.collider(this.player, this.borde);

@@ -18,8 +18,8 @@ const config = {
   arcade: {
     gravity: { y: 0 },  // sin gravedad
     debug: false        // hitboxes
-  }
-},
+    }
+  }, // declaramos físcas globalmente
   scene: [GameTitle, GameScene, minijuegoJuan,
           minijuegoAri, minijuegoDavid, minijuegoBlanca],
 };
