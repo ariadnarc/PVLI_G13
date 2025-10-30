@@ -4,25 +4,26 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload(){
-    this.load.image('player', 'assets/sprites/playerj.pnj')
+    this.load.image('playerj', 'assets/sprites/playerj.png')
   }
 
   create() {
 
     // fondo
-    this.cameras.main.setBackgroundColor('0x000000');
+    this.cameras.main.setBackgroundColor(0x000000);
 
     // centro pantalla
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    // jugador
-    this.player = this.physics.add.sprite(this.borde.x, this.borde.y, 'playerj');
-
-    // borde de la zona de juego
+    // borde de la zona de juego (antes del player ya que las pos del player se basa en este rect)
     this.borde = this.add.rectangle(centerX, centerY + 120, 450, 300);
     this.borde.setStrokeStyle(4, 0xFFFFFF);
-    this.physics.add.existing(this.borde, true);
+    this.physics.add(this.borde, true);
+
+    // jugador
+    this.player = this.physics.add.sprite(this.borde.x, this.borde.y, 'playerj');
+    this.player.setDisplaySize (50,50);
 
     // collider jugador-borde
     this.physics.add.collider(this.player, this.borde);
@@ -36,22 +37,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
-    const speed = 8;
+    const speed = 200; // píxeles por segundo
+    this.player.body.setVelocity(0);
 
-    if (this.cursors.left.isDown || this.aKey.isDown) {
-      this.player.x -= speed;
-    } else if (this.cursors.right.isDown || this.dKey.isDown) {
-      this.player.x += speed;
-    }
-
-    if (this.cursors.up.isDown || this.wKey.isDown) {
-      this.player.y -= speed;
-    } else if (this.cursors.down.isDown || this.sKey.isDown) {
-      this.player.y += speed;
-    }
-
-    // límites
-    this.player.x = Phaser.Math.Clamp(this.player.x, 25, 1175);
-    this.player.y = Phaser.Math.Clamp(this.player.y, 25, 575);
+    if (this.aKey.isDown) { this.player.body.setVelocityX(-speed); }
+    if (this.dKey.isDown) { this.player.body.setVelocityX(speed); }
+    if (this.wKey.isDown) { this.player.body.setVelocityY(-speed); }
+    if (this.sKey.isDown) { this.player.body.setVelocityY(speed); }
   }
 }
+
+// ctrl k -> ctrl f para organizar código

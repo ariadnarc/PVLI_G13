@@ -13,6 +13,13 @@ const config = {
   height: 600,
   backgroundColor: '#e87722',
   canvas: document.getElementById('gameCanvas'),
+  physics: {
+  default: 'arcade',
+  arcade: {
+    gravity: { y: 0 },  // sin gravedad
+    debug: false        // hitboxes
+  }
+},
   scene: [GameTitle, GameScene, minijuegoJuan,
           minijuegoAri, minijuegoDavid, minijuegoBlanca],
 };
