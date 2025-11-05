@@ -1,3 +1,5 @@
+import Barrita from '../objetos/objetosBarrita/Barrita.js'
+
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('minijuegoAri');
@@ -9,7 +11,16 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor('#000000ff')
+    this.cameras.main.setBackgroundColor('#184f44ff')
+    
+    this.startGame();
+
+
+  }
+
+  startGame(){
+    const barrita = new Barrita(scene, this.x, this.y);
+    scene.add.existing(barrita);
   }
 
   update(){
