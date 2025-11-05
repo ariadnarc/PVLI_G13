@@ -1,0 +1,24 @@
+{ "columns":4,
+ "image":"..\/..\/..\/..\/Downloads\/tileTecho.png",
+ "imageheight":128,
+ "imagewidth":128,
+ "margin":0,
+ "name":"techo",
+ "spacing":0,
+ "tilecount":16,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tiles":[
+        {
+         "id":5,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":true
+                }]
+        }],
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
