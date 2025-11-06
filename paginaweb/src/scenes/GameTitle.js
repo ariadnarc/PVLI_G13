@@ -29,7 +29,7 @@ export default class GameTitle extends Phaser.Scene {
       .on('pointerover', () => playButton.setStyle({ backgroundColor: '#5a4444' }))
       .on('pointerout', () => playButton.setStyle({ backgroundColor: '#3c2f2f' }))
       .on('pointerdown', () => {
-        this.scene.start('GameScene'); // cambiamos de escena
+        this.scene.start('MapScene'); // cambiamos de escena
       });
   }
 }

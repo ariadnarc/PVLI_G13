@@ -1,5 +1,5 @@
 import GameTitle from './scenes/GameTitle.js';
-import GameScene from './scenes/GameScene.js';
+import MapScene from './scenes/MapScene.js';
 
 //minijuegos
 import minijuegoJuan from './scenes/minijuegoJuan.js';
@@ -20,7 +20,7 @@ const config = {
     debug: false        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [GameTitle, GameScene, minijuegoJuan,
+  scene: [GameTitle, MapScene, minijuegoJuan,
           minijuegoAri, minijuegoDavid, minijuegoBlanca],
 };
 
