@@ -1,4 +1,7 @@
-class MapScene extends Phaser.Scene{
+import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
+import Player from "../scripts/player.js";
+
+export default class MapScene extends Phaser.Scene{
     constructor(){
         super('MapScene');
     }

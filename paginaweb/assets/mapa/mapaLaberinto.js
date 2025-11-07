@@ -1,4 +1,4 @@
-class MapaLaberinto {
+export default class MapaLaberinto {
   constructor() {
     this.ancho = 50;
     this.alto = 50;
