@@ -48,7 +48,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // TIEMPO
-    this.totalTime = 3; // segundos para ganar
+    this.totalTime = 10; // segundos para ganar
     this.remainingTime = this.totalTime;
 
     // Texto del temporizador
