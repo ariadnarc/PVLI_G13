@@ -1,6 +1,6 @@
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, "player");
+    super(scene, x, y, null);
 
     // Añadir el sprite a la escena
     this.sprite=scene.add.rectangle(x,y,15,25,0x3498db);
@@ -13,6 +13,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     const body=this.sprite.body;
+    if (!body) return;
+     
     body.setVelocity(0);
 
     if (this.cursors.left.isDown) {

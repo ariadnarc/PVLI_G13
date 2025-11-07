@@ -59,8 +59,9 @@ export default class MapScene extends Phaser.Scene {
         //comprobamos colision con el portal
         this.physics.add.overlap(this.player.sprite, this.portal, () => {
             //si hay colision lo llevamos al minijuego
-            this.scene.start('minijuegoJuan');
             this.portal.destroy();
+            this.scene.pause();
+            this.scene.start('minijuegoJuan');
         });
 
         //camara sigue jugador

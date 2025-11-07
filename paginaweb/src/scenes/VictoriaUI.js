@@ -23,8 +23,8 @@ export default class VictoriaUI extends Phaser.Scene {
         const texto = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY - 50,
-            '¡Victoria!',
-            { fontSize: '32px', color: '#000' }
+            'Conseguiste el jeroglífico',
+            { fontSize: '20px', color: '#000' }
         ).setOrigin(0.5);
 
         // Botón para cerrar
@@ -37,6 +37,7 @@ export default class VictoriaUI extends Phaser.Scene {
 
         btnContinuar.on('pointerdown', () => {
             this.scene.stop(); // Cierra esta escena
+            this.scene.launch('MapScene');
         });
     }
 }

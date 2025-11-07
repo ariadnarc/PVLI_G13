@@ -4,19 +4,18 @@ export default class minijuegoJuan extends Phaser.Scene {
   }
 
   create() {
-    // --- ÁREA DE JUEGO ---
+    // ÁREA DE JUEGO
     this.gameWidth = 400;
     this.gameHeight = 300;
 
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    // Dibuja un rectángulo blanco como límite visual del área jugable
+    // Área jugable
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight);
     border.setStrokeStyle(3, 0xffffff);
 
-    // --- JUGADOR ---
-    // Un rectángulo azul representa al jugador
+    // JUGADOR
     this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x3498db);
     this.physics.add.existing(this.player);
     this.player.body.setCollideWorldBounds(true);
@@ -33,10 +32,10 @@ export default class minijuegoJuan extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.playerSpeed = 200;
 
-    // --- GRUPO DE PROYECTILES ---
+    // GRUPO DE PROYECTILES
     this.bullets = this.physics.add.group();
 
-    // --- VIDA ---
+    // VIDA
     this.maxHealth = 3;
     this.health = this.maxHealth;
 
@@ -48,8 +47,8 @@ export default class minijuegoJuan extends Phaser.Scene {
       color: '#ffffff'
     }).setOrigin(0.5);
 
-    // --- TIEMPO ---
-    this.totalTime = 20; // segundos para ganar
+    // TIEMPO
+    this.totalTime = 3; // segundos para ganar
     this.remainingTime = this.totalTime;
 
     // Texto del temporizador
@@ -69,7 +68,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Colisión entre jugador y proyectiles
     this.physics.add.overlap(this.player, this.bullets, this.hitPlayer, null, this);
 
-    // --- GENERACIÓN DE PROYECTILES ---
+    // GENERACIÓN DE PROYECTILES
     // Cada cierto tiempo se genera un cilidrolo de esos
     this.bulletDelay = 700; // ms entre cada proyectil al inicio
     this.bulletTimer = this.time.addEvent({
@@ -80,7 +79,6 @@ export default class minijuegoJuan extends Phaser.Scene {
     });
   }
 
-  // --- UPDATE: movimiento del jugador ---
   update() {
     const body = this.player.body;
     body.setVelocity(0);
@@ -92,7 +90,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     else if (this.cursors.down.isDown) body.setVelocityY(this.playerSpeed);
   }
 
-  // --- TEMPORIZADOR ---
+  // TEMPORIZADOR
   updateTimer() {
     if (this.health <= 0) return; // si el jugador está muerto, no seguir
 
@@ -105,16 +103,16 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Aumenta la velocidad base de los proyectiles
     this.bulletSpeedBoost = 1 + 1.1 * progress;
 
-    // Si el tiempo llega a 0 → gana
+    // Si el tiempo llega a 0 -> gana
     if (this.remainingTime <= 0) {
       this.winGame();
     }
   }
 
-  // --- GENERACIÓN DE “CILINDROS” (proyectiles) ---
+  // generación de proyectiles
   spawnCylinder() {
     // cuánto fuera del borde queremos generar los cilindros (en píxeles)
-    const spawnOffset = 80; // aumenta si quieres que salgan aún más lejos
+    const spawnOffset = 100;
 
     const side = Phaser.Math.Between(0, 3); // de qué lado aparece
     let x, y, width, height;
@@ -173,11 +171,11 @@ export default class minijuegoJuan extends Phaser.Scene {
       if (cyl.rotationSpeed) cyl.rotation += cyl.rotationSpeed;
     };
 
-    // Destruir pasado un tiempo para limpiar memoria
+    // Destruir pasado un tiempo
     this.time.delayedCall(5000, () => cyl.destroy(), [], this);
   }
 
-  // --- CUANDO UN PROYECTIL TOCA AL JUGADOR ---
+  // COLISIÖN CON EL JUGADOR
   hitPlayer(player, cyl) {
     cyl.destroy(); // eliminar proyectil
     this.health--; // restar vida
@@ -190,21 +188,23 @@ export default class minijuegoJuan extends Phaser.Scene {
     if (this.health <= 0) this.loseGame();
   }
 
-  // --- VICTORIA ---
+  // VICTORIA
   winGame() {
     this.physics.pause(); // detener físicas
     this.bulletTimer.remove(false);
     this.timerEvent.remove(false);
 
-    // Cambiar de escena al ganar (asegúrate de que exista "VictoryScene")
-    this.scene.start('VictoryScene');
+    // Cambiar de escena al ganar
+    this.scene.stop();
+    this.scene.launch('VictoriaUI'); //LAUNCH HACE QUE LAS ESCENAS SE APILEN
+    // CON START LAS REEMPLAZAMOS, QUE ESTÁ BIEN, PERO A LO MEJOR PARA ESTO NO ES LO MEJOR
   }
 
-  // --- DERROTA ---
+  // DERROTA
   loseGame() {
     this.physics.pause();
 
-    // Reinicia la escena después de 2 segundos
+    // Reinicia la escena después de 2 segundos por conveniencia para el hito 2
     this.time.delayedCall(2000, () => this.scene.restart(), [], this);
   }
 }
