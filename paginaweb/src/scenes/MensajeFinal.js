@@ -1,16 +1,16 @@
-export default class VictoriaUI extends Phaser.Scene {
+export default class MensajeFinal extends Phaser.Scene {
     constructor() {
-        super('VictoriaUI');
+        super('MensajeFinal');
     }
 
     create() {
-        // FOndo
+        // fondo
         const overlay = this.add.rectangle(
             0, 0,
             this.cameras.main.width,
             this.cameras.main.height,
             0x000000,
-            0.6 // 60% de opacidad
+            0.8 // 60% de opacidad
         ).setOrigin(0);
 
         const panel = this.add.rectangle(
@@ -23,8 +23,8 @@ export default class VictoriaUI extends Phaser.Scene {
         const texto = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY - 50,
-            'Conseguiste el jeroglífico',
-            { fontSize: '20px', color: '#000' }
+            'jerogíficos por descifrar',
+            { fontSize: '22px', color: '#000' }
         ).setOrigin(0.5);
 
         // Botón para cerrar
@@ -37,7 +37,6 @@ export default class VictoriaUI extends Phaser.Scene {
 
         btnContinuar.on('pointerdown', () => {
             this.scene.stop(); // Cierra esta escena
-            this.scene.launch('MapScene');
         });
     }
 }

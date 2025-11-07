@@ -64,6 +64,18 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('minijuegoJuan');
         });
 
+        // portal 2 para el mensaje final
+        this.portal2 = this.add.rectangle(200, 300, 60, 60, 0x000000);
+        this.physics.add.existing(this.portal2);
+
+        //comprobamos colision con el portal
+        this.physics.add.overlap(this.player.sprite, this.portal2, () => {
+            //si hay colision lo llevamos al mensaje, idealmente en la
+            // versión final será una exclamación, no un overlapeo
+            this.portal2.destroy();
+            this.scene.launch('MensajeFinal');
+        });
+
         //camara sigue jugador
         this.cameras.main.startFollow(this.player.sprite);
         this.cameras.main.setZoom(1.5);
