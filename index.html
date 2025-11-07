@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat-astrophic Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap" rel="stylesheet"> <!-- Para meter las fuentes de la Identidad visual del Estudio -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Para usar iconos vectoriales de RRSS -->
+  <link rel="stylesheet" href="Wally like an Egyptian/estilo.css">
+  <script src = "Wally like an Egyptian/src/lib/phaser.js"></script>
+</head> 
+<body>
+  <!-- Barra lateral -->
+  <nav id="sidebar">
+    <ul>
+      <li><a href="#home"><span class="icon">🏠</span><span class="label">Home</span></a></li>
+      <li><a href="#about"><span class="icon">👥</span><span class="label">Sobre Nosotros</span></a></li>
+      <li><a href="#game"><span class="icon">🎮</span><span class="label">Juego</span></a></li>
+      <li><a href="#news"><span class="icon">💬</span><span class="label">Noticias</span></a></li>
+      <li><a href="#contact"><span class="icon">📱</span><span class="label">Contacto</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main>
+    <!-- Home -->
+    <section id="home" class="section home">
+      <div class="home-content">
+        <!-- Logo del estudio con el nombre -->
+        <img src="Wally like an Egyptian/assets/identidad-visual/Logo-Nombre.png" alt="Logo Cat-astrophic Games" class="logo">
+
+        <!-- Botón de jugar -->
+        <button id="playBtn" class="play-btn">Jugar</button>
+      </div>
+    </section>
+
+    <!-- Sobre Nosotros -->
+    <section id="about" class="section about">
+      <section class="section-about">
+        <h2>Sobre Nosotros</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Juan</h3>
+            <p>Programador</p>
+          </div>
+          <div class="card">
+            <h3>Blanca</h3>
+            <p>Programadora, Community Manager, Artista</p>
+          </div>
+          <div class="card">
+            <h3>Ariadna</h3>
+            <p>Programadora, Diseñadora, Artista</p>
+          </div>
+          <div class="card">
+            <h3>David</h3>
+            <p>Programador, Diseñador</p>
+          </div>
+        </div>
+        <div class="credits">
+          <h3>Créditos</h3>
+          <p>Desarrollado por el equipo de Cat-astrophic Games, 2025.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- Juego -->
+    <section id="game" class="section game">
+      <h2>Wally like an Egyptian</h2>
+      <p class="game-desc">
+        Nuestro juego trata sobre una aventura en la que el objetivo principal es encontrar a Wally dentro de una pirámide del antiguo Egipto. 
+        Para conseguirlo, el jugador debe seguir una serie de pistas escritas en alfabeto jeroglífico, lo que hará que necesite derribar las fronteras del lenguaje para poder avanzar.
+      </p>
+      <canvas id="gameCanvas">
+        Tu navegador no soporta canvas.
+      </canvas>
+    </section>
+
+    <!-- Noticias estilo chat -->
+    <section id="news" class="section news">
+      <h2>Noticias y Avances</h2>
+      <div class="chat">
+        <div class="bubble left">
+          <span class="author">👾 David:</span>
+          ¡Tenemos Identidad Visual!
+          <!-- Añadir imágenes con la Identidad Visual -->
+        </div>
+        <div class="bubble right">
+          <span class="author">🎨 Ariadna:</span>
+          Diseñé el Logo del Estudio, así como el nombre de este. ¿Qué os parece? @Cat-astrophic Games 😸
+        </div>
+        <div class="bubble left">
+          <span class="author">👥 Blanca:</span>
+          ¡Tenemos Redes Sociales! ¿A qué esperas para seguirnos? 
+        </div>
+        <div class="bubble right">
+          <span class="author">👾 Ariadna:</span>
+          ¡El nombre de nuestro juego será "Wally like an Egyptian"! Esto se debe a la inspiración de la canción
+              "Walk like an Egyptian" y a Wally, que será un NPC clave en la historia del juego.
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contact" class="section contact">
+      <h2>Contacto</h2>
+        <p>Síguenos en:</p>
+        <ul class="socials">
+          <li>
+            <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr " target="_blank">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+          </li>
+          <li>
+            <a href="https://x.com/cat_astrophicos" target="_blank">
+              <i class="fa-brands fa-x-twitter"></i> X
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/ariadnarc/PVLI_G13" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </li>
+        </ul>
+    </section>
+
+    <script src="Wally like an Egyptian/script.js"></script>
+    <script type="module" src="Wally like an Egyptian/src/main.js"></script>
+  </main>
+</body>
+</html>
