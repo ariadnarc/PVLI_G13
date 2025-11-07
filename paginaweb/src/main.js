@@ -5,6 +5,7 @@ import MensajeFinal from './scenes/MensajeFInal.js';
 
 //minijuegos
 import minijuegoJuan from './scenes/minijuegoJuan.js';
+import minijuegoDavid from './scenes/minijuegoDavid.js';
 
 const config = {
   type: Phaser.CANVAS,
@@ -19,7 +20,7 @@ const config = {
     debug: false        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [GameTitle, MapScene, minijuegoJuan,
+  scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
           VictoriaUI, MensajeFinal],
 };
 

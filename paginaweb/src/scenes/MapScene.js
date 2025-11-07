@@ -22,6 +22,21 @@ export default class MapScene extends Phaser.Scene {
 
         //techo
         this.load.image('techo_43', 'assets/mapa/tiles/techo_43.png');
+
+        // Carga de imágenes de jeroglíficos
+        for (let i = 1; i <= 9; i++) {
+        this.load.image(`jero${i}`, `assets/minijuegos/luces/jero${i}.png`);
+        }
+
+        this.load.image('jero1', 'assets/minijuegos/luces/jero1.png');
+        this.load.image('jero2', 'assets/minijuegos/luces/jero2.png');
+        this.load.image('jero3', 'assets/minijuegos/luces/jero3.png');
+        this.load.image('jero4', 'assets/minijuegos/luces/jero4.png');
+        this.load.image('jero5', 'assets/minijuegos/luces/jero5.png');
+        this.load.image('jero6', 'assets/minijuegos/luces/jero6.png');
+        this.load.image('jero7', 'assets/minijuegos/luces/jero7.png');
+        this.load.image('jero8', 'assets/minijuegos/luces/jero8.png');
+        this.load.image('jero9', 'assets/minijuegos/luces/jero9.png');
     }
     create() {
         //crea mapa desde la clase mapa (con la info del mapa)
@@ -52,27 +67,42 @@ export default class MapScene extends Phaser.Scene {
         this.player = new Player(this, 400, 300);
         this.physics.add.collider(this.player.sprite, this.bloques);
 
+        //Minijuego Esquivar
         //crear portal para llevar a los minijuegos
-        this.portal = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
-        this.physics.add.existing(this.portal);
+        this.portalMinijuegoEsquivar = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
+        this.physics.add.existing(this.portalMinijuegoEsquivar);
 
-        //comprobamos colision con el portal
-        this.physics.add.overlap(this.player.sprite, this.portal, () => {
+        //comprobamos colision con el portalMinijuegoEsquivar
+        this.physics.add.overlap(this.player.sprite, this.portalMinijuegoEsquivar, () => {
             //si hay colision lo llevamos al minijuego
-            this.portal.destroy();
+            this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
             this.scene.start('minijuegoJuan');
         });
 
-        // portal 2 para el mensaje final
-        this.portal2 = this.add.rectangle(200, 300, 60, 60, 0x000000);
-        this.physics.add.existing(this.portal2);
+        //Minijuego Luces
+        //crear portal para llevar a los minijuegos
+        this.portalMinijuegoLuces = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
+        this.physics.add.existing(this.portalMinijuegoLuces);
 
-        //comprobamos colision con el portal
-        this.physics.add.overlap(this.player.sprite, this.portal2, () => {
+        //comprobamos colision con el portalMinijuegoEsquivar
+        this.physics.add.overlap(this.player.sprite, this.portalMinijuegoLuces, () => {
+            //si hay colision lo llevamos al minijuego
+            this.portalMinijuegoLuces.destroy();
+            this.scene.pause();
+            this.scene.start('minijuegoDavid');
+        });
+
+
+        // portal para el mensaje final
+        this.portalMensajeFinal = this.add.rectangle(200, 300, 60, 60, 0x000000);
+        this.physics.add.existing(this.portalMensajeFinal);
+
+        //comprobamos colision con el portalMinijuegoEsquivar
+        this.physics.add.overlap(this.player.sprite, this.portalMensajeFinal, () => {
             //si hay colision lo llevamos al mensaje, idealmente en la
             // versión final será una exclamación, no un overlapeo
-            this.portal2.destroy();
+            this.portalMensajeFinal.destroy();
             this.scene.launch('MensajeFinal');
         });
 
