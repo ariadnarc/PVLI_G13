@@ -1,5 +1,4 @@
-/*Hola*/
-/*miau miau*/
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap');
 
 /* Paleta basada en Identidad Visual */
 :root {
@@ -15,8 +14,6 @@
 html {
   scroll-behavior: smooth;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap');
 
 body {
   margin: 0;

@@ -1,11 +1,11 @@
 import GameTitle from './scenes/GameTitle.js';
-import GameScene from './scenes/GameScene.js';
+import MapScene from './scenes/MapScene.js';
+import VictoriaUI from './scenes/VictoriaUI.js';
+import MensajeFinal from './scenes/MensajeFInal.js';
 
 //minijuegos
 import minijuegoJuan from './scenes/minijuegoJuan.js';
 import minijuegoDavid from './scenes/minijuegoDavid.js';
-import minijuegoAri from './scenes/minijuegoAri.js';
-import minijuegoBlanca from './scenes/minijuegoBlanca.js';
 
 const config = {
   type: Phaser.CANVAS,
@@ -13,8 +13,15 @@ const config = {
   height: 600,
   backgroundColor: '#e87722',
   canvas: document.getElementById('gameCanvas'),
-  scene: [GameTitle, GameScene, minijuegoJuan,
-          minijuegoAri, minijuegoDavid, minijuegoBlanca],
+  physics: {
+  default: 'arcade',
+  arcade: {
+    gravity: { y: 0 },  // sin gravedad
+    debug: false        // hitboxes
+    }
+  }, // declaramos físcas globalmente
+  scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
+          VictoriaUI, MensajeFinal],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index
