@@ -67,32 +67,33 @@ export default class MapScene extends Phaser.Scene {
             //si hay colision lo llevamos al minijuego
             this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
-            this.scene.start('minijuegoJuan');
+            //this.scene.start('DodgeMissilesScene');
+            this.scene.start('SelectDifficultyScene', { minijuego: 'DodgeMissilesScene' });
         });
 
         //Minijuego Luces
         //crear portal para llevar a los minijuegos
-        this.portalMinijuegoLuces = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
-        this.physics.add.existing(this.portalMinijuegoLuces);
+        this.puzzleLightsPortal = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
+        this.physics.add.existing(this.puzzleLightsPortal);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.player.sprite, this.portalMinijuegoLuces, () => {
+        this.physics.add.overlap(this.player.sprite, this.puzzleLightsPortal, () => {
             //si hay colision lo llevamos al minijuego
-            this.portalMinijuegoLuces.destroy();
+            this.puzzleLightsPortal.destroy();
             this.scene.pause();
-            this.scene.start('minijuegoDavid');
+            //this.scene.start('PuzzleLightsScene');
+            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLightsScene' });
         });
 
-
         // portal para el mensaje final
-        this.portalMensajeFinal = this.add.rectangle(200, 300, 60, 60, 0x000000);
-        this.physics.add.existing(this.portalMensajeFinal);
+        this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
+        this.physics.add.existing(this.finalMsgPortal);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.player.sprite, this.portalMensajeFinal, () => {
+        this.physics.add.overlap(this.player.sprite, this.finalMsgPortal, () => {
             //si hay colision lo llevamos al mensaje, idealmente en la
             // versión final será una exclamación, no un overlapeo
-            this.portalMensajeFinal.destroy();
+            this.finalMsgPortal.destroy();
             this.scene.launch('MensajeFinal');
         });
 

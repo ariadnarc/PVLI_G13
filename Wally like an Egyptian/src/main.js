@@ -1,11 +1,14 @@
 import GameTitle from './scenes/GameTitle.js';
 import MapScene from './scenes/MapScene.js';
-import VictoriaUI from './scenes/VictoriaUI.js';
-import MensajeFinal from './scenes/MensajeFInal.js';
+
+// UI scenes
+import VictoryScene from './scenes/VictoryScene.js';
+import MensajeFinal from './scenes/MensajeFinal.js';
+import SelectDifficultyScene from './config/SelectDifficultyScene.js';
 
 //minijuegos
-import minijuegoJuan from './scenes/minijuegoJuan.js';
-import minijuegoDavid from './scenes/minijuegoDavid.js';
+import DodgeMissilesScene from './scenes/DodgeMissilesScene.js';
+import PuzzleLightsScene from './scenes/PuzzleLightsScene.js';
 
 const config = {
   type: Phaser.CANVAS,
@@ -20,8 +23,8 @@ const config = {
     debug: false        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
-          VictoriaUI, MensajeFinal],
+  scene: [GameTitle, MapScene, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
+          VictoryScene, MensajeFinal],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index

@@ -1,9 +1,20 @@
-export default class minijuegoDavid extends Phaser.Scene {
+import { playerData } from '../config/PlayerData.js';
+import { DIFICULTADES } from '../config/DifficultyConfig.js';
+
+export default class PuzzleLightsScene extends Phaser.Scene {
   constructor() {
-    super('minijuegoDavid');
+    super('PuzzleLightsScene');
   }
 
-  create() {
+  create(data) {
+    // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
+    const config = DIFICULTADES[data.dificultad].minijuegos.puzzleLights;
+
+    // Parametros definidos por Dificultad elegida
+    this.lives = config.vidas;
+    this.rounds = config.rondas;
+    this.delay = config.velocidad; //ms entre flasheos de las casillas
+
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
@@ -11,9 +22,7 @@ export default class minijuegoDavid extends Phaser.Scene {
     this.gridSize = 3;
     this.tileSize = 100;
     this.spacing = 20;
-    this.rounds = [3, 4, 5]; // longitud de secuencia por ronda
     this.currentRound = 0;
-    this.lives = 2;
     this.sequence = [];
     this.playerInput = [];
     this.isPlayerTurn = false;
@@ -75,12 +84,11 @@ export default class minijuegoDavid extends Phaser.Scene {
 
   async showSequence() {
     this.isPlayerTurn = false;
-    let delay = 800; // velocidad base entre destellos
 
     for (let i = 0; i < this.sequence.length; i++) {
       const tileIndex = this.sequence[i];
       const tile = this.tiles[tileIndex];
-      await this.flashTile(tile, delay);
+      await this.flashTile(tile, this.delay);
     }
 
     this.isPlayerTurn = true;
@@ -157,8 +165,8 @@ export default class minijuegoDavid extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.time.delayedCall(1500, () => {
-      this.scene.stop('minijuegoDavid');
-      this.scene.launch('VictoriaUI');
+      this.scene.stop('PuzzleLightsScene');
+      this.scene.launch('VictoryScene');
     });
   }
 
@@ -170,7 +178,7 @@ export default class minijuegoDavid extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.time.delayedCall(2000, () => {
-      this.scene.stop('minijuegoDavid');
+      this.scene.stop('PuzzleLightsScene');
       this.scene.start('MapScene');
     });
   }

@@ -1,9 +1,20 @@
-export default class minijuegoJuan extends Phaser.Scene {
+import { playerData } from '../config/PlayerData.js';
+import { DIFICULTADES } from '../config/DifficultyConfig.js';
+
+export default class DodgeMissilesScene extends Phaser.Scene {
   constructor() {
-    super('minijuegoJuan');
+    super('DodgeMissilesScene');
   }
 
-  create() {
+  create(data) {
+    // data.dificultad viene del start()
+    const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
+
+    // Parametros definidos por Dificultad elegida
+    this.totalTime = config.tiempo;
+    this.bulletDelay = config.delayMisiles;
+    this.velocidadMisiles = config.velocidadMisiles;
+  
     // ÁREA DE JUEGO
     this.gameWidth = 400;
     this.gameHeight = 300;
@@ -48,7 +59,6 @@ export default class minijuegoJuan extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // TIEMPO
-    this.totalTime = 10; // segundos para ganar
     this.remainingTime = this.totalTime;
 
     // Texto del temporizador
@@ -70,7 +80,6 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // GENERACIÓN DE PROYECTILES
     // Cada cierto tiempo se genera un cilidrolo de esos
-    this.bulletDelay = 700; // ms entre cada proyectil al inicio
     this.bulletTimer = this.time.addEvent({
       delay: this.bulletDelay,
       callback: this.spawnCylinder,
@@ -101,7 +110,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     const progress = 1 - this.remainingTime / this.totalTime;
 
     // Aumenta la velocidad base de los proyectiles
-    this.bulletSpeedBoost = 1 + 1.1 * progress;
+    this.velocidadMisiles = 1 + 1.1 * progress;
 
     // Si el tiempo llega a 0 -> gana
     if (this.remainingTime <= 0) {
@@ -121,7 +130,7 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // Velocidad base variable según dificultad
     const baseSpeed = 120 + Phaser.Math.Between(0, 80);
-    const speed = baseSpeed * (this.bulletSpeedBoost || 1);
+    const speed = baseSpeed * (this.velocidadMisiles || 1);
 
     // Nota: aquí usamos spawnOffset para separar el punto de generación del borde
     // del área jugable, evitando que aparezcan "pegados" al rectángulo.
@@ -175,7 +184,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     this.time.delayedCall(5000, () => cyl.destroy(), [], this);
   }
 
-  // COLISIÖN CON EL JUGADOR
+  // COLISION CON EL JUGADOR
   hitPlayer(player, cyl) {
     cyl.destroy(); // eliminar proyectil
     this.health--; // restar vida
@@ -196,7 +205,7 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // Cambiar de escena al ganar
     this.scene.stop();
-    this.scene.launch('VictoriaUI'); //LAUNCH HACE QUE LAS ESCENAS SE APILEN
+    this.scene.launch('VictoryScene'); //LAUNCH HACE QUE LAS ESCENAS SE APILEN
     // CON START LAS REEMPLAZAMOS, QUE ESTÁ BIEN, PERO A LO MEJOR PARA ESTO NO ES LO MEJOR
   }
 

@@ -1,6 +1,6 @@
-export default class VictoriaUI extends Phaser.Scene {
+export default class VictoryScene extends Phaser.Scene {
     constructor() {
-        super('VictoriaUI');
+        super('VictoryScene');
     }
 
     create() {
