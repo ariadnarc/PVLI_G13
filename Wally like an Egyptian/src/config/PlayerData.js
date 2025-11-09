@@ -1,4 +1,10 @@
-export const playerData = {
+export const playerInitialData = {
+
+  /* TODO: 
+      - Añadir pos initial y otras variables del Player aquí
+      - Crear un Json para toda la info inicial desde donde se lea
+  */
+
   // Guardamos el progreso general del jugador
   jeroglificos: {
     S: 0,

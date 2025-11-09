@@ -1,6 +1,6 @@
-export default class MensajeFinal extends Phaser.Scene {
+export default class FinalMessage extends Phaser.Scene {
     constructor() {
-        super('MensajeFinal');
+        super('FinalMessage');
     }
 
     create() {

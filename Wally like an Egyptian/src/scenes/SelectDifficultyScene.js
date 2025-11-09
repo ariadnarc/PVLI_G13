@@ -1,5 +1,5 @@
-import { playerData } from './PlayerData.js';
-import { COSTES_DIFICULTAD } from './DifficultyConfig.js';
+import { playerData } from '../config/PlayerData.js';
+import { COSTES_DIFICULTAD } from '../config/DifficultyConfig.js';
 
 export default class SelectDifficultyScene extends Phaser.Scene {
   constructor() {

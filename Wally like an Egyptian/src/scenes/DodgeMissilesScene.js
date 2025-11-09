@@ -26,6 +26,7 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight);
     border.setStrokeStyle(3, 0xffffff);
 
+    // TODO: traernos al Player desde la escena de MapScene y usarlo, asi tenemos una sola "instancia"
     // JUGADOR
     this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x3498db);
     this.physics.add.existing(this.player);
@@ -39,6 +40,8 @@ export default class DodgeMissilesScene extends Phaser.Scene {
       this.gameHeight
     );
 
+    // TODO: toda la info inicial de los minijuegos, crearla en el PlayerData dentro de un Objeto 
+        // que determine la info de cada uno
     // Controles de movimiento
     this.cursors = this.input.keyboard.createCursorKeys();
     this.playerSpeed = 200;
@@ -50,6 +53,7 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     this.maxHealth = 3;
     this.health = this.maxHealth;
 
+    // TODO: La info que se muestre en pantalla durante el minijuego meterla en una clase aparte
     // Barra de vida visual
     this.healthBarBg = this.add.rectangle(centerX, 40, 120, 20, 0x333333);
     this.healthBar = this.add.rectangle(centerX - 60, 40, 120, 20, 0xff4444).setOrigin(0, 0.5);

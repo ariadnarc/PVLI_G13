@@ -1,5 +1,5 @@
 import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
-import Player from "../scripts/player.js";
+import PlayerManager from "../scripts/PlayerManager.js";
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
@@ -54,8 +54,8 @@ export default class MapScene extends Phaser.Scene {
         }
 
         //crear jugador y añadir sus colisiones con el mapa
-        this.player = new Player(this, 400, 300);
-        this.physics.add.collider(this.player.sprite, this.bloques);
+        this.PlayerManager = new PlayerManager(this, 400, 300);
+        this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
 
         //Minijuego Esquivar
         //crear portal para llevar a los minijuegos
@@ -63,7 +63,7 @@ export default class MapScene extends Phaser.Scene {
         this.physics.add.existing(this.portalMinijuegoEsquivar);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.player.sprite, this.portalMinijuegoEsquivar, () => {
+        this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoEsquivar, () => {
             //si hay colision lo llevamos al minijuego
             this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
@@ -77,7 +77,7 @@ export default class MapScene extends Phaser.Scene {
         this.physics.add.existing(this.puzzleLightsPortal);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.player.sprite, this.puzzleLightsPortal, () => {
+        this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
             //si hay colision lo llevamos al minijuego
             this.puzzleLightsPortal.destroy();
             this.scene.pause();
@@ -90,20 +90,20 @@ export default class MapScene extends Phaser.Scene {
         this.physics.add.existing(this.finalMsgPortal);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.player.sprite, this.finalMsgPortal, () => {
+        this.physics.add.overlap(this.PlayerManager.sprite, this.finalMsgPortal, () => {
             //si hay colision lo llevamos al mensaje, idealmente en la
             // versión final será una exclamación, no un overlapeo
             this.finalMsgPortal.destroy();
-            this.scene.launch('MensajeFinal');
+            this.scene.launch('FinalMessage');
         });
 
         //camara sigue jugador
-        this.cameras.main.startFollow(this.player.sprite);
+        this.cameras.main.startFollow(this.PlayerManager.sprite);
         this.cameras.main.setZoom(1.5);
 
     }
     update() {
         //update jugador
-        this.player.update();
+        this.PlayerManager.update();
     }
 }
