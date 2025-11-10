@@ -7,11 +7,36 @@ export default class BinnacleManager {
     };
   }
 
-  /** Añade un jeroglífico al registro del jugador */
-  addGlyph(tier) {
-    if (!this.glyphs[tier]) this.glyphs[tier] = 0;
-    this.glyphs[tier]++;
-    console.log(`[Binnacle] Añadido jeroglífico Tier ${tier}. Total:`, this.glyphs[tier]);
+  /** Añade uno o varios jeroglíficos al registro del jugador */
+  addGlyph(glyphsEarned) {
+    // Validación: debe ser un objeto con pares { tier: cantidad }
+    if (typeof glyphsEarned !== 'object' || glyphsEarned === null) {
+      console.warn('[Bitácora] Formato inválido en addGlyph. Se esperaba un objeto.');
+      return;
+    }
+
+    for (const [tier, amount] of Object.entries(glyphsEarned)) {
+      // Solo procesamos tiers válidos
+      if (!['S', 'A', 'B'].includes(tier)) {
+        console.warn(`[Bitácora] Tier inválido: ${tier}`);
+        continue;
+      }
+
+      // Inicializa si no existe y suma la cantidad
+      if (!this.glyphs[tier]) this.glyphs[tier] = 0;
+      this.glyphs[tier] += amount;
+
+      console.log(`[Bitácora] Añadidos ${amount} jeroglíficos Tier ${tier}. Total: ${this.glyphs[tier]}`);
+    }
+
+    // Emitir evento para actualización de UI
+    this._emit?.('update', this.getSummary());
+  }
+
+
+  /** Comprueba si tiene jeroglificos necesarios para cierta accion */
+  hasGlyphs(tier, amount) {
+  return this.glyphs[tier] >= amount;
   }
 
   /** Gasta jeroglíficos al seleccionar dificultad o eventos */
@@ -24,6 +49,7 @@ export default class BinnacleManager {
   }
 
   /** Devuelve un resumen completo */
+  // ...variable devuelve una copia superficial para evitar modificaciones
   getSummary() {
     return { ...this.glyphs };
   }
