@@ -3,7 +3,7 @@ import MapScene from './scenes/MapScene.js';
 
 // UI scenes
 import VictoryScene from './scenes/VictoryScene.js';
-import MensajeFinal from './scenes/MensajeFinal.js';
+import FinalMessage from './scenes/FinalMessage.js';
 import SelectDifficultyScene from './config/SelectDifficultyScene.js';
 
 //minijuegos
@@ -24,7 +24,7 @@ const config = {
     }
   }, // declaramos físcas globalmente
   scene: [GameTitle, MapScene, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
-          VictoryScene, MensajeFinal],
+          VictoryScene, FinalMessage],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index
