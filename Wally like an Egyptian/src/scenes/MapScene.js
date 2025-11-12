@@ -1,5 +1,5 @@
 import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
-import PlayerManager from "../scripts/PlayerManager.js";
+import PlayerManager from "../core/PlayerManager.js";
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
