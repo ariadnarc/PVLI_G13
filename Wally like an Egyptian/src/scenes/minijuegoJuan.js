@@ -35,20 +35,17 @@ export default class minijuegoJuan extends Phaser.Scene {
     // ========== GRUPO DE PROYECTILES ==========
     this.bullets = this.physics.add.group(); // Crea grupo de física para gestionar proyectiles
 
-    // ========== SISTEMA DE VIDA ==========
+    // -VIDA-
     this.maxHealth = 3; // Define vida máxima del jugador
     this.health = this.maxHealth; // Inicializa vida actual al máximo
     this.isInvulnerable = false; // Estado de invencibilidad del jugador
     this.invulnerabilityDuration = 1500; // Duración de invencibilidad en milisegundos
-
-    // Dibuja fondo de la barra de vida
-    this.healthBarBg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Rectángulo gris oscuro
-    // Dibuja barra de vida activa
-    this.healthBar = this.add.rectangle(centerX - 60, 40, 120, 20, 0xff4444).setOrigin(0, 0.5); // Rectángulo rojo alineado a la izquierda
+    this.barraVidabg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Ractángulo vida background
+    this.barraVida = this.add.rectangle(centerX - 60, 40, 120, 20, 0xff4444).setOrigin(0, 0.5); // Rectángulo vida activa
     // Texto que muestra la vida numérica
     this.healthText = this.add.text(centerX, 70, `Vida: ${this.health}`, {
-      fontSize: '16px', // Tamaño de fuente
-      color: '#ffffff' // Color blanco
+      fontSize: '16px',
+      color: '#ffffff'
     }).setOrigin(0.5); // Centra el texto
 
     // ========== SISTEMA DE TIEMPO ==========
@@ -108,14 +105,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     if (this.health <= 0) return; // Sale si el jugador está muerto
 
     this.remainingTime--; // Decrementa tiempo restante
-    this.timerText.setText(`Tiempo: ${this.remainingTime}`); // Actualiza texto del timer
-
-    /*
-    // Cambia a fase 2 cuando quedan 7 segundos
-    if (this.remainingTime === 7) this.changePhase(2);
-    // Cambia a fase 3 cuando quedan 3 segundos
-    if (this.remainingTime === 3) this.changePhase(3);
-    */
+    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`); // Actualiza texto del timer
 
     // Victoria cuando el tiempo llega a 0
     if (this.remainingTime <= 0) {
@@ -177,7 +167,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     const angle = Phaser.Math.Angle.Between(x, y, this.player.x, this.player.y); // Calcula ángulo hacia el jugador
     cyl.body.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed); // Aplica velocidad en dirección del jugador
 
-    this.time.delayedCall(5000, () => cyl.destroy(), [], this); // Destruye proyectil después de 5 segundos
+    this.time.delayedCall3000, () => cyl.destroy(), [], this; // Destruye proyectil después de 5 segundos
   }
 
   // ========== PATRÓN 2: CÍRCULO CONVERGENTE ==========
@@ -189,28 +179,26 @@ export default class minijuegoJuan extends Phaser.Scene {
     const radius = 240;
     const speed = 140;
     const pauseTime = 500;
-    const delayBetweenProjectiles = 200; // ms entre cada proyectil
 
     for (let i = 0; i < numProjectiles; i++) {
-      this.time.delayedCall(i * delayBetweenProjectiles, () => {
-        const angle = (i / numProjectiles) * Phaser.Math.PI2;
-        const x = centerX + Math.cos(angle) * radius;
-        const y = centerY + Math.sin(angle) * radius;
 
-        const cyl = this.add.rectangle(x, y, 20, 20, 0xff3333);
-        this.physics.add.existing(cyl);
-        this.bullets.add(cyl);
+      const angle = (i / numProjectiles) * Phaser.Math.PI2;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
 
-        // Inicialmente velocidad cero
-        cyl.body.setVelocity(0, 0);
+      const cyl = this.add.rectangle(x, y, 20, 20, 0xff3333);
+      this.physics.add.existing(cyl);
+      this.bullets.add(cyl);
 
-        // Después del pauseTime, empieza a moverse hacia el jugador
-        this.time.delayedCall(pauseTime, () => {
-          cyl.body.setVelocity(-Math.cos(angle) * speed, -Math.sin(angle) * speed);
+      // Inicialmente velocidad cero
+      cyl.body.setVelocity(0, 0);
 
-          // Destruir automáticamente después de 2s
-          this.time.delayedCall(2000, () => cyl.destroy(), [], this);
-        }, [], this);
+      // Después del pauseTime, empieza a moverse hacia el jugador
+      this.time.delayedCall(pauseTime, () => {
+        cyl.body.setVelocity(-Math.cos(angle) * speed, -Math.sin(angle) * speed);
+
+        // Destruir automáticamente después de 2s
+        this.time.delayedCall(1000, () => cyl.destroy(), [], this);
       }, [], this);
     }
   }
@@ -318,7 +306,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     if (this.circleTimer) this.circleTimer.remove(false); // Elimina timer de círculos sin destruir callbacks
 
     // Crea texto de aviso de cambio de fase
-    const txt = this.add.text(this.cameras.main.centerX, 400, `FASE ${newPhase}`, {
+    const txt = this.add.text(this.cameras.main.centerX, 600, `FASE ${newPhase}`, {
       fontSize: '24px', // Tamaño mediano
       color: '#ffff00' // Color amarillo
     }).setOrigin(0.5); // Centra el texto
@@ -344,7 +332,7 @@ export default class minijuegoJuan extends Phaser.Scene {
         break;
 
       case 2: // Fase 2: Solo círculos convergentes lentos
-        this.bulletDelay = 2000; // Dispara cada 2 segundos
+        this.bulletDelay = 4000; // Dispara cada 2 segundos
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCircleWave, // Función de círculo
