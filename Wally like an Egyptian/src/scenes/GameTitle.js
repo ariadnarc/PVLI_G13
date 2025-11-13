@@ -33,5 +33,3 @@ export default class GameTitle extends Phaser.Scene {
       });
   }
 }
-
-// esto es una pruebaaaa
