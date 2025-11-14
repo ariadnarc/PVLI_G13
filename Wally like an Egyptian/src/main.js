@@ -1,10 +1,21 @@
-import GameTitle from './scenes/GameTitle.js';
-import MapScene from './scenes/MapScene.js';
+// ========== IMPORTS ==========
 
-// UI scenes
+// data
+import Boot from './config/Boot.js';
+
+// Scenes
+import MapScene from './scenes/MapScene.js';
 import VictoryScene from './scenes/VictoryScene.js';
+import DefeatScene from './scenes/DefeatScene.js';
 import FinalMessage from './scenes/FinalMessage.js';
-import SelectDifficultyScene from './config/SelectDifficultyScene.js';
+import SelectDifficultyScene from './scenes/SelectDifficultyScene.js';
+
+// menus
+import MainMenu from './menus/MainMenu.js';
+import PauseMenuGame from './menus/PauseMenuGame.js';
+import PauseMenuMinigame from './menus/PauseMenuMinigame.js';
+import PostMinigameMenu from './menus/PostMinigameMenu.js';
+import SettingsMenu from './menus/SettingsMenu.js';
 
 //minijuegos
 import DodgeMissilesScene from './scenes/DodgeMissilesScene.js';
@@ -23,8 +34,8 @@ const config = {
     debug: false        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [GameTitle, MapScene, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
-          VictoryScene, FinalMessage],
+  scene: [Boot, MainMenu, MapScene, PauseMenuGame, SettingsMenu, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
+          PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index
