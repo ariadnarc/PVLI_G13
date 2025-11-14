@@ -7,7 +7,7 @@ export const playerInitialData = {
   posInicial: { x: 400, y: 300}, // pos en el mapa
   speed: 200, // vel player
   spriteName: 'playerSprite', // nombre del asset
-  jeroglificos: { // Guardamos el progreso general del jugador
+  glyphs: { // Guardamos el progreso general del jugador
     S: 0,
     A: 0,
     B: 0
