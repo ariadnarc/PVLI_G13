@@ -1,4 +1,8 @@
-// configDificultad.js
+export const NOMBRES_MINIJUEGOS = {
+  dodgeMissiles: "Furia del Desierto",
+  puzzleLights: "Memoria del Templo"
+}
+
 export const DIFICULTADES = {
   FACIL: {
     nombre: "Iniciado del Templo",
@@ -62,5 +66,14 @@ export const COSTES_DIFICULTAD = {
   FACIL: { S: 0, A: 0, B: 0 },
   MEDIA: { S: 0, A: 1, B: 3 },
   DIFICIL: { S: 1, A: 2, B: 5 }
+};
+
+// recompensas minijuegos
+export const MINIGAME_REWARDS = {
+  rewardSettings: {
+    easy: { count: 1 },
+    medium: { count: 2 },
+    hard: { count: 3 }
+  }
 };
 
