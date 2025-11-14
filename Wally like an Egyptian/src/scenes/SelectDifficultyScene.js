@@ -1,5 +1,6 @@
-import { playerData } from '../config/PlayerData.js';
-import { COSTES_DIFICULTAD } from '../config/DifficultyConfig.js';
+import { playerInitialData } from '../config/PlayerData.js';
+import { COSTES_DIFICULTAD } from '../config/MinigameData.js';
+import InputManager from '../core/InputManager.js';
 
 export default class SelectDifficultyScene extends Phaser.Scene {
   constructor() {
@@ -8,43 +9,87 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   init(data) {
     this.minijuego = data.minijuego; // ej: 'puzzleLights' o 'dodgeMissiles'
+    this.nombreMinijuego = data.nombreMinijuego;
   }
 
   create() {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    this.add.text(centerX, 100, 'Selecciona la dificultad', {
-      fontSize: '24px',
-      color: '#ffff99'
+    // === Instancia del InputManager ===
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configureInputs({
+        mouse: true,
+        keys: ['ESC']
+    });
+
+    // === Título ===
+    this.add.text(centerX, 100, this.nombreMinijuego, {
+      fontSize: '48px',
+      color: '#b07b0fff',
     }).setOrigin(0.5);
 
-    // Mostrar inventario actual
-    this.add.text(centerX, 140, 
-      `Jeroglíficos: S:${playerData.jeroglificos.S}  A:${playerData.jeroglificos.A}  B:${playerData.jeroglificos.B}`, 
+    this.add.text(centerX, 200, 'Selecciona la dificultad', {
+      fontSize: '24px',
+      color: '#ffff99',
+    }).setOrigin(0.5);
+
+    // === Mostrar inventario actual ===
+    this.add.text(
+      centerX,
+      240,
+      `Jeroglíficos: S:${playerInitialData.jeroglificos.S}  A:${playerInitialData.jeroglificos.A}  B:${playerInitialData.jeroglificos.B}`,
       { fontSize: '16px', color: '#ffffff' }
     ).setOrigin(0.5);
 
+    // === Dificultades ===
     const dificultades = ['FACIL', 'MEDIA', 'DIFICIL'];
     const colores = [0x44ff44, 0xffff66, 0xff4444];
 
     dificultades.forEach((dif, i) => {
-      const y = 220 + i * 100;
-      const button = this.add.rectangle(centerX, y, 250, 60, colores[i])
-        .setInteractive()
-        .setOrigin(0.5);
+      const y = 320 + i * 100;
 
-      this.add.text(centerX, y, dif, { fontSize: '20px', color: '#000' }).setOrigin(0.5);
+      // Crear fondo del botón
+      const rect = this.add.rectangle(0, 0, 250, 60, colores[i]).setOrigin(0.5);
 
-      // Mostrar coste si aplica
-      const coste = COSTES_DIFICULTAD[dif];
+      // Texto dentro del botón
+      const txt = this.add.text(0, 0, dif, {
+        fontSize: '20px',
+        color: '#000'
+      }).setOrigin(0.5);
+
+      // Crear un CONTENEDOR que será tu botón real
+      const button = this.add.container(centerX, y, [rect, txt]);
+
+      // Darle tamaño para interacciones
+      button.setSize(250, 60);
+
+      const hoverColor = 0xf5e29a;
+      const defaultColor = colores[i];
+      const hoverScale = 1.12;
+
+      // Hover
+      button.on('pointerover', () => {
+        rect.setFillStyle(hoverColor);
+        button.setScale(hoverScale);
+      });
+
+      button.on('pointerout', () => {
+        rect.setFillStyle(defaultColor);
+        button.setScale(1);
+      });
+
+      // Texto abajo (el coste)
       const costeTexto = this.getCosteTexto(dif);
-      this.add.text(centerX, y + 35, costeTexto, { fontSize: '14px', color: '#ddd' }).setOrigin(0.5);
+      this.add.text(centerX, y + 50, costeTexto, {
+        fontSize: '14px',
+        color: '#ddd'
+      }).setOrigin(0.5);
 
-      button.on('pointerdown', () => this.seleccionarDificultad(dif));
+      // Registrar SOLO el container como botón
+      this.inputManager.registerButton(button, () => this.seleccionarDificultad(dif));
     });
 
-    this.mensaje = this.add.text(centerX, 500, '', { fontSize: '16px', color: '#ff9999' }).setOrigin(0.5);
   }
 
   getCosteTexto(dif) {
@@ -54,7 +99,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
   }
 
   seleccionarDificultad(dif) {
-    const esPrimeraVez = !playerData.minijuegosCompletados[this.minijuego];
+    const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
     const coste = COSTES_DIFICULTAD[dif];
 
     // Si es primera vez, solo permite fácil o media sin coste
@@ -73,7 +118,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     this.pagarJeroglificos(coste);
 
     // Marcar progreso
-    playerData.minijuegosCompletados[this.minijuego] = true;
+    playerInitialData.minijuegosCompletados[this.minijuego] = true;
 
     // Lanzar minijuego con la dificultad seleccionada
     this.scene.start(this.minijuego, { dificultad: dif });
@@ -81,15 +126,15 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   tieneJeroglificos(coste) {
     return (
-      playerData.jeroglificos.S >= coste.S &&
-      playerData.jeroglificos.A >= coste.A &&
-      playerData.jeroglificos.B >= coste.B
+      playerInitialData.jeroglificos.S >= coste.S &&
+      playerInitialData.jeroglificos.A >= coste.A &&
+      playerInitialData.jeroglificos.B >= coste.B
     );
   }
 
   pagarJeroglificos(coste) {
-    playerData.jeroglificos.S -= coste.S;
-    playerData.jeroglificos.A -= coste.A;
-    playerData.jeroglificos.B -= coste.B;
+    playerInitialData.jeroglificos.S -= coste.S;
+    playerInitialData.jeroglificos.A -= coste.A;
+    playerInitialData.jeroglificos.B -= coste.B;
   }
 }
