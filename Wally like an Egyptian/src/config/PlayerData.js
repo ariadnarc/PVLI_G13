@@ -4,15 +4,16 @@ export const playerInitialData = {
       - Añadir pos initial y otras variables del Player aquí
       - Crear un Json para toda la info inicial desde donde se lea
   */
-
-  // Guardamos el progreso general del jugador
-  jeroglificos: {
+  posInicial: { x: 400, y: 300}, // pos en el mapa
+  speed: 200, // vel player
+  spriteName: 'playerSprite', // nombre del asset
+  jeroglificos: { // Guardamos el progreso general del jugador
     S: 0,
     A: 0,
     B: 0
   },
-  // Control de si es la primera vez en los minijuegos
-  minijuegosCompletados: {
+  
+  minijuegosCompletados: { // Control de si es la primera vez en los minijuegos
     puzzleLights: false,
     dodgeMissiles: false
   }
