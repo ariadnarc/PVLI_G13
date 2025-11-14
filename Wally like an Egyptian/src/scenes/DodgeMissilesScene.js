@@ -1,5 +1,6 @@
-import { playerData } from '../config/PlayerData.js';
-import { DIFICULTADES } from '../config/DifficultyConfig.js';
+import { playerInitialData } from '../config/PlayerData.js';
+import { DIFICULTADES } from '../config/MinigameData.js';
+import InputManager from '../core/InputManager.js';
 
 export default class DodgeMissilesScene extends Phaser.Scene {
   constructor() {
@@ -9,6 +10,12 @@ export default class DodgeMissilesScene extends Phaser.Scene {
   create(data) {
     // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
+
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configureInputs({
+        mouse: true,
+        keys: ['ESC']
+    });
 
     // Parametros definidos por Dificultad elegida
     this.totalTime = config.tiempo;
@@ -40,7 +47,7 @@ export default class DodgeMissilesScene extends Phaser.Scene {
       this.gameHeight
     );
 
-    // TODO: toda la info inicial de los minijuegos, crearla en el PlayerData dentro de un Objeto 
+    // TODO: toda la info inicial de los minijuegos, crearla en el playerInitialData dentro de un Objeto 
         // que determine la info de cada uno
     // Controles de movimiento
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -93,6 +100,8 @@ export default class DodgeMissilesScene extends Phaser.Scene {
   }
 
   update() {
+    this.inputManager.handleExit('Minigame');
+
     const body = this.player.body;
     body.setVelocity(0);
 
