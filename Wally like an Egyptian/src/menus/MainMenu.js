@@ -43,8 +43,8 @@ export default class MainMenu extends MenuBase {
     });
 
     // TODO: Meter una animacion previa al MenuInicio (si da tiempo)
-    this.createButton('Salir', width / 2, 380, () => {
+    /*this.createButton('Salir', width / 2, 380, () => {
       console.log('Salir del juego (placeholder)');
-    });
+    });*/
   }
 }
