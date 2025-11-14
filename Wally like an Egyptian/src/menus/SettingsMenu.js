@@ -14,7 +14,7 @@ export default class SettingsMenu extends MenuBase {
 
     // Input escena
     this.inputManager.configureInputs({
-        keyboard: true,
+        mouse: true,
         keys: ['ESC']
     });
 
@@ -33,7 +33,7 @@ export default class SettingsMenu extends MenuBase {
       color: '#ffffff',
     }).setOrigin(0.5);
 
-    // Slider básico (podría ser reemplazado por UI más compleja)
+    // Slider básico
     const barWidth = 200;
     const bar = this.add.rectangle(width / 2, 230, barWidth, 10, 0xffffff);
     const handle = this.add.rectangle(width / 2, 230, 20, 20, 0xffff00).setInteractive();
@@ -50,8 +50,19 @@ export default class SettingsMenu extends MenuBase {
 
     this.input.on('pointerup', () => this.input.off('pointermove'));
 
-    // Botón volver
-    this.createButton('Volver', width / 2, 320, () => {
+    // Estilo básico
+    const style = {
+      fontSize: '24px',
+      color: '#fff',
+      backgroundColor: '#333',
+      padding: { x: 15, y: 8 }
+    };
+
+    // Crear el texto-botón
+    const volverButton = this.add.text(width / 2, 420, 'Volver', style).setOrigin(0.5)
+
+    // Registrar el botón en InputManager 
+    this.inputManager.registerButton(volverButton, () => {
       const parent = this.menuConfig.parentScene;
       this.scene.stop();
       this.scene.resume(parent);
@@ -59,7 +70,7 @@ export default class SettingsMenu extends MenuBase {
   }
 
   update(){
-    this.inputManager.handleExit('Minigame');
+    this.inputManager.handleExit('Menu');
   }
 }
 
