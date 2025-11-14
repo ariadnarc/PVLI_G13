@@ -36,6 +36,12 @@ export default class Boot extends Phaser.Scene {
     this.load.image(`jero${i}`, `Wally like an Egyptian/assets/minijuegos/luces/jero${i}.png`);
     }
 
+    // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
+    // === TIERS JEROGLIFICOS ===
+    this.load.image("tier_S", "assets/ui/ankh.png");
+    this.load.image("tier_A", "assets/ui/ba.png");
+    this.load.image("tier_B", "assets/ui/uraeus.png");
+
     // === SONIDOS ===
     this.load.audio('victory', 'Wally like an Egyptian/assets/sounds/victory.wav');
     this.load.audio('defeat', 'Wally like an Egyptian/assets/sounds/defeat.wav');
