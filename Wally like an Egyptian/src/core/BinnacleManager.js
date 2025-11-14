@@ -1,8 +1,16 @@
 import { playerInitialData } from "../config/PlayerData.js";
 
 export default class BinnacleManager {
+  static instance = null;
+
+  static getInstance() {
+    if (!BinnacleManager.instance) {
+      BinnacleManager.instance = new BinnacleManager();
+    }
+    return BinnacleManager.instance;
+  }
   constructor() {
-    this.glyphs = playerInitialData.jeroglificos; 
+    this.glyphs = playerInitialData.glyphs; 
   }
 
   /** Añade uno o varios jeroglíficos al registro del jugador */
@@ -26,11 +34,7 @@ export default class BinnacleManager {
 
       console.log(`[Bitácora] Añadidos ${amount} jeroglíficos Tier ${tier}. Total: ${this.glyphs[tier]}`);
     }
-
-    // Emitir evento para actualización de UI
-    this._emit?.('update', this.getSummary());
   }
-
 
   /** Comprueba si tiene jeroglificos necesarios para cierta accion */
   hasGlyphs(tier, amount) {
