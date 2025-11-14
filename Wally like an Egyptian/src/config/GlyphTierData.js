@@ -1,11 +1,11 @@
-export default class GlyphTierConfig {
+export default class GlyphTierData {
   
-  // === DEFINICIÓN DE TIER LIST ===
-  static TIER = {
-    S: 'S',
-    A: 'A',
-    B: 'B'
-  };
+  // === DEFINICIÓN DE TIER DATA ===
+  static TIER_DATA = [
+    { tier: "B", img: "ankh" },
+    { tier: "A", img: "ba" },
+    { tier: "S", img: "uraeus" },
+  ]
 
   // === RECOMPENSAS POR DIFICULTAD ===
   static rewardsByDifficulty = {
@@ -74,4 +74,27 @@ export default class GlyphTierConfig {
     playerInventory[tier] = (playerInventory[tier] || 0) + 1;
     return tier;
   }
+
+  static getMultipleRewards(difficulty, count) {
+  const rewards = {};
+  const { probabilities } = this.rewardsByDifficulty[difficulty];
+
+  for (let i = 0; i < count; i++) {
+    const tier = this.getRewardTier(probabilities);
+    rewards[tier] = (rewards[tier] || 0) + 1;
+  }
+
+  return rewards;
+}
+
+static getRewardTier(probabilities) {
+  const rand = Math.random();
+  let cumulative = 0;
+  for (const [tier, prob] of Object.entries(probabilities)) {
+    cumulative += prob;
+    if (rand <= cumulative) return tier;
+  }
+  return 'B'; // fallback
+}
+
 }
