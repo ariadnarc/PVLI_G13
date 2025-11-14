@@ -5,32 +5,22 @@ import InputManager from '../core/InputManager.js';
  * Define la estructura, pero no el estilo visual.
  */
 export default class MenuBase extends Phaser.Scene {
-  constructor(key) {
+  constructor(key, data) {
     super(key);
-    this.inputManager = null;
     this.menuElements = [];
-  }
 
-  init(data) {
     this.menuConfig = data || {}; // datos opcionales (overlay, parentScene, etc.)
   }
 
   create() {
     // Asocia el InputManager
+    // Cada clase define los inputs que permite (teclado, cursores, raton, etc)
     this.inputManager = InputManager.getInstance(this);
-
-    // Inicialización base de menú (sin diseño específico)
-    this.initMenu();
-
-    // Activar manejo de input
-    this.enableMenuInput();
   }
 
-  /**
-   * Método que debe redefinirse en las subclases
-   * para definir el layout, botones, textos, etc.
-   */
-  initMenu() {}
+  getParentscene() {
+    return this.menuConfig.parentSceneNode || null;
+  }
 
   /**
    * Crea un botón genérico y lo registra en InputManager
