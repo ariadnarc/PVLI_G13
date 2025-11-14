@@ -1,34 +1,38 @@
 import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
 import PlayerManager from "../core/PlayerManager.js";
+import InputManager from "../core/InputManager.js"
+import { NOMBRES_MINIJUEGOS } from "../config/MinigameData.js";
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
         super('MapScene');
     }
-    preload() {
-        //Carga los tiles del mapa (pared)
-        this.load.image('pared_1', 'Wally like an Egyptian/assets/mapa/tiles/pared_1.png');
-        this.load.image('pared_2', 'Wally like an Egyptian/assets/mapa/tiles/pared_2.png');
-        this.load.image('pared_3', 'Wally like an Egyptian/assets/mapa/tiles/pared_3.png');
-        this.load.image('pared_4', 'Wally like an Egyptian/assets/mapa/tiles/pared_4.png');
-        this.load.image('pared_5', 'Wally like an Egyptian/assets/mapa/tiles/pared_5.png');
-        this.load.image('pared_6', 'Wally like an Egyptian/assets/mapa/tiles/pared_6.png');
-        this.load.image('pared_7', 'Wally like an Egyptian/assets/mapa/tiles/pared_7.png');
-        this.load.image('pared_8', 'Wally like an Egyptian/assets/mapa/tiles/pared_8.png');
-        this.load.image('pared_9', 'Wally like an Egyptian/assets/mapa/tiles/pared_9.png');
 
-        //suelo
-        this.load.image('suelo_22', 'Wally like an Egyptian/assets/mapa/tiles/suelo_22.png');
-
-        //techo
-        this.load.image('techo_43', 'Wally like an Egyptian/assets/mapa/tiles/techo_43.png');
-
-        // Carga de imágenes de jeroglíficos
-        for (let i = 1; i <= 9; i++) {
-        this.load.image(`jero${i}`, `Wally like an Egyptian/assets/minijuegos/luces/jero${i}.png`);
-        }
-    }
     create() {
+        this.inputManager = new InputManager(this);
+
+        // MapScene solo escucha movimiento y tecla ESC
+        this.inputManager.configure({
+            cursors: true,
+            keys: ["ESC"]
+        });
+
+        // Movimiento
+        this.inputManager.on("move", ({ x, y }) => {
+            this.PlayerManager.setDirection(x, y);
+        });
+
+        // Keyboard 
+        this.inputManager.on("keyDown", (key) => {
+            if (key === "ESC") { // Menu pausa
+                this.openPauseMenu();
+            }
+            else if (key === "B") { // Menu pausa
+                this.openBinnacle();
+            }
+            
+        });
+
         //crea mapa desde la clase mapa (con la info del mapa)
         this.mapa = new MapaLaberinto();
         this.mapa.render(this);
@@ -54,10 +58,11 @@ export default class MapScene extends Phaser.Scene {
         }
 
         //crear jugador y añadir sus colisiones con el mapa
-        this.PlayerManager = new PlayerManager(this, 400, 300);
+        this.PlayerManager = new PlayerManager(this);
         this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
+        
 
-        //Minijuego Esquivar
+        //Minijuego Furia del Desierto
         //crear portal para llevar a los minijuegos
         this.portalMinijuegoEsquivar = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
         this.physics.add.existing(this.portalMinijuegoEsquivar);
@@ -68,10 +73,10 @@ export default class MapScene extends Phaser.Scene {
             this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
             //this.scene.start('DodgeMissilesScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'DodgeMissilesScene' });
+            this.scene.start('SelectDifficultyScene', { minijuego: 'DodgeMissilesScene', nombre: NOMBRES_MINIJUEGOS.dodgeMissiles });
         });
 
-        //Minijuego Luces
+        //Minijuego Memoria del Templo
         //crear portal para llevar a los minijuegos
         this.puzzleLightsPortal = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
         this.physics.add.existing(this.puzzleLightsPortal);
@@ -82,7 +87,7 @@ export default class MapScene extends Phaser.Scene {
             this.puzzleLightsPortal.destroy();
             this.scene.pause();
             //this.scene.start('PuzzleLightsScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLightsScene' });
+            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLightsScene', nombre: NOMBRES_MINIJUEGOS.puzzleLights });
         });
 
         // portal para el mensaje final
@@ -98,12 +103,28 @@ export default class MapScene extends Phaser.Scene {
         });
 
         //camara sigue jugador
-        this.cameras.main.startFollow(this.PlayerManager.sprite);
+        this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
 
     }
+
     update() {
-        //update jugador
+        // input
+        this.inputManager.update();
+        // jugador
         this.PlayerManager.update();
     }
+
+    openPauseMenu() {
+        this.scene.pause();
+        this.scene.launch("PauseMenuGame", { parentScene: this.scene.key });
+    }
+
+    openBinnacle(){
+        this.scene.pause();
+        this.scene.launch("BinnacleOverlay", {
+            parentScene: this.scene.key
+        });
+    }
+
 }
