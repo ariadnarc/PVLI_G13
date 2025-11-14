@@ -5,8 +5,17 @@ export default class PauseMenuMinigame extends MenuBase {
     super('PauseMenuMinigame');
   }
 
-  initMenu() {
-    const { width, height } = this.scale;
+  create() {
+    // llama al metodo del padre
+    super.create();
+
+    const { width, height } = this.sys.game.config;
+
+    // Input escena
+    this.inputManager.configureInputs({
+        keyboard: true,
+        keys: ['ESC']
+    });
 
     this.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0);
     this.add.text(width / 2, 120, 'PAUSA - MINIJUEGO', {
@@ -36,5 +45,9 @@ export default class PauseMenuMinigame extends MenuBase {
       this.scene.stop(this.menuConfig.minigameScene);
       this.scene.start('MapScene');
     });
+  }
+
+  update(){
+    this.inputManager.handleExit('Minigame');
   }
 }

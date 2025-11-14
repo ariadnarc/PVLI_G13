@@ -6,7 +6,16 @@ export default class PauseMenuGame extends MenuBase {
   }
 
   initMenu() {
-    const { width, height } = this.scale;
+    // llama al metodo del padre
+    super.createBase();
+
+    const { width, height } = this.sys.game.config;
+
+    // Input escena
+    this.inputManager.configureInputs({
+        keyboard: true,
+        keys: ['ESC']
+    });
 
     // Fondo overlay translúcido
     this.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0);
@@ -32,5 +41,9 @@ export default class PauseMenuGame extends MenuBase {
       this.scene.stop('MapScene');
       this.scene.start('MainMenu');
     });
+  }
+
+  update(){
+    this.inputManager.handleExit('Minigame');
   }
 }

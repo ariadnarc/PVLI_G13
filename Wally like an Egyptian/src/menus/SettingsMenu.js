@@ -5,9 +5,18 @@ export default class SettingsMenu extends MenuBase {
     super('SettingsMenu');
   }
 
-  initMenu() {
-    const { width, height } = this.scale;
+  create() {
+    // llama al metodo del padre
+    super.create();
+
+    const { width, height } = this.sys.game.config;
     this.soundValue = this.game.sound.volume; // Valor inicial del volumen (0–1)
+
+    // Input escena
+    this.inputManager.configureInputs({
+        keyboard: true,
+        keys: ['ESC']
+    });
 
     // Fondo semitransparente
     this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0);
@@ -43,9 +52,15 @@ export default class SettingsMenu extends MenuBase {
 
     // Botón volver
     this.createButton('Volver', width / 2, 320, () => {
-      const parent = this.menuConfig.parentMenu;
+      const parent = this.menuConfig.parentScene;
       this.scene.stop();
       this.scene.resume(parent);
     });
   }
+
+  update(){
+    this.inputManager.handleExit('Minigame');
+  }
 }
+
+
