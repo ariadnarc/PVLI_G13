@@ -1,10 +1,8 @@
+import { playerInitialData } from "../config/PlayerData.js";
+
 export default class BinnacleManager {
   constructor() {
-    this.glyphs = {
-      S: 0,
-      A: 0,
-      B: 0
-    };
+    this.glyphs = playerInitialData.jeroglificos; 
   }
 
   /** Añade uno o varios jeroglíficos al registro del jugador */

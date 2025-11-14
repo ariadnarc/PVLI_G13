@@ -47,9 +47,9 @@ export default class BinnacleUI {
   refreshData() {
     const data = this.binnacle.getSummary();
     const text = `
-Tier S: ${data.S}
-Tier A: ${data.A}
-Tier B: ${data.B}
+      Tier S: ${data.S}
+      Tier A: ${data.A}
+      Tier B: ${data.B}
     `;
     this.textInfo.setText(text);
   }
