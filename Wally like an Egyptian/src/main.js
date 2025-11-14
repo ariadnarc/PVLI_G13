@@ -10,6 +10,9 @@ import DefeatScene from './scenes/DefeatScene.js';
 import FinalMessage from './scenes/FinalMessage.js';
 import SelectDifficultyScene from './scenes/SelectDifficultyScene.js';
 
+// overlays
+import BinnacleOverlay from './overlay/BinnacleOverlay.js';
+
 // menus
 import MainMenu from './menus/MainMenu.js';
 import PauseMenuGame from './menus/PauseMenuGame.js';
@@ -34,7 +37,7 @@ const config = {
     debug: false        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [Boot, MainMenu, MapScene, PauseMenuGame, SettingsMenu, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
+  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame, SettingsMenu, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
           PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
 };
 
