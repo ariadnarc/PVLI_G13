@@ -38,9 +38,9 @@ export default class Boot extends Phaser.Scene {
 
     // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
     // === TIERS JEROGLIFICOS ===
-    this.load.image("tier_S", "assets/ui/ankh.png");
-    this.load.image("tier_A", "assets/ui/ba.png");
-    this.load.image("tier_B", "assets/ui/uraeus.png");
+    this.load.image("tier_S", "wallyLikeAnEgyptian/assets/ui/ankh.png");
+    this.load.image("tier_A", "wallyLikeAnEgyptian/assets/ui/ba.jpg");
+    this.load.image("tier_B", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
 
     // === SONIDOS ===
     this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.wav');
