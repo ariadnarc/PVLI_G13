@@ -17,17 +17,12 @@ export default class MapScene extends Phaser.Scene {
             keys: ["ESC"]
         });
 
-        // Movimiento
-        this.inputManager.on("move", ({ x, y }) => {
-            this.PlayerManager.setDirection(x, y);
-        });
-
         // Keyboard 
         this.inputManager.on("keyDown", (key) => {
             if (key === "ESC") { // Menu pausa
                 this.openPauseMenu();
             }
-            else if (key === "B") { // Menu pausa
+            else if (key === "B") { // Diccionario
                 this.openBinnacle();
             }
             

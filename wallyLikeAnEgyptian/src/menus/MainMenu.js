@@ -11,9 +11,7 @@ export default class MainMenu extends MenuBase {
 
     const { width, height } = this.sys.game.config;
 
-    this.inputManager.configureInputs({
-        mouse: true
-    });
+    this.inputManager.configure({ cursors: true });
 
     // Fondo completo
     this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);

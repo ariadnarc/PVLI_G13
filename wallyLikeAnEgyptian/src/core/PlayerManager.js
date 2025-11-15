@@ -16,6 +16,7 @@ export default class PlayerManager {
   }
 
   update() {
+    
     const dir = this.inputManager.getMovementVector();
     const body = this.sprite.body;
 
