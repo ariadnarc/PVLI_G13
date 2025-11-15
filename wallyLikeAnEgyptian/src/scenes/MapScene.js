@@ -53,7 +53,7 @@ export default class MapScene extends Phaser.Scene {
         }
 
         //crear jugador y añadir sus colisiones con el mapa
-        this.PlayerManager = new PlayerManager(this);
+        this.PlayerManager = new PlayerManager(this.inputManager, this);
         this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
         
 
@@ -108,6 +108,8 @@ export default class MapScene extends Phaser.Scene {
         this.inputManager.update();
         // jugador
         this.PlayerManager.update();
+
+        console.log(this.inputManager.getMovementVector());
     }
 
     openPauseMenu() {

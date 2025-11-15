@@ -1,14 +1,8 @@
 export default class InputManager extends Phaser.Events.EventEmitter {
 
-static instance = null;
-
   constructor(scene) {
     
     super();
-        if (InputManager.instance) {
-            return InputManager.instance;
-        }
-
     this.scene = scene;
     this.cursors = null;
     this.keys = {};
@@ -16,13 +10,6 @@ static instance = null;
 
     InputManager.instance = this;
   }
-
-  static getInstance(scene) {
-        if (!InputManager.instance) {
-            InputManager.instance = new InputManager(scene);
-        }
-        return InputManager.instance;
-    }
 
   configure(config = {}) {
 
@@ -44,15 +31,17 @@ static instance = null;
 
   // devuelve un vector de movimiento, usado por PlayerManager
   getMovementVector() {
-    if (!this.enabled || !this.cursors) return { x: 0, y: 0 };
-
     let x = 0, y = 0;
 
-    if (this.cursors.left.isDown) x = -1;
-    else if (this.cursors.right.isDown) x = 1;
+    if (!this.enabled) return { x, y };
 
-    if (this.cursors.up.isDown) y = -1;
-    else if (this.cursors.down.isDown) y = 1;
+    if (this.cursors) {
+        if (this.cursors.left.isDown) x = -1;
+        else if (this.cursors.right.isDown) x = 1;
+
+        if (this.cursors.up.isDown) y = -1;
+        else if (this.cursors.down.isDown) y = 1;
+    }
 
     return { x, y };
   }

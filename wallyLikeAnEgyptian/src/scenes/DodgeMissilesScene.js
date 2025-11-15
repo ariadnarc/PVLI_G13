@@ -1,6 +1,7 @@
 import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
+import PlayerManager from '../core/PlayerManager.js';
 
 export default class DodgeMissilesScene extends Phaser.Scene {
   constructor() {
@@ -11,7 +12,7 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
 
-    this.inputManager = InputManager.getInstance(this);
+    this.inputManager = new InputManager(this);
     this.inputManager.configure({
         mouse: true,
         keys: ['ESC']
@@ -33,10 +34,9 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight);
     border.setStrokeStyle(3, 0xffffff);
 
-    // TODO: traernos al Player desde la escena de MapScene y usarlo, asi tenemos una sola "instancia"
     // JUGADOR
-    this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x3498db);
-    this.physics.add.existing(this.player);
+    this.playerManager = new PlayerManager(this.inputManager, this);
+    this.player = this.playerManager.getSprite();
     this.player.body.setCollideWorldBounds(true);
 
     // Limita la física al área visible
@@ -100,16 +100,10 @@ export default class DodgeMissilesScene extends Phaser.Scene {
   }
 
   update() {
-    this.inputManager.handleExit('Minigame');
 
-    const body = this.player.body;
-    body.setVelocity(0);
+    this.inputManager.update();
 
-    if (this.cursors.left.isDown) body.setVelocityX(-this.playerSpeed);
-    else if (this.cursors.right.isDown) body.setVelocityX(this.playerSpeed);
-
-    if (this.cursors.up.isDown) body.setVelocityY(-this.playerSpeed);
-    else if (this.cursors.down.isDown) body.setVelocityY(this.playerSpeed);
+    this.playerManager.update();
   }
 
   // TEMPORIZADOR

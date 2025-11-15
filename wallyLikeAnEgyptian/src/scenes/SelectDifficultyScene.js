@@ -17,7 +17,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     const centerY = this.cameras.main.centerY;
 
     // === Instancia del InputManager ===
-    this.inputManager = InputManager.getInstance(this);
+    this.inputManager = new InputManager(this);
     this.inputManager.configure({
         mouse: true,
         keys: ['ESC']

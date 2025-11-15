@@ -15,7 +15,7 @@ export default class MenuBase extends Phaser.Scene {
   create() {
     // Asocia el InputManager
     // Cada clase define los inputs que permite (teclado, cursores, raton, etc)
-    this.inputManager = InputManager.getInstance(this);
+    this.inputManager = new InputManager(this);
     this.inputManager.configure({ cursors: true });
   }
 
