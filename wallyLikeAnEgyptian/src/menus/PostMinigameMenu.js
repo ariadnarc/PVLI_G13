@@ -22,7 +22,8 @@ export default class PostMinigameMenu extends MenuBase {
     super.create();
     
     // Input escena
-    this.inputManager.configureInputs({
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configure({
         mouse: true,
         keys: ['ESC']
     });

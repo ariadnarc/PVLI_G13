@@ -13,7 +13,8 @@ export default class SettingsMenu extends MenuBase {
     this.soundValue = this.game.sound.volume; // Valor inicial del volumen (0–1)
 
     // Input escena
-    this.inputManager.configureInputs({
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configure({
         mouse: true,
         keys: ['ESC']
     });

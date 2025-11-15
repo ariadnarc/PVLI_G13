@@ -18,7 +18,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
     // === Instancia del InputManager ===
     this.inputManager = InputManager.getInstance(this);
-    this.inputManager.configureInputs({
+    this.inputManager.configure({
         mouse: true,
         keys: ['ESC']
     });
@@ -35,10 +35,10 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // === Mostrar inventario actual ===
-    this.add.text(
+    this.jeroglificosTexto = this.add.text(
       centerX,
       240,
-      `Jeroglíficos: S:${playerInitialData.jeroglificos.S}  A:${playerInitialData.jeroglificos.A}  B:${playerInitialData.jeroglificos.B}`,
+      `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`,
       { fontSize: '16px', color: '#ffffff' }
     ).setOrigin(0.5);
 
@@ -60,7 +60,6 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
       // Crear un CONTENEDOR que será tu botón real
       const button = this.add.container(centerX, y, [rect, txt]);
-
       // Darle tamaño para interacciones
       button.setSize(250, 60);
 
@@ -86,7 +85,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
         color: '#ddd'
       }).setOrigin(0.5);
 
-      // Registrar SOLO el container como botón
+      // Registrar SOLO el container como botón en el InputManager
       this.inputManager.registerButton(button, () => this.seleccionarDificultad(dif));
     });
 
@@ -117,6 +116,11 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     // Restar el coste
     this.pagarJeroglificos(coste);
 
+    //Actualizar texto en pantalla
+    this.jeroglificosTexto.setText(
+      `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`
+    );
+
     // Marcar progreso
     playerInitialData.minijuegosCompletados[this.minijuego] = true;
 
@@ -126,15 +130,15 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   tieneJeroglificos(coste) {
     return (
-      playerInitialData.jeroglificos.S >= coste.S &&
-      playerInitialData.jeroglificos.A >= coste.A &&
-      playerInitialData.jeroglificos.B >= coste.B
+      playerInitialData.glyphs.S >= coste.S &&
+      playerInitialData.glyphs.A >= coste.A &&
+      playerInitialData.glyphs.B >= coste.B
     );
   }
 
   pagarJeroglificos(coste) {
-    playerInitialData.jeroglificos.S -= coste.S;
-    playerInitialData.jeroglificos.A -= coste.A;
-    playerInitialData.jeroglificos.B -= coste.B;
+    playerInitialData.glyphs.S -= coste.S;
+    playerInitialData.glyphs.A -= coste.A;
+    playerInitialData.glyphs.B -= coste.B;
   }
 }

@@ -12,7 +12,8 @@ export default class PauseMenuGame extends MenuBase {
     const { width, height } = this.sys.game.config;
 
     // Input escena
-    this.inputManager.configureInputs({
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configure({
         keyboard: true,
         keys: ['ESC']
     });

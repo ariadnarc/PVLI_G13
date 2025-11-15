@@ -16,8 +16,8 @@ export default class BinnacleOverlay extends Phaser.Scene {
     const { width, height } = this.sys.game.config;
 
     // --- GESTIÓN DE INPUT ---
-    this.inputManager = new InputManager(this);
-    this.inputManager.configureInputs({
+    this.inputManager = InputManager.getInstance(this);
+    this.inputManager.configure({
       keyboard: true,
       keys: ["B"]
     });

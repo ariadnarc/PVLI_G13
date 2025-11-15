@@ -12,7 +12,7 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
 
     this.inputManager = InputManager.getInstance(this);
-    this.inputManager.configureInputs({
+    this.inputManager.configure({
         mouse: true,
         keys: ['ESC']
     });
