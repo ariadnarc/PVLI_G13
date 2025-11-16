@@ -55,9 +55,10 @@ export default class MapScene extends Phaser.Scene {
         //crear jugador y añadir sus colisiones con el mapa
         this.PlayerManager = new PlayerManager(this.inputManager, this);
         this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
-        
 
-        //Minijuego Furia del Desierto
+        //-------------------------MINIJUEGOS-------------------------
+        /*
+        //Minijuego Furia del Desierto--------------------------------
         //crear portal para llevar a los minijuegos
         this.portalMinijuegoEsquivar = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
         this.physics.add.existing(this.portalMinijuegoEsquivar);
@@ -69,9 +70,9 @@ export default class MapScene extends Phaser.Scene {
             this.scene.pause();
             //this.scene.start('DodgeMissilesScene');
             this.scene.start('SelectDifficultyScene', { minijuego: 'DodgeMissilesScene', nombre: NOMBRES_MINIJUEGOS.dodgeMissiles });
-        });
+        });*/
 
-        //Minijuego Memoria del Templo
+        //Minijuego Memoria del Templo--------------------------------
         //crear portal para llevar a los minijuegos
         this.puzzleLightsPortal = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
         this.physics.add.existing(this.puzzleLightsPortal);
@@ -84,6 +85,22 @@ export default class MapScene extends Phaser.Scene {
             //this.scene.start('PuzzleLightsScene');
             this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLightsScene', nombre: NOMBRES_MINIJUEGOS.puzzleLights });
         });
+
+        //Minijuego Precision del escriba-----------------------------
+        //Crear portal para llevar al minijuego
+        this.portalMinijuegoBarrita = this.add.rectangle(300, 100, 60, 60, 0x00FF00);
+        this.physics.add.existing(this.portalMinijuegoBarrita);
+
+        //Comprobamos colision con el portal al minijuego
+        this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
+            //si hay colision lo llevamos al minijuego
+            this.portalMinijuegoBarrita.destroy();
+            this.scene.pause();
+            //this.scene.start('SlideScene');
+            this.scene.start('SelectDifficultyScene', { minijuego: 'SlideScene', nombre: NOMBRES_MINIJUEGOS.slideBar });
+        });
+
+
 
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
