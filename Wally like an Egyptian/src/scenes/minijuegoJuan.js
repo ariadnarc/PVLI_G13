@@ -146,14 +146,13 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // 2. Decide si aparece por la izquierda o derecha
     const fromLeft = Phaser.Math.Between(0, 1) === 0;
-
     const spawnX = fromLeft ? + 80 : gameWidth - 80;
 
     // 3. Crear cilindro
-    const cyl = this.add.rectangle(spawnX, spawnY, 80, 40, 0xffaa00);
+    const cyl = this.add.rectangle(spawnX, spawnY, 100, 25, 0x000000);
     this.physics.add.existing(cyl);
-    cyl.body.setImmovable(true);
-    cyl.body.setAllowGravity(false);
+    this.bullets.add(cyl);
+
     // Velocidad final (solo en horizontal)
     const attackSpeed = 900;
 
@@ -164,7 +163,6 @@ export default class minijuegoJuan extends Phaser.Scene {
         targets: cyl,
         x: retreatX,
         duration: 500,
-
         onComplete: () => {
             // 5. Ataque en línea recta horizontal
             const velocity = fromLeft ? attackSpeed : -attackSpeed;
