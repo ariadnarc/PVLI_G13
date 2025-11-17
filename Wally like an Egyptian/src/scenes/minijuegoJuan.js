@@ -75,7 +75,7 @@ export default class minijuegoJuan extends Phaser.Scene {
       delay: 10000, // Cambia de patrón cada 10 segundos
       callback: () => { // Función anónima que ejecuta al cumplirse el delay
         this.attackPhase++; // Incrementa la fase de ataque
-        if (this.attackPhase > 3) this.attackPhase = 1; // Reinicia a fase 1 si supera 3
+        if (this.attackPhase > 0)
         this.changePhase(this.attackPhase); // Cambiamos el switch de fases que toma el valor de la fase de ataque
         this.showPhaseWarning(this.attackPhase); // Muestra aviso visual del cambio de patrón
       },
@@ -90,15 +90,18 @@ export default class minijuegoJuan extends Phaser.Scene {
 
   update() {
     const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador
-    body.setVelocity(0); // Resetea velocidad a 0 cada frame
+    body.setVelocity(0);
 
-    // Control de movimiento horizontal
-    if (this.cursors.left.isDown) body.setVelocityX(-this.playerSpeed); // Mueve a la izquierda
-    else if (this.cursors.right.isDown) body.setVelocityX(this.playerSpeed); // Mueve a la derecha
-
-    // Control de movimiento vertical
-    if (this.cursors.up.isDown) body.setVelocityY(-this.playerSpeed); // Mueve hacia arriba
-    else if (this.cursors.down.isDown) body.setVelocityY(this.playerSpeed); // Mueve hacia abajo
+    // Prioridad horizontal
+    if (this.cursors.left.isDown) {
+      body.setVelocityX(-this.playerSpeed);
+    } else if (this.cursors.right.isDown) {
+      body.setVelocityX(this.playerSpeed);
+    } else if (this.cursors.up.isDown) {
+      body.setVelocityY(-this.playerSpeed);
+    } else if (this.cursors.down.isDown) {
+      body.setVelocityY(this.playerSpeed);
+    }
   }
 
   // ========== ACTUALIZACIÓN DEL TEMPORIZADOR ==========
@@ -124,7 +127,7 @@ export default class minijuegoJuan extends Phaser.Scene {
       case 1: // Patrón dirigido al jugador
         this.spawnDirectedProjectile(centerX, centerY);
         break;
-      case 2: // Patrón de círculo convergente
+      case 2: // Ataque de Undyne
         this.spawnCircleWave(centerX, centerY);
         break;
       case 3: // Patrón de barrido horizontal/vertical
@@ -208,7 +211,7 @@ export default class minijuegoJuan extends Phaser.Scene {
   spawnSweep(centerX, centerY) {
     const horizontal = Phaser.Math.Between(0, 1) === 0; // Decide aleatoriamente si es horizontal (true) o vertical (false)
     const numProjectiles = 8; // Número de proyectiles en el barrido
-    const speed = 200; // Velocidad de los cilindros
+    const speed = 150; // Velocidad de los cilindros
 
     // Crea línea de proyectiles
     for (let i = 0; i < numProjectiles; i++) {
@@ -284,7 +287,7 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // Crea rectángulo para efecto de parpadeo del borde
     const borderFlash = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight)
-      .setStrokeStyle(4, 0xffffff) // Borde amarillo de 4px
+      .setStrokeStyle(4, 0x000000) // Borde amarillo de 4px
       .setAlpha(0); // Inicialmente invisible
 
     // Animación de parpadeo del borde
@@ -305,20 +308,6 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Detiene timers anteriores si existen
     if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles sin destruir callbacks
     if (this.circleTimer) this.circleTimer.remove(false); // Elimina timer de círculos sin destruir callbacks
-
-    // Crea texto de aviso de cambio de fase
-    const txt = this.add.text(this.cameras.main.centerX, 600, `FASE ${newPhase}`, {
-      fontSize: '24px', // Tamaño mediano
-      color: '#ffff00' // Color amarillo
-    }).setOrigin(0.5); // Centra el texto
-
-    // Animación de desvanecimiento del texto
-    this.tweens.add({
-      targets: txt, // Texto a animar
-      alpha: 0, // Desvanece a transparente
-      duration: 1500, // En 1.5 segundos
-      onComplete: () => txt.destroy() // Destruye al terminar
-    });
 
     // Configura parámetros según la nueva fase
     switch (newPhase) {
@@ -414,3 +403,15 @@ export default class minijuegoJuan extends Phaser.Scene {
     this.time.delayedCall(2000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
   }
 }
+
+// SPRITES
+
+// CASE 1: serpientes desde arriba*
+// CASE 2: escudos que giran / arma circular que gira*
+// CASE 3: espadas rollo egipcio
+// FONDO: lo que salga (wait team)
+// BG ZONA JUGADOR: arena? desde arriba*
+// BORDE: cactus?
+// VIDAS: corazonzitos*
+// PLAYER: rostro del character que elijamos para ser prota (wait team)*
+// *: animado

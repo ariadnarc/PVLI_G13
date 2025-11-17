@@ -17,7 +17,7 @@ const config = {
   default: 'arcade',
   arcade: {
     gravity: { y: 0 },  // sin gravedad
-    debug: false        // hitboxes
+    debug: true        // hitboxes
     }
   }, // declaramos físcas globalmente
   scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
