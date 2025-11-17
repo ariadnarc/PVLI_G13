@@ -72,10 +72,11 @@ export default class minijuegoJuan extends Phaser.Scene {
     // ========== SISTEMA DE PATRONES DE ATAQUE ==========
     this.attackPhase = 1; // Inicializa fase de ataque en 1
     this.patternTimer = this.time.addEvent({
-      delay: 10000, // Cambia de patrón cada 5 segundos
+      delay: 10000, // Cambia de patrón cada 10 segundos
       callback: () => { // Función anónima que ejecuta al cumplirse el delay
         this.attackPhase++; // Incrementa la fase de ataque
         if (this.attackPhase > 3) this.attackPhase = 1; // Reinicia a fase 1 si supera 3
+        this.changePhase(this.attackPhase); // Cambiamos el switch de fases que toma el valor de la fase de ataque
         this.showPhaseWarning(this.attackPhase); // Muestra aviso visual del cambio de patrón
       },
       callbackScope: this, // Contexto de 'this' en el callback
@@ -167,7 +168,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     const angle = Phaser.Math.Angle.Between(x, y, this.player.x, this.player.y); // Calcula ángulo hacia el jugador
     cyl.body.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed); // Aplica velocidad en dirección del jugador
 
-    this.time.delayedCall3000, () => cyl.destroy(), [], this; // Destruye proyectil después de 5 segundos
+    this.time.delayedCall, () => cyl.destroy(), [], this; // Destruye proyectil después de 5 segundos
   }
 
   // ========== PATRÓN 2: CÍRCULO CONVERGENTE ==========
@@ -197,8 +198,8 @@ export default class minijuegoJuan extends Phaser.Scene {
       this.time.delayedCall(pauseTime, () => {
         cyl.body.setVelocity(-Math.cos(angle) * speed, -Math.sin(angle) * speed);
 
-        // Destruir automáticamente después de 2s
-        this.time.delayedCall(1000, () => cyl.destroy(), [], this);
+        // Destruir automáticamente después de 2,7s
+        this.time.delayedCall(2700, () => cyl.destroy(), [], this);
       }, [], this);
     }
   }
@@ -206,7 +207,7 @@ export default class minijuegoJuan extends Phaser.Scene {
   // ========== PATRÓN 3: BARRIDO HORIZONTAL/VERTICAL ==========
   spawnSweep(centerX, centerY) {
     const horizontal = Phaser.Math.Between(0, 1) === 0; // Decide aleatoriamente si es horizontal (true) o vertical (false)
-    const numProjectiles = 6; // Número de proyectiles en el barrido
+    const numProjectiles = 8; // Número de proyectiles en el barrido
     const speed = 200; // Velocidad de los cilindros
 
     // Crea línea de proyectiles
@@ -249,9 +250,9 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Determina nombre del patrón según la fase
     let phaseName;
     switch (phase) {
-      case 1: phaseName = "¡Oleada dirigida!"; break; // Nombre para patrón 1
-      case 2: phaseName = "¡Círculo convergente!"; break; // Nombre para patrón 2
-      case 3: phaseName = "¡Barrido infernal!"; break; // Nombre para patrón 3
+      case 1: phaseName = "¡Fase 1!"; break; // Nombre para patrón 1
+      case 2: phaseName = "¡Fase 2!"; break; // Nombre para patrón 2
+      case 3: phaseName = "¡Fase 3!"; break; // Nombre para patrón 3
     }
 
     // Crea texto de aviso centrado
@@ -283,7 +284,7 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // Crea rectángulo para efecto de parpadeo del borde
     const borderFlash = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight)
-      .setStrokeStyle(4, 0xffff66) // Borde amarillo de 4px
+      .setStrokeStyle(4, 0xffffff) // Borde amarillo de 4px
       .setAlpha(0); // Inicialmente invisible
 
     // Animación de parpadeo del borde
@@ -332,7 +333,7 @@ export default class minijuegoJuan extends Phaser.Scene {
         break;
 
       case 2: // Fase 2: Solo círculos convergentes lentos
-        this.bulletDelay = 4000; // Dispara cada 2 segundos
+        this.bulletDelay = 1800; // Dispara cada 4 segundos
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCircleWave, // Función de círculo
@@ -342,16 +343,10 @@ export default class minijuegoJuan extends Phaser.Scene {
         break;
 
       case 3: // Fase 3: Combinación de dirigidos rápidos + círculos
-        this.bulletDelay = 1200; // Proyectiles dirigidos cada 1.2s
+        this.bulletDelay = 1000; // Proyectiles dirigidos cada 1.2s
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCylinder, // Función de generación
-          callbackScope: this, // Contexto de this
-          loop: true // Se repite indefinidamente
-        });
-        this.circleTimer = this.time.addEvent({ // Timer adicional para círculos
-          delay: 4000, // Círculos cada 4 segundos
-          callback: this.spawnCircleWave, // Función de círculo
           callbackScope: this, // Contexto de this
           loop: true // Se repite indefinidamente
         });
@@ -369,7 +364,7 @@ export default class minijuegoJuan extends Phaser.Scene {
 
     // Actualiza interfaz de vida
     this.healthText.setText(`Vida: ${this.health}`); // Actualiza texto numérico
-    this.healthBar.width = 120 * (this.health / this.maxHealth); // Ajusta ancho de barra proporcionalmente
+    this.barraVida.width = 120 * (this.health / this.maxHealth); // Ajusta ancho de barra proporcionalmente
 
     // Activa invencibilidad
     this.activateInvulnerability();
