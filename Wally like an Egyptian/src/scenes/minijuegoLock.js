@@ -92,13 +92,17 @@ export default class minijuegoLock extends Phaser.Scene {
             this.rotationSpeed = 0;
         }
 
-        // dibujar barra de tensión centrada horizontalmente debajo de la cerradura
-        tensionGraphics.fillStyle(0xff0000);
+        // dibujar barra de tensión
         let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200);
-        tensionGraphics.fillRect(CENTER_X - 100, CENTER_Y + 120, barWidth, 20);
+        // barra roja rellena
+        tensionGraphics.fillStyle(0xff0000);
+        tensionGraphics.fillRect(this.CENTER_X - 100, this.CENTER_Y + 120, barWidth, 20);
+        // borde de la barra
+        tensionGraphics.lineStyle(2, 0xffffff);
+        tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y + 120, 200, 20);
     }
 
-    testingGame(){
+    testingGame() {
         this.scene.restart();
     }
 }
