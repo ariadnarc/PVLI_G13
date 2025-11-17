@@ -6,6 +6,7 @@ import MensajeFinal from './scenes/MensajeFInal.js';
 //minijuegos
 import minijuegoJuan from './scenes/minijuegoJuan.js';
 import minijuegoDavid from './scenes/minijuegoDavid.js';
+import minijuegoLock from './scenes/minijuegoLock.js';
 
 const config = {
   type: Phaser.CANVAS,
@@ -21,7 +22,7 @@ const config = {
     }
   }, // declaramos físcas globalmente
   scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
-          VictoriaUI, MensajeFinal],
+          minijuegoLock, VictoriaUI, MensajeFinal],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index

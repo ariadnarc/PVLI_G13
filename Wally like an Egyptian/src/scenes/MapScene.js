@@ -83,6 +83,18 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('minijuegoDavid');
         });
 
+        //Minijuego Lock
+        //crear portal para llevar a los minijuegos
+        this.portalMinijuegoLock = this.add.rectangle(400, 200, 60, 60, 0x00FFF0);
+        this.physics.add.existing(this.portalMinijuegoLock);
+
+        //comprobamos colision con el portalMinijuegoEsquivar
+        this.physics.add.overlap(this.player.sprite, this.portalMinijuegoLock, () => {
+            //si hay colision lo llevamos al minijuego
+            this.portalMinijuegoEsquivar.destroy();
+            this.scene.pause();
+            this.scene.start('minijuegoLock');
+        });
 
         // portal para el mensaje final
         this.portalMensajeFinal = this.add.rectangle(200, 300, 60, 60, 0x000000);
