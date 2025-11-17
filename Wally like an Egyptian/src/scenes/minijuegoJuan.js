@@ -125,7 +125,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Selecciona patrón según la fase de ataque actual
     switch (this.attackPhase) {
       case 1: // Patrón dirigido al jugador
-        this.spawnDirectedProjectile(centerX, centerY);
+        this.spawnPhase1Attack();
         break;
       case 2: // Ataque de Undyne
         this.spawnCircleWave(centerX, centerY);
@@ -136,43 +136,44 @@ export default class minijuegoJuan extends Phaser.Scene {
     }
   }
 
-  // ========== PATRÓN 1: PROYECTIL DIRIGIDO ==========
-  spawnDirectedProjectile(centerX, centerY) {
-    const spawnOffset = 100; // Distancia fuera del área visible donde aparecen proyectiles
-    const side = Phaser.Math.Between(0, 3); // Selecciona lado aleatorio (0-3)
-    let x, y, width, height; // Variables para posición y tamaño del proyectil
+  spawnPhase1Attack() {
 
-    // Configura posición y tamaño según el lado seleccionado
-    if (side === 0) { // Lado superior
-      x = Phaser.Math.Between(centerX - this.gameWidth / 2, centerX + this.gameWidth / 2); // X aleatorio en el ancho
-      y = centerY - this.gameHeight / 2 - spawnOffset; // Y fuera del borde superior
-      width = 15; height = 40; // Proyectil vertical estrecho
-    } else if (side === 1) { // Lado inferior
-      x = Phaser.Math.Between(centerX - this.gameWidth / 2, centerX + this.gameWidth / 2); // X aleatorio en el ancho
-      y = centerY + this.gameHeight / 2 + spawnOffset; // Y fuera del borde inferior
-      width = 15; height = 40; // Proyectil vertical estrecho
-    } else if (side === 2) { // Lado izquierdo
-      x = centerX - this.gameWidth / 2 - spawnOffset; // X fuera del borde izquierdo
-      y = Phaser.Math.Between(centerY - this.gameHeight / 2, centerY + this.gameHeight / 2); // Y aleatorio en el alto
-      width = 40; height = 15; // Proyectil horizontal ancho
-    } else { // Lado derecho
-      x = centerX + this.gameWidth / 2 + spawnOffset; // X fuera del borde derecho
-      y = Phaser.Math.Between(centerY - this.gameHeight / 2, centerY + this.gameHeight / 2); // Y aleatorio en el alto
-      width = 40; height = 15; // Proyectil horizontal ancho
-    }
+    const cam = this.cameras.main;
+    const gameWidth = cam.width;
 
-    const cyl = this.add.rectangle(x, y, width, height, 0xff9900); // Crea rectángulo naranja
-    this.physics.add.existing(cyl); // Añade físicas al proyectil
-    this.bullets.add(cyl); // Añade proyectil al grupo
+    // 1. La posición Y se basa en la posición del jugador
+    const spawnY = this.player.y;
 
-    // Calcula velocidad con componente aleatorio
-    const baseSpeed = 120 + Phaser.Math.Between(0, 80); // Velocidad base entre 120-200
-    const speed = baseSpeed * (this.bulletSpeedBoost || 1); // Aplica multiplicador si existe
-    const angle = Phaser.Math.Angle.Between(x, y, this.player.x, this.player.y); // Calcula ángulo hacia el jugador
-    cyl.body.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed); // Aplica velocidad en dirección del jugador
+    // 2. Decide si aparece por la izquierda o derecha
+    const fromLeft = Phaser.Math.Between(0, 1) === 0;
 
-    this.time.delayedCall, () => cyl.destroy(), [], this; // Destruye proyectil después de 5 segundos
-  }
+    const spawnX = fromLeft ? + 80 : gameWidth - 80;
+
+    // 3. Crear cilindro
+    const cyl = this.add.rectangle(spawnX, spawnY, 80, 40, 0xffaa00);
+    this.physics.add.existing(cyl);
+    cyl.body.setImmovable(true);
+    cyl.body.setAllowGravity(false);
+    // Velocidad final (solo en horizontal)
+    const attackSpeed = 900;
+
+    // 4. Animación de aviso (retroceso corto)
+    const retreatX = fromLeft ? spawnX - 30 : spawnX + 30;
+
+    this.tweens.add({
+        targets: cyl,
+        x: retreatX,
+        duration: 500,
+
+        onComplete: () => {
+            // 5. Ataque en línea recta horizontal
+            const velocity = fromLeft ? attackSpeed : -attackSpeed;
+            cyl.body.setVelocityX(velocity);
+        }
+    });
+}
+
+
 
   // ========== PATRÓN 2: CÍRCULO CONVERGENTE ==========
   spawnCircleWave() {
@@ -312,7 +313,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     // Configura parámetros según la nueva fase
     switch (newPhase) {
       case 1: // Fase 1: Solo proyectiles dirigidos rápidos
-        this.bulletDelay = 700; // Dispara cada 700ms
+        this.bulletDelay = 400; // Dispara cada 400ms
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCylinder, // Función de generación
