@@ -77,14 +77,14 @@ export default class minijuegoLock extends Phaser.Scene {
 
                 if (this.lockRotation >= 90) {
                     console.log('¡Éxito! Cerradura abierta');
-                    this.scene.pause();
+                    this.testingGame();
                 }
             } else {
                 this.tension += delta * 0.5;
                 this.rotationSpeed = 0;
                 if (this.tension > this.maxTension) {
                     console.log('¡Pica rota!');
-                    this.scene.pause();
+                    this.testingGame();
                 }
             }
         } else {
@@ -96,5 +96,9 @@ export default class minijuegoLock extends Phaser.Scene {
         tensionGraphics.fillStyle(0xff0000);
         let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200);
         tensionGraphics.fillRect(CENTER_X - 100, CENTER_Y + 120, barWidth, 20);
+    }
+
+    testingGame(){
+        this.scene.restart();
     }
 }
