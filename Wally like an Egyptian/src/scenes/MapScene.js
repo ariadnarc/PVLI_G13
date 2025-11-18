@@ -4,7 +4,6 @@ import Player from "../scripts/player.js";
 export default class MapScene extends Phaser.Scene {
     constructor() {
         super('MapScene');
-        this.cursors = scene.input.keyboard.createCursorKeys();
     }
     preload() {
         //Carga los tiles del mapa (pared)
@@ -105,9 +104,5 @@ export default class MapScene extends Phaser.Scene {
     update() {
         //update jugador
         this.player.update();
-
-        if(this.cursors.scape.isDown){
-            this.scene.start('Menu');
-        }
     }
 }
