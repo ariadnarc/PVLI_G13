@@ -1,7 +1,7 @@
 import GameTitle from './scenes/GameTitle.js';
 import MapScene from './scenes/MapScene.js';
 import VictoriaUI from './scenes/VictoriaUI.js';
-import MensajeFinal from './scenes/MensajeFInal.js';
+import MensajeFinal from './scenes/MensajeFinal.js';
 import Menu from './scenes/Menu.js';
 
 //minijuegos
