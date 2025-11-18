@@ -105,9 +105,5 @@ export default class MapScene extends Phaser.Scene {
     update() {
         //update jugador
         this.player.update();
-
-        if(this.cursors.scape.isDown){
-            this.scene.start('Menu');
-        }
     }
 }
