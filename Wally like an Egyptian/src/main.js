@@ -2,6 +2,7 @@ import GameTitle from './scenes/GameTitle.js';
 import MapScene from './scenes/MapScene.js';
 import VictoriaUI from './scenes/VictoriaUI.js';
 import MensajeFinal from './scenes/MensajeFInal.js';
+import Menu from './scenes/Menu.js';
 
 //minijuegos
 import minijuegoJuan from './scenes/minijuegoJuan.js';
@@ -21,7 +22,7 @@ const config = {
     }
   }, // declaramos físcas globalmente
   scene: [GameTitle, MapScene, minijuegoJuan, minijuegoDavid,
-          VictoriaUI, MensajeFinal],
+          VictoriaUI, MensajeFinal,Menu],
 };
 
 // Condicional que obliga a buscar el canvas q tenemos en el index
