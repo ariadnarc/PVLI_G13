@@ -1,6 +1,6 @@
 export default class Menu extends Phaser.Scene{
     constructor(){
-        super(Menu);
+        super('Menu');
     }
     
   create() {
@@ -9,14 +9,14 @@ export default class Menu extends Phaser.Scene{
     const centerY = this.scale.height / 2;
 
     // Título
-    this.add.text(centerX, centerY - 100, 'Pausa', {
+    this.add.text(centerX, centerY - 150, 'Pausa', {
       fontFamily: 'Comfortaa',
       fontSize: '64px',
       color: '#3c2f2f',
     }).setOrigin(0.5);
 
     // Botón de play
-    const playButton = this.add.text(centerX, centerY + 50, 'CONTINUAR', {
+    const playButton = this.add.text(centerX, centerY , 'CONTINUAR', {
       fontFamily: 'Comfortaa',
       fontSize: '48px',
       color: '#ffffff',
@@ -33,7 +33,7 @@ export default class Menu extends Phaser.Scene{
       });
 
       // Botón de scape
-    const scapeButton = this.add.text(centerX, centerY + 50, 'CONTINUAR', {
+    const scapeButton = this.add.text(centerX, centerY +150, 'SALIR', {
       fontFamily: 'Comfortaa',
       fontSize: '48px',
       color: '#ffffff',
@@ -43,8 +43,8 @@ export default class Menu extends Phaser.Scene{
     })
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true }) // esto hace q el texto sea interactivo y funcione como un botón
-      .on('pointerover', () => playButton.setStyle({ backgroundColor: '#5a4444' }))
-      .on('pointerout', () => playButton.setStyle({ backgroundColor: '#3c2f2f' }))
+      .on('pointerover', () => scapeButton.setStyle({ backgroundColor: '#5a4444' }))
+      .on('pointerout', () => scapeButton.setStyle({ backgroundColor: '#3c2f2f' }))
       .on('pointerdown', () => {
         this.scene.start('GameTitle'); // cambiamos de escena al menu de inicio
       });

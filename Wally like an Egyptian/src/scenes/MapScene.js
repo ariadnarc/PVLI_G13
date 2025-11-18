@@ -33,6 +33,11 @@ export default class MapScene extends Phaser.Scene {
         this.mapa = new MapaLaberinto();
         this.mapa.render(this);
 
+        //lleva a la escena Menu si se pulsa q
+       this.input.keyboard.on('keydown-Q', () => {
+        this.scene.start('Menu'); 
+    });
+
         // Crea las colisiones teniendo en cuenta la matriz booleana de MapaLaberinto
         this.bloques = this.physics.add.staticGroup();
         for (let y = 0; y < this.mapa.alto; y++) {
