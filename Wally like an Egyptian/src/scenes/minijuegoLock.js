@@ -86,6 +86,8 @@ export default class minijuegoLock extends Phaser.Scene {
     // LÓGICA DE GIRO Y VIBRACIÓN
     // -------------------------
     applyTurnLogic(delta) {
+
+        // No se está girando
         if (!this.turnKey.isDown) {
             this.vibrationStrength = 0;
             this.tension = Math.max(this.tension - delta * 0.1, 0);
@@ -94,39 +96,48 @@ export default class minijuegoLock extends Phaser.Scene {
 
         const angle = this.pickAngle;
 
-        // FUERA COMPLETAMENTE DEL RANGO DE GIRO
+        // 1. FUERA DEL RANGO → NO GIRA NADA
         if (angle < this.rotationMin || angle > this.rotationMax) {
+
+            // Solo se resetea si realmente estás girando desde una posición inválida
             this.lockRotation = 0;
 
-            // 🔥 VIBRACIÓN FUERTE (no se puede girar)
-            this.vibrationStrength = 5;
-
+            this.vibrationStrength = 5; // vibración fuerte
             this.tension += delta * 0.6;
             if (this.tension >= this.maxTension) this.fail();
             return;
         }
 
-        // DENTRO DEL RANGO PERO FUERA DEL SWEET SPOT
+        // 2. DENTRO DEL RANGO PERO FUERA DEL SWEET SPOT → GIRO PARCIAL
         if (angle < this.sweetMin || angle > this.sweetMax) {
+
             const dist = Math.min(
                 Math.abs(angle - this.sweetMin),
                 Math.abs(angle - this.sweetMax)
             );
 
-            // Vibración creciente
-            this.vibrationStrength = 1 + dist * 0.1;
+            this.vibrationStrength = 1 + dist * 0.1; // vibración leve
 
+            // giro parcial permitido (top: 40°)
             this.lockRotation = Phaser.Math.Clamp(
                 this.lockRotation + delta * 0.05,
                 0,
-                50 // se para antes de desbloquear
+                40
             );
 
+            // tensión dentro del rango
             this.tension += delta * 0.3;
             if (this.tension >= this.maxTension) this.fail();
             return;
         }
+
+        // 3. SWEET SPOT → GIRO COMPLETO
+        this.vibrationStrength = 0;
+
+        this.lockRotation += delta * 0.2; // velocidad de giro real
+        if (this.lockRotation >= this.maxLockTurn) this.success();
     }
+
 
     // -------------------------
     // DIBUJAR GANZÚA (línea amarilla)
