@@ -26,7 +26,7 @@ export default class minijuegoLock extends Phaser.Scene {
         // ----------------------------
 
         // 1. Sweet spot central aleatorio
-        this.sweetCenter = Phaser.Math.Between(-90, 0);
+        this.sweetCenter = Phaser.Math.Between(-90, 90);
 
         // 2. Tamaño del sweet spot
         const SWEET_WIDTH = 10;  // ±10°
@@ -53,8 +53,8 @@ export default class minijuegoLock extends Phaser.Scene {
 
         // logs
         console.log(this.rotationMin);
-        console.log(this.sweetMin);
-        console.log(this.sweetMax);
+        //console.log(this.sweetMin);
+        //console.log(this.sweetMax);
         console.log(this.rotationMax);
     }
 
@@ -111,7 +111,7 @@ export default class minijuegoLock extends Phaser.Scene {
         this.vibrationStrength = 5;
 
         // acumula tensión
-        this.tension += delta * 0.6;
+        this.tension += delta * 0.45;
         if (this.tension >= this.maxTension) this.fail();
         return;
     }
@@ -128,16 +128,16 @@ export default class minijuegoLock extends Phaser.Scene {
         // velocidad del giro parcial
         this.lockRotation += delta * 0.2;
 
-        // LÍMITE DE GIRO PARCIAL (45°)
-        if (this.lockRotation >= 45) {
-            this.lockRotation = 45;
-            this.vibrationStrength = 3;  // vibración indicando que estás cerca
-        } else {
-            this.vibrationStrength = 1.5; // vibración leve
-        }
+            // LÍMITE DE GIRO PARCIAL (45°)
+            if (this.lockRotation >= 45) {
+                this.lockRotation = 45;
+                this.vibrationStrength = 10;  // vibración indicando que estás cerca
 
-        return;
-    }
+                this.tension += delta * 0.45; // empezamos a aplicar tensión
+                if (this.tension >= this.maxTension) this.fail();
+            }
+            return;
+        }
 
     // ---------------------------------------
     // 3. SWEET SPOT → giro completo, sin vibración
