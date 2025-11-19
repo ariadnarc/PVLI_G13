@@ -50,6 +50,12 @@ export default class minijuegoLock extends Phaser.Scene {
         // Inputs
         this.cursors = this.input.keyboard.createCursorKeys();
         this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // logs
+        console.log(this.rotationMin);
+        console.log(this.sweetMin);
+        console.log(this.sweetMax);
+        console.log(this.rotationMax);
     }
 
     update(time, delta) {
@@ -63,7 +69,8 @@ export default class minijuegoLock extends Phaser.Scene {
         this.drawPick(time);
         this.drawTensionBar();
 
-        console.log(this.sweetMax);
+        //logs
+        console.log(this.pickAngle);
     }
 
     // -------------------------
@@ -87,56 +94,64 @@ export default class minijuegoLock extends Phaser.Scene {
     // -------------------------
     applyTurnLogic(delta) {
 
-        // No se está girando
-        if (!this.turnKey.isDown) {
-            this.vibrationStrength = 0;
-            this.tension = Math.max(this.tension - delta * 0.1, 0);
-            return;
-        }
-
-        const angle = this.pickAngle;
-
-        // 1. FUERA DEL RANGO → NO GIRA NADA
-        if (angle < this.rotationMin || angle > this.rotationMax) {
-
-            // Solo se resetea si realmente estás girando desde una posición inválida
-            this.lockRotation = 0;
-
-            this.vibrationStrength = 5; // vibración fuerte
-            this.tension += delta * 0.6;
-            if (this.tension >= this.maxTension) this.fail();
-            return;
-        }
-
-        // 2. DENTRO DEL RANGO PERO FUERA DEL SWEET SPOT → GIRO PARCIAL
-        if (angle < this.sweetMin || angle > this.sweetMax) {
-
-            const dist = Math.min(
-                Math.abs(angle - this.sweetMin),
-                Math.abs(angle - this.sweetMax)
-            );
-
-            this.vibrationStrength = 1 + dist * 0.1; // vibración leve
-
-            // giro parcial permitido (top: 40°)
-            this.lockRotation = Phaser.Math.Clamp(
-                this.lockRotation + delta * 0.05,
-                0,
-                40
-            );
-
-            // tensión dentro del rango
-            this.tension += delta * 0.3;
-            if (this.tension >= this.maxTension) this.fail();
-            return;
-        }
-
-        // 3. SWEET SPOT → GIRO COMPLETO
+    if (!this.turnKey.isDown) {
         this.vibrationStrength = 0;
-
-        this.lockRotation += delta * 0.2; // velocidad de giro real
-        if (this.lockRotation >= this.maxLockTurn) this.success();
+        this.tension = Math.max(this.tension - delta * 0.1, 0);
+        return;
     }
+
+    const angle = this.pickAngle;
+
+    // ---------------------------------------
+    // 1. FUERA DEL RANGO → no gira, vibra fuerte
+    // ---------------------------------------
+    if (angle < this.rotationMin || angle > this.rotationMax) {
+
+        // vibración fuerte
+        this.vibrationStrength = 5;
+
+        // acumula tensión
+        this.tension += delta * 0.6;
+        if (this.tension >= this.maxTension) this.fail();
+        return;
+    }
+
+    // ---------------------------------------
+    // 2. DENTRO DEL RANGO PERO FUERA DEL SWEET SPOT
+    // → GIRA hasta 45º, sin tensión, con vibración al llegar al tope
+    // ---------------------------------------
+    if (angle < this.sweetMin || angle > this.sweetMax) {
+
+        // no tensión en esta zona, Skyrim real
+        this.tension = Math.max(this.tension - delta * 0.1, 0);
+
+        // velocidad del giro parcial
+        this.lockRotation += delta * 0.2;
+
+        // LÍMITE DE GIRO PARCIAL (45°)
+        if (this.lockRotation >= 45) {
+            this.lockRotation = 45;
+            this.vibrationStrength = 3;  // vibración indicando que estás cerca
+        } else {
+            this.vibrationStrength = 1.5; // vibración leve
+        }
+
+        return;
+    }
+
+    // ---------------------------------------
+    // 3. SWEET SPOT → giro completo, sin vibración
+    // ---------------------------------------
+    this.vibrationStrength = 0;
+    this.tension = Math.max(this.tension - delta * 0.2, 0);
+
+    this.lockRotation += delta * 0.2;
+
+    if (this.lockRotation >= 90) {
+        this.success();
+    }
+}
+
 
 
     // -------------------------
