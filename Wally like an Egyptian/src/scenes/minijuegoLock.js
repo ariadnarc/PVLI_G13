@@ -3,216 +3,219 @@ export default class minijuegoLock extends Phaser.Scene {
         super('minijuegoLock');
     }
 
-    preload() { }
+    preload() {
+        this.load.image('lock_fondo', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_fondo.png');
+        this.load.image('lock_ring', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_ring.png');
+        this.load.image('lock_lock', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_lock.png');
+        this.load.image('lock_lockpick', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
+    }
 
     create() {
-
-        // Centro
         this.CENTER_X = this.cameras.main.centerX;
         this.CENTER_Y = this.cameras.main.centerY;
 
-        // Variables base
-        this.pickAngle = 0;
-        this.lockRotation = 0;
-        this.maxLockTurn = 90;
+        // ------------- SPRITES DE LA CERRADURA ----------------
 
+        // Fondos
+        this.spr_fondo = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_fondo')
+        this.spr_fondo.setOrigin(0.5);
+        this.spr_fondo.setDisplaySize(280,280);
+
+        // Aros exteriores
+        this.spr_ring1 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_ring')
+        this.spr_ring1.setOrigin(0.5);
+        this.spr_ring1.setDisplaySize(250, 250);
+
+        // Cerradura (parte que girará según lockRotation)
+        this.spr_lock1 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_lock')
+        this.spr_lock1.setOrigin(0.5);
+        this.spr_lock1.setDisplaySize(200, 200);
+
+        this.spr_lock2 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_lock')
+        this.spr_lock2.setOrigin(0.5);
+        this.spr_lock2.setDisplaySize(200, 200);
+
+        // Ganzúa
+        this.spr_pick = this.add.image(this.CENTER_X, this.CENTER_Y, 'lock_lockpick')
+        this.spr_pick.setOrigin(0.1, 0.5);   // punta hacia la izquierda
+        this.spr_pick.setDisplaySize(200,200);
+
+        this.pickAngle = 0;
         this.tension = 0;
         this.maxTension = 100;
-
         this.vibrationStrength = 0;
 
-        // ----------------------------
-        // RANDOMIZACIÓN SKYRIM
-        // ----------------------------
+        // --------------------------------------------
+        // MULTI-CERRADURA (2 candados)
+        // --------------------------------------------
+        this.currentLock = 1; // empezamos en la primera
 
-        // 1. Sweet spot central aleatorio
-        this.sweetCenter = Phaser.Math.Between(-90, 90);
+        this.locks = [
+            null, // dummy para usar índices 1 y 2 (más cómodo)
+            this.generateLockData(), // cerradura 1
+            this.generateLockData()  // cerradura 2
+        ];
 
-        // 2. Tamaño del sweet spot
-        const SWEET_WIDTH = 10;  // ±10°
-
-        // 3. Tamaño del rango donde el candado puede empezar a girar
-        const ROTATION_WIDTH = 20; // ±20°
-
-        // Sweet spot perfecto
-        this.sweetMin = this.sweetCenter - SWEET_WIDTH;
-        this.sweetMax = this.sweetCenter + SWEET_WIDTH;
-
-        // Rango más grande donde puede girar parcialmente
-        this.rotationMin = this.sweetCenter - ROTATION_WIDTH;
-        this.rotationMax = this.sweetCenter + ROTATION_WIDTH;
+        // Rotación actual de cada candado
+        this.lockRotation = { 1: 0, 2: 0 };
 
         // Dibujos
-        this.lockGraphics = this.add.graphics();
-        this.pickGraphics = this.add.graphics();
         this.tensionGraphics = this.add.graphics();
 
         // Inputs
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.keys = this.input.keyboard.addKeys({
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D
+        });
         this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    }
 
-        // logs
-        console.log(this.rotationMin);
-        //console.log(this.sweetMin);
-        //console.log(this.sweetMax);
-        console.log(this.rotationMax);
+    // Genera sweetspot + rangos para cada candado
+    generateLockData() {
+        const SWEET_WIDTH = 10;
+        const ROTATION_WIDTH = 20;
+
+        let sweetCenter = Phaser.Math.Between(-90, 90);
+
+        return {
+            sweetCenter: sweetCenter,
+            sweetMin: sweetCenter - SWEET_WIDTH,
+            sweetMax: sweetCenter + SWEET_WIDTH,
+            rotationMin: sweetCenter - ROTATION_WIDTH,
+            rotationMax: sweetCenter + ROTATION_WIDTH
+        };
     }
 
     update(time, delta) {
-        this.lockGraphics.clear();
-        this.pickGraphics.clear();
         this.tensionGraphics.clear();
 
         this.handlePickMovement(delta);
-        this.applyTurnLogic(delta, time);
-        this.drawLock();
+        this.applyTurnLogic(delta);
+
+        this.drawLock(1, time);
+        this.drawLock(2, time);
         this.drawPick(time);
         this.drawTensionBar();
-
-        //logs
-        console.log(this.pickAngle);
     }
 
     // -------------------------
-    // MOVIMIENTO DE LA GANZÚA
+    // MOVIMIENTO DE GANZÚA
     // -------------------------
     handlePickMovement(delta) {
-        const speed = 120; // grados por segundo
+        const speed = 120;
 
-        if (this.cursors.left.isDown) {
-            this.pickAngle -= speed * delta / 1000;
-        }
-        if (this.cursors.right.isDown) {
-            this.pickAngle += speed * delta / 1000;
-        }
+        if (this.keys.left.isDown) this.pickAngle -= speed * delta / 1000;
+        if (this.keys.right.isDown) this.pickAngle += speed * delta / 1000;
 
         this.pickAngle = Phaser.Math.Clamp(this.pickAngle, -90, 90);
     }
 
     // -------------------------
-    // LÓGICA DE GIRO Y VIBRACIÓN
+    // LÓGICA DE GIRO (por candado activo)
     // -------------------------
     applyTurnLogic(delta) {
+        let lock = this.locks[this.currentLock];
+        let angle = this.pickAngle;
 
-    if (!this.turnKey.isDown) {
-        this.vibrationStrength = 0;
-        this.tension = Math.max(this.tension - delta * 0.1, 0);
-        return;
-    }
+        if (!this.turnKey.isDown) {
+            this.vibrationStrength = 0;
+            this.tension = Math.max(this.tension - delta * 0.1, 0);
+            return;
+        }
 
-    const angle = this.pickAngle;
+        // 1. FUERA DEL RANGO
+        if (angle < lock.rotationMin || angle > lock.rotationMax) {
+            this.vibrationStrength = 5;
 
-    // ---------------------------------------
-    // 1. FUERA DEL RANGO → no gira, vibra fuerte
-    // ---------------------------------------
-    if (angle < this.rotationMin || angle > this.rotationMax) {
+            this.tension += delta * 0.45;
+            if (this.tension >= this.maxTension) this.fail();
+            return;
+        }
 
-        // vibración fuerte
-        this.vibrationStrength = 5;
+        // 2. RANGO PERO FUERA DEL SWEETSPOT
+        if (angle < lock.sweetMin || angle > lock.sweetMax) {
+            this.tension = Math.max(this.tension - delta * 0.1, 0);
+            this.lockRotation[this.currentLock] += delta * 0.2;
 
-        // acumula tensión
-        this.tension += delta * 0.45;
-        if (this.tension >= this.maxTension) this.fail();
-        return;
-    }
+            if (this.lockRotation[this.currentLock] >= 45) {
+                this.lockRotation[this.currentLock] = 45;
+                this.vibrationStrength = 10;
 
-    // ---------------------------------------
-    // 2. DENTRO DEL RANGO PERO FUERA DEL SWEET SPOT
-    // → GIRA hasta 45º, sin tensión, con vibración al llegar al tope
-    // ---------------------------------------
-    if (angle < this.sweetMin || angle > this.sweetMax) {
-
-        // no tensión en esta zona, Skyrim real
-        this.tension = Math.max(this.tension - delta * 0.1, 0);
-
-        // velocidad del giro parcial
-        this.lockRotation += delta * 0.2;
-
-            // LÍMITE DE GIRO PARCIAL (45°)
-            if (this.lockRotation >= 45) {
-                this.lockRotation = 45;
-                this.vibrationStrength = 10;  // vibración indicando que estás cerca
-
-                this.tension += delta * 0.45; // empezamos a aplicar tensión
+                this.tension += delta * 0.45;
                 if (this.tension >= this.maxTension) this.fail();
             }
             return;
         }
 
-    // ---------------------------------------
-    // 3. SWEET SPOT → giro completo, sin vibración
-    // ---------------------------------------
-    this.vibrationStrength = 0;
-    this.tension = Math.max(this.tension - delta * 0.2, 0);
+        // 3. SWEETSPOT
+        this.vibrationStrength = 0;
+        this.tension = Math.max(this.tension - delta * 0.2, 0);
 
-    this.lockRotation += delta * 0.2;
+        this.lockRotation[this.currentLock] += delta * 0.2;
 
-    if (this.lockRotation >= 90) {
-        this.success();
+        if (this.lockRotation[this.currentLock] >= 90) {
+            this.unlockCurrentLock();
+        }
     }
-}
 
+    // -------------------------
+    // CUANDO SE DESBLOQUEA UNA CERRADURA
+    // -------------------------
+    unlockCurrentLock() {
+
+        console.log(`Cerradura ${this.currentLock} desbloqueada!`);
+
+        if (this.currentLock === 1) {
+            this.currentLock = 2; // pasamos al segundo candado
+            this.tension = 0;
+            this.pickAngle = 0;
+            this.vibrationStrength = 0;
+        } else {
+            console.log("¡Mini-juego completado!");
+            this.scene.restart(); // reinicia las 2 cerraduras
+        }
+    }
+
+    // -------------------------
+    // DIBUJO DE CADA CERRADURA
+    // -------------------------
+    drawLock(lockNumber, time) {
+        const sprite = lockNumber === 1 ? this.spr_lock1 : this.spr_lock2;
+        sprite.setRotation(Phaser.Math.DegToRad(this.lockRotation[lockNumber]));
+
+        // Opcional: agregar feedback visual de cuál está activa
+        if (lockNumber === this.currentLock) {
+            sprite.setTint(0xffffff);  // Normal (blanco)
+        } else {
+            sprite.setTint(0x888888);  // Gris (inactiva)
+        }
+    }
 
 
     // -------------------------
-    // DIBUJAR GANZÚA (línea amarilla)
+    // DIBUJO DE GANZÚA
     // -------------------------
     drawPick(time) {
+        const angle = this.pickAngle + Math.sin(time * 0.02) * this.vibrationStrength * 0.4;
 
-        const angleRad =
-            Phaser.Math.DegToRad(this.pickAngle - 90) +
-            Math.sin(time * 0.02) * this.vibrationStrength * 0.01;
+        // Mueve la ganzúa a la cerradura activa
+        const targetY = this.currentLock === 1
+            ? this.CENTER_Y - 150  // Posición de lock 1
+            : this.CENTER_Y + 150; // Posición de lock 2
 
-        let x = this.CENTER_X + Math.cos(angleRad) * 90;
-        let y = this.CENTER_Y + Math.sin(angleRad) * 90;
-
-        this.pickGraphics.lineStyle(4, 0xffff00);
-        this.pickGraphics.strokeLineShape(
-            new Phaser.Geom.Line(this.CENTER_X, this.CENTER_Y, x, y)
-        );
+        this.spr_pick.setPosition(this.CENTER_X, targetY);
+        this.spr_pick.setRotation(Phaser.Math.DegToRad(angle));
     }
 
-    // -------------------------
-    // DIBUJAR CERRADURA (círculo + aguja)
-    // -------------------------
-    drawLock() {
 
-        // círculo
-        this.lockGraphics.lineStyle(4, 0xffffff);
-        this.lockGraphics.strokeCircle(this.CENTER_X, this.CENTER_Y, 100);
-
-        // aguja
-        this.lockGraphics.lineStyle(6, 0x00ffff);
-
-        let rad = Phaser.Math.DegToRad(this.lockRotation - 90);
-        let lx = this.CENTER_X + Math.cos(rad) * 80;
-        let ly = this.CENTER_Y + Math.sin(rad) * 80;
-
-        this.lockGraphics.strokeLineShape(
-            new Phaser.Geom.Line(this.CENTER_X, this.CENTER_Y, lx, ly)
-        );
-    }
-
-    // -------------------------
-    // BARRA DE TENSIÓN
-    // -------------------------
     drawTensionBar() {
-
         let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200);
 
         this.tensionGraphics.fillStyle(0xff0000);
-        this.tensionGraphics.fillRect(this.CENTER_X - 100, this.CENTER_Y + 120, barWidth, 20);
+        this.tensionGraphics.fillRect(this.CENTER_X - 100, this.CENTER_Y - 10, barWidth, 20);
 
         this.tensionGraphics.lineStyle(2, 0xffffff);
-        this.tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y + 120, 200, 20);
-    }
-
-    // -------------------------
-    // RESULTADOS
-    // -------------------------
-    success() {
-        console.log("Cerradura abierta");
-        this.scene.restart();
+        this.tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y - 10, 200, 20);
     }
 
     fail() {
