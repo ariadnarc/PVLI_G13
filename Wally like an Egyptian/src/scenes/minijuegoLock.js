@@ -55,8 +55,7 @@ export default class minijuegoLock extends Phaser.Scene {
         // --------------------------------------------
         // MULTI-CERRADURA (2 candados)
         // --------------------------------------------
-        this.currentLock = 1; // empezamos en la primera
-        this.lockCooldown = false; // cooldown para evitar sobrellevar el input en el cambio de cerradura
+        this.currentLock = 1;
 
         this.locks = [
             null, // dummy para usar índices 1 y 2 (más cómodo)
@@ -123,7 +122,6 @@ export default class minijuegoLock extends Phaser.Scene {
     // -------------------------
     applyTurnLogic(delta) {
         let lock = this.locks[this.currentLock];
-        if (this.lockCooldown) return;
         let angle = this.pickAngle;
 
         if (!this.turnKey.isDown) {
@@ -164,6 +162,7 @@ export default class minijuegoLock extends Phaser.Scene {
 
         if (this.lockRotation[this.currentLock] >= 90) {
             this.unlockCurrentLock();
+            this.lockRotation[this.currentLock] = 90;
         }
     }
 
@@ -175,19 +174,23 @@ export default class minijuegoLock extends Phaser.Scene {
         console.log(`Cerradura ${this.currentLock} desbloqueada!`);
 
         if (this.currentLock === 1) {
-            this.input.keyboard.resetKeys();
-            this.currentLock = 2; // pasamos al segundo candado
-            this.tension = 0;
-            this.pickAngle = 0;
-            this.vibrationStrength = 0;
+
+            this.timerEvent = this.time.addEvent({
+                delay: 500, // Ejecuta cada 1000ms (1 segundo)
+                callback: () => {
+                    this.input.keyboard.resetKeys();
+                    this.currentLock = 2; // pasamos al segundo candado
+                    this.tension = 0;
+                    this.pickAngle = 0;
+                    this.vibrationStrength = 0;
+                }, // Función a ejecutar
+                callbackScope: this
+            });
+
         } else {
             console.log("¡Mini-juego completado!");
             this.scene.restart(); // reinicia las 2 cerraduras
         }
-
-        this.time.delayedCall (250, () => {
-            this.lockCooldown = false;
-        });
     }
 
     // -------------------------
