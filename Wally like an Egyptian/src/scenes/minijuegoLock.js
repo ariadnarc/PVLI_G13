@@ -19,12 +19,20 @@ export default class minijuegoLock extends Phaser.Scene {
         // Fondos
         this.spr_fondo = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_fondo')
         this.spr_fondo.setOrigin(0.5);
-        this.spr_fondo.setDisplaySize(280,280);
+        this.spr_fondo.setDisplaySize(260,260);
+
+        this.spr_fondo2 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_fondo')
+        this.spr_fondo2.setOrigin(0.5);
+        this.spr_fondo2.setDisplaySize(260,260);
 
         // Aros exteriores
-        this.spr_ring1 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_ring')
+        this.spr_ring1 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_ring')
         this.spr_ring1.setOrigin(0.5);
         this.spr_ring1.setDisplaySize(250, 250);
+
+        this.spr_ring2 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_ring')
+        this.spr_ring2.setOrigin(0.5);
+        this.spr_ring2.setDisplaySize(250, 250);
 
         // Cerradura (parte que girará según lockRotation)
         this.spr_lock1 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_lock')
@@ -37,7 +45,6 @@ export default class minijuegoLock extends Phaser.Scene {
 
         // Ganzúa
         this.spr_pick = this.add.image(this.CENTER_X, this.CENTER_Y, 'lock_lockpick')
-        this.spr_pick.setOrigin(0.1, 0.5);   // punta hacia la izquierda
         this.spr_pick.setDisplaySize(200,200);
 
         this.pickAngle = 0;
@@ -49,6 +56,7 @@ export default class minijuegoLock extends Phaser.Scene {
         // MULTI-CERRADURA (2 candados)
         // --------------------------------------------
         this.currentLock = 1; // empezamos en la primera
+        this.lockCooldown = false; // cooldown para evitar sobrellevar el input en el cambio de cerradura
 
         this.locks = [
             null, // dummy para usar índices 1 y 2 (más cómodo)
@@ -115,6 +123,7 @@ export default class minijuegoLock extends Phaser.Scene {
     // -------------------------
     applyTurnLogic(delta) {
         let lock = this.locks[this.currentLock];
+        if (this.lockCooldown) return;
         let angle = this.pickAngle;
 
         if (!this.turnKey.isDown) {
@@ -166,6 +175,7 @@ export default class minijuegoLock extends Phaser.Scene {
         console.log(`Cerradura ${this.currentLock} desbloqueada!`);
 
         if (this.currentLock === 1) {
+            this.input.keyboard.resetKeys();
             this.currentLock = 2; // pasamos al segundo candado
             this.tension = 0;
             this.pickAngle = 0;
@@ -174,6 +184,10 @@ export default class minijuegoLock extends Phaser.Scene {
             console.log("¡Mini-juego completado!");
             this.scene.restart(); // reinicia las 2 cerraduras
         }
+
+        this.time.delayedCall (250, () => {
+            this.lockCooldown = false;
+        });
     }
 
     // -------------------------
@@ -204,7 +218,8 @@ export default class minijuegoLock extends Phaser.Scene {
             : this.CENTER_Y + 150; // Posición de lock 2
 
         this.spr_pick.setPosition(this.CENTER_X, targetY);
-        this.spr_pick.setRotation(Phaser.Math.DegToRad(angle));
+        this.spr_pick.setOrigin(0.32, 0.06);
+        this.spr_pick.setRotation(Phaser.Math.DegToRad(angle - 135));
     }
 
 
