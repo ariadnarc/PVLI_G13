@@ -68,8 +68,8 @@ export default class MapScene extends Phaser.Scene {
             //si hay colision lo llevamos al minijuego
             this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
-            //this.scene.start('DodgeMissilesScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
+            this.scene.start('Undertale');
+            //this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
         });
 
         //Minijuego Memoria del Templo--------------------------------

@@ -18,6 +18,9 @@ export default class Undertale extends Phaser.Scene {
         keys: ['ESC']
     });
 
+    // Parámetros de dificultad (MinigameData)
+    this.totalTime = config.tiempo;
+
     // JUGADOR
     this.playerManager = new PlayerManager(this.inputManager, this);
     this.player = this.playerManager.getSprite();
@@ -68,7 +71,6 @@ export default class Undertale extends Phaser.Scene {
     }).setOrigin(0.5); // Centra el texto
 
     // ========== SISTEMA DE TIEMPO ==========
-    this.totalTime = 30; // Segundos totales para completar el minijuego
     this.remainingTime = this.totalTime; // Inicializa tiempo restante
 
     // Texto del contador de tiempo

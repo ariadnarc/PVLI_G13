@@ -16,6 +16,6 @@ export const playerInitialData = {
   
   minijuegosCompletados: { // Control de si es la primera vez en los minijuegos
     puzzleLights: false,
-    dodgeMissiles: false
+    Undertale: false
   }
 };

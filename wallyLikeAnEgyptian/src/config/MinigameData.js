@@ -17,8 +17,6 @@ export const DIFICULTADES = {
       // minijuego de esquivar
       Undertale: {
         tiempo: 5,
-        delayMisiles: 1000,
-        velocidadMisiles: { min: 80, max: 150 },
       }
     },
     probJeroglificos: { S: 0.05, A: 0.15, B: 0.80 }
@@ -35,8 +33,6 @@ export const DIFICULTADES = {
       },
       Undertale: {
         tiempo: 8,
-        delayMisiles: 700,
-        velocidadMisiles: { min: 120, max: 180 },
       }
     },
     probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
@@ -53,8 +49,6 @@ export const DIFICULTADES = {
       },
       Undertale: {
         tiempo: 10,
-        delayMisiles: 500,
-        velocidadMisiles: { min: 150, max: 220 },
       }
     },
     probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }
