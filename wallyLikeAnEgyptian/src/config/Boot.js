@@ -1,0 +1,62 @@
+import { playerInitialData } from './PlayerData.js';
+
+export default class Boot extends Phaser.Scene {
+  constructor() {
+    super('Boot');
+  }
+
+  preload() {
+
+    //TODO: Cambiar por los assets del juego (ESTO ES UN PLACEHOLDER CON ELEMENTOS INVENTADOS)
+
+    // === IMÁGENES Y SPRITES ===
+    this.load.image('playerSprite', 'wallyLikeAnEgyptian/assets/sprites/playerj.png');
+    /*this.load.image('gold_particle', 'assets/particles/gold.png');
+    this.load.image('sand_particle', 'assets/particles/sand.png');*/
+
+    //Carga los tiles del mapa (pared)
+    this.load.image('pared_1', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_1.png');
+    this.load.image('pared_2', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_2.png');
+    this.load.image('pared_3', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_3.png');
+    this.load.image('pared_4', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_4.png');
+    this.load.image('pared_5', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_5.png');
+    this.load.image('pared_6', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_6.png');
+    this.load.image('pared_7', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_7.png');
+    this.load.image('pared_8', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_8.png');
+    this.load.image('pared_9', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_9.png');
+
+    //suelo
+    this.load.image('suelo_22', 'wallyLikeAnEgyptian/assets/mapa/tiles/suelo_22.png');
+
+    //techo
+    this.load.image('techo_43', 'wallyLikeAnEgyptian/assets/mapa/tiles/techo_43.png');
+
+    // === ICONOS JEROGLÍFICOS ===
+    for (let i = 1; i <= 9; i++) {
+    this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
+    }
+
+    // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
+    // === TIERS JEROGLIFICOS ===
+    this.load.image("tier_S", "wallyLikeAnEgyptian/assets/ui/ankh.png");
+    this.load.image("tier_A", "wallyLikeAnEgyptian/assets/ui/ba.jpg");
+    this.load.image("tier_B", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
+
+    // === SONIDOS ===
+    this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.wav');
+    this.load.audio('defeat', 'wallyLikeAnEgyptian/assets/sounds/defeat.wav');
+    this.load.audio('click', 'wallyLikeAnEgyptian/assets/sounds/click.wav');
+    this.load.audio('locked', 'wallyLikeAnEgyptian/assets/sounds/locked.wav');
+    this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
+    this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
+    //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
+
+    // === OTROS ===
+    /*this.load.image('background_pyramid', 'assets/backgrounds/pyramid.png');*/
+  }
+
+  create() {
+    // Opcional: reproducir sonido de inicio o mostrar logo
+    this.scene.start('MainMenu'); // escena principal de título o menú
+  }
+}
