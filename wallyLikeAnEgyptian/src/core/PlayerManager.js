@@ -9,6 +9,7 @@ export default class PlayerManager {
     
     this.sprite = scene.physics.add.sprite(this.data.posInicial.x, this.data.posInicial.y, 
     this.data.spriteName);
+    this.sprite.setScale(playerInitialData.scale);
 
       
     // Evita que el jugador salga del mapa
