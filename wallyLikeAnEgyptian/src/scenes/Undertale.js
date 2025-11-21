@@ -3,14 +3,14 @@ import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
 
-export default class DodgeMissilesScene extends Phaser.Scene {
+export default class Undertale extends Phaser.Scene {
   constructor() {
-    super('DodgeMissilesScene');
+    super('Undertale');
   }
 
   create() {
   // data.dificultad viene del start()
-    const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
+    const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({

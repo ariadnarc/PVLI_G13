@@ -1,5 +1,5 @@
 export const NOMBRES_MINIJUEGOS = {
-  dodgeMissiles: "Furia del Desierto",
+  Undertale: "Furia del Desierto",
   puzzleLights: "Memoria del Templo"
 }
 
@@ -15,7 +15,7 @@ export const DIFICULTADES = {
         velocidad: 900, // ms entre luces
       },
       // minijuego de esquivar
-      dodgeMissiles: {
+      Undertale: {
         tiempo: 5,
         delayMisiles: 1000,
         velocidadMisiles: { min: 80, max: 150 },
@@ -33,7 +33,7 @@ export const DIFICULTADES = {
         rondas: [3, 4, 5],
         velocidad: 700,
       },
-      dodgeMissiles: {
+      Undertale: {
         tiempo: 8,
         delayMisiles: 700,
         velocidadMisiles: { min: 120, max: 180 },
@@ -51,7 +51,7 @@ export const DIFICULTADES = {
         rondas: [4, 5, 6],
         velocidad: 500,
       },
-      dodgeMissiles: {
+      Undertale: {
         tiempo: 10,
         delayMisiles: 500,
         velocidadMisiles: { min: 150, max: 220 },
