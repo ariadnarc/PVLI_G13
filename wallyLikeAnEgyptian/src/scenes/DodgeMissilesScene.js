@@ -1,9 +1,28 @@
-export default class minijuegoJuan extends Phaser.Scene {
+import { playerInitialData } from '../config/PlayerData.js';
+import { DIFICULTADES } from '../config/MinigameData.js';
+import InputManager from '../core/InputManager.js';
+import PlayerManager from '../core/PlayerManager.js';
+
+export default class DodgeMissilesScene extends Phaser.Scene {
   constructor() {
-    super('minijuegoJuan'); // Registra la escena con el identificador 'minijuegoJuan'
+    super('DodgeMissilesScene');
   }
 
   create() {
+  // data.dificultad viene del start()
+    const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
+
+    this.inputManager = new InputManager(this);
+    this.inputManager.configure({
+        cursors: true,
+        keys: ['ESC']
+    });
+
+    // JUGADOR
+    this.playerManager = new PlayerManager(this.inputManager, this);
+    this.player = this.playerManager.getSprite();
+    this.player.body.setCollideWorldBounds(true);
+
     // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
     this.gameWidth = 400; // Ancho del área jugable en píxeles
     this.gameHeight = 300; // Alto del área jugable en píxeles
@@ -89,19 +108,12 @@ export default class minijuegoJuan extends Phaser.Scene {
   }
 
   update() {
-    const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador
-    body.setVelocity(0);
 
-    // Prioridad horizontal
-    if (this.cursors.left.isDown) {
-      body.setVelocityX(-this.playerSpeed);
-    } else if (this.cursors.right.isDown) {
-      body.setVelocityX(this.playerSpeed);
-    } else if (this.cursors.up.isDown) {
-      body.setVelocityY(-this.playerSpeed);
-    } else if (this.cursors.down.isDown) {
-      body.setVelocityY(this.playerSpeed);
-    }
+    this.inputManager.update();
+    this.playerManager.update();
+
+    //TODO :
+    const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador
   }
 
   // ========== ACTUALIZACIÓN DEL TEMPORIZADOR ==========
@@ -392,7 +404,7 @@ export default class minijuegoJuan extends Phaser.Scene {
     this.timerEvent.remove(false); // Elimina timer del contador
 
     this.scene.stop(); // Detiene esta escena
-    this.scene.launch('VictoriaUI'); // Inicia escena de victoria (se apila sobre la actual)
+    this.scene.launch('VictoryScene'); // Inicia escena de victoria (se apila sobre la actual)
   }
 
   // ========== DERROTA ==========
