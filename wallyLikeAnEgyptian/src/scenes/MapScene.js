@@ -102,9 +102,8 @@ export default class MapScene extends Phaser.Scene {
         });
 
         //-------Objetos mapa-----------
-        this.movingObject1 = new MovingObject(this);
+        this.movingObject1 = new MovingObject(this,this.PlayerManager);
         this.physics.add.collider(this.PlayerManager.sprite, this.movingObject1.sprite);
-        this.hayCollisionObject(this.movingObject1);
 
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
@@ -141,9 +140,5 @@ export default class MapScene extends Phaser.Scene {
         this.scene.launch("BinnacleOverlay", { parentScene: this.scene.key });
     }
 
-    hayCollisionObject(object){
-        this.physics.add.collider(this.PlayerManager, object.sprite, ()=> {
-            object.movimientoColision(this.PlayerManager);
-        });
-    }
+   
 }
