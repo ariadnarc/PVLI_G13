@@ -11,10 +11,16 @@ export default class PuzzleLightsScene extends Phaser.Scene {
     // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
     const config = DIFICULTADES[data.dificultad].minijuegos.puzzleLights;
 
-    this.inputManager = InputManager.getInstance(this);
+    this.inputManager = new InputManager(this);
     this.inputManager.configure({
-        mouse: true,
         keys: ['ESC']
+    });
+
+    // Keyboard 
+    this.inputManager.on("keyDown", (key) => {
+        if (key === "ESC") { // Menu pausa
+            this.openPauseMenu();
+        } 
     });
 
     // Parametros definidos por Dificultad elegida
@@ -71,10 +77,6 @@ export default class PuzzleLightsScene extends Phaser.Scene {
 
     // INICIAR PRIMERA RONDA
     this.startRound();
-  }
-
-  update(){
-    this.inputManager.handleExit('Minigame');
   }
 
   startRound() {
@@ -168,29 +170,29 @@ export default class PuzzleLightsScene extends Phaser.Scene {
     });
   }
 
+  openPauseMenu() {
+    this.input.enabled = false;
+    this.scene.pause();
+    this.scene.launch("PauseMinigameMenu", { parentScene: this.scene.key });
+  }
+
   winGame() {
     this.isPlayerTurn = false;
-    this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 200, '¡Victoria!', {
-      fontSize: '28px',
-      color: '#00ff00'
-    }).setOrigin(0.5);
 
     this.time.delayedCall(1500, () => {
-      this.scene.stop('PuzzleLightsScene');
-      this.scene.launch('VictoryScene');
+      this.scene.stop(this.scene.key);
+      this.scene.stop("SelectDifficultyScene");
+      this.scene.start("MapScene");
     });
   }
 
   loseGame() {
     this.isPlayerTurn = false;
-    this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 200, 'Derrota', {
-      fontSize: '28px',
-      color: '#ff4444'
-    }).setOrigin(0.5);
 
     this.time.delayedCall(2000, () => {
-      this.scene.stop('PuzzleLightsScene');
-      this.scene.start('MapScene');
+      this.scene.stop(this.scene.key);
+      this.scene.stop("SelectDifficultyScene");
+      this.scene.start("MapScene");
     });
   }
 }

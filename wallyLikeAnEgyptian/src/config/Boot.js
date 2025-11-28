@@ -42,6 +42,9 @@ export default class Boot extends Phaser.Scene {
     this.load.image("tier_A", "wallyLikeAnEgyptian/assets/ui/ba.jpg");
     this.load.image("tier_B", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
 
+    // Escena Victoria
+    this.load.image("gold_particle", "wallyLikeAnEgyptian/assets/minijuegos/particles.jpg");
+
     // === SONIDOS ===
     this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.wav');
     this.load.audio('defeat', 'wallyLikeAnEgyptian/assets/sounds/defeat.wav');
@@ -49,10 +52,9 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('locked', 'wallyLikeAnEgyptian/assets/sounds/locked.wav');
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
-    //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
+    this.load.audio('minigame_music', 'wallyLikeAnEgyptian\assets\sounds\minigame_sound.mp3');
 
-    // === OTROS ===
-    /*this.load.image('background_pyramid', 'assets/backgrounds/pyramid.png');*/
+    //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
   }
 
   create() {

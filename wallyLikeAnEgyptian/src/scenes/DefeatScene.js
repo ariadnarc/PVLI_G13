@@ -1,6 +1,3 @@
-import PostMinigameMenu from '../menus/PostMinigameMenu.js';
-import InputManager from '../core/InputManager.js';
-
 export default class DefeatScene extends Phaser.Scene {
   constructor() {
     super('DefeatScene');
@@ -17,9 +14,6 @@ export default class DefeatScene extends Phaser.Scene {
     // Fondo translúcido
     this.add.rectangle(0, 0, width, height, 0x000000, 0.6).setOrigin(0);
 
-    const input = InputManager.getInstance(this);
-    input.disableMouse();
-
     // Título
     this.add.text(width / 2, height / 2 - 180, 'Derrota...', {
       fontSize: '36px',
@@ -30,26 +24,32 @@ export default class DefeatScene extends Phaser.Scene {
     // Animación temática
     this.showAnimation();
 
-    // Mostrar resultado (sin recompensa)
+    // Mensaje motivacional
     this.showResults();
 
-    // === BOTONES ===
-    this.menu = new PostMinigameMenu(this, {
-      "Reintentar": () => {
-        this.scene.stop();
-        this.scene.start('SelectDifficultyScene', { minijuego: this.minigameId });
-      },
-      "Salir al mapa": () => {
-        this.scene.stop();
-        this.scene.start('MapScene');
-      },
+    // -----------------------------
+    //     LANZAR MENÚ FINAL
+    // -----------------------------
+    this.scene.launch("PostMinigameMenu", {
+      parentScene: this.scene.key,
+      opciones: {
+        "Reintentar": () => {
+          this.scene.stop("DefeatScene");
+          this.scene.stop("SelectDifficultyScene");
+          this.scene.start("SelectDifficultyScene", { minijuego: this.minigameId });
+        },
+        "Salir al mapa": () => {
+          this.scene.stop("DefeatScene");
+          this.scene.stop("SelectDifficultyScene");
+          this.scene.start("MapScene");
+        }
+      }
     });
   }
 
-  /** Tormenta de arena descendente (efecto egipcio de derrota) */
   showAnimation() {
-    const particles = this.add.particles('sand_particle');
-    const emitter = particles.createEmitter({
+    const particles = this.add.particles('gold_particle');
+    particles.createEmitter({
       x: { min: 0, max: this.cameras.main.width },
       y: 0,
       speedY: { min: 200, max: 400 },
@@ -58,17 +58,20 @@ export default class DefeatScene extends Phaser.Scene {
       blendMode: 'MULTIPLY',
       alpha: { start: 0.8, end: 0 },
     });
+
     this.time.delayedCall(3000, () => particles.destroy());
   }
 
-  /** Mensaje simple de ánimo */
   showResults() {
     const { width, height } = this.cameras.main;
 
-    this.add.text(width / 2, height / 2, '¡No te rindas, camarero!', {
-      fontSize: '22px',
-      color: '#fff',
-      fontStyle: 'italic',
-    }).setOrigin(0.5);
+    this.add.text(width / 2, height / 2,
+      '¡No te rindas, camarero!',
+      {
+        fontSize: '22px',
+        color: '#fff',
+        fontStyle: 'italic',
+      }
+    ).setOrigin(0.5);
   }
 }

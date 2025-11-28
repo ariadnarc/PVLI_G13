@@ -1,30 +1,48 @@
 import InputManager from '../core/InputManager.js';
 
-/**
- * Clase base para todos los menús del juego (pantallas completas o overlays)
- * Define la estructura, pero no el estilo visual.
- */
 export default class MenuBase extends Phaser.Scene {
   constructor(key, data) {
     super(key);
     this.menuElements = [];
-
-    this.menuConfig = data || {}; // datos opcionales (overlay, parentScene, etc.)
+    this.menuConfig = data || {};
   }
 
   create() {
-    // Asocia el InputManager
-    // Cada clase define los inputs que permite (teclado, cursores, raton, etc)
+    // Crear InputManager
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({ cursors: true });
-  }
 
-  getParentscene() {
-    return this.menuConfig.parentSceneNode || null;
+    // Todos los menús escuchan ESC por defecto
+    this.inputManager.configure({
+      keys: ['ESC']
+    });
+
+    // Handler genérico para ESC
+    this.inputManager.on("keyDown", (key) => {
+      if (key === "ESC") {
+        this.onEscape();
+      }
+    });
   }
 
   /**
-   * Crea un botón genérico y lo registra en InputManager
+   * Método genérico al pulsar ESC.
+   * Los menús individuales pueden sobrescribirlo.
+   */
+  onEscape() {
+    // Comportamiento por defecto: cerrar menú y volver a la escena padre
+    const parent = this.menuConfig.parentScene;
+
+    if (parent) {
+      this.scene.stop();
+      this.scene.resume(parent);
+    } else { // detecta errores con la escena padre
+      console.warn(`MenuBase: No se ha definido parentScene en ${this.scene.key}`);
+      this.scene.stop();
+    }
+  }
+
+  /**
+   * Crear botón genérico
    */
   createButton(label, x, y, callback, style = {}) {
     const btn = this.add.text(x, y, label, {
@@ -34,10 +52,8 @@ export default class MenuBase extends Phaser.Scene {
       padding: { x: 12, y: 6 },
       align: 'center',
       ...style,
-    })
-      .setOrigin(0.5);
+    }).setOrigin(0.5);
 
-    // Registrar evento en InputManager, no directamente aquí
     this.inputManager.registerButton(btn, callback);
 
     this.menuElements.push(btn);
@@ -45,24 +61,9 @@ export default class MenuBase extends Phaser.Scene {
   }
 
   /**
-   * Activar control del ratón (a través de InputManager)
-   */
-  enableMenuInput() {
-    this.inputManager.enableMouse();
-  }
-
-  /**
-   * Desactiva todos los inputs de menú
-   */
-  disableMenuInput() {
-    this.inputManager.disableMouse();
-  }
-
-  /**
-   * Limpieza
+   * Cleanup
    */
   shutdown() {
-    this.disableMenuInput();
     this.menuElements.forEach(el => el.destroy());
     this.menuElements = [];
   }

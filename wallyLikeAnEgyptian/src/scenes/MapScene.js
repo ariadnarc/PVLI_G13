@@ -14,7 +14,7 @@ export default class MapScene extends Phaser.Scene {
         // MapScene solo escucha movimiento y tecla ESC
         this.inputManager.configure({
             cursors: true,
-            keys: ["ESC"]
+            keys: ["ESC", "B"]
         });
 
         // Keyboard 
@@ -125,8 +125,6 @@ export default class MapScene extends Phaser.Scene {
         this.inputManager.update();
         // jugador
         this.PlayerManager.update();
-
-        console.log(this.inputManager.getMovementVector());
     }
 
     openPauseMenu() {
@@ -136,9 +134,6 @@ export default class MapScene extends Phaser.Scene {
 
     openBinnacle(){
         this.scene.pause();
-        this.scene.launch("BinnacleOverlay", {
-            parentScene: this.scene.key
-        });
+        this.scene.launch("BinnacleOverlay", { parentScene: this.scene.key });
     }
-
 }

@@ -7,8 +7,6 @@ export default class InputManager extends Phaser.Events.EventEmitter {
     this.cursors = null;
     this.keys = {};
     this.enabled = true;   // puedes activar/desactivar inputs
-
-    InputManager.instance = this;
   }
 
   configure(config = {}) {
@@ -33,7 +31,7 @@ export default class InputManager extends Phaser.Events.EventEmitter {
   getMovementVector() {
     let x = 0, y = 0;
 
-    if (!this.enabled) return { x, y };
+    if (!this.cursors) return { x, y };
 
     if (this.cursors) {
         if (this.cursors.left.isDown) x = -1;
@@ -59,7 +57,7 @@ export default class InputManager extends Phaser.Events.EventEmitter {
 
   // gestión de inputs
   update() {
-    if (!this.enabled) return;
+    if (!this.cursors && !this.keys) return;
 
     // emite movimiento si hay cursores
     if (this.cursors) {

@@ -8,16 +8,17 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     super('DodgeMissilesScene');
   }
 
-  create() {
-  // data.dificultad viene del start()
+  create(data) {
+
     const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
 
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({
-        cursors: true,
-        keys: ['ESC']
-    });
+    this.inputManager.configure({ cursors: true, keys: ["ESC"] });
 
+    this.inputManager.on("keyDown", (key) => {
+        if (key === "ESC") this.openPauseMenu();
+    });
+    
     // JUGADOR
     this.playerManager = new PlayerManager(this.inputManager, this);
     this.player = this.playerManager.getSprite();
