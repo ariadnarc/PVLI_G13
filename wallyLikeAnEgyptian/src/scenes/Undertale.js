@@ -10,7 +10,7 @@ export default class Undertale extends Phaser.Scene {
 
   create() {
   // data.dificultad viene del start()
-    const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
+    //const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({ cursors: true, keys: ["ESC"] });

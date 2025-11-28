@@ -26,7 +26,9 @@ export default class SlideScene extends Phaser.scene{
         this.player = this.playerManager.getSprite();
         this.player.body.setColliderWorldBounds(true);
 
-
+        //Parametros segun dificultad
+        this.tries = config.intentos;
+        this.velocidad = config.velocidadBarra;
 
 
         //INICIAR JUEGO
@@ -45,7 +47,9 @@ export default class SlideScene extends Phaser.scene{
 
     }
 
+    intentoFallido(){
 
+    }
 
 
 }

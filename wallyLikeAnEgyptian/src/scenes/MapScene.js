@@ -89,11 +89,11 @@ export default class MapScene extends Phaser.Scene {
 
         //Minijuego Precision del escriba-----------------------------
         //Crear portal para llevar al minijuego
-        this.portalMinijuegoBarrita = this.add.rectangle(300, 100, 60, 60, 0x00FF00);
+        this.portalMinijuegoBarrita = this.add.rectangle(400, 100, 60, 60, 0xD12F0F);
         this.physics.add.existing(this.portalMinijuegoBarrita);
 
         //Comprobamos colision con el portal al minijuego
-        this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
+        this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoBarrita, () => {
             //si hay colision lo llevamos al minijuego
             this.portalMinijuegoBarrita.destroy();
             this.scene.pause();
