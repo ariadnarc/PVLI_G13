@@ -102,7 +102,7 @@ export default class MapScene extends Phaser.Scene {
         });
 
         //-------Objetos mapa-----------
-        this.MovingObject1 = new MovingObject(this);
+        this.movingObject1 = new MovingObject(this);
         this.physics.add.collider(this.PlayerManager.sprite, this.MovingObject1.sprite);
         this.hayCollisionObject(this.movingObject1);
 
