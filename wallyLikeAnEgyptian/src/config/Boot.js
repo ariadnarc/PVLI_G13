@@ -53,7 +53,8 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
     this.load.audio('minigame_music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
-
+    //Objetos movibles
+    this.load.image('cofre', 'wallyLikeAnEgyptian/assets/sprites/cofre.png');
     //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
   }
 

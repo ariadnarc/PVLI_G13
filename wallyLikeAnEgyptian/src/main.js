@@ -23,6 +23,7 @@ import SettingsMenu from './menus/SettingsMenu.js';
 //minijuegos
 import Undertale from './scenes/Undertale.js';
 import PuzzleLightsScene from './scenes/PuzzleLightsScene.js';
+import MovingObject from './core/MovingObject.js';
 
 const config = {
   type: Phaser.CANVAS,

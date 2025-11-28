@@ -1,6 +1,7 @@
 import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
 import PlayerManager from "../core/PlayerManager.js";
-import InputManager from "../core/InputManager.js"
+import InputManager from "../core/InputManager.js";
+import MovingObject from "../core/MovingObject.js";
 import { NOMBRES_MINIJUEGOS } from "../config/MinigameData.js";
 
 export default class MapScene extends Phaser.Scene {
@@ -100,7 +101,10 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('SelectDifficultyScene', { minijuego: 'SlideScene', nombre: NOMBRES_MINIJUEGOS.slideBar });
         });
 
-
+        //-------Objetos mapa-----------
+        this.MovingObject1 = new MovingObject(this);
+        this.physics.add.collider(this.PlayerManager.sprite, this.MovingObject1.sprite);
+        this.hayCollisionObject(this.movingObject1);
 
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
@@ -135,5 +139,11 @@ export default class MapScene extends Phaser.Scene {
     openBinnacle(){
         this.scene.pause();
         this.scene.launch("BinnacleOverlay", { parentScene: this.scene.key });
+    }
+
+    hayCollisionObject(object){
+        this.physics.add.collider(this.PlayerManager, object.sprite, ()=> {
+            object.movimientoColision(this.PlayerManager);
+        });
     }
 }
