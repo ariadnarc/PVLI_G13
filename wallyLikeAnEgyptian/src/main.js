@@ -21,7 +21,7 @@ import PostMinigameMenu from './menus/PostMinigameMenu.js';
 import SettingsMenu from './menus/SettingsMenu.js';
 
 //minijuegos
-import DodgeMissilesScene from './scenes/DodgeMissilesScene.js';
+import Undertale from './scenes/Undertale.js';
 import PuzzleLightsScene from './scenes/PuzzleLightsScene.js';
 
 const config = {
@@ -34,10 +34,10 @@ const config = {
   default: 'arcade',
   arcade: {
     gravity: { y: 0 },  // sin gravedad
-    debug: false        // hitboxes
+    debug: true        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame, SettingsMenu, SelectDifficultyScene, DodgeMissilesScene, PuzzleLightsScene,
+  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame, SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLightsScene,
           PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
 };
 

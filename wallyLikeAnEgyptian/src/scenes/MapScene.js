@@ -57,7 +57,7 @@ export default class MapScene extends Phaser.Scene {
         this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
 
         //-------------------------MINIJUEGOS-------------------------
-        /*
+        
         //Minijuego Furia del Desierto--------------------------------
         //crear portal para llevar a los minijuegos
         this.portalMinijuegoEsquivar = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
@@ -68,9 +68,9 @@ export default class MapScene extends Phaser.Scene {
             //si hay colision lo llevamos al minijuego
             this.portalMinijuegoEsquivar.destroy();
             this.scene.pause();
-            //this.scene.start('DodgeMissilesScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'DodgeMissilesScene', nombre: NOMBRES_MINIJUEGOS.dodgeMissiles });
-        });*/
+            this.scene.start('Undertale');
+            //this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
+        });
 
         //Minijuego Memoria del Templo--------------------------------
         //crear portal para llevar a los minijuegos

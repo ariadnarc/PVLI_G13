@@ -3,14 +3,14 @@ import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
 
-export default class DodgeMissilesScene extends Phaser.Scene {
+export default class Undertale extends Phaser.Scene {
   constructor() {
-    super('DodgeMissilesScene');
+    super('Undertale');
   }
 
-  create(data) {
-
-    const config = DIFICULTADES[data.dificultad].minijuegos.dodgeMissiles;
+  create() {
+  // data.dificultad viene del start()
+    const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({ cursors: true, keys: ["ESC"] });
@@ -69,7 +69,6 @@ export default class DodgeMissilesScene extends Phaser.Scene {
     }).setOrigin(0.5); // Centra el texto
 
     // ========== SISTEMA DE TIEMPO ==========
-    this.totalTime = 30; // Segundos totales para completar el minijuego
     this.remainingTime = this.totalTime; // Inicializa tiempo restante
 
     // Texto del contador de tiempo

@@ -7,6 +7,7 @@ export const playerInitialData = {
   posInicial: { x: 400, y: 300}, // pos en el mapa
   speed: 200, // vel player
   spriteName: 'playerSprite', // nombre del asset
+  scale: 0.1,
   glyphs: { // Guardamos el progreso general del jugador
     S: 0,
     A: 0,
@@ -15,6 +16,6 @@ export const playerInitialData = {
   
   minijuegosCompletados: { // Control de si es la primera vez en los minijuegos
     puzzleLights: false,
-    dodgeMissiles: false
+    Undertale: false
   }
 };
