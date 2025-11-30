@@ -2,9 +2,9 @@ import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
-export default class PuzzleLightsScene extends Phaser.Scene {
+export default class PuzzleLights extends Phaser.Scene {
   constructor() {
-    super('PuzzleLightsScene');
+    super('PuzzleLights');
   }
 
   create(data) {
