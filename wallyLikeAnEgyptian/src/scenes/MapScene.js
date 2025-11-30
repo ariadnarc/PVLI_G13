@@ -83,8 +83,8 @@ export default class MapScene extends Phaser.Scene {
             //si hay colision lo llevamos al minijuego
             this.puzzleLightsPortal.destroy();
             this.scene.pause();
-            //this.scene.start('PuzzleLightsScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLightsScene', nombre: NOMBRES_MINIJUEGOS.puzzleLights });
+            //this.scene.start('PuzzleLights');
+            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLights', nombre: NOMBRES_MINIJUEGOS.PuzzleLights });
         });
 
         //Minijuego Precision del escriba-----------------------------

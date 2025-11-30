@@ -1,5 +1,5 @@
-export default class mjDisparar extends Phaser.Scene {
+export default class CrocoShoot extends Phaser.Scene {
     constructor() {
-        super('mjArchero');
+        super('CrocoShoot');
     }
 }
