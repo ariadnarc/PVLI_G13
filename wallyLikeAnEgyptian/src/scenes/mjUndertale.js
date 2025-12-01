@@ -1,7 +1,7 @@
 import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
-import PlayerManager from '../core/PlayerManager.js';
+// import PlayerManager from '../core/PlayerManager.js';
 
 export default class Undertale extends Phaser.Scene {
   constructor() {
@@ -13,15 +13,15 @@ export default class Undertale extends Phaser.Scene {
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({ cursors: true, keys: ["ESC"] });
+    this.inputManager.configure({ cursors: true, keys: ['ESC'] });
 
     this.inputManager.on("keyDown", (key) => {
         if (key === "ESC") this.openPauseMenu();
     });
     
     // JUGADOR
-    this.playerManager = new PlayerManager(this.inputManager, this);
-    this.player = this.playerManager.getSprite();
+    //this.playerManager = new PlayerManager(this.inputManager, this);
+    //this.player = this.playerManager.getSprite();
     this.player.body.setCollideWorldBounds(true);
 
     // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
@@ -56,8 +56,7 @@ export default class Undertale extends Phaser.Scene {
     this.bullets = this.physics.add.group(); // Crea grupo de física para gestionar proyectiles
 
     // -VIDA-
-    this.maxHealth = 3; // Define vida máxima del jugador
-    this.health = this.maxHealth; // Inicializa vida actual al máximo
+    this.health = config.vidas; // Lo único que vamos a cambiar dependiendo de la dificultad
     this.isInvulnerable = false; // Estado de invencibilidad del jugador
     this.invulnerabilityDuration = 1500; // Duración de invencibilidad en milisegundos
     this.barraVidabg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Ractángulo vida background
@@ -110,7 +109,7 @@ export default class Undertale extends Phaser.Scene {
   update() {
 
     this.inputManager.update();
-    this.playerManager.update();
+    //this.playerManager.update();
 
     //TODO :
     const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador

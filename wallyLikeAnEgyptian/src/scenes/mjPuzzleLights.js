@@ -9,7 +9,7 @@ export default class PuzzleLights extends Phaser.Scene {
 
   create(data) {
     // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
-    const config = DIFICULTADES[data.dificultad].minijuegos.puzzleLights;
+    const config = DIFICULTADES[data.dificultad].minijuegos.PuzzleLights;
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({

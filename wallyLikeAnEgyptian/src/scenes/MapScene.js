@@ -61,16 +61,15 @@ export default class MapScene extends Phaser.Scene {
         
         //Minijuego Furia del Desierto--------------------------------
         //crear portal para llevar a los minijuegos
-        this.portalMinijuegoEsquivar = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
-        this.physics.add.existing(this.portalMinijuegoEsquivar);
+        this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
+        this.physics.add.existing(this.portalUndertale);
 
         //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoEsquivar, () => {
+        this.physics.add.overlap(this.PlayerManager.sprite, this.portalUndertale, () => {
             //si hay colision lo llevamos al minijuego
-            this.portalMinijuegoEsquivar.destroy();
+            this.portalUndertale.destroy();
             this.scene.pause();
-            this.scene.start('Undertale');
-            //this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
+            this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
         });
 
         //Minijuego Memoria del Templo--------------------------------
@@ -78,7 +77,7 @@ export default class MapScene extends Phaser.Scene {
         this.puzzleLightsPortal = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
         this.physics.add.existing(this.puzzleLightsPortal);
 
-        //comprobamos colision con el portalMinijuegoEsquivar
+        //comprobamos colision con el portal de puzzle lights
         this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
             //si hay colision lo llevamos al minijuego
             this.puzzleLightsPortal.destroy();
