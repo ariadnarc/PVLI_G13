@@ -10,7 +10,8 @@ export default class Boot extends Phaser.Scene {
     //TODO: Cambiar por los assets del juego (ESTO ES UN PLACEHOLDER CON ELEMENTOS INVENTADOS)
 
     // === IMÁGENES Y SPRITES ===
-    this.load.image('playerSprite', 'wallyLikeAnEgyptian/assets/sprites/playerMapa.png');
+    this.load.image('playerSprite', 'wallyLikeAnEgyptian/assets/sprites/playerMapa.png'); // sprite para el juego
+    this.load.image('playerUndertale', 'wallyLikeAnEgyptian/assets/sprites/playerUndertale.png'); // sprite para el mjUndertale
     /*this.load.image('gold_particle', 'assets/particles/gold.png');
     this.load.image('sand_particle', 'assets/particles/sand.png');*/
 

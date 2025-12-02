@@ -1,14 +1,14 @@
 import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
-// import PlayerManager from '../core/PlayerManager.js';
+import PlayerManager from '../core/PlayerManager.js';
 
 export default class Undertale extends Phaser.Scene {
   constructor() {
     super('Undertale');
   }
 
-  create() {
+  create(data) {
   // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
@@ -20,8 +20,8 @@ export default class Undertale extends Phaser.Scene {
     });
     
     // JUGADOR
-    //this.playerManager = new PlayerManager(this.inputManager, this);
-    //this.player = this.playerManager.getSprite();
+    this.playerManager = new PlayerManager(this.inputManager, this);
+    this.player = this.playerManager.getSprite();
     this.player.body.setCollideWorldBounds(true);
 
     // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
@@ -36,9 +36,9 @@ export default class Undertale extends Phaser.Scene {
     border.setStrokeStyle(3, 0xffffff); // Aplica borde blanco de 3px de grosor
 
     // ========== CONFIGURACIÓN DEL JUGADOR ==========
-    this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x000000); // Crea cuadrado azul de 20x20px
-    this.physics.add.existing(this.player); // Añade físicas al jugador
-    this.player.body.setCollideWorldBounds(true); // Impide que el jugador salga de los límites
+    //this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x000000); // Crea cuadrado azul de 20x20px
+    //this.physics.add.existing(this.player); // Añade físicas al jugador
+    ///this.player.body.setCollideWorldBounds(true); // Impide que el jugador salga de los límites
 
     // Establece los límites del mundo de físicas al área visible
     this.physics.world.setBounds(
@@ -68,7 +68,7 @@ export default class Undertale extends Phaser.Scene {
     }).setOrigin(0.5); // Centra el texto
 
     // ========== SISTEMA DE TIEMPO ==========
-    this.remainingTime = this.totalTime; // Inicializa tiempo restante
+    this.remainingTime = 30; // Inicializa tiempo restante
 
     // Texto del contador de tiempo
     this.timerText = this.add.text(centerX, 100, `Tiempo: ${this.remainingTime}`, {
@@ -109,7 +109,7 @@ export default class Undertale extends Phaser.Scene {
   update() {
 
     this.inputManager.update();
-    //this.playerManager.update();
+    this.playerManager.update();
 
     //TODO :
     const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador
