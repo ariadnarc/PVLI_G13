@@ -8,12 +8,12 @@ export default class Undertale extends Phaser.Scene {
     super('Undertale');
   }
 
-  create() {
+  create(data) {
   // data.dificultad viene del start()
     //const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({ cursors: true, keys: ["ESC"] });
+    this.inputManager.configure({ cursors: true, keys: ['ESC'] });
 
     this.inputManager.on("keyDown", (key) => {
         if (key === "ESC") this.openPauseMenu();
@@ -36,9 +36,9 @@ export default class Undertale extends Phaser.Scene {
     border.setStrokeStyle(3, 0xffffff); // Aplica borde blanco de 3px de grosor
 
     // ========== CONFIGURACIÓN DEL JUGADOR ==========
-    this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x000000); // Crea cuadrado azul de 20x20px
-    this.physics.add.existing(this.player); // Añade físicas al jugador
-    this.player.body.setCollideWorldBounds(true); // Impide que el jugador salga de los límites
+    //this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x000000); // Crea cuadrado azul de 20x20px
+    //this.physics.add.existing(this.player); // Añade físicas al jugador
+    ///this.player.body.setCollideWorldBounds(true); // Impide que el jugador salga de los límites
 
     // Establece los límites del mundo de físicas al área visible
     this.physics.world.setBounds(
@@ -56,8 +56,7 @@ export default class Undertale extends Phaser.Scene {
     this.bullets = this.physics.add.group(); // Crea grupo de física para gestionar proyectiles
 
     // -VIDA-
-    this.maxHealth = 3; // Define vida máxima del jugador
-    this.health = this.maxHealth; // Inicializa vida actual al máximo
+    this.health = config.vidas; // Lo único que vamos a cambiar dependiendo de la dificultad
     this.isInvulnerable = false; // Estado de invencibilidad del jugador
     this.invulnerabilityDuration = 1500; // Duración de invencibilidad en milisegundos
     this.barraVidabg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Ractángulo vida background
@@ -69,7 +68,7 @@ export default class Undertale extends Phaser.Scene {
     }).setOrigin(0.5); // Centra el texto
 
     // ========== SISTEMA DE TIEMPO ==========
-    this.remainingTime = this.totalTime; // Inicializa tiempo restante
+    this.remainingTime = 30; // Inicializa tiempo restante
 
     // Texto del contador de tiempo
     this.timerText = this.add.text(centerX, 100, `Tiempo: ${this.remainingTime}`, {

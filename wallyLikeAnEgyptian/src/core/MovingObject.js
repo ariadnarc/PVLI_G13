@@ -1,7 +1,7 @@
 import { objectInitialData } from '../config/ObjectsData.js';
 
 export default class MovingObject {
-  constructor(scene) {
+  constructor(scene,player) {
 
     this.scene = scene;
     
@@ -10,14 +10,24 @@ export default class MovingObject {
     this.sprite = scene.physics.add.sprite(this.data.posInicial.x, this.data.posInicial.y, this.data.spriteName);
     this.sprite.setScale(this.data.scale);
 
+    this.player=player;
   }
-    movimientoColision(player){
-        const dirObjX=posX-player.posX;
-        const dirObjY=posY-player.posY;
-        const mag=Math.sqrt(dirObjX*dirObjX+dirObjY*dirObjY);
-        if(mag==0) return;
-
-        this.setVelocity((dirObjX/mag)*this.speed,(dirObjY/mag)*this.speed);
-
+   
+  hayCollisionObject(){
+        this.physics.add.collider(this.PlayerManager, this.sprite, ()=> {
+            return true;
+        });
+        return false;
+  }
+  update(){
+    if(this.hayCollisionObject){
+      const dirObjX=posX-player.posX;
+      const dirObjY=posY-player.posY;
+      body.setVelocity(dir.x * this.speed, dir.y * this.speed);
+    }
+    else{
+      body.setVelocity(0,0);
+    }
   }
 }
+

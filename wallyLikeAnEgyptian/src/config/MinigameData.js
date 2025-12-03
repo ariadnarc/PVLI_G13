@@ -1,7 +1,7 @@
 export const NOMBRES_MINIJUEGOS = {
-  slideBar: "Precision del escriba",
+  slideBar: "Precisión del Escriba",
   Undertale: "Furia del Desierto",
-  puzzleLights: "Memoria del Templo"
+  PuzzleLights: "Memoria del Templo"
 }
 
 export const DIFICULTADES = {
@@ -10,16 +10,14 @@ export const DIFICULTADES = {
     multiplicadorPuntuacion: 1.0,
     minijuegos: {
       // minijuego de patrones
-      puzzleLights: {
+      PuzzleLights: {
         vidas: 3,
         rondas: [3, 3, 4],
         velocidad: 900, // ms entre luces
       },
       // minijuego de esquivar
       Undertale: {
-        tiempo: 5,
-        delayMisiles: 1000,
-        velocidadMisiles: { min: 80, max: 150 },
+        vidas: 4,
       },
       //minijuego de barrita
       slideBar: {
@@ -34,15 +32,13 @@ export const DIFICULTADES = {
     nombre: "Aspirante a Escriba",
     multiplicadorPuntuacion: 1.5,
     minijuegos: {
-      puzzleLights: {
+      PuzzleLights: {
         vidas: 2,
         rondas: [3, 4, 5],
         velocidad: 700,
       },
       Undertale: {
-        tiempo: 8,
-        delayMisiles: 700,
-        velocidadMisiles: { min: 120, max: 180 },
+        vidas: 3,
       },
       slideBar: {
         intentos: 2,
@@ -53,18 +49,16 @@ export const DIFICULTADES = {
   },
 
   DIFICIL: {
-    nombre: "Guardían de los Secretos",
+    nombre: "Guardián de los Secretos",
     multiplicadorPuntuacion: 2.0,
     minijuegos: {
-      puzzleLights: {
+      PuzzleLights: {
         vidas: 1,
         rondas: [4, 5, 6],
         velocidad: 500,
       },
       Undertale: {
-        tiempo: 10,
-        delayMisiles: 500,
-        velocidadMisiles: { min: 150, max: 220 },
+        vidas: 2,
       },
       slideBar: {
         intentos: 1,

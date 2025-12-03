@@ -3,10 +3,10 @@ import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
 
 
-export default class SlideScene extends Phaser.scene{
+export default class Slide extends Phaser.scene{
 
     constructor(){
-        super('SlideScene');
+        super('Slide');
     }
 
     create(data){

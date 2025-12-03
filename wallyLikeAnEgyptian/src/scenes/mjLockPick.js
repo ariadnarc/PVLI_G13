@@ -1,6 +1,6 @@
-export default class minijuegoLock extends Phaser.Scene {
+export default class LockPick extends Phaser.Scene {
     constructor() {
-        super('minijuegoLock');
+        super('LockPick');
         
         // Constantes de configuración
         this.TENSION_INCREASE_RATE = 0.1;

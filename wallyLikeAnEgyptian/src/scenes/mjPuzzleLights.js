@@ -2,14 +2,14 @@ import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
-export default class PuzzleLightsScene extends Phaser.Scene {
+export default class PuzzleLights extends Phaser.Scene {
   constructor() {
-    super('PuzzleLightsScene');
+    super('PuzzleLights');
   }
 
   create(data) {
     // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
-    const config = DIFICULTADES[data.dificultad].minijuegos.puzzleLights;
+    const config = DIFICULTADES[data.dificultad].minijuegos.PuzzleLights;
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({

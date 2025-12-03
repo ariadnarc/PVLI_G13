@@ -21,8 +21,14 @@ import PostMinigameMenu from './menus/PostMinigameMenu.js';
 import SettingsMenu from './menus/SettingsMenu.js';
 
 //minijuegos
-import Undertale from './scenes/Undertale.js';
-import PuzzleLightsScene from './scenes/PuzzleLightsScene.js';
+import Undertale from './scenes/mjUndertale.js';
+import PuzzleLights from './scenes/mjPuzzleLights.js';
+import LockPick from './scenes/mjLockPick.js';
+import CrocoShoot from './scenes/mjCrocoShoot.js';
+// minijuego ari, el de slide supongo
+
+
+// esto q es?? (pregunta Juan)
 import MovingObject from './core/MovingObject.js';
 
 const config = {
@@ -38,7 +44,9 @@ const config = {
     debug: true        // hitboxes
     }
   }, // declaramos físcas globalmente
-  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame, SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLightsScene,
+  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame,
+          SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
+          LockPick, CrocoShoot,
           PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
 };
 
