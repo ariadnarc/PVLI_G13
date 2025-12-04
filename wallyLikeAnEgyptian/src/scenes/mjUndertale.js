@@ -13,16 +13,18 @@ export default class Undertale extends Phaser.Scene {
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
 
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({ cursors: true, keys: ['ESC'] });
+    this.inputManager.configure({
+        cursors: true,
+        keys: ["ESC"]
+    });
 
     this.inputManager.on("keyDown", (key) => {
         if (key === "ESC") this.openPauseMenu();
     });
     
     // JUGADOR
-    this.playerManager = new PlayerManager(this.inputManager, this);
+    this.playerManager = new PlayerManager(this.inputManager, this, {spriteName: "playerUndertale"});
     this.player = this.playerManager.getSprite();
-    this.player.body.setCollideWorldBounds(true);
 
     // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
     this.gameWidth = 400; // Ancho del área jugable en píxeles
@@ -35,11 +37,6 @@ export default class Undertale extends Phaser.Scene {
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight); // Crea rectángulo en el centro
     border.setStrokeStyle(3, 0xffffff); // Aplica borde blanco de 3px de grosor
 
-    // ========== CONFIGURACIÓN DEL JUGADOR ==========
-    //this.player = this.add.rectangle(centerX, centerY, 20, 20, 0x000000); // Crea cuadrado azul de 20x20px
-    //this.physics.add.existing(this.player); // Añade físicas al jugador
-    ///this.player.body.setCollideWorldBounds(true); // Impide que el jugador salga de los límites
-
     // Establece los límites del mundo de físicas al área visible
     this.physics.world.setBounds(
       centerX - this.gameWidth / 2, // Límite izquierdo
@@ -49,7 +46,6 @@ export default class Undertale extends Phaser.Scene {
     );
 
     // ========== CONTROLES ==========
-    this.cursors = this.input.keyboard.createCursorKeys(); // Crea objeto con las teclas de dirección
     this.playerSpeed = 200; // Define velocidad de movimiento del jugador en píxeles/segundo
 
     // ========== GRUPO DE PROYECTILES ==========

@@ -1,19 +1,27 @@
 import { playerInitialData } from '../config/PlayerData.js';
 
 export default class PlayerManager {
-  constructor(inputManager, scene) {
+  constructor(inputManager, scene, spriteConfig = {}) {
 
     this.scene = scene;
     this.inputManager = inputManager; // ya configurada
-    this.data = playerInitialData; // usa la info inicial
-    
-    this.sprite = scene.physics.add.sprite(this.data.posInicial.x, this.data.posInicial.y, 
-    this.data.spriteName);
-    this.sprite.setScale(playerInitialData.scale);
 
-      
-    // Evita que el jugador salga del mapa
-    this.sprite.setCollideWorldBounds(true);
+    this.data = {
+      ...playerInitialData, // info del jugador
+      ...spriteConfig // para pasar por el constructor el name del sprite deseado
+    };
+    // "..." significa spread operator, sirve para copiar o extender un objeto
+    // dentro de otro, como el initalData lo quiero tal y como está y solo
+    // quiero cambiar el sprite lo utilizo, creo una config exclusivamente para ello
+    
+    this.sprite = scene.physics.add.sprite(
+      this.data.posInicial.x,
+      this.data.posInicial.y, 
+      this.data.spriteName
+    );
+
+    this.sprite.setScale(this.data.scale); // scale del initialData
+    this.sprite.setCollideWorldBounds(true); // evita q el player salga del mundo
     this.speed = this.data.speed || 200;
   }
 
