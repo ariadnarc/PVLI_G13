@@ -25,6 +25,7 @@ import Undertale from './scenes/mjUndertale.js';
 import PuzzleLights from './scenes/mjPuzzleLights.js';
 import LockPick from './scenes/mjLockPick.js';
 import CrocoShoot from './scenes/mjCrocoShoot.js';
+import Slide from './scenes/mjSlide.js';
 // minijuego ari, el de slide supongo
 
 
@@ -46,7 +47,7 @@ const config = {
   }, // declaramos físcas globalmente
   scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame,
           SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
-          LockPick, CrocoShoot,
+          LockPick, CrocoShoot, Slide,
           PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
 };
 

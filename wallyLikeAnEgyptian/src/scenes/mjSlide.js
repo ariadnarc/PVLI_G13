@@ -3,7 +3,7 @@ import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
 
 
-export default class Slide extends Phaser.scene{
+export default class Slide extends Phaser.Scene{
 
     constructor(){
         super('Slide');
@@ -11,44 +11,144 @@ export default class Slide extends Phaser.scene{
 
     create(data){
 
-        const config = DIFICULTADES[data.dificultad].minijuegos.slideBar;
-
+        //==============INPUT===============
         this.inputManager = new InputManager(this);
         this.inputManager.configure({
             cursors: false,
             keys: ['ESC', 'SPACE']
         });
-
-        //TO DO: parámetros de dificultad (settear en minigamedata)
-
-        //JUGADOR (en un principio no se va a mover)
+        
+        
+        //=============JUGADOR===============
         this.playerManager = new PlayerManager(this.inputManager, this);
         this.player = this.playerManager.getSprite();
-        this.player.body.setColliderWorldBounds(true);
+        this.player.body.setCollideWorldBounds(true);
 
-        //Parametros segun dificultad
-        this.tries = config.intentos;
-        this.velocidad = config.velocidadBarra;
+        
+        //=======Parametros segun dificultad=======
+        const config = DIFICULTADES[data.dificultad].minijuegos.slideBar;
+
+        this.tries = config.intentos;                    //num de intentos permitidos
+        this.barSpeed = config.velocidadBarra;          //velocidad del target
+
+        //======BARRA, ZONA VERDE Y CURSOR===========
+        const w = this.scale.width;
+        const h = this.scale.height;
+
+        // Barra
+        this.barWidth = 500;
+        this.barHeight = 20;
+
+        this.bar = this.add.rectangle(w/2, h/2, this.barWidth, this.barHeight, 0x444444);
+
+        // Zona verde (acierto)
+        this.greenWidth = 120;
+        this.greenZone = this.add.rectangle(
+            w/2,
+            h/2,
+            this.greenWidth,
+            this.barHeight,
+            0x00ff00
+        );
+
+        // Cursor
+        this.cursor = this.add.rectangle(
+            w/2 - this.barWidth/2,
+            h/2,
+            10,
+            40,
+            0xffffff
+        );
+
+        this.cursorSpeed = this.barSpeed; 
+        this.direction = 1; // 1 = derecha, -1 = izquierda
+
+        //==========HUD=============
+        this.hud = this.add.text(20, 20, "", {
+            fontSize: "24px",
+            color: "#ffffff"
+        });
+
+        this.updateHUD();
 
 
         //INICIAR JUEGO
         this.startGame();
-
-
     }
 
-    update(){
+    update(time, delta){
+
         this.inputManager.update();
         this.playerManager.update();
+
+        // Movimiento del cursor
+        const dt = this.game.loop.delta / 1000;
+        let nextX = this.cursor.x + this.direction * this.cursorSpeed * dt;
+        const left = this.bar.x - this.barWidth/2;
+        const right = this.bar.x + this.barWidth/2;
+
+        if(nextX <= left || nextX >= right){
+            this.direction *= -1; // cambia de dirección al llegar a los bordes
+        } else {
+            this.cursor.x = nextX;
+        }
+
+// Pulsar SPACE para comprobar acierto
+if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown){
+    this.checkHit();
+}
     }
 
+    //=====INICIO DEL MINIJUEGO========
     startGame(){
-        //TO DO: que se inicie el juego
+        
+        //TO DO: animaciones de entrada y sonidos
 
     }
 
-    intentoFallido(){
+    //=====COMPRUEBA ACIERTO=========
+    checkHit(){
+        const cursorBounds = this.cursor.getBounds();
+        const greenBounds = this.greenZone.getBounds();
 
+        const acierto = Phaser.Geom.Intersects.RectangleToRectangle(cursorBounds, greenBounds);
+
+        if(acierto){
+            console.log("¡ACIERTO!");
+            this.endGame(true);
+        } else {
+            console.log("FALLASTE");
+            this.tries--;
+            if(this.tries <= 0){
+                this.endGame(false);
+            }
+        }
+    }
+
+    //========SI FALLA==========
+    intentoFallido(){
+        this.tries--;
+
+        if (this.tries <= 0) {
+            this.endGame(false);
+        } else {
+            this.updateHUD();
+        }
+
+    }
+
+    //======TERMINA MINIJUEGO=========
+    endGame(victoria) {
+        this.scene.start('PostMinigameMenu', {
+            victoria: victoria,
+            tipo: 'slideBar'
+        });
+    }
+
+    updateHUD() {
+        this.hud.setText(
+            `Precisión del Escriba\nIntentos restantes: ${this.tries}`
+        );
     }
 
 
