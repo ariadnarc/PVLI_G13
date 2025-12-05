@@ -139,10 +139,15 @@ if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown){
 
     //======TERMINA MINIJUEGO=========
     endGame(victoria) {
-        this.scene.start('PostMinigameMenu', {
-            victoria: victoria,
-            tipo: 'slideBar'
-        });
+
+        if(victoria){
+            this.scene.stop(); // Detiene esta escena
+            this.scene.launch('VictoryScene');
+        }
+        else{
+            this.physics.pause(); // Detiene todas las físicas del juego
+            this.time.delayedCall(2000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
+        }
     }
 
     updateHUD() {
