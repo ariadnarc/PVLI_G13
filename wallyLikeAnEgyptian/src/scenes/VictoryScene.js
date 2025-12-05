@@ -41,6 +41,7 @@ export default class VictoryScene extends Phaser.Scene {
     // -----------------------------
     //     LANZAR MENÚ FINAL
     // -----------------------------
+  
     this.scene.launch("PostMinigameMenu", {
       parentScene: this.scene.key,
       opciones: {

@@ -22,7 +22,7 @@ export const DIFICULTADES = {
       //minijuego de barrita
       slideBar: {
         intentos: 3,
-        velocidadBarra: 50,
+        velocidadBarra: 200,
       }
     },
     probJeroglificos: { S: 0.05, A: 0.15, B: 0.80 }
@@ -42,7 +42,7 @@ export const DIFICULTADES = {
       },
       slideBar: {
         intentos: 2,
-        velocidadBarra: 70,
+        velocidadBarra: 250,
       }
     },
     probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
@@ -62,7 +62,7 @@ export const DIFICULTADES = {
       },
       slideBar: {
         intentos: 1,
-        velocidadBarra: 80,
+        velocidadBarra: 300,
       }
     },
     probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }

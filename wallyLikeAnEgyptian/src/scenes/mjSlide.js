@@ -19,10 +19,6 @@ export default class Slide extends Phaser.Scene{
         });
         
         
-        //=============JUGADOR===============
-        this.playerManager = new PlayerManager(this.inputManager, this);
-        this.player = this.playerManager.getSprite();
-        this.player.body.setCollideWorldBounds(true);
 
         
         //=======Parametros segun dificultad=======
@@ -79,7 +75,6 @@ export default class Slide extends Phaser.Scene{
     update(time, delta){
 
         this.inputManager.update();
-        this.playerManager.update();
 
         // Movimiento del cursor
         const dt = this.game.loop.delta / 1000;
@@ -146,7 +141,7 @@ if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown){
         }
         else{
             this.physics.pause(); // Detiene todas las físicas del juego
-            this.time.delayedCall(2000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
+            this.time.delayedCall(1000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
         }
     }
 
