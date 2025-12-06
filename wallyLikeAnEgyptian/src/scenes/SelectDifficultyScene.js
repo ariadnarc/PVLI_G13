@@ -1,5 +1,5 @@
 import { playerInitialData } from '../config/PlayerData.js';
-import { COSTES_DIFICULTAD } from '../config/MinigameData.js';
+import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
 export default class SelectDifficultyScene extends Phaser.Scene {
@@ -9,7 +9,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   init(data) {
     this.minijuego = data.minijuego; // ej: 'puzzleLights' o 'dodgeMissiles'
-    this.nombreMinijuego = data.nombreMinijuego;
+    this.nombreMinijuego = NOMBRES_MINIJUEGOS[data.minijuego];
   }
 
   create() {
@@ -23,49 +23,60 @@ export default class SelectDifficultyScene extends Phaser.Scene {
         keys: ['ESC']
     });
 
+    // === FONDO ===
+    const { width, height } = this.sys.game.config;
+
+    const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
+    bg.setDisplaySize(width, height);
+    bg.setDepth(-10);
+
     // === Título ===
-    this.add.text(centerX, 100, this.nombreMinijuego, {
+    this.add.text(centerX / 2.25, 90, this.nombreMinijuego, {
+      fontFamily: 'Comfortaa',
       fontSize: '48px',
-      color: '#b07b0fff',
+      color: '#634830ff',
+      align: 'left',
     }).setOrigin(0.5);
 
-    this.add.text(centerX, 200, 'Selecciona la dificultad', {
+    this.add.text(centerX / 2.25, 150, 'Selecciona la dificultad', {
+      fontFamily: 'Comfortaa',
       fontSize: '24px',
-      color: '#ffff99',
+      color: '#ffd98d',
     }).setOrigin(0.5);
 
     // === Mostrar inventario actual ===
     this.jeroglificosTexto = this.add.text(
-      centerX,
-      240,
-      `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`,
-      { fontSize: '16px', color: '#ffffff' }
+      centerX / 2.25,
+      200,
+      `Tus jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`,
+      { fontSize: '20px', color: '#ffffff' }
     ).setOrigin(0.5);
 
     // === Dificultades ===
     const dificultades = ['FACIL', 'MEDIA', 'DIFICIL'];
-    const colores = [0x44ff44, 0xffff66, 0xff4444];
+    const colores = [0xa46a3b, 0x8b5326, 0x774224];
 
     dificultades.forEach((dif, i) => {
-      const y = 320 + i * 100;
+      const y = 220 + i * 120;
 
       // Crear fondo del botón
       const rect = this.add.rectangle(0, 0, 250, 60, colores[i]).setOrigin(0.5);
 
       // Texto dentro del botón
       const txt = this.add.text(0, 0, dif, {
-        fontSize: '20px',
-        color: '#000'
+        fontSize: '22px',
+        color: '#ddd',
+        fontStyle: 'bold',
       }).setOrigin(0.5);
 
       // Crear un CONTENEDOR que será tu botón real
-      const button = this.add.container(centerX, y, [rect, txt]);
+      const button = this.add.container(800, y, [rect, txt]);
       // Darle tamaño para interacciones
       button.setSize(250, 60);
 
-      const hoverColor = 0xf5e29a;
+      const hoverColor = 0xc88853;
       const defaultColor = colores[i];
-      const hoverScale = 1.12;
+      const hoverScale = 1.10;
 
       // Hover
       button.on('pointerover', () => {
@@ -80,9 +91,10 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
       // Texto abajo (el coste)
       const costeTexto = this.getCosteTexto(dif);
-      this.add.text(centerX, y + 50, costeTexto, {
-        fontSize: '14px',
-        color: '#ddd'
+      this.add.text(800, y + 50, costeTexto, {
+        fontSize: '18px',
+        color: '#ddd',
+        fontStyle: 'bold',
       }).setOrigin(0.5);
 
       // Registrar SOLO el container como botón en el InputManager

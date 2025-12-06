@@ -1,5 +1,5 @@
 export const NOMBRES_MINIJUEGOS = {
-  slideBar: "Precisión del Escriba",
+  SlideBar: "Precision del Escriba",
   Undertale: "Furia del Desierto",
   PuzzleLights: "Memoria del Templo"
 }
@@ -20,7 +20,7 @@ export const DIFICULTADES = {
         vidas: 4,
       },
       //minijuego de barrita
-      slideBar: {
+      SlideBar: {
         intentos: 3,
         velocidadBarra: 200,
       }
@@ -40,7 +40,7 @@ export const DIFICULTADES = {
       Undertale: {
         vidas: 3,
       },
-      slideBar: {
+      SlideBar: {
         intentos: 2,
         velocidadBarra: 250,
       }
@@ -60,7 +60,7 @@ export const DIFICULTADES = {
       Undertale: {
         vidas: 2,
       },
-      slideBar: {
+      SlideBar: {
         intentos: 1,
         velocidadBarra: 300,
       }

@@ -15,7 +15,7 @@ export default class MainMenu extends MenuBase {
     bg.setDisplaySize(width, height);
     bg.setDepth(-10);
 
-    // color debajo por si no carga el fondo (opcional):
+    // color debajo por si no carga el fondo:
     // this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);
 
     this.add.text(450, 150, 'WALLY LIKE AN EGYPTIAN', {

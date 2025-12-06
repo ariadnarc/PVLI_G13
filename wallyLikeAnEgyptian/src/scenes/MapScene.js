@@ -97,7 +97,7 @@ export default class MapScene extends Phaser.Scene {
             this.portalMinijuegoBarrita.destroy();
             this.scene.pause();
             //this.scene.start('SlideScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'Slide', nombre: NOMBRES_MINIJUEGOS.slideBar });
+            this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
         });
 
         //-------Objetos mapa-----------

@@ -1,12 +1,11 @@
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
-import PlayerManager from '../core/PlayerManager.js';
 
 
-export default class Slide extends Phaser.Scene{
+export default class SlideBar extends Phaser.Scene{
 
     constructor(){
-        super('Slide');
+        super('SlideBar');
     }
 
     create(data){
@@ -22,7 +21,7 @@ export default class Slide extends Phaser.Scene{
 
         
         //=======Parametros segun dificultad=======
-        const config = DIFICULTADES[data.dificultad].minijuegos.slideBar;
+        const config = DIFICULTADES[data.dificultad].minijuegos.SlideBar;
 
         this.tries = config.intentos;                    //num de intentos permitidos
         this.barSpeed = config.velocidadBarra;          //velocidad del target
