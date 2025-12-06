@@ -10,31 +10,38 @@ export default class MainMenu extends MenuBase {
 
     const { width, height } = this.sys.game.config;
 
-    this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);
+    // === FONDO ===
+    const bg = this.add.image(width / 2, height / 2, 'mainmenuBG');
+    bg.setDisplaySize(width, height);
+    bg.setDepth(-10);
 
-    this.add.text(width / 2, 120, 'WALLY LIKE AN EGYPTIAN', {
+    // color debajo por si no carga el fondo (opcional):
+    // this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);
+
+    this.add.text(450, 150, 'WALLY LIKE AN EGYPTIAN', {
       fontFamily: 'Comfortaa',
-      fontSize: '36px',
-      color: '#f1c40f',
+      fontSize: '40px',
+      color: '#634830ff',
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    this.add.text(width / 2, 170,
-      'Una aventura para entregar el café más importante de tu vida ☕',
+    this.add.text(450, 223,
+      'La entrega del café más importante de tu vida ☕',
       {
         fontFamily: 'Comfortaa',
-        fontSize: '16px',
-        color: '#ecf0f1',
+        fontSize: '27px',
+        color: '#ddd',
+        fontStyle: 'bold',
         wordWrap: { width: width - 100 },
         align: 'center',
       })
       .setOrigin(0.5);
 
-    this.createButton('Jugar', width / 2, 260, () => {
+    this.createButton('Jugar', 450, 300, () => {
       this.scene.start('MapScene');
     });
 
-    this.createButton('Ajustes', width / 2, 320, () => {
+    this.createButton('Ajustes', 450, 370, () => {
       this.scene.launch('SettingsMenu', { parentScene: 'MainMenu' });
       this.scene.pause();
     });
