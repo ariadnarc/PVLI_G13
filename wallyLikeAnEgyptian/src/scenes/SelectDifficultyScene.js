@@ -3,18 +3,26 @@ import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS } from '../config/MinigameData.js
 import InputManager from '../core/InputManager.js';
 
 export default class SelectDifficultyScene extends Phaser.Scene {
+
   constructor() {
     super('SelectDifficultyScene');
   }
 
   init(data) {
-    this.minijuego = data.minijuego; // ej: 'puzzleLights' o 'dodgeMissiles'
-    this.nombreMinijuego = NOMBRES_MINIJUEGOS[data.minijuego];
+
+    // Minijuego que se va a jugar
+    this.minijuego = data.minijuego;
+    this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
+    
+    // Flag para saber si venimos de reintento
+    this.reintento = data.reintento || false;
   }
 
   create() {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
+
+    const { width, height } = this.sys.game.config;
 
     // === Instancia del InputManager ===
     this.inputManager = new InputManager(this);
@@ -24,8 +32,6 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     });
 
     // === FONDO ===
-    const { width, height } = this.sys.game.config;
-
     const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
     bg.setDisplaySize(width, height);
     bg.setDepth(-10);
@@ -111,13 +117,14 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   seleccionarDificultad(dif) {
     const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
-    const coste = COSTES_DIFICULTAD[dif];
 
-    // Si es primera vez, solo permite fácil o media sin coste
-    if (esPrimeraVez && dif === 'DIFICIL') {
-      this.mensaje.setText('La dificultad difícil se desbloquea después de jugar una vez.');
-      return;
+    // Bloquear difícil solo si es primera vez Y NO venimos de reintento
+    if (!this.reintento && esPrimeraVez && dif === 'DIFICIL') {
+        this.mensaje.setText('La dificultad difícil se desbloquea después de jugar una vez.');
+        return;
     }
+
+    const coste = COSTES_DIFICULTAD[dif];
 
     // Verificar si tiene recursos
     if (!this.tieneJeroglificos(coste)) {
@@ -133,8 +140,8 @@ export default class SelectDifficultyScene extends Phaser.Scene {
       `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`
     );
 
-    // Marcar progreso
-    playerInitialData.minijuegosCompletados[this.minijuego] = true;
+    // Marcar progreso solo si no es reintento
+    if (!this.reintento) playerInitialData.minijuegosCompletados[this.minijuego] = true;
 
     // Lanzar minijuego con la dificultad seleccionada
     this.scene.start(this.minijuego, { dificultad: dif });

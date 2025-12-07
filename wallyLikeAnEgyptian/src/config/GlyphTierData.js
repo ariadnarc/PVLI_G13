@@ -97,4 +97,10 @@ static getRewardTier(probabilities) {
   return 'B'; // fallback
 }
 
+static difficultyMap = {
+  FACIL: 'easy',
+  MEDIA: 'medium',
+  DIFICIL: 'hard'
+};
+
 }

@@ -8,7 +8,14 @@ export default class SlideBar extends Phaser.Scene{
         super('SlideBar');
     }
 
-    create(data){
+    init(data){
+        // Guardamos el minijuego y la dificultad que vienen del menu
+        this.minijuego = data.minijuego || 'SlideBar';
+        // Dificultad elegida por el jugador
+        this.difficulty = data.dificultad || 'FACIL';
+    }
+
+    create(){
 
         //==============INPUT===============
         this.inputManager = new InputManager(this);
@@ -16,18 +23,11 @@ export default class SlideBar extends Phaser.Scene{
             cursors: false,
             keys: ['ESC', 'SPACE']
         });
-
         
         //=======Parametros segun dificultad=======
-
-        // data.dificultad viene del menú de selección de dificultad
-        // Si no existe, usamos 'easy' por defecto
-        this.difficulty = data.dificultad || 'easy';
-
-        const config = DIFICULTADES[data.dificultad].minijuegos.SlideBar;
-
-        this.tries = config.intentos;                    //num de intentos permitidos
-        this.barSpeed = config.velocidadBarra;          //velocidad del target
+        const config = DIFICULTADES[this.difficulty].minijuegos.SlideBar;
+        this.tries = config.intentos;
+        this.barSpeed = config.velocidadBarra;
 
         //======BARRA, ZONA VERDE Y CURSOR===========
         const w = this.scale.width;
@@ -36,28 +36,14 @@ export default class SlideBar extends Phaser.Scene{
         // Barra
         this.barWidth = 500;
         this.barHeight = 20;
-
         this.bar = this.add.rectangle(w/2, h/2, this.barWidth, this.barHeight, 0x444444);
 
         // Zona verde (acierto)
         this.greenWidth = 120;
-        this.greenZone = this.add.rectangle(
-            w/2,
-            h/2,
-            this.greenWidth,
-            this.barHeight,
-            0x00ff00
-        );
+        this.greenZone = this.add.rectangle(w/2, h/2, this.greenWidth, this.barHeight, 0x00ff00);
 
         // Cursor
-        this.cursor = this.add.rectangle(
-            w/2 - this.barWidth/2,
-            h/2,
-            10,
-            40,
-            0xffffff
-        );
-
+        this.cursor = this.add.rectangle(w/2 - this.barWidth/2, h/2, 10, 40, 0xffffff );
         this.cursorSpeed = this.barSpeed; 
         this.direction = 1; // 1 = derecha, -1 = izquierda
 
@@ -68,10 +54,6 @@ export default class SlideBar extends Phaser.Scene{
         });
 
         this.updateHUD();
-
-
-        //INICIAR JUEGO
-        this.startGame();
     }
 
     update(){
@@ -96,13 +78,6 @@ export default class SlideBar extends Phaser.Scene{
         {
             this.checkHit();
         }
-    }
-
-    //=====INICIO DEL MINIJUEGO========
-    startGame(){
-        
-        //TO DO: animaciones de entrada y sonidos
-
     }
 
     //=====COMPRUEBA ACIERTO=========
@@ -137,22 +112,25 @@ export default class SlideBar extends Phaser.Scene{
     endGame(victoria) {
 
         const menuOptions = {
-            // Reintentar reinicia la escena SlideBar con la misma dificultad
-            'Reintentar': () => {
-                this.scene.stop('PostMinigameMenu'); // cerramos el menú
-                this.scene.start('SlideBar', { dificultad: this.difficulty }); // reiniciamos minijuego
-            },
-            // Salir al mapa
-            'Salir al mapa': () => {
-                this.scene.stop('PostMinigameMenu'); // cerramos el menú
-                this.scene.start('MapScene'); // volvemos al mapa
-            }
+        'Reintentar': () => {
+            //Al reintentar vamos a selectdifficultyscene
+            this.scene.stop('PostMinigameMenu');
+            this.scene.stop();
+            this.scene.stop('SelectDifficultyScene'); 
+
+            this.scene.start('SelectDifficultyScene', { minijuego: this.minijuego, reintento: true });
+        },
+        'Salir al mapa': () => {
+            this.scene.stop('PostMinigameMenu');
+            this.scene.stop();
+            this.scene.start('MapScene');
         }
+        };
 
         this.scene.start('PostMinigameMenu', {
             result: victoria ? 'victory' : 'defeat', // si ganó o perdió
             difficulty: this.difficulty,            // dificultad actual
-            minigameId: 'SlideBar',                 // id del minijuego
+            minigameId: this.minijuego,                 // id del minijuego
             options: menuOptions                     // botones del menú
         });
     };

@@ -15,11 +15,10 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   init(data) {
-    // Estado del minijuego: 'victory' o 'defeat'
-    this.result = data.result || 'defeat';
-    this.difficulty = data.difficulty || 'easy';
-    this.minigameId = data.minigameId || 'unknown';
-    this.options = data.options || {}; // botones del menu     
+      this.result = data?.result || 'defeat';
+      this.difficulty = data?.difficulty || 'FACIL';
+      this.minijuego = data?.minijuego;
+      this.options = data?.options || {};
   }
 
   create() {
@@ -41,24 +40,20 @@ export default class PostMinigameMenu extends MenuBase {
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    // Si es victoria, mostrar recompensas
+    //============RECOMPENSAS=================
     if (this.result === 'victory') {
-      let rewards;
-            try {
-                rewards = GlyphTierData.getMultipleRewards(this.difficulty, 1);
-            } catch (e) {
-                console.warn(`Error al obtener recompensas para dificultad ${this.difficulty}, usando "easy" por defecto.`);
-                rewards = GlyphTierData.getMultipleRewards('easy', 1);
-            }
+      const rewardCount = 1; // puedes personalizar según dificultad
+      const rewards = GlyphTierData.getMultipleRewards(GlyphTierData.difficultyMap[this.difficulty] || 'easy', 1);
 
-            // Guardar en la bitácora
-            this.binnacle = BinnacleManager.getInstance();
-            this.binnacle.addGlyph(rewards);
+      // Registrar recompensas en bitácora
+      this.binnacle = BinnacleManager.getInstance();
+      this.binnacle.addGlyph(rewards);
 
-            this.showResults(rewards);
+      // Mostrar en pantalla
+      this.showResults(rewards);
     }
 
-    // Crear botones usando createButton() de MenuBase
+    //===========BOTONES==========
     this.createMenuButtons();
   }
 
