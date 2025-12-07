@@ -50,7 +50,7 @@ export default class SlideBar extends Phaser.Scene{
         this.greenZone = this.add.rectangle(w/2, h/2, this.greenWidth, this.barHeight, 0x00ff00);
 
         // Cursor
-        this.cursor = this.add.rectangle(w/2 - this.barWidth/2, h/2, 10, 40, 0xffffff );
+        this.cursor = this.add.sprite(w/2 - this.barWidth/2, h/2, 'egyptTiles', 20).setScale(2);
         this.cursorSpeed = this.barSpeed; 
         this.direction = 1; // 1 = derecha, -1 = izquierda
 
