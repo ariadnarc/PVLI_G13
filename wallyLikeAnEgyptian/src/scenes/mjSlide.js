@@ -8,11 +8,19 @@ export default class SlideBar extends Phaser.Scene{
         super('SlideBar');
     }
 
-    init(data){
-        // Guardamos el minijuego y la dificultad que vienen del menu
-        this.minijuego = data.minijuego || 'SlideBar';
-        // Dificultad elegida por el jugador
-        this.difficulty = data.dificultad || 'FACIL';
+    init(data = {}){
+
+        // Guardamos el minijuego
+        this.minijuego = data.minijuego;
+
+        // Dificultad elegida
+        this.difficulty = data.dificultad;
+
+        // Si venimos de un reintento, mantenemos los intentos restantes
+        // Si no hay valor, usamos los intentos completos según la dificultad
+        const config = DIFICULTADES[this.difficulty].minijuegos.SlideBar;
+        this.tries = data.remainingTries ?? config.intentos;
+        this.barSpeed = config.velocidadBarra;
     }
 
     create(){
@@ -23,11 +31,6 @@ export default class SlideBar extends Phaser.Scene{
             cursors: false,
             keys: ['ESC', 'SPACE']
         });
-        
-        //=======Parametros segun dificultad=======
-        const config = DIFICULTADES[this.difficulty].minijuegos.SlideBar;
-        this.tries = config.intentos;
-        this.barSpeed = config.velocidadBarra;
 
         //======BARRA, ZONA VERDE Y CURSOR===========
         const w = this.scale.width;
@@ -88,16 +91,19 @@ export default class SlideBar extends Phaser.Scene{
         const acierto = Phaser.Geom.Intersects.RectangleToRectangle(cursorBounds, greenBounds);
 
         if(acierto){
+
             console.log("¡ACIERTO!");
             this.endGame(true); // termina el juego con victoria
+
         } else {
+
             console.log("FALLASTE");
+
             this.tries--;
-            if(this.tries <= 0){
-                this.endGame(false); // termina el juego con derrota
-            } else{
-                this.updateHUD(); // actualizamos los intentos restantes
-            }
+            this.updateHUD();
+
+            // Siempre llamamos a endGame, pasando los intentos que quedaban
+            this.endGame(false, this.tries);
         }
     }
 
@@ -109,29 +115,44 @@ export default class SlideBar extends Phaser.Scene{
     }
 
     //======TERMINA MINIJUEGO=========
-    endGame(victoria) {
+    endGame(victoria, remainingTries = this.tries) {
 
-        const menuOptions = {
-        'Reintentar': () => {
-            //Al reintentar vamos a selectdifficultyscene
+        const menuOptions = {};
+
+        // Reintentar
+        menuOptions['Reintentar'] = () => {
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
-            this.scene.stop('SelectDifficultyScene'); 
 
-            this.scene.start('SelectDifficultyScene', { minijuego: this.minijuego, reintento: true });
-        },
-        'Salir al mapa': () => {
+            if (!victoria && remainingTries > 0) {
+                // Todavia quedan intentos -> volvemos a SlideBar con los intentos restantes
+                this.scene.start('SlideBar', {
+                    minijuego: this.minijuego,
+                    dificultad: this.difficulty,
+                    remainingTries: remainingTries
+                });
+            } else {
+                // Ultimo intento perdido o victoria -> Reintentar lleva a SelectDifficultyScene
+                this.scene.start('SelectDifficultyScene', {
+                    minijuego: this.minijuego
+                });
+            }
+        };
+
+        // Salir al mapa
+        menuOptions['Salir al mapa'] = () => {
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
             this.scene.start('MapScene');
-        }
         };
 
+        // Lanzamos el menu de fin de minijuego
         this.scene.start('PostMinigameMenu', {
-            result: victoria ? 'victory' : 'defeat', // si ganó o perdió
-            difficulty: this.difficulty,            // dificultad actual
-            minigameId: this.minijuego,                 // id del minijuego
-            options: menuOptions                     // botones del menú
+            result: victoria ? 'victory' : 'defeat',
+            difficulty: this.difficulty,
+            minijuego: this.minijuego,
+            options: menuOptions,
+            remainingTries: remainingTries // <-- importante para mostrar en PostMinigameMenu
         });
     };
 

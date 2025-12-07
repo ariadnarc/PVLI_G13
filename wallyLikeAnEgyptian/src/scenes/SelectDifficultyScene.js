@@ -1,5 +1,5 @@
 import { playerInitialData } from '../config/PlayerData.js';
-import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS } from '../config/MinigameData.js';
+import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS, DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
 export default class SelectDifficultyScene extends Phaser.Scene {
@@ -14,8 +14,9 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     this.minijuego = data.minijuego;
     this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
     
-    // Flag para saber si venimos de reintento
+    // Flag para saber si venimos de reintento (en principio solo pal slide)
     this.reintento = data.reintento || false;
+    this.remainingTries = data.remainingTries ?? null; // null si no hay valor
   }
 
   create() {
@@ -117,34 +118,39 @@ export default class SelectDifficultyScene extends Phaser.Scene {
 
   seleccionarDificultad(dif) {
     const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
-
-    // Bloquear difícil solo si es primera vez Y NO venimos de reintento
-    if (!this.reintento && esPrimeraVez && dif === 'DIFICIL') {
-        this.mensaje.setText('La dificultad difícil se desbloquea después de jugar una vez.');
-        return;
-    }
-
     const coste = COSTES_DIFICULTAD[dif];
 
-    // Verificar si tiene recursos
+    // Restriccion dificultad dificil la primera vez
+    if (esPrimeraVez && dif === 'DIFICIL') {
+      this.mensaje.setText('La dificultad difícil se desbloquea después de jugar una vez.');
+      return;
+    }
+
+    // Verificar jeroglificos
     if (!this.tieneJeroglificos(coste)) {
       this.mensaje.setText('No tienes suficientes jeroglíficos.');
       return;
     }
 
-    // Restar el coste
     this.pagarJeroglificos(coste);
-
-    //Actualizar texto en pantalla
     this.jeroglificosTexto.setText(
       `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`
     );
 
-    // Marcar progreso solo si no es reintento
-    if (!this.reintento) playerInitialData.minijuegosCompletados[this.minijuego] = true;
+    playerInitialData.minijuegosCompletados[this.minijuego] = true;
 
-    // Lanzar minijuego con la dificultad seleccionada
-    this.scene.start(this.minijuego, { dificultad: dif });
+    // Lanzar minijuego
+    // Si venimos de reintento y es SlideBar, pasamos remainingTries
+    const params = {
+      dificultad: dif,
+      minijuego: this.minijuego
+    };
+
+    if (this.reintento && this.minijuego === 'SlideBar') {
+      params.remainingTries = this.remainingTries; // mantenemos los intentos restantes
+    }
+
+    this.scene.start(this.minijuego, params);
   }
 
   tieneJeroglificos(coste) {

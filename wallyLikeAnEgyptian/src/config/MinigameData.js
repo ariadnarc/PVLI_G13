@@ -79,9 +79,9 @@ export const COSTES_DIFICULTAD = {
 // recompensas minijuegos
 export const MINIGAME_REWARDS = {
   rewardSettings: {
-    easy: { count: 1 },
-    medium: { count: 2 },
-    hard: { count: 3 }
+    FACIL: { count: 1 },
+    MEDIA: { count: 2 },
+    DIFICIL: { count: 3 }
   }
 };
 

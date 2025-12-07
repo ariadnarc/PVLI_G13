@@ -1,3 +1,4 @@
+import { MINIGAME_REWARDS } from '../config/MinigameData.js'; // <-- importamos
 import MenuBase from './MenuBase.js';
 import GlyphTierData from '../config/GlyphTierData.js';
 import BinnacleManager from '../core/BinnacleManager.js';
@@ -19,9 +20,12 @@ export default class PostMinigameMenu extends MenuBase {
       this.difficulty = data?.difficulty || 'FACIL';
       this.minijuego = data?.minijuego;
       this.options = data?.options || {};
+      // Para minijuegos con varios intentos, si vienen en data
+      this.remainingTries = data?.remainingTries;
   }
 
   create() {
+    console.log(">>> PostMinigameMenu dificultad =", this.difficulty);
 
     super.create(); // Inicializa InputManager y ESC
 
@@ -42,16 +46,29 @@ export default class PostMinigameMenu extends MenuBase {
 
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
-      const rewardCount = 1; // puedes personalizar según dificultad
-      const rewards = GlyphTierData.getMultipleRewards(GlyphTierData.difficultyMap[this.difficulty] || 'easy', 1);
+            // Elegimos el count de recompensas segun la dificultad
+            
+            let rewardKey = this.difficulty; // FACIL / MEDIA / DIFICIL
 
-      // Registrar recompensas en bitácora
-      this.binnacle = BinnacleManager.getInstance();
-      this.binnacle.addGlyph(rewards);
+            const rewardCount = MINIGAME_REWARDS.rewardSettings[rewardKey].count;
+
+            const rewards = GlyphTierData.getMultipleRewards(this.difficulty, rewardCount);
+
+            // Registrar en bitacora
+            this.binnacle = BinnacleManager.getInstance();
+            this.binnacle.addGlyph(rewards);
 
       // Mostrar en pantalla
       this.showResults(rewards);
     }
+
+    // Intentos restantes para minijuegos como SlideBar
+        if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
+            this.add.text(width / 2, height / 2 - 100,
+                `Intentos restantes: ${this.remainingTries}`,
+                { fontSize: '22px', color: '#ffffff' }
+            ).setOrigin(0.5);
+        }
 
     //===========BOTONES==========
     this.createMenuButtons();
@@ -101,8 +118,9 @@ export default class PostMinigameMenu extends MenuBase {
 
     entries.forEach(([label, callback], i) => {
       const x = startX + i * spacing;
+
       // Usamos createButton() de MenuBase
-      this.createButton(label, x, centerY, callback, btnStyle);
+      this.createButton(label, x, centerY, () => callback(), btnStyle);
     });
   }
 
