@@ -1,9 +1,14 @@
 import InputManager from '../core/InputManager.js';
 
 export default class MenuBase extends Phaser.Scene {
-  constructor(key, data) {
+
+  constructor(key) {
     super(key);
     this.menuElements = [];
+    this.menuConfig = {};
+  }
+
+  init(data){
     this.menuConfig = data || {};
   }
 
