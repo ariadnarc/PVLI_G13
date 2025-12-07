@@ -32,17 +32,21 @@ export default class SlideBar extends Phaser.Scene{
             keys: ['ESC', 'SPACE']
         });
 
-        //======BARRA, ZONA VERDE Y CURSOR===========
         const w = this.scale.width;
         const h = this.scale.height;
 
+        const bg = this.add.image(w/2, h/2, 'paredBG'); 
+        bg.setDisplaySize(w, h);
+        bg.setDepth(-10);
+        
+        //======BARRA, ZONA VERDE Y CURSOR===========
         // Barra
         this.barWidth = 500;
         this.barHeight = 20;
         this.bar = this.add.rectangle(w/2, h/2, this.barWidth, this.barHeight, 0x444444);
 
         // Zona verde (acierto)
-        this.greenWidth = 120;
+        this.greenWidth = 60;
         this.greenZone = this.add.rectangle(w/2, h/2, this.greenWidth, this.barHeight, 0x00ff00);
 
         // Cursor
