@@ -16,11 +16,14 @@ export default class SlideBar extends Phaser.Scene{
             cursors: false,
             keys: ['ESC', 'SPACE']
         });
-        
-        
 
         
         //=======Parametros segun dificultad=======
+
+        // data.dificultad viene del menú de selección de dificultad
+        // Si no existe, usamos 'easy' por defecto
+        this.difficulty = data.dificultad || 'easy';
+
         const config = DIFICULTADES[data.dificultad].minijuegos.SlideBar;
 
         this.tries = config.intentos;                    //num de intentos permitidos
@@ -71,13 +74,14 @@ export default class SlideBar extends Phaser.Scene{
         this.startGame();
     }
 
-    update(time, delta){
+    update(){
 
         this.inputManager.update();
 
         // Movimiento del cursor
         const dt = this.game.loop.delta / 1000;
         let nextX = this.cursor.x + this.direction * this.cursorSpeed * dt;
+
         const left = this.bar.x - this.barWidth/2;
         const right = this.bar.x + this.barWidth/2;
 
@@ -87,10 +91,11 @@ export default class SlideBar extends Phaser.Scene{
             this.cursor.x = nextX;
         }
 
-// Pulsar SPACE para comprobar acierto
-if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown){
-    this.checkHit();
-}
+        // Pulsar SPACE para comprobar acierto
+        if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown)
+        {
+            this.checkHit();
+        }
     }
 
     //=====INICIO DEL MINIJUEGO========
@@ -109,46 +114,48 @@ if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown){
 
         if(acierto){
             console.log("¡ACIERTO!");
-            this.endGame(true);
+            this.endGame(true); // termina el juego con victoria
         } else {
             console.log("FALLASTE");
             this.tries--;
             if(this.tries <= 0){
-                this.endGame(false);
+                this.endGame(false); // termina el juego con derrota
+            } else{
+                this.updateHUD(); // actualizamos los intentos restantes
             }
         }
     }
 
-    //========SI FALLA==========
-    intentoFallido(){
-        this.tries--;
-
-        if (this.tries <= 0) {
-            this.endGame(false);
-        } else {
-            this.updateHUD();
-        }
-
-    }
-
-    //======TERMINA MINIJUEGO=========
-    endGame(victoria) {
-
-        if(victoria){
-            this.scene.stop(); // Detiene esta escena
-            this.scene.launch('VictoryScene');
-        }
-        else{
-            this.physics.pause(); // Detiene todas las físicas del juego
-            this.time.delayedCall(1000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
-        }
-    }
 
     updateHUD() {
         this.hud.setText(
             `Precisión del Escriba\nIntentos restantes: ${this.tries}`
         );
     }
+
+    //======TERMINA MINIJUEGO=========
+    endGame(victoria) {
+
+        const menuOptions = {
+            // Reintentar reinicia la escena SlideBar con la misma dificultad
+            'Reintentar': () => {
+                this.scene.stop('PostMinigameMenu'); // cerramos el menú
+                this.scene.start('SlideBar', { dificultad: this.difficulty }); // reiniciamos minijuego
+            },
+            // Salir al mapa
+            'Salir al mapa': () => {
+                this.scene.stop('PostMinigameMenu'); // cerramos el menú
+                this.scene.start('MapScene'); // volvemos al mapa
+            }
+        }
+
+        this.scene.start('PostMinigameMenu', {
+            result: victoria ? 'victory' : 'defeat', // si ganó o perdió
+            difficulty: this.difficulty,            // dificultad actual
+            minigameId: 'SlideBar',                 // id del minijuego
+            options: menuOptions                     // botones del menú
+        });
+    };
 
 
 }
