@@ -39,6 +39,7 @@ export default class PostMinigameMenu extends MenuBase {
     const titleColor = this.result === 'victory' ? '#FFD700' : '#FF4444';
 
     this.add.text(width / 2, height / 2 - 180, titleText, {
+      fontFamily: 'Filgaia',
       fontSize: '36px',
       color: titleColor,
       fontStyle: 'bold',
@@ -66,7 +67,7 @@ export default class PostMinigameMenu extends MenuBase {
         if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
             this.add.text(width / 2, height / 2 - 100,
                 `Intentos restantes: ${this.remainingTries}`,
-                { fontSize: '22px', color: '#ffffff' }
+                { fontFamily: 'Filgaia',fontSize: '22px', color: '#ffffff' }
             ).setOrigin(0.5);
         }
 
@@ -80,6 +81,7 @@ export default class PostMinigameMenu extends MenuBase {
     const tierColors = { S: '#ffcc00', A: '#ff6666', B: '#66ccff' };
 
     this.add.text(width / 2, height / 2 - 50, 'Has conseguido:', {
+      fontFamily: 'Filgaia',
       fontSize: '22px',
       color: '#fff',
     }).setOrigin(0.5);
@@ -90,6 +92,7 @@ export default class PostMinigameMenu extends MenuBase {
       this.add.text(width / 2, height / 2 + 20 + offsetY,
         `x${count} Jeroglífico(s) Tier ${tier}`,
         {
+          fontFamily: 'Filgaia',
           fontSize: '24px',
           color: tierColors[tier] || '#fff',
           fontStyle: 'bold',
@@ -104,25 +107,23 @@ export default class PostMinigameMenu extends MenuBase {
     const { width, height } = this.sys.game.config;
     const centerY = height / 2 + 150;
 
-    const btnStyle = {
-      fontSize: '22px',
-      backgroundColor: '#ddd',
-      color: '#000',
-      padding: { x: 15, y: 8 },
-    };
-
     const entries = Object.entries(this.options);
-    const spacing = 220;
+    const spacing = 300;
     const totalWidth = (entries.length - 1) * spacing;
     const startX = width / 2 - totalWidth / 2;
 
     entries.forEach(([label, callback], i) => {
       const x = startX + i * spacing;
-
-      // Usamos createButton() de MenuBase
-      this.createButton(label, x, centerY, () => callback(), btnStyle);
-    });
-  }
+      this.createButton(
+        label,
+        x,
+        centerY,
+        () => callback(),
+        { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
+        'fondoBoton' // aquí va la clave del sprite cargado en preload()
+        );
+      });
+    }
 
   onEscape() {
     

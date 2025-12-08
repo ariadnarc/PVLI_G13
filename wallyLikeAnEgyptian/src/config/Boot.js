@@ -13,6 +13,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('mainmenuBG', 'wallyLikeAnEgyptian/assets/ui/mainmenuBG.jpg');
     this.load.image('selectdiffBG', 'wallyLikeAnEgyptian/assets/ui/selectdiffBG.jpg');
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
+    this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png')
 
 
     // === IMÁGENES Y SPRITES ===

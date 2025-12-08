@@ -147,7 +147,7 @@ export default class SlideBar extends Phaser.Scene{
         };
 
         // Salir al mapa
-        menuOptions['Salir al mapa'] = () => {
+        menuOptions['Salir'] = () => {
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
             this.scene.start('MapScene');

@@ -49,21 +49,61 @@ export default class MenuBase extends Phaser.Scene {
   /**
    * Crear botón genérico
    */
-  createButton(label, x, y, callback, style = {}) {
-    const btn = this.add.text(x, y, label, {
-      fontSize: '22px',
-      color: style.color || '#000',
-      backgroundColor: style.backgroundColor || '#ddd',
-      padding: { x: 12, y: 6 },
-      align: 'center',
-      ...style,
-    }).setOrigin(0.5);
+  createButton(label, x, y, callback, style = {}, spriteKey = null) {
+    let container;
 
-    this.inputManager.registerButton(btn, callback);
+    if(spriteKey) {
+        // Crear el sprite de fondo
+        const bg = this.add.image(0, 0, spriteKey).setOrigin(0.5);
 
-    this.menuElements.push(btn);
-    return btn;
-  }
+        // Escalar si se pasa en style
+        if(style.width && style.height){
+            bg.setDisplaySize(style.width, style.height);
+        }
+
+        // Crear el texto encima
+        const txt = this.add.text(0, 0, label, {
+            fontSize: style.fontSize || '22px',
+            fontFamily: 'Filgaia',
+            color: style.color || '#634830ff',
+            align: 'center',
+            ...style
+        }).setOrigin(0.5);
+
+        // Agrupar en un container
+        container = this.add.container(x, y, [bg, txt]);
+
+        // Interactividad
+        bg.setInteractive({ useHandCursor: true });
+        bg.on('pointerdown', callback);
+
+        // Hover opcional
+        if(style.hoverTint) {
+            bg.on('pointerover', () => bg.setTint(style.hoverTint));
+            bg.on('pointerout', () => bg.clearTint());
+        }
+
+    } else {
+        // Si no se pasa spriteKey, usar texto con backgroundColor como antes
+        const txt = this.add.text(x, y, label, {
+            fontSize: style.fontSize || '22px',
+            fontFamily: 'Filgaia',
+            color: style.color || '#000',
+            backgroundColor: style.backgroundColor || '#ddd',
+            padding: { x: 12, y: 6 },
+            align: 'center',
+            ...style,
+        }).setOrigin(0.5);
+
+        this.inputManager.registerButton(txt, callback);
+        container = txt;
+    }
+
+    // Guardar referencia para limpiar
+    this.menuElements.push(container);
+
+    return container;
+}
 
   /**
    * Cleanup

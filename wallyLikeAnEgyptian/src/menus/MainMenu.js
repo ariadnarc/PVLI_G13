@@ -36,14 +36,16 @@ export default class MainMenu extends MenuBase {
       })
       .setOrigin(0.5);
 
-    this.createButton('Jugar', 450, 300, () => {
+    this.createButton('Jugar', 450, 320, () => {
       this.scene.start('MapScene');
-    });
+    },{ width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
+    'fondoBoton');
 
-    this.createButton('Ajustes', 450, 370, () => {
+    this.createButton('Ajustes', 450, 420, () => {
       this.scene.launch('SettingsMenu', { parentScene: 'MainMenu' });
       this.scene.pause();
-    });
+    }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
+    'fondoBoton');
   }
 
   // MainMenu: ESC no hace nada

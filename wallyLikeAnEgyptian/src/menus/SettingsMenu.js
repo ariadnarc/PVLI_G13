@@ -12,9 +12,10 @@ export default class SettingsMenu extends MenuBase {
     this.soundValue = this.game.sound.volume;
 
     // Fondo
-    this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0);
+    this.add.rectangle(0, 0, width, height, 0x00000010, 0.5).setOrigin(0);
 
     this.add.text(width / 2, 100, 'AJUSTES DE SONIDO', {
+      fontFamily: 'Filgaia',
       fontSize: '28px',
       color: '#ffffff',
       fontStyle: 'bold',
@@ -23,7 +24,7 @@ export default class SettingsMenu extends MenuBase {
     // Texto volumen
     this.volumeText = this.add.text(width / 2, 180,
       `Volumen: ${(this.soundValue * 100).toFixed(0)}%`,
-      { fontSize: '22px', color: '#ffffff' }
+      { fontFamily: 'Filgaia',fontSize: '22px', color: '#ffffffff' }
     ).setOrigin(0.5);
 
     // Slider
@@ -52,7 +53,8 @@ export default class SettingsMenu extends MenuBase {
     // Botón Volver
     this.createButton("Volver", width / 2, 420, () => {
       this.onEscape(); // reusar comportamiento por defecto
-    });
+    }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
+    'fondoBoton');
   }
 
   update() {
