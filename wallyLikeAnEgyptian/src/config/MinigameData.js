@@ -42,7 +42,7 @@ export const DIFICULTADES = {
       },
       SlideBar: {
         intentos: 2,
-        velocidadBarra: 250,
+        velocidadBarra: 300,
       }
     },
     probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
@@ -62,7 +62,7 @@ export const DIFICULTADES = {
       },
       SlideBar: {
         intentos: 1,
-        velocidadBarra: 300,
+        velocidadBarra: 370,
       }
     },
     probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }

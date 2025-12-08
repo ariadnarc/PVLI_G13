@@ -19,17 +19,16 @@ export default class MainMenu extends MenuBase {
     // this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);
 
     this.add.text(450, 150, 'WALLY LIKE AN EGYPTIAN', {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Filgaia',
       fontSize: '40px',
       color: '#634830ff',
-      fontStyle: 'bold',
     }).setOrigin(0.5);
 
     this.add.text(450, 223,
       'La entrega del café más importante de tu vida ☕',
       {
-        fontFamily: 'Comfortaa',
-        fontSize: '27px',
+        fontFamily: 'Filgaia',
+        fontSize: '23px',
         color: '#ddd',
         fontStyle: 'bold',
         wordWrap: { width: width - 100 },

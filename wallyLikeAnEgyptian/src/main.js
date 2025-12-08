@@ -31,28 +31,31 @@ import SlideBar from './scenes/mjSlide.js';
 // esto q es?? (pregunta Juan)
 import MovingObject from './core/MovingObject.js';
 
-const config = {
-  type: Phaser.CANVAS,
-  width: 1200,
-  height: 600,
-  backgroundColor: '#e87722',
-  canvas: document.getElementById('gameCanvas'),
-  physics: {
-  default: 'arcade',
-  arcade: {
-    gravity: { y: 0 },  // sin gravedad
-    debug: true        // hitboxes
-    }
-  }, // declaramos físcas globalmente
-  scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame,
-          SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
-          LockPick, CrocoShoot, SlideBar,
-          PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
-};
+document.fonts.load('16px "Filgaia"').then(() => {
 
-// Condicional que obliga a buscar el canvas q tenemos en el index
-if (config.canvas) {
-  new Phaser.Game(config);
-} else {
-  console.error("No se encontró el canvas con id 'gameCanvas'");
-}
+  const config = {
+    type: Phaser.CANVAS,
+    width: 1200,
+    height: 600,
+    backgroundColor: '#e87722',
+    canvas: document.getElementById('gameCanvas'),
+    physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0 },  // sin gravedad
+      debug: true        // hitboxes
+      }
+    }, // declaramos físcas globalmente
+    scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame,
+            SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
+            LockPick, CrocoShoot, SlideBar,
+            PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
+  };
+
+  // Condicional que obliga a buscar el canvas q tenemos en el index
+  if (config.canvas) {
+    new Phaser.Game(config);
+  } else {
+    console.error("No se encontró el canvas con id 'gameCanvas'");
+  }
+})

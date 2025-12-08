@@ -43,11 +43,14 @@ export default class SlideBar extends Phaser.Scene{
         // Barra
         this.barWidth = 500;
         this.barHeight = 20;
-        this.bar = this.add.rectangle(w/2, h/2, this.barWidth, this.barHeight, 0x444444);
+        this.bar = this.add.image(w/2, h/2, 'papiroBar');
+        this.bar.setDisplaySize(this.barWidth, this.barHeight); 
 
         // Zona verde (acierto)
-        this.greenWidth = 60;
-        this.greenZone = this.add.rectangle(w/2, h/2, this.greenWidth, this.barHeight, 0x00ff00);
+        
+        this.greenZone = this.add.sprite(w/2, h/2, 'egyptTiles', 22);
+        this.greenZone.setScale(2);
+        
 
         // Cursor
         this.cursor = this.add.sprite(w/2 - this.barWidth/2, h/2, 'egyptTiles', 20).setScale(2);
