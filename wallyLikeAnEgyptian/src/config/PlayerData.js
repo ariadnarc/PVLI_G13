@@ -6,8 +6,8 @@ export const playerInitialData = {
   */
   posInicial: { x: 400, y: 350}, // pos en el mapa
   speed: 200, // vel player
-  spriteName: 'playerSprite', // nombre del asset
-  scale: 0.05,
+  spriteName: 'player', // nombre del asset
+  scale: 1.25,
   glyphs: { // Guardamos el progreso general del jugador
     S: 0,
     A: 0,

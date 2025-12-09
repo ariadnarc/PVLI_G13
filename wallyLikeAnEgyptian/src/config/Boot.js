@@ -17,7 +17,10 @@ export default class Boot extends Phaser.Scene {
 
 
     // === IMÁGENES Y SPRITES ===
-    this.load.image('playerSprite', 'wallyLikeAnEgyptian/assets/sprites/playerMapa.png'); // sprite para el juego
+    this.load.spritesheet('player', 'wallyLikeAnEgyptian/assets/sprites/playerSpriteSheet.png', {
+    frameWidth: 64,   
+    frameHeight: 64   
+    });
     this.load.image('playerUndertale', 'wallyLikeAnEgyptian/assets/sprites/playerUndertale.png'); // sprite para el mjUndertale
 
     this.load.spritesheet('egyptTiles', 'wallyLikeAnEgyptian/assets/sprites/egypt_tomb.png', {   
