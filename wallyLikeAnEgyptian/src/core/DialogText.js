@@ -18,8 +18,8 @@ export default class DialogText{
 		this.padding = opts.padding || 32;
 		this.closeBtnColor = opts.closeBtnColor || 'darkgoldenrod';
 		this.dialogSpeed = opts.dialogSpeed || 3;
-		this.fontSize = opts.fontSize || 200;
-		this.fontFamily = opts.fontFamily || undefined;
+		this.fontSize = opts.fontSize || 28;
+		this.fontFamily = opts.fontFamily || 'Filgaia';
 		
 		// se usa para animar el texto
 		this.eventCounter = 0;
@@ -28,12 +28,12 @@ export default class DialogText{
 		this.visible = true;
 		
 		// texto que hay en la ventana
-		this.text;
+		this.text = null;
 		
 		// texto que se renderizará en la ventana
-		this.dialog;
-		this.graphics;
-		this.closeBtn;
+		this.dialog = null;
+		this.graphics = null;
+		this.closeBtn = null;
 		
 		//Crea la ventana de dialogo
 		this._createWindow();
@@ -42,12 +42,9 @@ export default class DialogText{
 	// Método que cierra y abre la ventana de diálogo
 	toggleWindow() {
 		this.visible = !this.visible;
-		if (this.text) 
-			this.text.visible = this.visible;
-		if (this.graphics) 
-			this.graphics.visible = this.visible;
-		if (this.closeBtn) 
-			this.closeBtn.visible = this.visible;
+		if (this.text) this.text.visible = this.visible;
+		if (this.graphics) this.graphics.visible = this.visible;
+		if (this.closeBtn) this.closeBtn.visible = this.visible;
 	}
 
 	// con esta función se nos permite añadir texto a la ventana
@@ -61,8 +58,7 @@ export default class DialogText{
 		this.dialog = text.split('');
 
 		//se mira si hay otro evento de tiempo corriendo y lo elimina
-		if (this.timedEvent) 
-			this.timedEvent.remove();
+		if (this.timedEvent) this.timedEvent.remove();
 
 		//esta variable es un string vacio si animate es true, de otra manera es la variable text
 		var tempText = animate ? '' : text;
@@ -71,11 +67,12 @@ export default class DialogText{
 		this._setText(tempText); 
 
 		if (animate) {
-			let delay= Math.max(1,150-(this.dialogSpeed*30));
+
+			const delay= Math.max(1,150-(this.dialogSpeed*30));
 			//se crea un evento temporizado
 			this.timedEvent = this.scene.time.addEvent({
 				//delay indica el tiempo en ms hasta que se empieza el evento      
-				delay: delay,
+				delay,
 				//se llama a la funcion de animar el texto
 				//Cada vez que se llama a la funcion de animar se aumenta el eventCounter
 				callback: this._animateText,
@@ -104,12 +101,7 @@ export default class DialogText{
 		var y = height - this.windowHeight - this.padding;
 		var rectWidth = width - (this.padding * 2);
 		var rectHeight = this.windowHeight;
-		return {
-			x,
-			y,
-			rectWidth,
-			rectHeight
-		};
+		return { x, y, rectWidth, rectHeight };
 	}
 
 	// Crea la ventana interior, donde se muestra el texto 
@@ -133,11 +125,11 @@ export default class DialogText{
 	// Método que crea la ventana de diálogo
 	_createWindow() {
 		//Obtenemos las dimensiones del juego
-		var gameHeight = this._getGameHeight();
-		var gameWidth = this._getGameWidth();
+		const gameHeight = this._getGameHeight();
+		const gameWidth = this._getGameWidth();
 
 		//Se calcula la dimension de la ventana de diálogo
-		var dimensions = this._calculateWindowDimensions(gameWidth, gameHeight);
+		const dimensions = this._calculateWindowDimensions(gameWidth, gameHeight);
 		this.graphics = this.scene.add.graphics();
 		
 		//Se crean las ventanas interior y exterior
@@ -150,7 +142,7 @@ export default class DialogText{
 
 	// Con el siguiente código se crea el boton de cerrar la ventana de diálogo
 	_createCloseModalButton() {
-		var self = this;
+		const self = this;
 		this.closeBtn = this.scene.make.text({
 			//se crea el boton con las posiciones x e y siguientes
 			// se calculan de forma dinámica para que funcione para diferentes tamaños de pantalla
@@ -159,34 +151,28 @@ export default class DialogText{
 			
 			//el boton queda representado como una X con su estilo debajo
 			text: 'X',
-			style: {
-				font: 'bold 12px TimesNewRoman',
-				fill: this.closeBtnColor
-			}
+			style: { font: 'bold 12px TimesNewRoman', fill: this.closeBtnColor }
 		});
 		
 		this.closeBtn.setInteractive(); //hace interactuable el boton de cierre
-		this.closeBtn.on('pointerover', function () {
-			this.setTint(0xff0000); //cuando el cursor se encuentra encima se cambia de color
-		});
-		this.closeBtn.on('pointerout', function () {
-			this.clearTint(); //vuelve al color original al quitar el cursor
-		});
+
+		this.closeBtn.on('pointerover', function () { this.setTint(0xff0000);}); //cuando el cursor se encuentra encima se cambia de color
+		
+		this.closeBtn.on('pointerout', function () { this.clearTint(); });//vuelve al color original al quitar el cursor
+		
 		this.closeBtn.on('pointerdown', function () {
 			self.toggleWindow(); //se llama al método que cierra o muestra la ventana de diálogo
 			
 			// elimina el game object con el texto y borra el evento
-			if (self.timedEvent) 
-				self.timedEvent.remove();
-			if (self.text) 
-				self.text.destroy();
+			if (self.timedEvent) self.timedEvent.remove();
+			if (self.text) self.text.destroy();
 		});
 	}
 
 	// Se crea el borde del botón
 	_createCloseModalButtonBorder() {
-		var x = this._getGameWidth() - this.padding - 20;
-		var y = this._getGameHeight() - this.windowHeight - this.padding;
+		const x = this._getGameWidth() - this.padding - 20;
+		const y = this._getGameHeight() - this.windowHeight - this.padding;
 		
 		//Se crea el borde del botón sin relleno
 		this.graphics.strokeRect(x, y, 20, 20);
@@ -200,19 +186,17 @@ export default class DialogText{
 		this.text.setText(this.text.text + this.dialog[this.eventCounter - 1]);
 		
 		//Cuando eventCounter sea igual a la longitud del texto, se detiene el evento
-		if (this.eventCounter === this.dialog.length) {
-			this.timedEvent.remove();
-		}
+		if (this.eventCounter === this.dialog.length) this.timedEvent.remove();
+		
 	}
 
 	// Calcula la pos del texto en la ventana
 	_setText(text) {
 		// Resetea el game object del texto si ya estaba seteada la propiedad del texto del plugin
-		if (this.text) 
-			this.text.destroy();
+		if (this.text) this.text.destroy();
 
-		var x = this.padding + 10;
-		var y = this._getGameHeight() - this.windowHeight - this.padding + 10;
+		const x = this.padding + 10;
+		const y = this._getGameHeight() - this.windowHeight - this.padding + 10;
 
 		//Crea un game object que sea texto
 		this.text = this.scene.make.text({

@@ -6,11 +6,11 @@
         },
         {
             "speaker":"Narrador",
-            "text":"El silencio es pesado... y la jornada esta a punto de terminar, por fin "
+            "text":"El silencio es pesado... y la jornada está por fin a punto de terminar."
         },
         {
             "speaker":"Mariano",
-            "text":"¿Cafe para Wally?"
+            "text":"¿Café para Wally?"
         },
         {
             "speaker":"Mariano",
@@ -18,15 +18,15 @@
         },
         {
             "speaker":"Narrador",
-            "text":"El silencio fue lo unico que contesto a Mariano."
+            "text":"El silencio fue lo único que contesto a Mariano."
         },
         {
             "speaker":"Narrador",
-            "text":"Mariano miro a la ventana por si Wally estaba ahi, pero no quedaba nadie en la cafeteria"
+            "text":"Mariano miró a la ventana por si Wally estaba ahí, pero no quedaba nadie en la cafetería."
         },
         {
             "speaker":"Mariano",
-            "text":"Menos mal que no he cerrado la bolsa de basura"
+            "text":"Menos mal que no he cerrado la bolsa de basura."
         },
         {
             "speaker":"Desconocido",
@@ -34,11 +34,11 @@
         },
         {
             "speaker":"Mariano",
-            "text":"Seguro que es una broma de mis compañeros, saben que me da miedo hacer el cierre a estas horas"
+            "text":"Seguro que es una broma de mis compañeros, saben que me da miedo hacer el cierre a estas horas."
         },
         {
             "speaker":"Narrador",
-            "text":"Mariano se volvio para tirar el cafe sin dueño "
+            "text":"Mariano se volvió para tirar el cafe sin dueño."
         },
         {
             "speaker":"Desconocido",
@@ -46,67 +46,67 @@
         },
         {
             "speaker":"Desconocido",
-            "text":"Soy yo, el cafe corto"
+            "text":"Soy yo, el café corto."
         },
         {
             "speaker":"Narrador",
-            "text":"Mariano se quedó mirando al cafe. Sabía que estaba cansado, pero no tanto como para tener alucinaciones. Decidio contestarle al cafe, porque ante todo, era un señor educado. "
+            "text":"Mariano se quedó mirando al café. Sabía que estaba cansado, pero no tanto como para tener alucinaciones. Decidió contestarle al café, porque ante todo, era un señor educado."
         },
         {
             "speaker":"Mariano",
-            "text":"Te tengo que tirar, cafe. Tengo que cerrar e irme a casa. Si no voy a quedarme encerrado aquí toda la noche"
+            "text":"Te tengo que tirar, café. Tengo que cerrar e irme a casa. Si no voy a quedarme encerrado aquí toda la noche."
         },
         {
-            "speaker":"Cafe",
+            "speaker":"Café",
             "text":"¿Seguro?"
         },
         {
             "speaker":"Mariano",
-            "text":"Si"
+            "text":"Sí."
         },
         {
-            "speaker":"Cafe",
-            "text":"Ejcucha Mariano, he detenido el tiempo"
-        },
-        {
-            "speaker":"Mariano",
-            "text":"¿Eres loco? ¿Como va a detener el tiempo?"
-        },
-        {
-            "speaker":"Cafe",
-            "text":"Mira te estoy ayudando antes de que arruines tu vida, y se te rompan todos los dientes"
-        },
-        {
-            "speaker":"Cafe",
-            "text":"Ese tal Wally es un critico de cafeterias muy reconocido. Desde que le atropellaron tiene muy poco sentido de la orientacion"
-        },
-        {
-            "speaker":"Cafe",
-            "text":"Vengo de un futuro donde me tiras y tu vida se destruye. Adios a tu sueño de abrir una cafeteria, adios a tu ambicion de Aquiles"
+            "speaker":"Café",
+            "text":"Escucha Mariano, he detenido el tiempo."
         },
         {
             "speaker":"Mariano",
-            "text":"Vale ¿como lo encuentro?"
+            "text":"¿Está loco? ¿Como va a detener el tiempo?"
         },
         {
-            "speaker":"Cafe",
-            "text":"Wally no desaparece sin mas siempre deja pistas"
+            "speaker":"Café",
+            "text":"Mira, te estoy ayudando antes de que arruines tu vida y se te rompan todos los dientes."
+        },
+        {
+            "speaker":"Café",
+            "text":"Ese tal Wally es un crítico de cafeterías muy reconocido. Desde que le atropellaron tiene muy poco sentido de la orientación."
+        },
+        {
+            "speaker":"Café",
+            "text":"Vengo de un futuro donde me tiras y tu vida se destruye. Adiós a tu sueño de abrir una cafetería, adios a tu ambición de Aquiles."
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Vale ¿Cómo lo encuentro?"
+        },
+        {
+            "speaker":"Café",
+            "text":"Wally no desaparece sin más... siempre deja pistas."
         },
         {
             "speaker": "Narrador",
-            "text": "Entonces algo llamó su atención: un papel arrugado enncima de la barra"
+            "text": "Algo llamó la atención de Mariano: un papel arrugado enncima de la barra."
         },
         {
             "speaker":"Mariano",
-            "text":"¿Que es eso?"
+            "text":"¿Qué es esto?"
         },
         {
             "speaker": "Narrador",
-            "text": "Mariano abrio el papael para descubrir una serie de jerogrificos, reconocio algunos de su visita por la piramide. Pero no podia leer el mensaje "
+            "text": "Mariano abrió el papel para descubrir una serie de jeroglíficos. Reconoció algunos de su visita por la pirámide, pero no podía leer el mensaje."
         },
         {
-            "speaker":"Cafe",
-            "text":"Desbloquea el significado de cada jerogrifico para saber el significado completo de la nota. Y encontrar a Wally"
+            "speaker":"Café",
+            "text":"Desbloquea el significado de cada jeroglífico para saber el contenido completo de la nota. Y encontrar a Wally, por supuesto."
         }
 ]
 }
