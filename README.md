@@ -9,7 +9,7 @@
   	Público objetivo  
   	Cartas a utilizar  
   	Objetivo y mecánicas  
-  	Estilo narrativo, lore y narrativa  
+  	Estilo visual, lore y narrativa  
   	Juegos inspirados  
 * Redes sociales  
 * Repositorio de Github  
@@ -77,95 +77,21 @@ Para lograrlo, debe **descifrar jeroglíficos** y desbloquear pistas hasta encon
 - Dificultad que escala según el progreso.  
 - Bonificaciones por completar minijuegos de forma perfecta (mejores jeroglíficos según tier).
 
+#### Mecánica narrativa
+- Bitácora que registra los jeroglíficos encontrados. Esta se abre pulsando una tecla.
+
 ---
 
 ### 📋 Lista de minijuegos
 
-  ***Barra:*** Juego de exactitud y reflejos. Una barra con un círculo en movimiento lateral continuo con una franja de parada. Objetivo dejar el círculo en la franja. La dificultad crece disminuyendo el tamaño de la franja y aumentando la velocidad del círculo.   
-  ***Esquivar:*** El jugador se enfrenta a un reto de reflejos y precisión dentro de un área cerrada. Su objetivo es sobrevivir durante un tiempo limitado mientras evita una lluvia constante de proyectiles que se dirigen hacia él desde todas las direcciones. Este minijuego pone a prueba la agilidad del jugador y su capacidad para mantener el control bajo presión.  
-  Mecánicas principales:  
-* El jugador controla un pequeño rectángulo azul que puede moverse libremente dentro de un área delimitada.
+| Minijuego | Descripción | Mecánicas principales |
+|-----------|------------|--------------------|
+| Barra | Exactitud y reflejos | Barra con un escarabajo sagrado en movimiento; detener encima de la gema. Dificultad aumenta reduciendo la franja y aumentando velocidad. |
+| Esquivar | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
+| Luces | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
+| Balón y portero | Precisión | Introducir el balón en hueco sin que el portero lo detenga; dificultad aumenta velocidad del portero. |
 
-* El movimiento se realiza mediante las teclas de dirección (flechas) del teclado.
-
-* A intervalos regulares, se generan proyectiles (rectángulos naranjas) fuera del área de juego.
-
-* Cada proyectil se lanza en dirección al jugador, con velocidad y frecuencia crecientes a medida que avanza el tiempo.
-
-* Los proyectiles pueden tener comportamientos aleatorios:
-
-  * Algunos rebotan contra los bordes del área.
-
-  * Otros pueden rotar mientras se desplazan.
-
-  Condiciones de victoria y derrota:
-
-* El jugador gana si logra sobrevivir durante todo el tiempo establecido (3 segundos en la versión actual).
-
-* El jugador cuenta con 3 puntos de vida.
-
-* Cada impacto de un proyectil reduce una vida.
-
-* Si las vidas llegan a 0 antes de que termine el tiempo, el jugador pierde.
-
-* Al ganar, se lanza la escena de VictoriaUI.
-
-* Al perder, el minijuego se reinicia automáticamente tras unos segundos.
-
-  Elementos visuales y de interfaz:  
-* El área de juego está delimitada por un marco blanco sobre fondo oscuro.
-
-* Se muestra en pantalla una barra de vida roja con su fondo gris y el texto “Vida: X”.
-
-* También se visualiza un temporizador que indica el tiempo restante para sobrevivir.
-
-* Los proyectiles tienen distintos tamaños y direcciones, aportando variedad visual y dificultad progresiva.  
-  ***Luces:*** El jugador participa en un desafío de memoria visual ambientado en una cuadrícula de jeroglíficos antiguos. El objetivo es observar y repetir correctamente una secuencia de símbolos que se iluminan temporalmente. A medida que avanzan las rondas, la complejidad de las secuencias aumenta, poniendo a prueba la concentración y la capacidad de retención del jugador.  
-  **Mecánicas principales:**  
-* El tablero está compuesto por una cuadrícula de **3x3 casillas**, cada una representada por una imagen de un jeroglífico.
-
-* En cada ronda, el juego muestra una **secuencia aleatoria de luces** (resaltando casillas en orden).
-
-* El jugador debe **repetir la secuencia exacta** tocando las casillas correspondientes en el mismo orden.
-
-* Si el jugador falla en algún paso, **pierde una vida**.
-
-* El jugador cuenta con **2 vidas** en total.
-
-* Si se falla una ronda pero aún quedan vidas, se repite una nueva secuencia con el mismo número de pasos.
-
-* El número de luces por ronda es progresivo:
-
-  * **Ronda 1:** 3 luces
-
-  * **Ronda 2:** 4 luces
-
-  * **Ronda 3:** 5 luces
-
-  **Condiciones de victoria y derrota:**
-
-* El jugador **gana** al completar correctamente las tres rondas.
-
-* El jugador **pierde** si agota las dos vidas antes de finalizar la tercera ronda.
-
-* En caso de derrota, el jugador es devuelto a la escena principal del mapa.  
-  **Elementos visuales y de interacción:**  
-* Cada casilla representa un jeroglífico con fondo blanco.
-
-* El parpadeo de las casillas se muestra mediante un **efecto de brillo o cambio de transparencia**.
-
-* La interfaz muestra en todo momento el **número de vidas restantes** y la **ronda actual**.
-
-* El jugador interactúa **con el ratón o pantalla táctil**, seleccionando las casillas en orden.  
-  ***Balón y portero:*** Juego de precisión. Un “portero” se mueve de manera lateral intentando defender una “portería”. Objetivo introducir un balón en el hueco donde no esté el “portero”, apuntando y dando suficiente potencia. La dificultad crece aumentando la velocidad del “portero”.
-
-  Mecánicas **narrativas**:  
-* Bitácora que registra pistas encontradas. Esta se abre pulsando una tecla.
-
-  Mecánicas **Jefe final**:
-
-* Combinación de todos los tipos de minijuegos enfrentados.  
-* Fases que cambian según las pistas recolectadas.	
+---
 
 ### 📜 Sistema de Jeroglíficos
 
