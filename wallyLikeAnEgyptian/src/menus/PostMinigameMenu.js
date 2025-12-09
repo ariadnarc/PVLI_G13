@@ -120,7 +120,7 @@ export default class PostMinigameMenu extends MenuBase {
         centerY,
         () => callback(),
         { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
-        'fondoBoton' // aquí va la clave del sprite cargado en preload()
+        'fondoBoton' 
         );
       });
     }

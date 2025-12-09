@@ -1,8 +1,9 @@
 import { playerInitialData } from '../config/PlayerData.js';
 import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS, DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
+import MenuBase from '../menus/MenuBase.js';
 
-export default class SelectDifficultyScene extends Phaser.Scene {
+export default class SelectDifficultyScene extends MenuBase {
 
   constructor() {
     super('SelectDifficultyScene');
@@ -20,17 +21,12 @@ export default class SelectDifficultyScene extends Phaser.Scene {
   }
 
   create() {
+    super.create(); //esto es lo q inicializa el input por heredar de menubase
+
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
     const { width, height } = this.sys.game.config;
-
-    // === Instancia del InputManager ===
-    this.inputManager = new InputManager(this);
-    this.inputManager.configure({
-        mouse: true,
-        keys: ['ESC']
-    });
 
     // === FONDO ===
     const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
@@ -38,15 +34,15 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     bg.setDepth(-10);
 
     // === Título ===
-    this.add.text(centerX / 2.25, 90, this.nombreMinijuego, {
-      fontFamily: 'Comfortaa',
+    this.add.text(centerX, 90, this.nombreMinijuego, {
+      fontFamily: 'Filgaia',
       fontSize: '48px',
       color: '#634830ff',
       align: 'left',
     }).setOrigin(0.5);
 
-    this.add.text(centerX / 2.25, 150, 'Selecciona la dificultad', {
-      fontFamily: 'Comfortaa',
+    this.add.text(centerX / 2.25, 300, 'Selecciona la dificultad', {
+      fontFamily: 'Filgaia',
       fontSize: '24px',
       color: '#ffd98d',
     }).setOrigin(0.5);
@@ -54,9 +50,9 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     // === Mostrar inventario actual ===
     this.jeroglificosTexto = this.add.text(
       centerX / 2.25,
-      200,
+      350,
       `Tus jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`,
-      { fontSize: '20px', color: '#ffffff' }
+      { fontFamily: 'Filgaia',fontSize: '20px', color: '#ffffff' }
     ).setOrigin(0.5);
 
     // === Dificultades ===
@@ -64,48 +60,29 @@ export default class SelectDifficultyScene extends Phaser.Scene {
     const colores = [0xa46a3b, 0x8b5326, 0x774224];
 
     dificultades.forEach((dif, i) => {
-      const y = 220 + i * 120;
+      const y = 240 + i * 120;
 
-      // Crear fondo del botón
-      const rect = this.add.rectangle(0, 0, 250, 60, colores[i]).setOrigin(0.5);
-
-      // Texto dentro del botón
-      const txt = this.add.text(0, 0, dif, {
-        fontSize: '22px',
-        color: '#ddd',
-        fontStyle: 'bold',
-      }).setOrigin(0.5);
-
-      // Crear un CONTENEDOR que será tu botón real
-      const button = this.add.container(800, y, [rect, txt]);
-      // Darle tamaño para interacciones
-      button.setSize(250, 60);
-
-      const hoverColor = 0xc88853;
-      const defaultColor = colores[i];
-      const hoverScale = 1.10;
-
-      // Hover
-      button.on('pointerover', () => {
-        rect.setFillStyle(hoverColor);
-        button.setScale(hoverScale);
-      });
-
-      button.on('pointerout', () => {
-        rect.setFillStyle(defaultColor);
-        button.setScale(1);
-      });
-
-      // Texto abajo (el coste)
+      //coste de cada dificultad
       const costeTexto = this.getCosteTexto(dif);
-      this.add.text(800, y + 50, costeTexto, {
-        fontSize: '18px',
-        color: '#ddd',
-        fontStyle: 'bold',
+      this.add.text(800, y + 45, costeTexto, {
+        fontFamily: "Filgaia",
+        fontSize: "18px",
+        color: "#ddd",
       }).setOrigin(0.5);
-
-      // Registrar SOLO el container como botón en el InputManager
-      this.inputManager.registerButton(button, () => this.seleccionarDificultad(dif));
+      
+      this.createButton(
+        dif,
+        800,
+        y,
+        () => this.seleccionarDificultad(dif),
+        {
+          width: 200,
+          height: 60,
+          fontFamily: "Filgaia",
+          fontSize: "25px",
+          hoverTint: 0xffb679,
+        }, 'fondoBoton'
+      );
     });
 
   }
@@ -113,7 +90,7 @@ export default class SelectDifficultyScene extends Phaser.Scene {
   getCosteTexto(dif) {
     const c = COSTES_DIFICULTAD[dif];
     if (c.S + c.A + c.B === 0) return 'Gratis';
-    return `Coste: ${c.S} S | ${c.A} A | ${c.B} B`;
+    return `Coste: ${c.S} S , ${c.A} A , ${c.B} B`;
   }
 
   seleccionarDificultad(dif) {

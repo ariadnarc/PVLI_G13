@@ -61,6 +61,10 @@ export default class MenuBase extends Phaser.Scene {
             bg.setDisplaySize(style.width, style.height);
         }
 
+        // esta es escala original del sprite pa despues del hover
+        const originalScaleX = bg.scaleX;
+        const originalScaleY = bg.scaleY;
+
         // Crear el texto encima
         const txt = this.add.text(0, 0, label, {
             fontSize: style.fontSize || '22px',
@@ -77,7 +81,39 @@ export default class MenuBase extends Phaser.Scene {
         bg.setInteractive({ useHandCursor: true });
         bg.on('pointerdown', callback);
 
-        // Hover opcional
+        // Hover opcional animado
+        bg.on('pointerover', () => {
+            // Animacion de escala
+            this.tweens.add({
+                targets: bg,
+                scaleX: originalScaleX * 1.05,
+                scaleY: originalScaleY * 1.05,
+                duration: 120,
+                ease: 'Power2'
+            });
+
+            // Tint si no hay hoverTint definido
+            if (!style.hoverTint) {
+                bg.setTint(0xAAAAAA);
+            }
+        });
+
+        bg.on('pointerout', () => {
+            // Quitar escala
+            this.tweens.add({
+                targets: bg,
+                scaleX: originalScaleX,
+                scaleY: originalScaleY,
+                duration: 120,
+                ease: 'Power2'
+            });
+
+            // Quitar tint solo si lo añadio este hover
+            if (!style.hoverTint) {
+                bg.clearTint();
+            }
+        });
+
         if(style.hoverTint) {
             bg.on('pointerover', () => bg.setTint(style.hoverTint));
             bg.on('pointerout', () => bg.clearTint());
