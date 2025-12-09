@@ -1,4 +1,3 @@
-import MapaLaberinto from "../../assets/mapa/mapaLaberinto.js";
 import PlayerManager from "../core/PlayerManager.js";
 import InputManager from "../core/InputManager.js";
 import MovingObject from "../core/MovingObject.js";
@@ -8,7 +7,7 @@ export default class MapScene extends Phaser.Scene {
     constructor() {
         super('MapScene');
     }
-
+ç
     create() {
         this.inputManager = new InputManager(this);
 
@@ -28,34 +27,24 @@ export default class MapScene extends Phaser.Scene {
             }
             
         });
+        console.log(this.cache.tilemap.get('mapa'));
 
-        //crea mapa desde la clase mapa (con la info del mapa)
-        this.mapa = new MapaLaberinto();
-        this.mapa.render(this);
+        //Creacion del mapa desde json
+        const map=this.make.tilemap({key:'mapa'});
+        
+        const tilesets=map.addTilesetImage("tiles","tilesImg");
 
-        // Crea las colisiones teniendo en cuenta la matriz booleana de MapaLaberinto
-        this.bloques = this.physics.add.staticGroup();
-        for (let y = 0; y < this.mapa.alto; y++) {
-            for (let x = 0; x < this.mapa.ancho; x++) {
-                if (this.mapa.colisiones[y][x]) {
-                    //crear un bloque transparente para colisiones
-                    const bloque = this.add.rectangle(
-                        x * this.mapa.tileSize + this.mapa.tileSize / 2,
-                        y * this.mapa.tileSize + this.mapa.tileSize / 2,
-                        this.mapa.tileSize,
-                        this.mapa.tileSize,
-                        0xff0000,
-                        0
-                    ).setOrigin(0, 0);
-                    this.physics.add.existing(bloque, true);
-                    this.bloques.add(bloque);
-                }
-            }
-        }
 
+        //Creacion de las capas
+        const suelo=map.createLayer("Suelo",tilesets);
+        const pared=map.createLayer("Pared",tilesets);
+        const objetos=map.createLayer("objetos",tilesets);
+        const colisiones=map.createLayer("colision",tilesets);
+
+        colisiones.setCollisionByExclusion([-1]);
         //crear jugador y añadir sus colisiones con el mapa
         this.PlayerManager = new PlayerManager(this.inputManager, this);
-        this.physics.add.collider(this.PlayerManager.sprite, this.bloques);
+        this.physics.add.collider(this.PlayerManager.sprite, colisiones);
 
         //-------------------------MINIJUEGOS-------------------------
         
@@ -101,8 +90,7 @@ export default class MapScene extends Phaser.Scene {
         });
 
         //-------Objetos mapa-----------
-        this.movingObject1 = new MovingObject(this,this.PlayerManager);
-        this.physics.add.collider(this.PlayerManager.sprite, this.movingObject1.sprite);
+        this.movingObject1 = new MovingObject(this,this.PlayerManager,this.bloques);
 
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
@@ -127,6 +115,8 @@ export default class MapScene extends Phaser.Scene {
         this.inputManager.update();
         // jugador
         this.PlayerManager.update();
+        //objetos movibles
+        this.movingObject1.update();
     }
 
     openPauseMenu() {

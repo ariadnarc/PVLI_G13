@@ -1,0 +1,64 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "mapaTiled.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "C:/Users/blanc/Downloads/esquinas.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/blanc/Downloads/mapaDef.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 476,
+                "y": 964
+            }
+        },
+        "C:/Users/blanc/Downloads/paredClara.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/blanc/Downloads/paredes.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/blanc/Downloads/suelo.tsx": {
+            "scaleInDock": 1
+        },
+        "mapaTiled.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 603,
+                "y": 1747
+            }
+        },
+        "mapaTiled.tmx#tiles": {
+            "scaleInDock": 1
+        },
+        "tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/blanc/Documents/GitHub/PVLI_G13/wallyLikeAnEgyptian/assets/mapa",
+    "last.imagePath": "C:/Users/blanc/Documents/GitHub/PVLI_G13/wallyLikeAnEgyptian/assets/mapa",
+    "map.height": 50,
+    "map.lastUsedExportFilter": "All Files (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 50,
+    "openFiles": [
+        "mapaTiled.tmx",
+        "tiles.tsx"
+    ],
+    "project": "mapaTiled.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "tiles.tsx",
+        "mapaTiled.tmx",
+        "C:/Users/blanc/Downloads/mapaDef.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

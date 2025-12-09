@@ -21,7 +21,6 @@ export default class PlayerManager {
     );
 
     this.sprite.setScale(this.data.scale); // scale del initialData
-    this.sprite.setCollideWorldBounds(true); // evita q el player salga del mundo
     this.speed = this.data.speed || 200;
   }
 

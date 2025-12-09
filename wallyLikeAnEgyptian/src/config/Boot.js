@@ -30,24 +30,12 @@ export default class Boot extends Phaser.Scene {
 
     /*this.load.image('gold_particle', 'assets/particles/gold.png');
     this.load.image('sand_particle', 'assets/particles/sand.png');*/
+    
+    //Carga mapa en json
+    this.load.image('tilesImg','wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
+    this.load.tilemapTiledJSON('mapa','wallyLikeAnEgyptian/assets/mapa/mapaTiled.json');
 
-    //Carga los tiles del mapa (pared)
-    this.load.image('pared_1', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_1.png');
-    this.load.image('pared_2', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_2.png');
-    this.load.image('pared_3', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_3.png');
-    this.load.image('pared_4', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_4.png');
-    this.load.image('pared_5', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_5.png');
-    this.load.image('pared_6', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_6.png');
-    this.load.image('pared_7', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_7.png');
-    this.load.image('pared_8', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_8.png');
-    this.load.image('pared_9', 'wallyLikeAnEgyptian/assets/mapa/tiles/pared_9.png');
-
-    //suelo
-    this.load.image('suelo_22', 'wallyLikeAnEgyptian/assets/mapa/tiles/suelo_22.png');
-
-    //techo
-    this.load.image('techo_43', 'wallyLikeAnEgyptian/assets/mapa/tiles/techo_43.png');
-
+  
     // === ICONOS JEROGLÍFICOS ===
     for (let i = 1; i <= 9; i++) {
     this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
@@ -72,6 +60,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('minigame_music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
     //Objetos movibles
     this.load.image('cofre', 'wallyLikeAnEgyptian/assets/sprites/cofre.png');
+
     //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
   }
 

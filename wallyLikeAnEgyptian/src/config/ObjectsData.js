@@ -4,5 +4,4 @@ export const objectInitialData = {
   speed: 200, // vel player
   spriteName: 'cofre', // nombre del asset
   scale: 0.1,
- 
 };
