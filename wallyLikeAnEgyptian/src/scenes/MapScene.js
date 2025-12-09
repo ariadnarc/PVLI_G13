@@ -125,8 +125,8 @@ export default class MapScene extends Phaser.Scene {
     }
 
     openBinnacle(){
-        this.scene.pause();
-        this.scene.launch("BinnacleOverlay", { parentScene: this.scene.key });
+        this.scene.launch("BinnacleOverlay", { parentScene: "MapScene" });
+        this.scene.pause(); // Pausamos MapScene mientras el overlay está activo
     }
 
    

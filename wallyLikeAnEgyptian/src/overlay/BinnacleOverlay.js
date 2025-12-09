@@ -16,7 +16,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
     const { width, height } = this.sys.game.config;
 
     // --- GESTIÓN DE INPUT ---
-    this.inputManager = InputManager.getInstance(this);
+    this.inputManager = new InputManager(this);
     this.inputManager.configure({
       keyboard: true,
       keys: ["B"]
@@ -33,19 +33,21 @@ export default class BinnacleOverlay extends Phaser.Scene {
     this.binnacle = BinnacleManager.getInstance();
 
     // --- FONDO OSCURECIDO ---
-    this.add.rectangle(0, 0, width, height, 0x000000, 0.65).setOrigin(0, 0);
+    this.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0, 0);
 
     // --- TÍTULO ---
     this.add.text(width / 2, 60, "BITÁCORA", {
+      fontFamily: 'Filgaia',
       fontSize: "36px",
-      color: "#ffffff",
+      color: "#e6c480",
       fontStyle: "bold"
     }).setOrigin(0.5);
 
     // --- INSTRUCCIONES ---
     this.add.text(width / 2, height - 60, "Pulsa B para volver", {
+      fontFamily: 'Filgaia',
       fontSize: "20px",
-      color: "#cccccc"
+      color: "#e6c480"
     }).setOrigin(0.5);
 
     // --- CONTENIDO DE JEROGLÍFICOS ---
@@ -67,7 +69,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
     const yImage = 160;
     const yText = yImage + 60; // debajo de la imagen
 
-    tierData.forEach((data, index) => {
+    this.tierData.forEach((data, index) => {
       const x = startX + index * spacing;
 
       // Imagen del tier
@@ -76,8 +78,9 @@ export default class BinnacleOverlay extends Phaser.Scene {
       // Cantidad de jeroglíficos
       const amount = summary[data.tier] || 0;
       this.add.text(x, yText, `x${amount}`, {
+        fontFamily: 'Filgaia',
         fontSize: "22px",
-        color: "#ffffff",
+        color: "#e6c480",
         fontStyle: "bold"
       }).setOrigin(0.5);
     });
