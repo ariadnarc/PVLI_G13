@@ -37,7 +37,7 @@ export default class MainMenu extends MenuBase {
       .setOrigin(0.5);
 
     this.createButton('Jugar', 450, 320, () => {
-      this.scene.start('MapScene');
+      this.scene.start('IntroScene');
     },{ width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
     'fondoBoton');
 

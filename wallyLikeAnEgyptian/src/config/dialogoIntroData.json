@@ -1,0 +1,112 @@
+{
+    "dialogos":[
+        {
+            "speaker":"Narrador",
+            "text":"En la cafetería más profunda y tenebrosa de la pirámide, Mariano prepara el último café del día."
+        },
+        {
+            "speaker":"Narrador",
+            "text":"El silencio es pesado... y la jornada esta a punto de terminar, por fin "
+        },
+        {
+            "speaker":"Mariano",
+            "text":"¿Cafe para Wally?"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"¡¿WALLY?!"
+        },
+        {
+            "speaker":"Narrador",
+            "text":"El silencio fue lo unico que contesto a Mariano."
+        },
+        {
+            "speaker":"Narrador",
+            "text":"Mariano miro a la ventana por si Wally estaba ahi, pero no quedaba nadie en la cafeteria"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Menos mal que no he cerrado la bolsa de basura"
+        },
+        {
+            "speaker":"Desconocido",
+            "text":"¡QUIETO!"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Seguro que es una broma de mis compañeros, saben que me da miedo hacer el cierre a estas horas"
+        },
+        {
+            "speaker":"Narrador",
+            "text":"Mariano se volvio para tirar el cafe sin dueño "
+        },
+        {
+            "speaker":"Desconocido",
+            "text":"¡QUE NO ME TIRES!"
+        },
+        {
+            "speaker":"Desconocido",
+            "text":"Soy yo, el cafe corto"
+        },
+        {
+            "speaker":"Narrador",
+            "text":"Mariano se quedó mirando al cafe. Sabía que estaba cansado, pero no tanto como para tener alucinaciones. Decidio contestarle al cafe, porque ante todo, era un señor educado. "
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Te tengo que tirar, cafe. Tengo que cerrar e irme a casa. Si no voy a quedarme encerrado aquí toda la noche"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"¿Seguro?"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Si"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Ejcucha Mariano, he detenido el tiempo"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"¿Eres loco? ¿Como va a detener el tiempo?"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Mira te estoy ayudando antes de que arruines tu vida, y se te rompan todos los dientes"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Ese tal Wally es un critico de cafeterias muy reconocido. Desde que le atropellaron tiene muy poco sentido de la orientacion"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Vengo de un futuro donde me tiras y tu vida se destruye. Adios a tu sueño de abrir una cafeteria, adios a tu ambicion de Aquiles"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"Vale ¿como lo encuentro?"
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Wally no desaparece sin mas siempre deja pistas"
+        },
+        {
+            "speaker": "Narrador",
+            "text": "Entonces algo llamó su atención: un papel arrugado enncima de la barra"
+        },
+        {
+            "speaker":"Mariano",
+            "text":"¿Que es eso?"
+        },
+        {
+            "speaker": "Narrador",
+            "text": "Mariano abrio el papael para descubrir una serie de jerogrificos, reconocio algunos de su visita por la piramide. Pero no podia leer el mensaje "
+        },
+        {
+            "speaker":"Cafe",
+            "text":"Desbloquea el significado de cada jerogrifico para saber el significado completo de la nota. Y encontrar a Wally"
+        }
+]
+}

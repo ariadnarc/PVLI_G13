@@ -9,6 +9,7 @@ import VictoryScene from './scenes/VictoryScene.js';
 import DefeatScene from './scenes/DefeatScene.js';
 import FinalMessage from './scenes/FinalMessage.js';
 import SelectDifficultyScene from './scenes/SelectDifficultyScene.js';
+import IntroScene from './scenes/IntroScene.js';
 
 // overlays
 import BinnacleOverlay from './overlay/BinnacleOverlay.js';
@@ -26,6 +27,7 @@ import PuzzleLights from './scenes/mjPuzzleLights.js';
 import LockPick from './scenes/mjLockPick.js';
 import CrocoShoot from './scenes/mjCrocoShoot.js';
 import SlideBar from './scenes/mjSlide.js';
+
 
 
 // esto q es?? (pregunta Juan)
@@ -46,7 +48,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
       debug: true        // hitboxes
       }
     }, // declaramos físcas globalmente
-    scene: [Boot, MainMenu, MapScene, BinnacleOverlay, PauseMenuGame,
+    scene: [Boot, MainMenu, MapScene,IntroScene, BinnacleOverlay, PauseMenuGame,
             SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
             LockPick, CrocoShoot, SlideBar,
             PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],

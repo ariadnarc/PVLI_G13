@@ -23,7 +23,7 @@ export default class MapScene extends Phaser.Scene {
                 this.openPauseMenu();
             }
             else if (key === "B") { // Diccionario
-                this.openBinnacle();
+                this.openBinnacle(this.inputManager);
             }
             
         });
@@ -120,7 +120,7 @@ export default class MapScene extends Phaser.Scene {
         });
 
         //-------Objetos mapa-----------
-        this.movingObject1 = new MovingObject(this,this.PlayerManager,this.bloques);
+        this.movingObject1 = new MovingObject(this,this.PlayerManager,colisiones);
 
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);

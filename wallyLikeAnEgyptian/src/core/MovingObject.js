@@ -1,7 +1,7 @@
 import { objectInitialData } from '../config/ObjectsData.js';
 
 export default class MovingObject {
-  constructor(scene,player,bloques) {
+  constructor(scene,player,colisiones) {
     
     this.scene = scene;
     
@@ -12,7 +12,7 @@ export default class MovingObject {
 
     this.sprite.setCollideWorldBounds(true);
     this.speed = this.data.speed || 200;
-    this.bloques=bloques;
+    this.colisiones=colisiones;
     this.player=player;
 
     this.dirX = 0;
@@ -28,7 +28,7 @@ export default class MovingObject {
             this.colliding= true;
         });
     
-    scene.physics.add.collider(this.sprite,this.bloques);
+    scene.physics.add.collider(this.sprite,colisiones);
   }
 
   update(){

@@ -7,6 +7,9 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
         "C:/Users/blanc/Downloads/esquinas.tsx": {
             "scaleInDock": 1
         },
@@ -28,11 +31,11 @@
             "scaleInDock": 1
         },
         "mapaTiled.tmx": {
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 603,
-                "y": 1747
+                "x": 219.69696969696975,
+                "y": 395.45454545454544
             }
         },
         "mapaTiled.tmx#tiles": {
