@@ -28,12 +28,14 @@ export default class MovingObject {
             this.colliding= true;
         });
     
-    scene.physics.add.collider(this.sprite,colisiones);
+     scene.physics.add.collider(colisiones, this.sprite, ()=> {
+            this.setVelocity(0,0);
+        });
   }
 
-  update(){
-    /*
-    const pared=this.scene.physics.add.overlap(this.sprite,this.bloques);
+/*  update(){
+  
+    const pared=this.scene.physics.add.overlap(this.sprite,this.colisiones);
     const empujado=this.scene.physics.overlap(this.sprite,this.player.sprite);
     if(empujado){
       //da valor de direccion del player o 0 para evitar undefined
@@ -56,5 +58,5 @@ export default class MovingObject {
     */
 }
 
-}
+
 
