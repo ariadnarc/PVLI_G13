@@ -44,7 +44,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
     default: 'arcade',
     arcade: {
       gravity: { y: 0 },  // sin gravedad
-      debug: true        // hitboxes
+      debug: false        // hitboxes
       }
     }, // declaramos físcas globalmente
     scene: [Boot, MainMenu, MapScene,IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,

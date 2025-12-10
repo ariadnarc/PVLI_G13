@@ -7,13 +7,19 @@ export default class Undertale extends Phaser.Scene {
     super('Undertale');
   }
 
-  init(){
+  init(data = {}){
     this.isMinigame = true;
+
+    // Guardamos el minijuego
+    this.minijuego = data.minijuego;
+
+    // Dificultad elegida
+    this.difficulty = data.dificultad;
   }
 
-  create(data) {
-    // data.dificultad viene del start()
-    const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
+  create() {
+
+    const config = DIFICULTADES[this.difficulty].minijuegos.Undertale;
     const centerX = this.cameras.main.centerX; // Obtiene el centro X de la cámara principal
     const centerY = this.cameras.main.centerY; // Obtiene el centro Y de la cámara principal
 
@@ -433,10 +439,12 @@ export default class Undertale extends Phaser.Scene {
         options: {
             "Reintentar": () => {
                 this.scene.stop('PostMinigameMenu');
-                this.scene.start('Undertale', { dificultad: this.difficulty });
+                this.scene.stop();
+                this.scene.start('Undertale', { minijuego: this.minijuego,dificultad: this.difficulty });
             },
             "Salir": () => {
                 this.scene.stop('PostMinigameMenu');
+                this.scene.stop();
                 this.scene.start('MapScene');
             }
         }

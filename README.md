@@ -150,13 +150,13 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
 5. **Encontrar a Wally**  
    ![Encontrar a Wally](wallyLikeAnEgyptian/assets/screenshots/)
 6. **Minijuego: Precisión del escriba**  
-   ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/)
+   ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/PrecisionDelEscriba.png)
 7. **Minijuego: Memoria del templo**  
-   ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/)
+   ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriaDelTemplo.png)
 8. **Minijuego: Furia del desierto**  
-   ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/)
+   ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/FuriaDelDesierto.png)
 9. **Minijuego: Cerrajero ancestral**
-    ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/)
+   ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/)
 10. **Minijuego: Francotirador en el Nilo**
    ![Minijuego Francotirador en el Nilo](wallyLikeAnEgyptian/assets/screenshots/)
 
