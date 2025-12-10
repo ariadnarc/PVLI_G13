@@ -1,4 +1,3 @@
-import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
@@ -11,10 +10,18 @@ export default class Undertale extends Phaser.Scene {
   create(data) {
     // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
-
     const centerX = this.cameras.main.centerX; // Obtiene el centro X de la cámara principal
     const centerY = this.cameras.main.centerY; // Obtiene el centro Y de la cámara principal
 
+    // FONDOS
+    this.add.image(centerX, centerY, 'paredBG') // general
+    const arenaBg = this.add.image(centerX, centerY, 'fondoUnd');; // de la zona de juego
+    // Área de juego
+    this.gameWidth = 400; // Ancho del área jugable en píxeles
+    this.gameHeight = 300; // Alto del área jugable en píxeles
+    arenaBg.setDisplaySize(this.gameWidth, this.gameHeight);
+
+    // INPUTMANAGER
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
       cursors: true,
@@ -30,11 +37,7 @@ export default class Undertale extends Phaser.Scene {
     this.player = this.playerManager.getSprite();
     this.player.setPosition(centerX, centerY);
 
-    // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
-    this.gameWidth = 400; // Ancho del área jugable en píxeles
-    this.gameHeight = 300; // Alto del área jugable en píxeles
-
-    // Dibuja el borde del área jugable
+    // Dibuja el borde del área jugable (dsps de meter el fondo obligatorio)
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight); // Crea rectángulo en el centro
     border.setStrokeStyle(3, 0xffffff); // Aplica borde blanco de 3px de grosor
 
@@ -331,7 +334,7 @@ export default class Undertale extends Phaser.Scene {
         break;
 
       case 2: // Fase 2: Solo círculos convergentes lentos
-        this.bulletDelay = 1800; // Dispara cada 4 segundos
+        this.bulletDelay = 1800; // Convergen cada 1,8s
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCircleWave, // Función de círculo
@@ -341,7 +344,7 @@ export default class Undertale extends Phaser.Scene {
         break;
 
       case 3: // Fase 3: Combinación de dirigidos rápidos + círculos
-        this.bulletDelay = 1000; // Proyectiles dirigidos cada 1.2s
+        this.bulletDelay = 2000; // Barrido cada 2s
         this.bulletTimer = this.time.addEvent({
           delay: this.bulletDelay, // Delay configurado
           callback: this.spawnCylinder, // Función de generación

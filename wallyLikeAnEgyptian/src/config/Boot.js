@@ -13,19 +13,18 @@ export default class Boot extends Phaser.Scene {
     this.load.image('mainmenuBG', 'wallyLikeAnEgyptian/assets/ui/mainmenuBG.jpg');
     this.load.image('selectdiffBG', 'wallyLikeAnEgyptian/assets/ui/selectdiffBG.jpg');
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
-    this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png')
+    this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png');
+    this.load.image('fondoUnd', 'wallyLikeAnEgyptian/assets/ui/fondoUndertale.png');
 
 
     // === IMÁGENES Y SPRITES ===
     this.load.spritesheet('player', 'wallyLikeAnEgyptian/assets/sprites/playerSpriteSheet.png', {
-    frameWidth: 64,   
-    frameHeight: 64   
+      frameWidth: 64,
+      frameHeight: 64
     });
-    this.load.image('playerUndertale', 'wallyLikeAnEgyptian/assets/sprites/playerUndertale.png'); // sprite para el mjUndertale
-
-    this.load.spritesheet('egyptTiles', 'wallyLikeAnEgyptian/assets/sprites/egypt_tomb.png', {   
-    frameWidth: 32, 
-    frameHeight: 32
+    this.load.spritesheet('egyptTiles', 'wallyLikeAnEgyptian/assets/sprites/egypt_tomb.png', {
+      frameWidth: 32,
+      frameHeight: 32
     }); //esto es para coger sprites de pixel art egipcio
 
     this.load.image('papiroBar', 'wallyLikeAnEgyptian/assets/sprites/papyrusBar.jpg'); //barra de papiro para el slideBar
@@ -33,15 +32,15 @@ export default class Boot extends Phaser.Scene {
 
     /*this.load.image('gold_particle', 'assets/particles/gold.png');
     this.load.image('sand_particle', 'assets/particles/sand.png');*/
-    
-    //Carga mapa en json
-    this.load.image('tilesImg','wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
-    this.load.tilemapTiledJSON('mapa','wallyLikeAnEgyptian/assets/mapa/mapaTiled.json');
 
-  
+    //Carga mapa en json
+    this.load.image('tilesImg', 'wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
+    this.load.tilemapTiledJSON('mapa', 'wallyLikeAnEgyptian/assets/mapa/mapaTiled.json');
+
+
     // === ICONOS JEROGLÍFICOS ===
     for (let i = 1; i <= 9; i++) {
-    this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
+      this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
     }
 
     // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
