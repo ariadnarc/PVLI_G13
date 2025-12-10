@@ -21,6 +21,10 @@ export default class LockPick extends Phaser.Scene {
         this.load.image('lock_lockpick', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
     }
 
+    init(){
+        this.isMinigame = true;
+    }
+
     // Método de Phaser que se ejecuta una vez después de preload(). Aquí inicializas todo el juego
     create() {
         // Guarda el centro de la pantalla para posicionar elementos

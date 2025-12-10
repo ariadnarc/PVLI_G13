@@ -7,6 +7,10 @@ export default class Undertale extends Phaser.Scene {
     super('Undertale');
   }
 
+  init(){
+    this.isMinigame = true;
+  }
+
   create(data) {
     // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
@@ -25,11 +29,6 @@ export default class Undertale extends Phaser.Scene {
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
       cursors: true,
-      keys: ["ESC"]
-    });
-
-    this.inputManager.on("keyDown", (key) => {
-      if (key === "ESC") this.openPauseMenu();
     });
 
     // JUGADOR

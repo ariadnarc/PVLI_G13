@@ -1,6 +1,5 @@
 import { playerInitialData } from '../config/PlayerData.js';
 import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS, DIFICULTADES } from '../config/MinigameData.js';
-import InputManager from '../core/InputManager.js';
 import MenuBase from '../menus/MenuBase.js';
 
 export default class SelectDifficultyScene extends MenuBase {

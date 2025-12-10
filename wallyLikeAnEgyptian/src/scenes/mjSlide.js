@@ -10,6 +10,7 @@ export default class SlideBar extends Phaser.Scene{
 
     init(data = {}){
 
+        this.isMinigame = true;
         // Guardamos el minijuego
         this.minijuego = data.minijuego;
 
@@ -29,7 +30,7 @@ export default class SlideBar extends Phaser.Scene{
         this.inputManager = new InputManager(this);
         this.inputManager.configure({
             cursors: false,
-            keys: ['ESC', 'SPACE']
+            keys: ['SPACE']
         });
 
         const w = this.scale.width;

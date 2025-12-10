@@ -9,31 +9,26 @@ export default class MapScene extends Phaser.Scene {
     }
 ç
     create() {
+
+        //===================INPUT===================
         this.inputManager = new InputManager(this);
 
         // MapScene solo escucha movimiento y tecla ESC
         this.inputManager.configure({
             cursors: true,
-            keys: ["ESC", "B"]
+            keys: ["B"]
         });
 
-        // Keyboard 
+        //Bitácora
         this.inputManager.on("keyDown", (key) => {
-            if (key === "ESC") { // Menu pausa
-                this.openPauseMenu();
-            }
-            else if (key === "B") { // Diccionario
-                this.openBinnacle(this.inputManager);
-            }
-            
+            if (key === "B") this.openBinnacle(this.inputManager);
         });
-        console.log(this.cache.tilemap.get('mapa'));
+
+        //===================MAPA===================
 
         //Creacion del mapa desde json
         const map=this.make.tilemap({key:'mapa'});
-        
         const tilesets=map.addTilesetImage("tiles","tilesImg");
-
 
         //Creacion de las capas
         const suelo=map.createLayer("Suelo",tilesets);
@@ -42,43 +37,45 @@ export default class MapScene extends Phaser.Scene {
         const colisiones=map.createLayer("colision",tilesets);
 
         colisiones.setCollisionByExclusion([-1]);
-        //crear jugador y añadir sus colisiones con el mapa
-
-        //====ANIMACIONES=====
+        
+        //===================PLAYER===================
+        //Animaciones:
         this.anims.create({
             key: 'walk-down',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
             frameRate: 10,
             repeat: -1
         });
-
+        
         this.anims.create({
             key: 'walk-up',
             frames: this.anims.generateFrameNumbers('player', { start: 7, end: 13 }),
             frameRate: 10,
             repeat: -1
         });
-
+        
         this.anims.create({
             key: 'walk-right',
             frames: this.anims.generateFrameNumbers('player', { start: 14, end: 20 }),
             frameRate: 10,
             repeat: -1
         });
-
+        
         this.anims.create({
             key: 'walk-left',
             frames: this.anims.generateFrameNumbers('player', { start: 21, end: 27 }),
             frameRate: 10,
             repeat: -1
         });
-
+        
+        //crear jugador y añadir sus colisiones con el mapa
         this.PlayerManager = new PlayerManager(this.inputManager, this);
         this.physics.add.collider(this.PlayerManager.sprite, colisiones);
 
-        //-------------------------MINIJUEGOS-------------------------
+
+        //===================MINIJUEGOS===================
         
-        //Minijuego Furia del Desierto--------------------------------
+        //FURIA DEL DESIERTO:
         //crear portal para llevar a los minijuegos
         this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
         this.physics.add.existing(this.portalUndertale);
@@ -119,7 +116,7 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
         });
 
-        //-------Objetos mapa-----------
+        //===================OBJETOS MAPA===================
         this.movingObject1 = new MovingObject(this,this.PlayerManager,colisiones);
 
         // portal para el mensaje final
@@ -134,24 +131,17 @@ export default class MapScene extends Phaser.Scene {
             this.scene.launch('FinalMessage');
         });
 
-        //camara sigue jugador
+        //===================CAMARA===================
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
 
     }
 
     update() {
-        // input
+        
         this.inputManager.update();
-        // jugador
         this.PlayerManager.update();
-        //objetos movibles
         this.movingObject1.update();
-    }
-
-    openPauseMenu() {
-        this.scene.pause();
-        this.scene.launch("PauseMenuGame", { parentScene: this.scene.key });
     }
 
     openBinnacle(){

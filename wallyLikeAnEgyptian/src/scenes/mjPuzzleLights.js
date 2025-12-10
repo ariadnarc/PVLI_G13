@@ -6,6 +6,10 @@ export default class PuzzleLights extends Phaser.Scene {
   constructor() {
     super('PuzzleLights');
   }
+  
+  init(){
+    this.isMinigame = true;
+  }
 
   create(data) {
     // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
@@ -14,13 +18,6 @@ export default class PuzzleLights extends Phaser.Scene {
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
         keys: ['ESC']
-    });
-
-    // Keyboard 
-    this.inputManager.on("keyDown", (key) => {
-        if (key === "ESC") { // Menu pausa
-            this.openPauseMenu();
-        } 
     });
 
     // Parametros definidos por Dificultad elegida
@@ -168,12 +165,6 @@ export default class PuzzleLights extends Phaser.Scene {
     this.time.delayedCall(800, () => {
       this.startRound();
     });
-  }
-
-  openPauseMenu() {
-    this.input.enabled = false;
-    this.scene.pause();
-    this.scene.launch("PauseMinigameMenu", { parentScene: this.scene.key });
   }
 
   winGame() {

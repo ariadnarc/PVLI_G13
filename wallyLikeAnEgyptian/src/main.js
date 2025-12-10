@@ -17,7 +17,6 @@ import BinnacleOverlay from './overlay/BinnacleOverlay.js';
 // menus
 import MainMenu from './menus/MainMenu.js';
 import PauseMenuGame from './menus/PauseMenuGame.js';
-import PauseMenuMinigame from './menus/PauseMenuMinigame.js';
 import PostMinigameMenu from './menus/PostMinigameMenu.js';
 import SettingsMenu from './menus/SettingsMenu.js';
 
@@ -27,6 +26,7 @@ import PuzzleLights from './scenes/mjPuzzleLights.js';
 import LockPick from './scenes/mjLockPick.js';
 import CrocoShoot from './scenes/mjCrocoShoot.js';
 import SlideBar from './scenes/mjSlide.js';
+import PauseController from './scenes/PauseController.js';
 
 
 
@@ -48,10 +48,9 @@ document.fonts.load('16px "Filgaia"').then(() => {
       debug: true        // hitboxes
       }
     }, // declaramos físcas globalmente
-    scene: [Boot, MainMenu, MapScene,IntroScene, BinnacleOverlay, PauseMenuGame,
+    scene: [Boot, MainMenu, MapScene,IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
             SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
-            LockPick, CrocoShoot, SlideBar,
-            PauseMenuMinigame, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
+            LockPick, CrocoShoot, SlideBar, VictoryScene, PostMinigameMenu, DefeatScene, FinalMessage],
   };
 
   // Condicional que obliga a buscar el canvas q tenemos en el index
