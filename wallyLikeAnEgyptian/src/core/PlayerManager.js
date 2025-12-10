@@ -25,6 +25,7 @@ export default class PlayerManager {
 
     // Estado para evitar repetir animaciones constantemente
     this.currentAnim = null;
+    this.lastDirection = 'down';
   }
 
   update() {
@@ -48,13 +49,23 @@ export default class PlayerManager {
 
     // Movimiento horizontal
     if (Math.abs(dir.x) > Math.abs(dir.y)) {
-      if (dir.x > 0) this.playAnim('walk-right');
-      else this.playAnim('walk-left');
+      if (dir.x > 0) {
+        this.lastDirection = 'right';
+        this.playAnim('walk-right');
+      } else {
+        this.lastDirection = 'left';
+        this.playAnim('walk-left');
+      }
     }
     // Movimiento vertical
     else {
-      if (dir.y > 0) this.playAnim('walk-down');
-      else this.playAnim('walk-up');
+      if (dir.y > 0) {
+        this.lastDirection = 'down';
+        this.playAnim('walk-down');
+      } else {
+        this.lastDirection = 'up';
+        this.playAnim('walk-up');
+      }
     }
   }
 
@@ -65,18 +76,18 @@ export default class PlayerManager {
     }
   }
 
+  // NUEVO idle según la última dirección guardada
   playIdle() {
-    const idleMap = {
-      'walk-down': 0,
-      'walk-up': 7,
-      'walk-right': 14,
-      'walk-left': 21,
+    const idleFrames = {
+      up: 7,
+      down: 0,
+      right: 14,
+      left: 21,
     };
 
-    // Si no hay animación previa, idle hacia abajo
-    const idleFrame = idleMap[this.currentAnim] ?? 0;
+    const frame = idleFrames[this.lastDirection] ?? 0;
 
-    this.sprite.setFrame(idleFrame);
+    this.sprite.setFrame(frame);
     this.currentAnim = null;
   }
 

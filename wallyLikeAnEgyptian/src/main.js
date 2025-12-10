@@ -29,7 +29,6 @@ import CrocoShoot from './scenes/mjCrocoShoot.js';
 import SlideBar from './scenes/mjSlide.js';
 
 
-
 // esto q es?? (pregunta Juan)
 import MovingObject from './core/MovingObject.js';
 
