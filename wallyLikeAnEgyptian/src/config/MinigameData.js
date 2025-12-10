@@ -1,7 +1,8 @@
 export const NOMBRES_MINIJUEGOS = {
   SlideBar: "Precision del Escriba",
   Undertale: "Furia del Desierto",
-  PuzzleLights: "Memoria del Templo"
+  PuzzleLights: "Memoria del Templo",
+  LockPick: "Cerrajero profesional"
 }
 
 export const DIFICULTADES = {

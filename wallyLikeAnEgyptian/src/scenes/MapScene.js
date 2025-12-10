@@ -90,7 +90,7 @@ export default class MapScene extends Phaser.Scene {
 
         //Minijuego Memoria del Templo--------------------------------
         //crear portal para llevar a los minijuegos
-        this.puzzleLightsPortal = this.add.rectangle(500, 150, 60, 60, 0xFFFFFF);
+        this.puzzleLightsPortal = this.add.rectangle(600, 300, 60, 60, 0xFFFFFF);
         this.physics.add.existing(this.puzzleLightsPortal);
 
         //comprobamos colision con el portal de puzzle lights
@@ -101,6 +101,21 @@ export default class MapScene extends Phaser.Scene {
             //this.scene.start('PuzzleLights');
             this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLights', nombre: NOMBRES_MINIJUEGOS.PuzzleLights });
         });
+
+        //Minijuego LockPick--------------------------------
+        //crear portal para llevar a los minijuegos
+        this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xFFFFFF);
+        this.physics.add.existing(this.lockPickPortal);
+
+        //comprobamos colision con el portal de puzzle lights
+        this.physics.add.overlap(this.PlayerManager.sprite, this.lockPickPortal, () => {
+            //si hay colision lo llevamos al minijuego
+            this.lockPickPortal.destroy();
+            this.scene.pause();
+            //this.scene.start('PuzzleLights');
+            this.scene.start('SelectDifficultyScene', { minijuego: 'LockPick', nombre: NOMBRES_MINIJUEGOS.LockPick });
+        });
+
 
         //Minijuego Precision del escriba-----------------------------
         //Crear portal para llevar al minijuego
