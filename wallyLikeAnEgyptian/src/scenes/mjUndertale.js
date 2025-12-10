@@ -400,18 +400,50 @@ export default class Undertale extends Phaser.Scene {
   // ========== VICTORIA ==========
   winGame() {
     this.physics.pause(); // Detiene todas las físicas del juego
-    this.bulletTimer.remove(false); // Elimina timer de proyectiles
-    this.timerEvent.remove(false); // Elimina timer del contador
+    if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
+    if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
 
-    this.scene.stop(); // Detiene esta escena
-    this.scene.launch('VictoryScene'); // Inicia escena de victoria (se apila sobre la actual)
+    //lanza el PostMinigameMenu
+    this.scene.launch('PostMinigameMenu', {
+        result: 'victory',
+        difficulty: this.difficulty,
+        minijuego: 'Undertale',
+        options: {
+            "Volver al mapa": () => {
+                this.scene.stop('PostMinigameMenu');
+                this.scene.start('MapScene');
+            }
+        }
+    });
+
+    this.scene.stop(); //detiene la escena del minijuego
   }
 
   // ========== DERROTA ==========
   loseGame() {
-    this.physics.pause(); // Detiene todas las físicas del juego
+    this.physics.pause(); // Detiene todas las fisicas del juego
+    if (this.bulletTimer) this.bulletTimer.remove(false);
+    if (this.timerEvent) this.timerEvent.remove(false);
 
-    this.time.delayedCall(2000, () => this.scene.restart(), [], this); // Reinicia escena después de 2 segundos
+    //lanzamos PostMinigameMenu con resultado defeat
+    this.scene.launch('PostMinigameMenu', {
+        result: 'defeat',
+        difficulty: this.difficulty,
+        minijuego: 'Undertale',
+        options: {
+            "Reintentar": () => {
+                this.scene.stop('PostMinigameMenu');
+                this.scene.start('Undertale', { dificultad: this.difficulty });
+            },
+            "Salir": () => {
+                this.scene.stop('PostMinigameMenu');
+                this.scene.start('MapScene');
+            }
+        }
+    });
+
+    //detenemos la escena actual
+    this.scene.stop();
   }
 }
 

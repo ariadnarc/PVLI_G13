@@ -3,6 +3,9 @@
 // data
 import Boot from './config/Boot.js';
 
+//managers
+import PauseController from './core/PauseController.js';
+
 // Scenes
 import MapScene from './scenes/MapScene.js';
 import VictoryScene from './scenes/VictoryScene.js';
@@ -26,7 +29,6 @@ import PuzzleLights from './scenes/mjPuzzleLights.js';
 import LockPick from './scenes/mjLockPick.js';
 import CrocoShoot from './scenes/mjCrocoShoot.js';
 import SlideBar from './scenes/mjSlide.js';
-import PauseController from './scenes/PauseController.js';
 
 
 
