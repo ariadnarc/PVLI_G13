@@ -1,4 +1,3 @@
-import { playerInitialData } from '../config/PlayerData.js';
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
@@ -6,21 +5,23 @@ export default class PuzzleLights extends Phaser.Scene {
   constructor() {
     super('PuzzleLights');
   }
-  
-  init(){
-    this.isMinigame = true;
+
+  init(data){
+    this.isMinigame = true; //flag que marca que es un minijuego
+    this.difficulty = data?.dificultad || 'FACIL'; //guardamos la dificultad para pasarla despues
   }
 
-  create(data) {
-    // cogemos los parametros del minijuegos en base a la dificultad elegida por el player
-    const config = DIFICULTADES[data.dificultad].minijuegos.PuzzleLights;
+  create() {
+
+    //cogemos los parametros del minijuegos en base a la dificultad elegida por el player
+    const config = DIFICULTADES[this.difficulty].minijuegos.PuzzleLights;
 
     this.inputManager = new InputManager(this);
-    this.inputManager.configure({
-        keys: ['ESC']
-    });
 
-    // Parametros definidos por Dificultad elegida
+    //fondo
+    this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'paredBG') // general
+
+    //parametros definidos por dificultad elegida
     this.lives = config.vidas;
     this.rounds = config.rondas;
     this.delay = config.velocidad; //ms entre flasheos de las casillas
@@ -28,7 +29,7 @@ export default class PuzzleLights extends Phaser.Scene {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
 
-    // PARÁMETROS DE JUEGO
+    //PARAMETROS DE JUEGO
     this.gridSize = 3;
     this.tileSize = 100;
     this.spacing = 20;
@@ -37,23 +38,37 @@ export default class PuzzleLights extends Phaser.Scene {
     this.playerInput = [];
     this.isPlayerTurn = false;
 
-    // TÍTULOS Y VIDA
-    this.titleText = this.add.text(centerX, 40, 'Memoria de Luces', {
-      fontSize: '22px',
-      color: '#ffff66',
+    //TITULOS Y VIDA
+    this.titleText = this.add.text(centerX/3, 40, 'Memoria de Luces', {
+      fontFamily: 'Filgaia',
+      fontSize: '32px',
+      color: '#382f23ff',
+      fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    this.livesText = this.add.text(centerX, 70, `Vidas: ${this.lives}`, {
-      fontSize: '18px',
-      color: '#ffffff'
+    this.livesText = this.add.text(centerX, 40, `Vidas: ${this.lives}`, {
+      fontFamily: 'Filgaia',
+      fontSize: '30px',
+      color: '#382f23ff'
     }).setOrigin(0.5);
 
-    this.roundText = this.add.text(centerX, 100, `Ronda 1 de 3`, {
-      fontSize: '18px',
-      color: '#66ff99'
+    this.roundText = this.add.text(centerX, 90, `Ronda 1 de 3`, {
+      fontFamily: 'Filgaia',
+      fontSize: '30px',
+      color: '#382f23ff'
     }).setOrigin(0.5);
 
-    // MATRIZ DE JEROGLÍFICOS
+    //indicador de turno
+    this.turnText = this.add.text(centerX, centerY + this.gridSize * this.tileSize / 2 + 80, '', {
+      fontFamily: 'Filgaia',
+      fontSize: '30px',
+      color: '#dfd581ff',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 4
+    }).setOrigin(0.5);
+
+    //MATRIZ DE JEROGLIFICOS
     this.tiles = [];
     const startX = centerX - (this.gridSize * (this.tileSize + this.spacing)) / 2 + this.tileSize / 2;
     const startY = centerY - (this.gridSize * (this.tileSize + this.spacing)) / 2 + this.tileSize / 2;
@@ -65,14 +80,14 @@ export default class PuzzleLights extends Phaser.Scene {
         const tile = this.add.image(x, y, `jero${this.tiles.length + 1}`).setDisplaySize(this.tileSize, this.tileSize);
         tile.setInteractive();
         tile.originalTint = 0xffffff;
-        // índice real del array
+        //indice real del array
         const index = this.tiles.length;
         tile.on('pointerdown', () => this.handlePlayerClick(tile, index));
         this.tiles.push(tile);
       }
     }
 
-    // INICIAR PRIMERA RONDA
+    //INICIAR PRIMERA RONDA
     this.startRound();
   }
 
@@ -81,7 +96,7 @@ export default class PuzzleLights extends Phaser.Scene {
     this.playerInput = [];
     this.isPlayerTurn = false;
 
-    // Generar secuencia aleatoria
+    //generar secuencia aleatoria
     const seqLength = this.rounds[this.currentRound];
     this.sequence = [];
     for (let i = 0; i < seqLength; i++) {
@@ -94,6 +109,7 @@ export default class PuzzleLights extends Phaser.Scene {
 
   async showSequence() {
     this.isPlayerTurn = false;
+    this.turnText.setText('Observa la secuencia'); // Texto para la secuencia
 
     for (let i = 0; i < this.sequence.length; i++) {
       const tileIndex = this.sequence[i];
@@ -102,6 +118,7 @@ export default class PuzzleLights extends Phaser.Scene {
     }
 
     this.isPlayerTurn = true;
+    this.turnText.setText('¡Tu turno!');
   }
 
   flashTile(tile, duration) {
@@ -124,13 +141,13 @@ export default class PuzzleLights extends Phaser.Scene {
 
     const currentStep = this.playerInput.length - 1;
 
-    // Verificar paso actual
+    //verificar paso actual
     if (this.sequence[currentStep] !== index) {
       this.failRound();
       return;
     }
 
-    // Si completó la secuencia correctamente
+    //si completa la secuencia correctamente
     if (this.playerInput.length === this.sequence.length) {
       this.time.delayedCall(500, () => this.completeRound());
     }
@@ -146,10 +163,8 @@ export default class PuzzleLights extends Phaser.Scene {
       return;
     }
 
-    // Repetir la misma ronda con nueva secuencia
-    this.time.delayedCall(800, () => {
-      this.startRound();
-    });
+    //repetir la misma ronda con nueva secuencia
+    this.time.delayedCall(800, () => { this.startRound(); });
   }
 
   completeRound() {
@@ -157,33 +172,52 @@ export default class PuzzleLights extends Phaser.Scene {
 
     this.currentRound++;
     if (this.currentRound >= this.rounds.length) {
-      this.winGame();
+      this.endGame('victory');
       return;
     }
 
-    // Próxima ronda
-    this.time.delayedCall(800, () => {
-      this.startRound();
-    });
+    //proxima ronda
+    this.time.delayedCall(800, () => { this.startRound(); });
   }
 
-  winGame() {
+  endGame(result) {
     this.isPlayerTurn = false;
 
     this.time.delayedCall(1500, () => {
       this.scene.stop(this.scene.key);
-      this.scene.stop("SelectDifficultyScene");
-      this.scene.start("MapScene");
+      this.scene.launch('PostMinigameMenu', {
+        result: result,
+        difficulty: this.difficulty,
+        minijuego: 'PuzzleLights',
+        options: this.getMenuOptions(result)
+      });
     });
   }
 
-  loseGame() {
-    this.isPlayerTurn = false;
-
-    this.time.delayedCall(2000, () => {
-      this.scene.stop(this.scene.key);
-      this.scene.stop("SelectDifficultyScene");
-      this.scene.start("MapScene");
-    });
+  getMenuOptions(result) {
+    if (result === 'victory') {
+      return {
+        'Volver al mapa': () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.start('MapScene');
+        }
+      };
+    } else { // derrota
+      return {
+        'Reintentar': () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.restart();
+        },
+        'Salir': () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.start('MapScene');
+        }
+      };
+    }
   }
+
+  update() {
+    if (this.inputManager) this.inputManager.update();
+  }
+
 }

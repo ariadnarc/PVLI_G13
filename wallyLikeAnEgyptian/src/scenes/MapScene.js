@@ -90,7 +90,7 @@ export default class MapScene extends Phaser.Scene {
 
         //Minijuego Memoria del Templo--------------------------------
         //crear portal para llevar a los minijuegos
-        this.puzzleLightsPortal = this.add.rectangle(1000, 150, 60, 60, 0xFFFFFF);
+        this.puzzleLightsPortal = this.add.rectangle(500, 150, 60, 60, 0xFFFFFF);
         this.physics.add.existing(this.puzzleLightsPortal);
 
         //comprobamos colision con el portal de puzzle lights
