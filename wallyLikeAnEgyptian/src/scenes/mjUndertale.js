@@ -9,29 +9,30 @@ export default class Undertale extends Phaser.Scene {
   }
 
   create(data) {
-  // data.dificultad viene del start()
+    // data.dificultad viene del start()
     const config = DIFICULTADES[data.dificultad].minijuegos.Undertale;
+
+    const centerX = this.cameras.main.centerX; // Obtiene el centro X de la cámara principal
+    const centerY = this.cameras.main.centerY; // Obtiene el centro Y de la cámara principal
 
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
-        cursors: true,
-        keys: ["ESC"]
+      cursors: true,
+      keys: ["ESC"]
     });
 
     this.inputManager.on("keyDown", (key) => {
-        if (key === "ESC") this.openPauseMenu();
+      if (key === "ESC") this.openPauseMenu();
     });
-    
+
     // JUGADOR
-    this.playerManager = new PlayerManager(this.inputManager, this, {spriteName: "playerUndertale"});
+    this.playerManager = new PlayerManager(this.inputManager, this);
     this.player = this.playerManager.getSprite();
+    this.player.setPosition(centerX, centerY);
 
     // ========== CONFIGURACIÓN DEL ÁREA DE JUEGO ==========
     this.gameWidth = 400; // Ancho del área jugable en píxeles
     this.gameHeight = 300; // Alto del área jugable en píxeles
-
-    const centerX = this.cameras.main.centerX; // Obtiene el centro X de la cámara principal
-    const centerY = this.cameras.main.centerY; // Obtiene el centro Y de la cámara principal
 
     // Dibuja el borde del área jugable
     const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight); // Crea rectángulo en el centro
@@ -44,6 +45,7 @@ export default class Undertale extends Phaser.Scene {
       this.gameWidth, // Ancho del área
       this.gameHeight // Alto del área
     );
+    this.playerManager.sprite.setCollideWorldBounds(true); // evita q el player salga
 
     // ========== CONTROLES ==========
     this.playerSpeed = 200; // Define velocidad de movimiento del jugador en píxeles/segundo
@@ -53,6 +55,7 @@ export default class Undertale extends Phaser.Scene {
 
     // -VIDA-
     this.health = config.vidas; // Lo único que vamos a cambiar dependiendo de la dificultad
+    this.maxHealth = this.health; // para hacer la barraVida
     this.isInvulnerable = false; // Estado de invencibilidad del jugador
     this.invulnerabilityDuration = 1500; // Duración de invencibilidad en milisegundos
     this.barraVidabg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Ractángulo vida background
@@ -90,7 +93,7 @@ export default class Undertale extends Phaser.Scene {
       callback: () => { // Función anónima que ejecuta al cumplirse el delay
         this.attackPhase++; // Incrementa la fase de ataque
         if (this.attackPhase > 0)
-        this.changePhase(this.attackPhase); // Cambiamos el switch de fases que toma el valor de la fase de ataque
+          this.changePhase(this.attackPhase); // Cambiamos el switch de fases que toma el valor de la fase de ataque
         this.showPhaseWarning(this.attackPhase); // Muestra aviso visual del cambio de patrón
       },
       callbackScope: this, // Contexto de 'this' en el callback
@@ -132,7 +135,7 @@ export default class Undertale extends Phaser.Scene {
     // Selecciona patrón según la fase de ataque actual
     switch (this.attackPhase) {
       case 1: // Patrón dirigido al jugador
-        this.spawnPhase1Attack();
+        this.spawnDagasAttack();
         break;
       case 2: // Ataque de Undyne
         this.spawnCircleWave(centerX, centerY);
@@ -143,7 +146,7 @@ export default class Undertale extends Phaser.Scene {
     }
   }
 
-  spawnPhase1Attack() {
+  spawnDagasAttack() {
 
     const cam = this.cameras.main;
     const gameWidth = cam.width;
@@ -161,22 +164,22 @@ export default class Undertale extends Phaser.Scene {
     this.bullets.add(cyl);
 
     // Velocidad final (solo en horizontal)
-    const attackSpeed = 900;
+    const attackSpeed = 600;
 
     // 4. Animación de aviso (retroceso corto)
     const retreatX = fromLeft ? spawnX - 30 : spawnX + 30;
 
     this.tweens.add({
-        targets: cyl,
-        x: retreatX,
-        duration: 500,
-        onComplete: () => {
-            // 5. Ataque en línea recta horizontal
-            const velocity = fromLeft ? attackSpeed : -attackSpeed;
-            cyl.body.setVelocityX(velocity);
-        }
+      targets: cyl,
+      x: retreatX,
+      duration: 500,
+      onComplete: () => {
+        // 5. Ataque en línea recta horizontal
+        const velocity = fromLeft ? attackSpeed : -attackSpeed;
+        cyl.body.setVelocityX(velocity);
+      }
     });
-}
+  }
 
 
 
@@ -217,7 +220,7 @@ export default class Undertale extends Phaser.Scene {
   spawnSweep(centerX, centerY) {
     const horizontal = Phaser.Math.Between(0, 1) === 0; // Decide aleatoriamente si es horizontal (true) o vertical (false)
     const numProjectiles = 8; // Número de proyectiles en el barrido
-    const speed = 150; // Velocidad de los cilindros
+    const speed = 120; // Velocidad de los cilindros
 
     // Crea línea de proyectiles
     for (let i = 0; i < numProjectiles; i++) {

@@ -6,23 +6,18 @@ export default class PlayerManager {
     this.scene = scene;
     this.inputManager = inputManager; // ya configurada
 
-    this.data = {
-      ...playerInitialData, // info del jugador
-      ...spriteConfig // para pasar por el constructor el name del sprite deseado
-    };
-    // "..." significa spread operator, sirve para copiar o extender un objeto
-    // dentro de otro, como el initalData lo quiero tal y como está y solo
-    // quiero cambiar el sprite lo utilizo, creo una config exclusivamente para ello
-    
+    this.data = playerInitialData; // usa la info inicial
+
     this.sprite = scene.physics.add.sprite(
       this.data.posInicial.x,
-      this.data.posInicial.y, 
+      this.data.posInicial.y,
       this.data.spriteName,
       0 //frame inicial
     );
 
     this.sprite.setScale(this.data.scale); // scale del initialData
     this.speed = this.data.speed || 200;
+    this.sprite.setCollideWorldBounds(false);
 
     // Ajustar collider
     this.sprite.setSize(25, 32);
@@ -37,9 +32,15 @@ export default class PlayerManager {
     const dir = this.inputManager.getMovementVector();
     const body = this.sprite.body;
 
+    // Normalizar diagonal
+    if (dir.x !== 0 && dir.y !== 0) {
+      const length = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
+      dir.x /= length;
+      dir.y /= length;
+    }
     body.setVelocity(dir.x * this.speed, dir.y * this.speed);
 
-    // Si no te mueves → animación idle
+    // Si no te mueves, idle
     if (dir.x === 0 && dir.y === 0) {
       this.playIdle();
       return;
@@ -49,7 +50,7 @@ export default class PlayerManager {
     if (Math.abs(dir.x) > Math.abs(dir.y)) {
       if (dir.x > 0) this.playAnim('walk-right');
       else this.playAnim('walk-left');
-    } 
+    }
     // Movimiento vertical
     else {
       if (dir.y > 0) this.playAnim('walk-down');
