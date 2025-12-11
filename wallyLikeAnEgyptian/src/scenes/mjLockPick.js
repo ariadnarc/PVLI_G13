@@ -1,43 +1,46 @@
+/**
+ * Search "Skyrim Lockpick minigame" for reference.
+ * 
+ * init: condicional minijuego
+ * create: sprites, variables
+ * update:
+ * 
+ * handlePickMovement(delta)
+ * applyTurnLogic(delta
+ * unlockCurrentLock() LO TOCHO
+ * drawLock(lockNumber, time)
+ * drawPick(time)
+ * drawTensionBar()
+ * fail()
+ */
+
 export default class LockPick extends Phaser.Scene {
     constructor() {
         super('LockPick');
-        
+
         // Constantes de configuración
-        this.TENSION_INCREASE_RATE = 0.1;
-        this.TENSION_DECREASE_RATE = 0.04;
-        this.LOCK_ROTATION_SPEED = 0.1;
-        this.PICK_MOVEMENT_SPEED = 120;
-        this.MAX_LOCK_ROTATION = 90;
-        this.RESISTANCE_THRESHOLD = 45;
-        this.SWEET_WIDTH = 10;
-        this.ROTATION_WIDTH = 20;
+        this.LOCK_ROTATION_SPEED = 0.1; // Velocidad a la cual se rota la cerradura
+        this.PICK_MOVEMENT_SPEED = 120; // Velocidad de rotación de la ganzúa
+        this.MAX_LOCK_ROTATION = 90; // Límite de rotación de la cerradura cuando el jugador se encuentra en el sweetspot(cuando llega aquí se desbloquea)
+        this.RESISTANCE_THRESHOLD = 45; // Límite de rotación de la cerradura cuando el jugador está en el "ángulo de rotación"
     }
 
-    // Método de Phaser que carga recursos (imágenes, sonidos, etc.) antes de crear la escena
-    preload() {
-        this.load.image('lock_fondo', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_fondo.png');
-        this.load.image('lock_ring', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_ring.png');
-        this.load.image('lock_lock', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_lock.png');
-        this.load.image('lock_lockpick', 'Wally Like an Egyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
-    }
-
-    init(){
+    init() {
         this.isMinigame = true;
     }
 
-    // Método de Phaser que se ejecuta una vez después de preload(). Aquí inicializas todo el juego
     create() {
-        // Guarda el centro de la pantalla para posicionar elementos
         this.CENTER_X = this.cameras.main.centerX;
         this.CENTER_Y = this.cameras.main.centerY;
 
-        // ------------- SPRITES DE LA CERRADURA ----------------
+        // SPRITES (son 2 cerraduras, por eso hay "duplicados")
 
-        // Fondos - this.add.image(x, y, clave_imagen) crea una imagen en la pantalla
+        // FondoGeneral
+        this.fondo = this.add.image(this.CENTER_X, this.CENTER_Y, 'paredBG');
+        // FondoCerradura
         this.spr_fondo = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_fondo');
         this.spr_fondo.setOrigin(0.5); // Establece el origen/punto de referencia al centro (0.5, 0.5)
         this.spr_fondo.setDisplaySize(260, 260); // Cambia el tamaño visual del sprite
-
         this.spr_fondo2 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_fondo');
         this.spr_fondo2.setOrigin(0.5);
         this.spr_fondo2.setDisplaySize(260, 260);
@@ -46,55 +49,51 @@ export default class LockPick extends Phaser.Scene {
         this.spr_ring1 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_ring');
         this.spr_ring1.setOrigin(0.5);
         this.spr_ring1.setDisplaySize(250, 250);
-
         this.spr_ring2 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_ring');
         this.spr_ring2.setOrigin(0.5);
         this.spr_ring2.setDisplaySize(250, 250);
 
-        // Cerradura (la parte que gira cuando forzas el candado)
+        // Cerradura
         this.spr_lock1 = this.add.image(this.CENTER_X, this.CENTER_Y - 150, 'lock_lock');
         this.spr_lock1.setOrigin(0.5);
         this.spr_lock1.setDisplaySize(200, 200);
-
         this.spr_lock2 = this.add.image(this.CENTER_X, this.CENTER_Y + 150, 'lock_lock');
         this.spr_lock2.setOrigin(0.5);
         this.spr_lock2.setDisplaySize(200, 200);
 
-        // Ganzúa (la herramienta que mueves con A y D)
+        // Ganzúa (solo 1)
         this.spr_pick = this.add.image(this.CENTER_X, this.CENTER_Y, 'lock_lockpick');
         this.spr_pick.setDisplaySize(200, 200);
 
         // Variables de juego
         this.pickAngle = 0; // Ángulo actual de la ganzúa (-90 a 90 grados)
         this.tension = 0; // Tensión acumulada (si llega a maxTension, se rompe la ganzúa)
-        this.maxTension = 100; // Límite máximo de tensión antes de fallar
+        this.maxTension = 100; // Límite máximo de tensión
         this.vibrationStrength = 0; // Intensidad de la vibración visual
         this.isTransitioning = false; // Flag para bloquear inputs durante el cambio de cerradura
 
-        // --------------------------------------------
-        // MULTI-CERRADURA (2 candados)
-        // --------------------------------------------
+        // Variables que se definen por la dificultad (MinigameData)
+        this.SWEET_WIDTH = 10; // Límite del sweetspot en grados (x2)
+        this.ROTATION_WIDTH = 20;
+        this.TENSION_INCREASE_RATE = 0.1; // Vel. a la que se acumula tensión
+        this.TENSION_DECREASE_RATE = 0.04; // Vel. con la que baja la tensión acumulada
+
         this.currentLock = 1; // Cerradura activa (1 o 2)
 
-        // Array con datos de cada cerradura (posición del sweetspot, rangos, etc.)
+        // Array con datos de cada cerradura
         this.locks = [
-            null, // índice 0 no se usa (para que locks[1] y locks[2] sean más intuitivos)
+            null, // dummyyyy
             this.generateLockData(), // cerradura 1
             this.generateLockData()  // cerradura 2
         ];
 
-        // Rotación actual de cada candado (0 = cerrado, 90 = abierto)
-        this.lockRotation = { 1: 0, 2: 0 };
+        this.lockRotation = { 1: 0, 2: 0 }; // Rotación actual de cada candado (0 = cerrado, 90 = abierto)
 
-        // Graphics es un objeto de Phaser para dibujar formas (líneas, rectángulos, etc.)
-        this.tensionGraphics = this.add.graphics();
+        this.tensionGraphics = this.add.graphics(); // Para dibujar la barra de tensión
 
-        // Configuración de teclas: A (izquierda), D (derecha), ESPACIO (girar)
-        this.keys = this.input.keyboard.addKeys({
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D
-        });
-        this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // Configuración de teclas
+        this.keys = this.input.keyboard.createCursorKeys();
+        this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Fuerza lock
     }
 
     // Genera datos aleatorios para cada cerradura (dónde está el sweetspot)
@@ -110,49 +109,35 @@ export default class LockPick extends Phaser.Scene {
         };
     }
 
-    // Método de Phaser que se ejecuta 60 veces por segundo (bucle principal del juego)
-    // time = tiempo total desde que empezó el juego (en milisegundos)
-    // delta = tiempo transcurrido desde el último frame (en milisegundos)
     update(time, delta) {
         this.tensionGraphics.clear(); // Limpia el dibujo anterior de la barra de tensión
 
         // Solo procesar inputs si NO estamos en transición entre cerraduras
         if (!this.isTransitioning) {
-            this.handlePickMovement(delta); // Procesa el movimiento de la ganzúa (teclas A y D)
-            this.applyTurnLogic(delta); // Procesa el giro de la cerradura (tecla ESPACIO)
+            this.handlePickMovement(delta); // Mov. de ganzúa
+            this.applyTurnLogic(delta); // Mov. de cerradura
         }
 
         // Dibuja todo en pantalla cada frame
-        this.drawLock(1, time);
-        this.drawLock(2, time);
+        this.drawLock(1); // NO uso time xq el método drawLock contiene una sola multiplicación
+        this.drawLock(2);
         this.drawPick(time);
         this.drawTensionBar();
     }
 
-    // -------------------------
-    // MOVIMIENTO DE GANZÚA
-    // -------------------------
-    // Maneja el movimiento horizontal de la ganzúa con las teclas A y D
-    handlePickMovement(delta) {
-        // Si presionas A, mueve la ganzúa hacia la izquierda
-        if (this.keys.left.isDown) {
+    handlePickMovement(delta) { // Movimiento de la ganzúa
+        if (this.keys.left.isDown) { // Izquierda
             this.pickAngle -= this.PICK_MOVEMENT_SPEED * delta / 1000;
         }
-        // Si presionas D, mueve la ganzúa hacia la derecha
-        if (this.keys.right.isDown) {
+        if (this.keys.right.isDown) { // Derecha
             this.pickAngle += this.PICK_MOVEMENT_SPEED * delta / 1000;
         }
-
-        // Phaser.Math.Clamp limita el valor entre un mínimo y máximo
-        // Aquí evita que la ganzúa se mueva más allá de -90 o +90 grados
+        // Evitamos que la ganzúa se mueva más allá de -90 o +90 grados
         this.pickAngle = Phaser.Math.Clamp(this.pickAngle, -90, 90);
+        // Como se puede obervar
     }
 
-    // -------------------------
-    // LÓGICA DE GIRO (por candado activo)
-    // -------------------------
-    // Esta función controla qué pasa cuando presionas ESPACIO para girar la cerradura
-    applyTurnLogic(delta) {
+    applyTurnLogic(delta) { // LÓGICA DE GIRO (cuando pulsas SPACE)
         let lock = this.locks[this.currentLock]; // Datos de la cerradura activa
         let angle = this.pickAngle; // Ángulo actual de la ganzúa
         let currentRotation = this.lockRotation[this.currentLock]; // Cuánto ha girado la cerradura
@@ -160,54 +145,49 @@ export default class LockPick extends Phaser.Scene {
         // Si NO estás presionando ESPACIO:
         if (!this.turnKey.isDown) {
             this.vibrationStrength = 0; // Deja de vibrar
-            this.tension = Math.max(this.tension - this.TENSION_DECREASE_RATE * delta, 0); // Reduce la tensión gradualmente
-            // En cuanto a math.max sirve para saber el mayor número entre (x, y, n...), pero
-            // inteligentemente en este caso le estamos diciendo "resta tensión, pero NUNCA bajes de 0".
+            this.tension = Math.max(this.tension - this.TENSION_DECREASE_RATE * delta, 0);
+            // Reduce la tensión gradualmente sin bajar de 0
 
             // Si la cerradura está parcialmente girada pero no completamente abierta:
             if (currentRotation < this.MAX_LOCK_ROTATION && currentRotation > 0) {
                 // La cerradura vuelve a su posición inicial (se "cierra" de nuevo)
-                this.lockRotation[this.currentLock] = Math.max(
-                    currentRotation - this.LOCK_ROTATION_SPEED * delta * 2, 
-                    0
-                );
+                this.lockRotation[this.currentLock] =
+                    Math.max(currentRotation - this.LOCK_ROTATION_SPEED * delta * 2, 0);
             }
             return; // Sale de la función (no hace nada más si no presionas ESPACIO)
         }
 
-        // 1. FUERA DEL RANGO DE ROTACIÓN (estás demasiado lejos del sweetspot)
+        // 1. FUERA DEL RANGO DE ROTACIÓN
         if (angle < lock.rotationMin || angle > lock.rotationMax) {
             this.vibrationStrength = 5; // Vibración suave
-            this.tension += this.TENSION_INCREASE_RATE * delta; // Aumenta la tensión
-            
+            this.tension += this.TENSION_INCREASE_RATE * delta; // Tensión
+
             // Si la cerradura estaba girándose, vuelve a cerrarse
             if (currentRotation > 0) {
-                this.lockRotation[this.currentLock] = Math.max(
-                    currentRotation - this.LOCK_ROTATION_SPEED * delta * 1.5, 
-                    0
-                );
+                this.lockRotation[this.currentLock] =
+                    Math.max(currentRotation - this.LOCK_ROTATION_SPEED * delta * 1.5, 0);
             }
-            
-            // Si la tensión llega al máximo, rompes la ganzúa
+
+            // Si la tensión llega al máximo,
             if (this.tension >= this.maxTension) {
                 this.fail();
             }
             return; // Sale de la función
         }
 
-        // 2. EN RANGO PERO FUERA DEL SWEETSPOT (cerca, pero no en el punto perfecto)
+        // 2. EN RANGO PERO FUERA DEL SWEETSPOT (caliente caliente)
         if (angle < lock.sweetMin || angle > lock.sweetMax) {
             this.vibrationStrength = 0; // No vibra
             this.tension = Math.max(this.tension - this.TENSION_DECREASE_RATE * delta * 0.5, 0); // Reduce tensión lentamente
-            
-            // Rotar lentamente la cerradura (puedes avanzar un poco)
+
+            // Rotar lentamente la cerradura hasta punto medio
             if (currentRotation < this.RESISTANCE_THRESHOLD) {
                 this.lockRotation[this.currentLock] += this.LOCK_ROTATION_SPEED * delta;
             } else {
                 // Si intentas pasar de 45 grados sin estar en el sweetspot:
                 this.vibrationStrength = 10; // Vibración fuerte (indica resistencia)
                 this.tension += this.TENSION_INCREASE_RATE * delta; // Aumenta tensión rápidamente
-                
+
                 if (this.tension >= this.maxTension) {
                     this.fail(); // Rompes la ganzúa
                 }
@@ -215,46 +195,43 @@ export default class LockPick extends Phaser.Scene {
             return; // Sale de la función
         }
 
-        // 3. EN EL SWEETSPOT (¡estás en el ángulo perfecto!)
+        // 3. EN EL SWEETSPOT (¡ahí es!)
         this.vibrationStrength = 0; // Sin vibración
         this.tension = Math.max(this.tension - this.TENSION_DECREASE_RATE * delta * 2, 0); // Reduce tensión rápidamente
 
         // Rotar la cerradura suavemente hacia la apertura
         this.lockRotation[this.currentLock] += this.LOCK_ROTATION_SPEED * delta;
 
-        // Verificar si la cerradura se desbloqueó completamente (llegó a 90 grados)
+        // Verificar desbloqueo cerradura
         if (this.lockRotation[this.currentLock] >= this.MAX_LOCK_ROTATION) {
             this.lockRotation[this.currentLock] = this.MAX_LOCK_ROTATION; // Fija en 90 grados
             this.unlockCurrentLock(); // Llama a la función de desbloqueo
         }
     }
+    // NOTA: sé que he repetido mucho las acciones en cuanto a tensión y disminuir giro
+    // de cerradura, la estructura quedaría mucho más compacta si crease algunas funciones como
+    // por ejemplo increaseTension, reduceRotation a parte, pero he optado por dejarlo así.
 
-    // -------------------------
-    // CUANDO SE DESBLOQUEA UNA CERRADURA
-    // -------------------------
-    unlockCurrentLock() {
-        console.log(`Cerradura ${this.currentLock} desbloqueada!`); // Mensaje en consola
-
-        if (this.currentLock === 1) {
-            // Si es la primera cerradura, prepara la transición a la segunda
+    unlockCurrentLock() { // Lógica de desbloqueo de cerradura
+        if (this.currentLock === 1) { // Si es la primera cerradura, prepara la transición a la segunda
             this.isTransitioning = true; // Bloquea inputs durante la transición
-            
-            // Animación de transición suave: la ganzúa desaparece (alpha = opacidad)
-            this.tweens.add({ // this.tweens crea animaciones interpoladas
-                targets: this.spr_pick, // Objeto a animar
-                alpha: 0, // Opacidad final (0 = invisible)
-                duration: 500, // Duración en milisegundos
-                onComplete: () => { // Función que se ejecuta cuando termina la animación
-                    // Cambiar a la segunda cerradura
+
+            // Animación de transición
+            this.tweens.add({
+                targets: this.spr_pick,
+                alpha: 0, // Opacidad (no se ve)
+                duration: 500, // ms
+                onComplete: () => {
+                    // 1. Cambiar a la segunda cerradura
                     this.currentLock = 2;
                     this.tension = 0;
                     this.pickAngle = 0;
                     this.vibrationStrength = 0;
-                    
-                    // Reaparecer la ganzúa
+
+                    // 2. Reaparecer la ganzúa
                     this.tweens.add({
                         targets: this.spr_pick,
-                        alpha: 1, // Opacidad final (1 = visible)
+                        alpha: 1, // Opacidad final (ahora si se ve)
                         duration: 500,
                         onComplete: () => {
                             this.isTransitioning = false; // Desbloquea inputs
@@ -262,57 +239,41 @@ export default class LockPick extends Phaser.Scene {
                     });
                 }
             });
-        } else {
-            // Si es la segunda cerradura, has completado el minijuego
+        } else { // Si no es la primera entonces, es la segunda, -> acabas minijuego
             console.log("¡Mini-juego completado!");
-            this.scene.restart(); // Reinicia la escena (útil para testing)
+            this.scene.restart(); // beta
         }
     }
 
-    // -------------------------
-    // DIBUJO DE CADA CERRADURA
-    // -------------------------
-    // Actualiza la rotación visual y el color de una cerradura
-    drawLock(lockNumber, time) {
+    drawLock(lockNumber) { // Dibujar cerradura
         const sprite = lockNumber === 1 ? this.spr_lock1 : this.spr_lock2; // Selecciona el sprite
-        sprite.setRotation(Phaser.Math.DegToRad(this.lockRotation[lockNumber])); // Convierte grados a radianes y rota
-
-        // Feedback visual de cuál está activa
-        if (lockNumber === this.currentLock) {
-            sprite.setTint(0xffffff);  // Blanco = cerradura activa
-        } else if (this.lockRotation[lockNumber] >= this.MAX_LOCK_ROTATION) {
-            sprite.setTint(0x00ff00);  // Verde = cerradura desbloqueada
-        } else {
-            sprite.setTint(0x666666);  // Gris oscuro = cerradura inactiva
-        }
+        sprite.setRotation(Phaser.Math.DegToRad(this.lockRotation[lockNumber]));
+        // Cuando Phaser calcula rotaciones de sprites, lo hace en radianes
     }
 
-    // -------------------------
-    // DIBUJO DE GANZÚA
-    // -------------------------
-    // Actualiza la posición, rotación y vibración de la ganzúa
-    drawPick(time) {
+    drawPick(time) { // Dibujar ganzúa
         // Solo vibrar cuando hay tensión
-        const vibration = this.vibrationStrength > 0 
+        const vibration = this.vibrationStrength > 0
             ? Math.sin(time * 0.02) * this.vibrationStrength * 0.4  // Math.sin crea oscilación
             : 0;
         const angle = this.pickAngle + vibration; // Ángulo base + vibración
 
         // Mueve la ganzúa a la cerradura activa
         const targetY = this.currentLock === 1
-            ? this.CENTER_Y - 150  // Posición de lock 1 (arriba)
-            : this.CENTER_Y + 150; // Posición de lock 2 (abajo)
+            ? this.CENTER_Y - 150  // Lock 1
+            : this.CENTER_Y + 150; // Lock 2 
 
         this.spr_pick.setPosition(this.CENTER_X, targetY); // Posiciona la ganzúa
-        this.spr_pick.setOrigin(0.32, 0.06); // Ajusta el origen para que gire desde la base
-        this.spr_pick.setRotation(Phaser.Math.DegToRad(angle - 135)); // Rota la ganzúa (ajustado para que apunte bien)
+        // WARNING con esto (dependemos de dnd esté la punta en el propio sprite):
+        this.spr_pick.setOrigin(0.32, 0.06); // Ajusta el origen para que gire desde la punta
+        this.spr_pick.setRotation(Phaser.Math.DegToRad(angle - 135)); // Rota la ganzúa dsde ese origen
     }
 
-    // Dibuja la barra de tensión en pantalla
-    drawTensionBar() {
-        let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200); // Calcula el ancho según tensión
+    drawTensionBar() { // Dibuja la barra de tensión en pantalla
+        // Calcula el ancho según tensión acumulada, si la tensión acumulada llega a 100, = maxTension, barra llena
+        let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200);
 
-        // Color que cambia según tensión (feedback visual)
+        // Color que cambia según tensión
         let color = 0x00ff00; // Verde por defecto
         if (this.tension > 60) {
             color = 0xff0000; // Rojo = peligro
@@ -320,16 +281,16 @@ export default class LockPick extends Phaser.Scene {
             color = 0xffff00; // Amarillo = precaución
         }
 
-        this.tensionGraphics.fillStyle(color); // Establece el color de relleno
-        this.tensionGraphics.fillRect(this.CENTER_X - 100, this.CENTER_Y - 10, barWidth, 20); // Dibuja rectángulo relleno
+        this.tensionGraphics.fillStyle(color); // Color que viene dado por lo de arriba
+        this.tensionGraphics.fillRect(this.CENTER_X - 100, this.CENTER_Y - 10, barWidth, 20);
 
-        this.tensionGraphics.lineStyle(2, 0xffffff); // Establece estilo de línea (grosor, color)
-        this.tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y - 10, 200, 20); // Dibuja borde de la barra
+        this.tensionGraphics.lineStyle(2, 0xffffff); // (grosor, color)
+        this.tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y - 10, 200, 20); // Borde de la barra
     }
 
-    // Se llama cuando rompes la ganzúa (tensión al máximo)
+    // Se llama cuando rompes la ganzúa (tension >= maxTension)
     fail() {
         console.log("Ganzúa rota");
-        this.scene.restart(); // Reinicia la escena
+        this.scene.restart(); // beta
     }
 }

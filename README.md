@@ -86,10 +86,11 @@ Para lograrlo, debe **descifrar jeroglíficos** y desbloquear pistas hasta encon
 
 | Minijuego | Descripción | Mecánicas principales |
 |-----------|------------|--------------------|
-| Barra | Exactitud y reflejos | Barra con un escarabajo sagrado en movimiento; detener encima de la gema. Dificultad aumenta reduciendo la franja y aumentando velocidad. |
-| Esquivar | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
-| Luces | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
-| Balón y portero | Precisión | Introducir el balón en hueco sin que el portero lo detenga; dificultad aumenta velocidad del portero. |
+| Precisión del escriba | Exactitud y reflejos | Barra con un escarabajo sagrado en movimiento; detener encima de la gema. Dificultad aumenta reduciendo la franja y aumentando velocidad. |
+| Furia del desierto | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
+| Memoria del templo | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
+| Cerrajero ancestral | Precisión | Abrir un candado interactuando cuidadosamente con una ganzúa. |
+| Francotirador en el Nilo | Apuntar y disparar | Apuntar y disparar a cocodrilos que aparecen. |
 
 ---
 
@@ -148,12 +149,16 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
    ![Pista](wallyLikeAnEgyptian/assets/screenshots/)
 5. **Encontrar a Wally**  
    ![Encontrar a Wally](wallyLikeAnEgyptian/assets/screenshots/)
-6. **Minijuego: Barra**  
-   ![Minijuego Barra](wallyLikeAnEgyptian/assets/screenshots/)
-7. **Minijuego: Luces**  
-   ![Minijuego Luces](wallyLikeAnEgyptian/assets/screenshots/)
-8. **Minijuego: Portero**  
-   ![Minijuego Portero](wallyLikeAnEgyptian/assets/screenshots/)
+6. **Minijuego: Precisión del escriba**  
+   ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/PrecisionDelEscriba.png)
+7. **Minijuego: Memoria del templo**  
+   ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriaDelTemplo.png)
+8. **Minijuego: Furia del desierto**  
+   ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/FuriaDelDesierto.png)
+9. **Minijuego: Cerrajero ancestral**
+   ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/)
+10. **Minijuego: Francotirador en el Nilo**
+   ![Minijuego Francotirador en el Nilo](wallyLikeAnEgyptian/assets/screenshots/)
 
 ---
 
