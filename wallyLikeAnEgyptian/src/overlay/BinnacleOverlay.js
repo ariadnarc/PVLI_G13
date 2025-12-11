@@ -1,7 +1,6 @@
 import InputManager from "../core/InputManager.js";
 import BinnacleManager from "../core/BinnacleManager.js";
 import GlyphTierConfig from "../config/GlyphTierData.js"
-import NotaJerogliOverlay from "./NotaJerogliOverlay.js";
 
 export default class BinnacleOverlay extends Phaser.Scene {
   constructor() {
@@ -53,7 +52,6 @@ export default class BinnacleOverlay extends Phaser.Scene {
 
     // --- CONTENIDO DE JEROGLÍFICOS ---
     this.renderBinnacleContent();
-    this.nota=new NotaJerogliOverlay(this);
   }
 
   /**
@@ -90,7 +88,6 @@ export default class BinnacleOverlay extends Phaser.Scene {
 
   update() {
     this.inputManager.update();
-    if(this.nota) this.nota.update();
   }
 
   closeBinnacle() {
