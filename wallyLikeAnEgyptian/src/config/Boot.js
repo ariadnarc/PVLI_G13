@@ -47,11 +47,35 @@ export default class Boot extends Phaser.Scene {
     this.load.image('tilesImg', 'wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
     this.load.tilemapTiledJSON('mapa', 'wallyLikeAnEgyptian/assets/mapa/mapaTiled.json');
 
+    //Objetos movibles
+    this.load.image('caja', 'wallyLikeAnEgyptian/assets/sprites/caja.png');
 
+    //portales cofres con animacion
+    this.load.spritesheet('cofre', 'wallyLikeAnEgyptian/assets/sprites/cofreSpriteSheet.png', {
+    frameWidth: 15,  
+    frameHeight: 16  
+    });
+    
     // ICONOS JEROGLÍFICOS
     for (let i = 1; i <= 9; i++) {
       this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
     }
+    //jeroglificos bitacora
+    this.load.image('A', 'wallyLikeAnEgyptian/assets/jeroglificos/a.png');
+    this.load.image('B', 'wallyLikeAnEgyptian/assets/jeroglificos/b.png');
+    this.load.image('C', 'wallyLikeAnEgyptian/assets/jeroglificos/c.png');
+    this.load.image('E', 'wallyLikeAnEgyptian/assets/jeroglificos/e.png');
+    this.load.image('I', 'wallyLikeAnEgyptian/assets/jeroglificos/i.png');
+    this.load.image('L', 'wallyLikeAnEgyptian/assets/jeroglificos/l.png');
+    this.load.image('M', 'wallyLikeAnEgyptian/assets/jeroglificos/m.png');
+    this.load.image('N', 'wallyLikeAnEgyptian/assets/jeroglificos/n.png');
+    this.load.image('O', 'wallyLikeAnEgyptian/assets/jeroglificos/o.png');
+    this.load.image('P', 'wallyLikeAnEgyptian/assets/jeroglificos/p.png');
+    this.load.image('Q', 'wallyLikeAnEgyptian/assets/jeroglificos/q.png');
+    this.load.image('R', 'wallyLikeAnEgyptian/assets/jeroglificos/r.png');
+    this.load.image('S', 'wallyLikeAnEgyptian/assets/jeroglificos/s.png');
+    this.load.image('T', 'wallyLikeAnEgyptian/assets/jeroglificos/t.png');
+    this.load.image('U', 'wallyLikeAnEgyptian/assets/jeroglificos/u.png');
 
     // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
     // === TIERS JEROGLIFICOS ===
@@ -70,9 +94,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
     this.load.audio('minigame_music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
-    //Objetos movibles
-    this.load.image('caja', 'wallyLikeAnEgyptian/assets/sprites/caja.png');
-
+   
     //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
   }
 

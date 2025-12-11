@@ -4,7 +4,7 @@ export const playerInitialData = {
       - Añadir pos initial y otras variables del Player aquí
       - Crear un Json para toda la info inicial desde donde se lea
   */
-  posInicial: { x: 400, y: 350}, // pos en el mapa
+  posInicial: { x: 450, y: 610}, // pos en el mapa
   speed: 200, // vel player
   spriteName: 'player', // nombre del asset
   scale: 1.25,

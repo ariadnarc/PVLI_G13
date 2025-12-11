@@ -64,6 +64,7 @@ export default class PlayerManager {
         this.playAnim('walk-up');
       }
     }
+    console.log("Posicion del jugador:",this.sprite.x,this.sprite.y);
   }
 
   playAnim(key) {

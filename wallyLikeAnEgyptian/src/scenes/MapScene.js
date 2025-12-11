@@ -4,7 +4,9 @@ import MovingObject from "../core/MovingObject.js";
 import { NOMBRES_MINIJUEGOS } from "../config/MinigameData.js";
 import { objectsData } from '../config/ObjectsData.js';
 import { playerInitialData } from '../config/PlayerData.js';
-
+import PortalChest from "../core/PortalChest.js";
+import { cofresData } from "../config/cofresData.js";
+import MurosInvisibles from "../core/MurosInvisibles.js";
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
@@ -52,14 +54,49 @@ export default class MapScene extends Phaser.Scene {
             this.movingObjects.push(obj);
         });
 
-        for (let i = 0; i < this.movingObjects.length; i++) {
+        
+    //===================MINIJUEGOS===================
+        this.portales=[];
+
+       cofresData.forEach(data => {
+            const portal = new PortalChest(this,data,this.PlayerManager, (minijuego) => {
+            this.scene.pause();
+            this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
+            this.savePositions();
+        });
+
+        this.portales.push(portal);
+    });
+    //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
+    for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.movingObjects.length; j++) {
                 this.physics.add.collider(
+<<<<<<< Updated upstream
                     this.movingObjects[i].sprite,
                     this.movingObjects[j].sprite
                 );
             }
         }
+=======
+                this.movingObjects[i].sprite,
+                this.movingObjects[j].sprite
+        );
+        }
+    }
+    for (let i = 0; i < this.movingObjects.length; i++) {
+            for (let j = i + 1; j < this.portales.length; j++) {
+                this.physics.add.collider(
+                this.movingObjects[i].sprite,
+                this.portales[j].sprite
+        );
+        }
+    }
+
+ //===================PAREDES LIMITANTES===================
+        this.wallSalaSecrt=new MurosInvisibles(this,914,1036,{A:1},this.PlayerManager);
+        this.wallVuelta=new MurosInvisibles(this,455,995,{A:1},this.PlayerManager);
+        this.wallFin=new MurosInvisibles(this,455,1135,{A:1},this.PlayerManager);
+>>>>>>> Stashed changes
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
         this.physics.add.existing(this.finalMsgPortal);
@@ -103,8 +140,13 @@ export default class MapScene extends Phaser.Scene {
 
 
 
+<<<<<<< Updated upstream
         //===================MINIJUEGOS===================
 
+=======
+        
+    /*
+>>>>>>> Stashed changes
         //FURIA DEL DESIERTO:
         //crear portal para llevar a los minijuegos
         this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
@@ -118,6 +160,7 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
             this.savePositions();
         });
+
 
         //Minijuego Memoria del Templo--------------------------------
         //crear portal para llevar a los minijuegos
@@ -179,8 +222,13 @@ export default class MapScene extends Phaser.Scene {
             this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
             this.savePositions();
         });
+<<<<<<< Updated upstream
 
 
+=======
+*/
+         
+>>>>>>> Stashed changes
         //===================CAMARA===================
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
@@ -195,6 +243,11 @@ export default class MapScene extends Phaser.Scene {
         this.movingObjects.forEach(obj => {
             obj.update();
         });
+        this.portales.forEach(portal => {
+            portal.update();
+        });
+        //this.wall.update();
+        
     }
 
     openBinnacle() {
@@ -212,5 +265,9 @@ export default class MapScene extends Phaser.Scene {
             objectsData[index].posInicial.y = obj.sprite.y;
         });
     }
+<<<<<<< Updated upstream
 
 }
+=======
+}
+>>>>>>> Stashed changes

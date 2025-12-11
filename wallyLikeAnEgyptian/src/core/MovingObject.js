@@ -5,10 +5,10 @@ export default class MovingObject {
     
     this.scene = scene;
     
-    this.sprite = scene.physics.add.sprite(data.posInicial.x, data.posInicial.y, data.spriteName);
-    this.sprite.setScale(data.scale);
+    this.sprite = scene.physics.add.sprite(data.posInicial.x, data.posInicial.y, 'caja');
+    this.sprite.setScale(2);
 
-    this.speed = data.speed;
+    this.speed = 25;
     this.colisiones=colisiones;
     this.player=player;
 
