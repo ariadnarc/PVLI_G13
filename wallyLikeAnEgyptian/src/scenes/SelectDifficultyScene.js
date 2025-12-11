@@ -84,6 +84,7 @@ export default class SelectDifficultyScene extends MenuBase {
       );
     });
 
+    this.createVolverButton();
   }
 
   getCosteTexto(dif) {
@@ -135,6 +136,39 @@ export default class SelectDifficultyScene extends MenuBase {
       playerInitialData.glyphs.A >= coste.A &&
       playerInitialData.glyphs.B >= coste.B
     );
+  }
+
+  createVolverButton() {
+    const centerX = this.cameras.main.centerX;
+    const centerY = this.cameras.main.centerY;
+
+    const btn = this.add.image(centerX - 350, centerY + 150, "fondoBoton")
+      .setOrigin(0.5)
+      .setScale(0.75)
+      .setInteractive({ useHandCursor: true });
+
+    // --- Texto encima ---
+    const btnText = this.add.text(btn.x, btn.y, "Volver al mapa", {
+      fontFamily: "Filgaia",
+      fontSize: "20px",
+      color: '#382f23ff'
+    }).setOrigin(0.5);
+
+    // --- Hover: pequeña animación ---
+    btn.on("pointerover", () => {
+      btn.setScale(0.85);
+      btnText.setColor("#ffffaa");
+    });
+
+    btn.on("pointerout", () => {
+      btn.setScale(0.75);
+      btnText.setColor('#382f23ff');
+    });
+
+    // --- Acción del botón ---
+    btn.on("pointerdown", () => {
+      this.scene.start("MapScene");
+    });
   }
 
   pagarJeroglificos(coste) {
