@@ -1,7 +1,7 @@
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
-
+import { playerInitialData } from '../config/PlayerData.js';
 export default class Undertale extends Phaser.Scene {
   constructor() {
     super('Undertale');
@@ -38,7 +38,7 @@ export default class Undertale extends Phaser.Scene {
     });
 
     // JUGADOR
-    this.playerManager = new PlayerManager(this.inputManager, this);
+    this.playerManager = new PlayerManager(this.inputManager, this,playerInitialData);
     this.player = this.playerManager.getSprite();
     this.player.setPosition(centerX, centerY);
 

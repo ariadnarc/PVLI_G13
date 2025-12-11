@@ -1,13 +1,10 @@
-import { playerInitialData } from '../config/PlayerData.js';
 
 export default class PlayerManager {
-  constructor(inputManager, scene, spriteConfig = {}) {
+  constructor(inputManager, scene,data) {
 
     this.scene = scene;
     this.inputManager = inputManager; // ya configurada
-
-    this.data = playerInitialData; // usa la info inicial
-
+    this.data=data;
     this.sprite = scene.physics.add.sprite(
       this.data.posInicial.x,
       this.data.posInicial.y,
@@ -16,7 +13,7 @@ export default class PlayerManager {
     );
 
     this.sprite.setScale(this.data.scale); // scale del initialData
-    this.speed = this.data.speed || 200;
+    this.speed = data.speed || 200;
     this.sprite.setCollideWorldBounds(false);
 
     // Ajustar collider
