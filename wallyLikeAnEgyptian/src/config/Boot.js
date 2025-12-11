@@ -25,7 +25,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
     this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png');
     this.load.image('fondoUndertale', 'wallyLikeAnEgyptian/assets/ui/fondoUndertale.png');
-
+    this.load.image('fondoIntro', 'wallyLikeAnEgyptian/assets/ui/IntroScenebg.png');
 
     // === IMÁGENES Y SPRITES ===
     this.load.spritesheet('player', 'wallyLikeAnEgyptian/assets/sprites/playerSpriteSheet.png', {
@@ -36,6 +36,10 @@ export default class Boot extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32
     }); //esto es para coger sprites de pixel art egipcio
+
+    this.load.image('cafe', 'wallyLikeAnEgyptian/assets/sprites/cafe.png');
+    this.load.image('mariano', 'wallyLikeAnEgyptian/assets/sprites/mariano.png');
+
 
     this.load.image('papiroBar', 'wallyLikeAnEgyptian/assets/sprites/papyrusBar.jpg'); //barra de papiro para el slideBar
 
