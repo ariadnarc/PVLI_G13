@@ -25,7 +25,7 @@ export default class SettingsMenu extends MenuBase {
     //texto volumen
     this.volumeText = this.add.text(width / 2, 180,
       `Volumen: ${(this.soundValue * 100).toFixed(0)}%`,
-      { fontFamily: 'Filgaia',fontSize: '22px', color: '#ffffffff' }
+      { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffffff' }
     ).setOrigin(0.5).setDepth(2001);
 
     //slider
@@ -55,7 +55,7 @@ export default class SettingsMenu extends MenuBase {
     this.createButton("Volver", width / 2, 420, () => {
       this.onEscape(); // reusar comportamiento por defecto
     }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
-    'fondoBoton').setDepth(2002);
+      'fondoBoton').setDepth(2002);
   }
 
   update() {

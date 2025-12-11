@@ -41,15 +41,15 @@ document.fonts.load('16px "Filgaia"').then(() => {
     backgroundColor: '#e87722',
     canvas: document.getElementById('gameCanvas'),
     physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 0 },  // sin gravedad
-      debug: false        // hitboxes
+      default: 'arcade',
+      arcade: {
+        gravity: { y: 0 },  // sin gravedad
+        debug: false        // hitboxes
       }
     }, // declaramos físcas globalmente
-    scene: [Boot, MainMenu, MapScene,IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
-            SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
-            LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage],
+    scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
+      SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
+      LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage],
   };
 
   // Condicional que obliga a buscar el canvas q tenemos en el index

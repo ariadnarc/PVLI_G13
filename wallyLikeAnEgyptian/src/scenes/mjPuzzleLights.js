@@ -6,7 +6,7 @@ export default class PuzzleLights extends Phaser.Scene {
     super('PuzzleLights');
   }
 
-  init(data){
+  init(data) {
     this.isMinigame = true; //flag que marca que es un minijuego
     this.difficulty = data?.dificultad || 'FACIL'; //guardamos la dificultad para pasarla despues
   }
@@ -39,7 +39,7 @@ export default class PuzzleLights extends Phaser.Scene {
     this.isPlayerTurn = false;
 
     //TITULOS Y VIDA
-    this.titleText = this.add.text(centerX/3, 40, 'Memoria de Luces', {
+    this.titleText = this.add.text(centerX / 3, 40, 'Memoria de Luces', {
       fontFamily: 'Filgaia',
       fontSize: '32px',
       color: '#382f23ff',

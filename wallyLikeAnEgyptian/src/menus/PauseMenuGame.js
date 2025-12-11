@@ -49,7 +49,7 @@ export default class PauseMenuGame extends MenuBase {
         this.scene.bringToTop('SettingsMenu');
         this.scene.pause();
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
-    } else 
+    } else
     //=========DESDE MAPA===========
     {
       // Ajustes
@@ -72,7 +72,7 @@ export default class PauseMenuGame extends MenuBase {
       fontFamily: 'Filgaia',
       fontSize: '18px',
       color: '#cccccc'
-    } ).setOrigin(0.5).setDepth(1003);
+    }).setOrigin(0.5).setDepth(1003);
   }
 
   onEscape() {

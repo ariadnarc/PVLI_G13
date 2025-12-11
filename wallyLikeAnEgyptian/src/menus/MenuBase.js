@@ -8,7 +8,7 @@ export default class MenuBase extends Phaser.Scene {
     this.menuConfig = {};
   }
 
-  init(data){
+  init(data) {
     this.menuConfig = data || {};
   }
 
@@ -52,94 +52,94 @@ export default class MenuBase extends Phaser.Scene {
   createButton(label, x, y, callback, style = {}, spriteKey = null) {
     let container;
 
-    if(spriteKey) {
-        // Crear el sprite de fondo
-        const bg = this.add.image(0, 0, spriteKey).setOrigin(0.5);
+    if (spriteKey) {
+      // Crear el sprite de fondo
+      const bg = this.add.image(0, 0, spriteKey).setOrigin(0.5);
 
-        // Escalar si se pasa en style
-        if(style.width && style.height){
-            bg.setDisplaySize(style.width, style.height);
-        }
+      // Escalar si se pasa en style
+      if (style.width && style.height) {
+        bg.setDisplaySize(style.width, style.height);
+      }
 
-        // esta es escala original del sprite pa despues del hover
-        const originalScaleX = bg.scaleX;
-        const originalScaleY = bg.scaleY;
+      // esta es escala original del sprite pa despues del hover
+      const originalScaleX = bg.scaleX;
+      const originalScaleY = bg.scaleY;
 
-        // Crear el texto encima
-        const txt = this.add.text(0, 0, label, {
-            fontSize: style.fontSize || '22px',
-            fontFamily: 'Filgaia',
-            color: style.color || '#634830ff',
-            align: 'center',
-            ...style
-        }).setOrigin(0.5);
+      // Crear el texto encima
+      const txt = this.add.text(0, 0, label, {
+        fontSize: style.fontSize || '22px',
+        fontFamily: 'Filgaia',
+        color: style.color || '#634830ff',
+        align: 'center',
+        ...style
+      }).setOrigin(0.5);
 
-        // Agrupar en un container
-        container = this.add.container(x, y, [bg, txt]);
+      // Agrupar en un container
+      container = this.add.container(x, y, [bg, txt]);
 
-        // Interactividad
-        bg.setInteractive({ useHandCursor: true });
-        bg.on('pointerdown', callback);
+      // Interactividad
+      bg.setInteractive({ useHandCursor: true });
+      bg.on('pointerdown', callback);
 
-        // Hover opcional animado
-        bg.on('pointerover', () => {
-            // Animacion de escala
-            this.tweens.add({
-                targets: bg,
-                scaleX: originalScaleX * 1.05,
-                scaleY: originalScaleY * 1.05,
-                duration: 120,
-                ease: 'Power2'
-            });
-
-            // Tint si no hay hoverTint definido
-            if (!style.hoverTint) {
-                bg.setTint(0xAAAAAA);
-            }
+      // Hover opcional animado
+      bg.on('pointerover', () => {
+        // Animacion de escala
+        this.tweens.add({
+          targets: bg,
+          scaleX: originalScaleX * 1.05,
+          scaleY: originalScaleY * 1.05,
+          duration: 120,
+          ease: 'Power2'
         });
 
-        bg.on('pointerout', () => {
-            // Quitar escala
-            this.tweens.add({
-                targets: bg,
-                scaleX: originalScaleX,
-                scaleY: originalScaleY,
-                duration: 120,
-                ease: 'Power2'
-            });
+        // Tint si no hay hoverTint definido
+        if (!style.hoverTint) {
+          bg.setTint(0xAAAAAA);
+        }
+      });
 
-            // Quitar tint solo si lo añadio este hover
-            if (!style.hoverTint) {
-                bg.clearTint();
-            }
+      bg.on('pointerout', () => {
+        // Quitar escala
+        this.tweens.add({
+          targets: bg,
+          scaleX: originalScaleX,
+          scaleY: originalScaleY,
+          duration: 120,
+          ease: 'Power2'
         });
 
-        if(style.hoverTint) {
-            bg.on('pointerover', () => bg.setTint(style.hoverTint));
-            bg.on('pointerout', () => bg.clearTint());
+        // Quitar tint solo si lo añadio este hover
+        if (!style.hoverTint) {
+          bg.clearTint();
         }
+      });
+
+      if (style.hoverTint) {
+        bg.on('pointerover', () => bg.setTint(style.hoverTint));
+        bg.on('pointerout', () => bg.clearTint());
+      }
 
     } else {
-        // Si no se pasa spriteKey, usar texto con backgroundColor como antes
-        const txt = this.add.text(x, y, label, {
-            fontSize: style.fontSize || '22px',
-            fontFamily: 'Filgaia',
-            color: style.color || '#000',
-            backgroundColor: style.backgroundColor || '#ddd',
-            padding: { x: 12, y: 6 },
-            align: 'center',
-            ...style,
-        }).setOrigin(0.5);
+      // Si no se pasa spriteKey, usar texto con backgroundColor como antes
+      const txt = this.add.text(x, y, label, {
+        fontSize: style.fontSize || '22px',
+        fontFamily: 'Filgaia',
+        color: style.color || '#000',
+        backgroundColor: style.backgroundColor || '#ddd',
+        padding: { x: 12, y: 6 },
+        align: 'center',
+        ...style,
+      }).setOrigin(0.5);
 
-        this.inputManager.registerButton(txt, callback);
-        container = txt;
+      this.inputManager.registerButton(txt, callback);
+      container = txt;
     }
 
     // Guardar referencia para limpiar
     this.menuElements.push(container);
 
     return container;
-}
+  }
 
   /**
    * Cleanup

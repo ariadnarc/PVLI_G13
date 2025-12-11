@@ -13,7 +13,7 @@ export default class SelectDifficultyScene extends MenuBase {
     // Minijuego que se va a jugar
     this.minijuego = data.minijuego;
     this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
-    
+
     // Flag para saber si venimos de reintento (en principio solo pal slide)
     this.reintento = data.reintento || false;
     this.remainingTries = data.remainingTries ?? null; // null si no hay valor
@@ -51,7 +51,7 @@ export default class SelectDifficultyScene extends MenuBase {
       centerX / 2.25,
       350,
       `Tus jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`,
-      { fontFamily: 'Filgaia',fontSize: '20px', color: '#ffffff' }
+      { fontFamily: 'Filgaia', fontSize: '20px', color: '#ffffff' }
     ).setOrigin(0.5);
 
     // === Dificultades ===
@@ -68,7 +68,7 @@ export default class SelectDifficultyScene extends MenuBase {
         fontSize: "18px",
         color: "#ddd",
       }).setOrigin(0.5);
-      
+
       this.createButton(
         dif,
         800,

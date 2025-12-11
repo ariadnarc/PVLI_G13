@@ -1,4 +1,4 @@
-import { MINIGAME_REWARDS } from '../config/MinigameData.js'; 
+import { MINIGAME_REWARDS } from '../config/MinigameData.js';
 import MenuBase from './MenuBase.js';
 import GlyphTierData from '../config/GlyphTierData.js';
 import BinnacleManager from '../core/BinnacleManager.js';
@@ -16,12 +16,12 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   init(data) {
-      this.result = data?.result || 'defeat';
-      this.difficulty = data?.difficulty || 'FACIL';
-      this.minijuego = data?.minijuego;
-      this.options = data?.options || {};
-      // Para minijuegos con varios intentos, si vienen en data
-      this.remainingTries = data?.remainingTries;
+    this.result = data?.result || 'defeat';
+    this.difficulty = data?.difficulty || 'FACIL';
+    this.minijuego = data?.minijuego;
+    this.options = data?.options || {};
+    // Para minijuegos con varios intentos, si vienen en data
+    this.remainingTries = data?.remainingTries;
   }
 
   create() {
@@ -47,29 +47,29 @@ export default class PostMinigameMenu extends MenuBase {
 
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
-            // Elegimos el count de recompensas segun la dificultad
-            
-            let rewardKey = this.difficulty; // FACIL / MEDIA / DIFICIL
+      // Elegimos el count de recompensas segun la dificultad
 
-            const rewardCount = MINIGAME_REWARDS.rewardSettings[rewardKey].count;
+      let rewardKey = this.difficulty; // FACIL / MEDIA / DIFICIL
 
-            const rewards = GlyphTierData.getMultipleRewards(this.difficulty, rewardCount);
+      const rewardCount = MINIGAME_REWARDS.rewardSettings[rewardKey].count;
 
-            // Registrar en bitacora
-            this.binnacle = BinnacleManager.getInstance();
-            this.binnacle.addGlyph(rewards);
+      const rewards = GlyphTierData.getMultipleRewards(this.difficulty, rewardCount);
+
+      // Registrar en bitacora
+      this.binnacle = BinnacleManager.getInstance();
+      this.binnacle.addGlyph(rewards);
 
       // Mostrar en pantalla
       this.showResults(rewards);
     }
 
     // Intentos restantes para minijuegos como SlideBar
-        if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
-            this.add.text(width / 2, height / 2 - 100,
-                `Intentos restantes: ${this.remainingTries}`,
-                { fontFamily: 'Filgaia',fontSize: '22px', color: '#ffffff' }
-            ).setOrigin(0.5);
-        }
+    if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
+      this.add.text(width / 2, height / 2 - 100,
+        `Intentos restantes: ${this.remainingTries}`,
+        { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
+      ).setOrigin(0.5);
+    }
 
     //===========BOTONES==========
     this.createMenuButtons();
@@ -120,13 +120,13 @@ export default class PostMinigameMenu extends MenuBase {
         centerY,
         () => callback(),
         { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
-        'fondoBoton' 
-        );
-      });
-    }
+        'fondoBoton'
+      );
+    });
+  }
 
   onEscape() {
-    
+
     this.scene.stop();
     this.scene.start('MapScene');
   }
