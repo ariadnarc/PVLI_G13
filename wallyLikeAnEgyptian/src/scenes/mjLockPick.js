@@ -1,7 +1,7 @@
 /**
  * Search "Skyrim Lockpick" for reference.
  * 
- * init: condicional minijuego
+ * init: condicional minijuego, dificultad init
  * create: sprites, variables, generar cerraduras, teclas, dificultades
  * 
  * generateLockData(): crea las características de la cerradura
