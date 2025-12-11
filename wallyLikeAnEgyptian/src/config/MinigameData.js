@@ -2,7 +2,8 @@ export const NOMBRES_MINIJUEGOS = {
   SlideBar: "Precision del Escriba",
   Undertale: "Furia del Desierto",
   PuzzleLights: "Memoria del Templo",
-  LockPick: "Cerrajero ancestral"
+  LockPick: "Cerrajero Ancestral",
+  CrocoShoot: "Cazador de Reptiles"
 }
 
 export const DIFICULTADES = {
@@ -24,6 +25,16 @@ export const DIFICULTADES = {
       SlideBar: {
         intentos: 3,
         velocidadBarra: 200,
+      },
+      // minijuego cerradura
+      LockPick: {
+        limiteSweet: 13, // Min.: 1, Máx.: 90 (ya que solo hay 180 grados)
+        limiteRotacion: 26, // Siempre > que limiteSweet
+        tensionSube: 0.1, // 0 - 1
+        tensionBaja: 0.04, // 0 - 1
+      },
+      // minijuego disparar
+      CrocoShoot: {
       }
     },
     probJeroglificos: { S: 0.05, A: 0.15, B: 0.80 }
@@ -44,6 +55,14 @@ export const DIFICULTADES = {
       SlideBar: {
         intentos: 2,
         velocidadBarra: 300,
+      },
+      LockPick: {
+        limiteSweet: 10,
+        limiteRotacion: 20,
+        tensionSube: 0.25,
+        tensionBaja: 0.07,
+      },
+      CrocoShoot: {
       }
     },
     probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
@@ -64,6 +83,14 @@ export const DIFICULTADES = {
       SlideBar: {
         intentos: 1,
         velocidadBarra: 370,
+      },
+      LockPick: {
+        limiteSweet: 6,
+        limiteRotacion: 12,
+        tensionSube: 0.4,
+        tensionBaja: 0.1,
+      },
+      CrocoShoot: {
       }
     },
     probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }

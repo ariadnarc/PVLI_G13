@@ -1,18 +1,21 @@
 /**
- * Search "Skyrim Lockpick minigame" for reference.
+ * Search "Skyrim Lockpick" for reference.
  * 
  * init: condicional minijuego
- * create: sprites, variables
- * update:
+ * create: sprites, variables, generar cerraduras, teclas, dificultades
  * 
- * handlePickMovement(delta)
- * applyTurnLogic(delta
- * unlockCurrentLock() LO TOCHO
- * drawLock(lockNumber, time)
- * drawPick(time)
- * drawTensionBar()
- * fail()
+ * generateLockData(): crea las características de la cerradura
+ * update: actualizar gráficos, gestiona el flag de transición entre cerraduras
+ * 
+ * handlePickMovement(delta): movimiento ganzúa
+ * applyTurnLogic(delta): lo que ocurre al intentar desbloquear la cerradura
+ * unlockCurrentLock(): lógica de desbloqueo
+ * drawLock(lockNumber): dibujar la cerradura, para el update
+ * drawPick(time): dibujar ganzúa, tiene en cuenta rotación del jugador y cerradura activa
+ * drawTensionBar(): gestión visual de la tensión para el update
+ * fail(): método que se ejecuta al llenar la barra de tensión, perder
  */
+import { DIFICULTADES } from '../config/MinigameData.js';
 
 export default class LockPick extends Phaser.Scene {
     constructor() {
@@ -25,13 +28,16 @@ export default class LockPick extends Phaser.Scene {
         this.RESISTANCE_THRESHOLD = 45; // Límite de rotación de la cerradura cuando el jugador está en el "ángulo de rotación"
     }
 
-    init() {
+    init(data) {
         this.isMinigame = true;
+
+        this.difficulty = data.dificultad;
     }
 
     create() {
         this.CENTER_X = this.cameras.main.centerX;
         this.CENTER_Y = this.cameras.main.centerY;
+        const config = DIFICULTADES[this.difficulty].minijuegos.LockPick;
 
         // SPRITES (son 2 cerraduras, por eso hay "duplicados")
 
@@ -72,11 +78,11 @@ export default class LockPick extends Phaser.Scene {
         this.vibrationStrength = 0; // Intensidad de la vibración visual
         this.isTransitioning = false; // Flag para bloquear inputs durante el cambio de cerradura
 
-        // Variables que se definen por la dificultad (MinigameData)
-        this.SWEET_WIDTH = 10; // Límite del sweetspot en grados (x2)
-        this.ROTATION_WIDTH = 20;
-        this.TENSION_INCREASE_RATE = 0.1; // Vel. a la que se acumula tensión
-        this.TENSION_DECREASE_RATE = 0.04; // Vel. con la que baja la tensión acumulada
+        // Constantes que se definen por la dificultad (MinigameData)
+        this.SWEET_WIDTH = config.limiteSweet; // Límite del sweetspot en grados (x2)
+        this.ROTATION_WIDTH = config.limiteRotacion; // Lo mismo pero el otro límite (rotación)
+        this.TENSION_INCREASE_RATE = config.tensionSube; // Vel. a la que se acumula tensión
+        this.TENSION_DECREASE_RATE = config.tensionBaja; // Vel. con la que baja la tensión acumulada
 
         this.currentLock = 1; // Cerradura activa (1 o 2)
 
@@ -91,13 +97,12 @@ export default class LockPick extends Phaser.Scene {
 
         this.tensionGraphics = this.add.graphics(); // Para dibujar la barra de tensión
 
-        // Configuración de teclas
+        // Configuración de teclas (no usamos el inputManager)
         this.keys = this.input.keyboard.createCursorKeys();
-        this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Fuerza lock
+        this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
-    // Genera datos aleatorios para cada cerradura (dónde está el sweetspot)
-    generateLockData() {
+    generateLockData() { // Genera los datos de la cerradura
         let sweetCenter = Phaser.Math.Between(-90, 90); // Elige un ángulo aleatorio
 
         return {
@@ -270,6 +275,7 @@ export default class LockPick extends Phaser.Scene {
     }
 
     drawTensionBar() { // Dibuja la barra de tensión en pantalla
+        // No uso time porque lo recalculo desde 0 al empezar cada frame (ver clear() del update)
         // Calcula el ancho según tensión acumulada, si la tensión acumulada llega a 100, = maxTension, barra llena
         let barWidth = Phaser.Math.Clamp((this.tension / this.maxTension) * 200, 0, 200);
 
