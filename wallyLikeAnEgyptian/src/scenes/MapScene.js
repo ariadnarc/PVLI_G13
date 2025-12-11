@@ -19,8 +19,6 @@ export default class MapScene extends Phaser.Scene {
     }
 
     create() {
-
-        //===================INPUT===================
         this.inputManager = new InputManager(this);
 
         // MapScene solo escucha movimiento y tecla ESC
@@ -34,8 +32,6 @@ export default class MapScene extends Phaser.Scene {
             if (key === "B") this.openBinnacle(this.inputManager);
         });
 
-        //===================MAPA===================
-
         //Creacion del mapa desde json
         const map = this.make.tilemap({ key: 'mapa' });
         const tilesets = map.addTilesetImage("tiles", "tilesImg");
@@ -48,19 +44,18 @@ export default class MapScene extends Phaser.Scene {
 
         colisiones.setCollisionByExclusion([-1]);
 
-        //===================PLAYER===================//crear jugador y añadir sus colisiones con el mapa
+        // Crear jugador y añadir sus colisiones con el mapa
         this.PlayerManager = new PlayerManager(this.inputManager, this, playerInitialData);
         this.physics.add.collider(this.PlayerManager.sprite, colisiones);
 
-        //===================OBJETOS MAPA===================
+        // Objetos mapa
         this.movingObjects = [];
         objectsData.forEach((data, index) => {
             const obj = new MovingObject(this, this.PlayerManager, colisiones, data);
             this.movingObjects.push(obj);
         });
 
-
-        //===================MINIJUEGOS===================
+        // Minijuegos
         this.portales = [];
 
         cofresData.forEach(data => {
@@ -90,15 +85,16 @@ export default class MapScene extends Phaser.Scene {
             }
         }
 
-        //===================PAREDES LIMITANTES===================
+        // Paredes invisibles
         this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036, { A: 1 }, this.PlayerManager);
         this.wallVuelta = new MurosInvisibles(this, 455, 995, { A: 1 }, this.PlayerManager);
         this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
-        // portal para el mensaje final
-        this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
+
+        // Portal para el mensaje final
+        this.finalMsgPortal = this.add.rectangle(300, 300, -50, 60, 0x000000);
         this.physics.add.existing(this.finalMsgPortal);
 
-        //comprobamos colision con el portalMinijuegoEsquivar
+        // Colisión con el portal del mensaje final
         this.physics.add.overlap(this.PlayerManager.sprite, this.finalMsgPortal, () => {
             //si hay colision lo llevamos al mensaje, idealmente en la
             // versión final será una exclamación, no un overlapeo
@@ -106,7 +102,7 @@ export default class MapScene extends Phaser.Scene {
             this.scene.launch('FinalMessage');
         });
 
-        //Animaciones:
+        // Animaciones:
         this.anims.create({
             key: 'walk-down',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
@@ -135,95 +131,12 @@ export default class MapScene extends Phaser.Scene {
             repeat: -1
         });
 
-
-
-
-        /*
-            //FURIA DEL DESIERTO:
-            //crear portal para llevar a los minijuegos
-            this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
-            this.physics.add.existing(this.portalUndertale);
-    
-            //comprobamos colision con el portalMinijuegoEsquivar
-            this.physics.add.overlap(this.PlayerManager.sprite, this.portalUndertale, () => {
-                //si hay colision lo llevamos al minijuego
-                this.portalUndertale.destroy();
-                this.scene.pause();
-                this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
-                this.savePositions();
-            });
-    
-    
-            //Minijuego Memoria del Templo--------------------------------
-            //crear portal para llevar a los minijuegos
-            this.puzzleLightsPortal = this.add.rectangle(600, 300, 60, 60, 0xFFFFFF);
-            this.physics.add.existing(this.puzzleLightsPortal);
-    
-            //comprobamos colision con el portal de puzzle lights
-            this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
-                //si hay colision lo llevamos al minijuego
-                this.puzzleLightsPortal.destroy();
-                this.scene.pause();
-                //this.scene.start('PuzzleLights');
-                this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLights', nombre: NOMBRES_MINIJUEGOS.PuzzleLights });
-                this.savePositions();
-            });
-    
-            //Minijuego Cerrajero ancestral--------------------------------
-            //crear portal para llevar a los minijuegos
-            this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xb81414);
-            this.physics.add.existing(this.lockPickPortal);
-    
-            //comprobamos colision con el portal de puzzle lights
-            this.physics.add.overlap(this.PlayerManager.sprite, this.lockPickPortal, () => {
-                //si hay colision lo llevamos al minijuego
-                this.lockPickPortal.destroy();
-                this.scene.pause();
-                //this.scene.start('PuzzleLights');
-                this.scene.start('SelectDifficultyScene', { minijuego: 'LockPick', nombre: NOMBRES_MINIJUEGOS.LockPick });
-                this.savePositions();
-            });
-    
-            //Minijuego Cazador de reptiles--------------------------------
-            //crear portal
-            this.CrocoPortal = this.add.rectangle(600, 600, 60, 60, 0x008000);
-            this.physics.add.existing(this.CrocoPortal);
-    
-            //comprobamos colision con el portal
-            this.physics.add.overlap(this.PlayerManager.sprite, this.CrocoPortal, () => {
-                //si hay colision lo llevamos al minijuego
-                this.CrocoPortal.destroy();
-                this.scene.pause();
-    
-                this.scene.start('SelectDifficultyScene', { minijuego: 'CrocoShoot', nombre: NOMBRES_MINIJUEGOS.CrocoShoot });
-                this.savePositions();
-            });
-    
-    
-            //Minijuego Precision del escriba-----------------------------
-            //Crear portal para llevar al minijuego
-            this.portalMinijuegoBarrita = this.add.rectangle(400, 100, 60, 60, 0xD12F0F);
-            this.physics.add.existing(this.portalMinijuegoBarrita);
-    
-            //Comprobamos colision con el portal al minijuego
-            this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoBarrita, () => {
-                //si hay colision lo llevamos al minijuego
-                this.portalMinijuegoBarrita.destroy();
-                this.scene.pause();
-                //this.scene.start('SlideScene');
-                this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
-                this.savePositions();
-            });
-    */
-
-        //===================CAMARA===================
+        // Cámara Follow
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
-
     }
 
     update() {
-
         this.inputManager.update();
         this.PlayerManager.update();
         //this.movingObject1.update();
@@ -234,14 +147,14 @@ export default class MapScene extends Phaser.Scene {
             portal.update();
         });
         //this.wall.update();
-
     }
 
-    openBinnacle() {
+    openBinnacle() { // Abrir bitácora
         this.scene.launch("BinnacleOverlay", { parentScene: "MapScene" });
         this.scene.pause(); // Pausamos MapScene mientras el overlay está activo
     }
-    savePositions() {
+
+    savePositions() { // Save coords del player
         // Guardar posición del jugador
         playerInitialData.posInicial.x = this.PlayerManager.sprite.x;
         playerInitialData.posInicial.y = this.PlayerManager.sprite.y;
