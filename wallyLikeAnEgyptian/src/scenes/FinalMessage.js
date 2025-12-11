@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export default class FinalMessage extends Phaser.Scene {
     constructor() {
         super('FinalMessage');

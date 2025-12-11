@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export const cofresData = [
   {
         posInicial: { x: 450, y: 500 },

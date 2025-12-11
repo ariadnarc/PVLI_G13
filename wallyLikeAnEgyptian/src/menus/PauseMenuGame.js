@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import MenuBase from './MenuBase.js';
 
 export default class PauseMenuGame extends MenuBase {

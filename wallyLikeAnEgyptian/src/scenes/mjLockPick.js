@@ -15,6 +15,7 @@
  * drawTensionBar(): gestión visual de la tensión para el update
  * fail(): método que se ejecuta al llenar la barra de tensión, perder
  */
+
 import { DIFICULTADES } from '../config/MinigameData.js';
 
 export default class LockPick extends Phaser.Scene {

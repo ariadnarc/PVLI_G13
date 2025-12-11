@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import InputManager from "../core/InputManager.js";
 import BinnacleManager from "../core/BinnacleManager.js";
 import GlyphTierConfig from "../config/GlyphTierData.js"
@@ -24,7 +30,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
 
     // Keyboard 
     this.inputManager.on("keyDown", (key) => {
-      if (key === "B") { 
+      if (key === "B") {
         this.closeBinnacle();
       }
     });

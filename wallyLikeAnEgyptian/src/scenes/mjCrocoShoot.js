@@ -4,6 +4,7 @@
  * 
  * acabe
  */
+
 import { DIFICULTADES } from '../config/MinigameData.js';
 
 export default class CrocoShoot extends Phaser.Scene {

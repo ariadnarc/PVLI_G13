@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export const playerInitialData = {
 
   /* TODO: 

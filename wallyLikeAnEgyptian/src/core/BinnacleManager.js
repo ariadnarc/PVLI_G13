@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { playerInitialData } from "../config/PlayerData.js";
 
 export default class BinnacleManager {

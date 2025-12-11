@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import DialogText from '../core/DialogText.js';
 
 export default class IntroScene extends Phaser.Scene {

@@ -1,10 +1,15 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
 
 export default class PlayerManager {
-  constructor(inputManager, scene,data) {
+  constructor(inputManager, scene, data) {
 
     this.scene = scene;
     this.inputManager = inputManager; // ya configurada
-    this.data=data;
+    this.data = data;
     this.sprite = scene.physics.add.sprite(
       this.data.posInicial.x,
       this.data.posInicial.y,
@@ -64,7 +69,7 @@ export default class PlayerManager {
         this.playAnim('walk-up');
       }
     }
-    console.log("Posicion del jugador:",this.sprite.x,this.sprite.y);
+    console.log("Posicion del jugador:", this.sprite.x, this.sprite.y);
   }
 
   playAnim(key) {

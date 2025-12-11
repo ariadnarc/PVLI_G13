@@ -1,27 +1,33 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import BinnacleManager from "../core/BinnacleManager";
 
-export default class NotaJerogliOverlay{
-    constructor(scene){
-        this.scene=scene;
+export default class NotaJerogliOverlay {
+  constructor(scene) {
+    this.scene = scene;
 
-        this.mensaje="SI QUIERES ENCONTRARME PRIMERO SUBE LAS ESCALERAS";
+    this.mensaje = "SI QUIERES ENCONTRARME PRIMERO SUBE LAS ESCALERAS";
 
-        this.letraJerogMap={
-            A:"S",E:"S",N:"S",S:"S",
-            I:"A", U:"A",C:"A",T:"A",R:"A",
-            Q:"B",M:"B",P:"B",O:"B",B:"B",L:"B"
-        };
-        this.startX = scene.cameras.main.centerX - (this.mensaje.length * 16);
-        this.startY = 300;
-        this.spacing = 32;
+    this.letraJerogMap = {
+      A: "S", E: "S", N: "S", S: "S",
+      I: "A", U: "A", C: "A", T: "A", R: "A",
+      Q: "B", M: "B", P: "B", O: "B", B: "B", L: "B"
+    };
+    this.startX = scene.cameras.main.centerX - (this.mensaje.length * 16);
+    this.startY = 300;
+    this.spacing = 32;
 
-        this.binnacle = BinnacleManager.getInstance();
+    this.binnacle = BinnacleManager.getInstance();
 
-        this.items = [];
-        this.#drawInitialGlyphs();
-    }
-    #drawInitialGlyphs(){
-        this.mensaje.forEach((letra, i) => {
+    this.items = [];
+    this.#drawInitialGlyphs();
+  }
+  #drawInitialGlyphs() {
+    this.mensaje.forEach((letra, i) => {
       const tier = this.letraJerogMap[letra];
 
       // ¿El jugador tiene el jeroglífico necesario?
@@ -42,8 +48,8 @@ export default class NotaJerogliOverlay{
         revealed: unlocked
       });
     });
-    }
-    update() {
+  }
+  update() {
     this.items.forEach(item => {
       if (!item.revealed && this.binnacle.hasGlyphs(item.tier, 1)) {
         // Cambiar sprite a la letra real

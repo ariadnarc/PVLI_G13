@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { DIFICULTADES } from './MinigameData.js'; //esto remplaza al rewards by difficulty que ya estaba hecho en el minigamedata emberdad
 
 export default class GlyphTierData {

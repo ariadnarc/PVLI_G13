@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export const jeroglificosNota = [
   { tipo: 'S', simbolo: 'uraeus', letra: 'S' },
   { tipo: 'S', simbolo: 'ankh', letra: 'E' },

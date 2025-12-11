@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export const objectsData = [
   {
     posInicial: { x: 320, y: 200 },

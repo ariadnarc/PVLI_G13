@@ -1,4 +1,8 @@
-
+/**
+ * JSDOC
+ * YA
+ * A
+ */
 
 export default class MovingObject {
   constructor(scene, player, colisiones, data) {

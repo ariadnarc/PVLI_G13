@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { playerInitialData } from './PlayerData.js';
 
 export default class Boot extends Phaser.Scene {

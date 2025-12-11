@@ -1,14 +1,19 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 
+export default class SlideBar extends Phaser.Scene {
 
-export default class SlideBar extends Phaser.Scene{
-
-    constructor(){
+    constructor() {
         super('SlideBar');
     }
 
-    init(data = {}){
+    init(data = {}) {
 
         this.isMinigame = true;
         // Guardamos el minijuego
@@ -24,7 +29,7 @@ export default class SlideBar extends Phaser.Scene{
         this.barSpeed = config.velocidadBarra;
     }
 
-    create(){
+    create() {
 
         //==============INPUT===============
         this.inputManager = new InputManager(this);
@@ -36,26 +41,26 @@ export default class SlideBar extends Phaser.Scene{
         const w = this.scale.width;
         const h = this.scale.height;
 
-        const bg = this.add.image(w/2, h/2, 'paredBG'); 
+        const bg = this.add.image(w / 2, h / 2, 'paredBG');
         bg.setDisplaySize(w, h);
         bg.setDepth(-10);
-        
+
         //======BARRA, ZONA VERDE Y CURSOR===========
         // Barra
         this.barWidth = 500;
         this.barHeight = 20;
-        this.bar = this.add.image(w/2, h/2, 'papiroBar');
-        this.bar.setDisplaySize(this.barWidth, this.barHeight); 
+        this.bar = this.add.image(w / 2, h / 2, 'papiroBar');
+        this.bar.setDisplaySize(this.barWidth, this.barHeight);
 
         // Zona verde (acierto)
-        
-        this.greenZone = this.add.sprite(w/2, h/2, 'egyptTiles', 22);
+
+        this.greenZone = this.add.sprite(w / 2, h / 2, 'egyptTiles', 22);
         this.greenZone.setScale(2);
-        
+
 
         // Cursor
-        this.cursor = this.add.sprite(w/2 - this.barWidth/2, h/2, 'egyptTiles', 20).setScale(2);
-        this.cursorSpeed = this.barSpeed; 
+        this.cursor = this.add.sprite(w / 2 - this.barWidth / 2, h / 2, 'egyptTiles', 20).setScale(2);
+        this.cursorSpeed = this.barSpeed;
         this.direction = 1; // 1 = derecha, -1 = izquierda
 
         //==========HUD=============
@@ -67,7 +72,7 @@ export default class SlideBar extends Phaser.Scene{
         this.updateHUD();
     }
 
-    update(){
+    update() {
 
         this.inputManager.update();
 
@@ -75,30 +80,29 @@ export default class SlideBar extends Phaser.Scene{
         const dt = this.game.loop.delta / 1000;
         let nextX = this.cursor.x + this.direction * this.cursorSpeed * dt;
 
-        const left = this.bar.x - this.barWidth/2;
-        const right = this.bar.x + this.barWidth/2;
+        const left = this.bar.x - this.barWidth / 2;
+        const right = this.bar.x + this.barWidth / 2;
 
-        if(nextX <= left || nextX >= right){
+        if (nextX <= left || nextX >= right) {
             this.direction *= -1; // cambia de dirección al llegar a los bordes
         } else {
             this.cursor.x = nextX;
         }
 
         // Pulsar SPACE para comprobar acierto
-        if(this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown)
-        {
+        if (this.inputManager.keys['SPACE'] && this.inputManager.keys['SPACE'].isDown) {
             this.checkHit();
         }
     }
 
     //=====COMPRUEBA ACIERTO=========
-    checkHit(){
+    checkHit() {
         const cursorBounds = this.cursor.getBounds();
         const greenBounds = this.greenZone.getBounds();
 
         const acierto = Phaser.Geom.Intersects.RectangleToRectangle(cursorBounds, greenBounds);
 
-        if(acierto){
+        if (acierto) {
 
             console.log("¡ACIERTO!");
             this.endGame(true); // termina el juego con victoria

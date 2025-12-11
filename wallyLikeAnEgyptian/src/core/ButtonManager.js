@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export default class ButtonManager {
   /**
    * Crea un botón con un rectángulo + texto

@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { MINIGAME_REWARDS } from '../config/MinigameData.js';
 import MenuBase from './MenuBase.js';
 import GlyphTierData from '../config/GlyphTierData.js';

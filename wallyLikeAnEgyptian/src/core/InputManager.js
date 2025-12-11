@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export default class InputManager extends Phaser.Events.EventEmitter {
 
   constructor(scene) {

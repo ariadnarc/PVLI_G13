@@ -1,7 +1,12 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import PlayerManager from "../core/PlayerManager.js";
 import InputManager from "../core/InputManager.js";
 import MovingObject from "../core/MovingObject.js";
-import { NOMBRES_MINIJUEGOS } from "../config/MinigameData.js";
 import { objectsData } from '../config/ObjectsData.js';
 import { playerInitialData } from '../config/PlayerData.js';
 import PortalChest from "../core/PortalChest.js";
@@ -54,41 +59,41 @@ export default class MapScene extends Phaser.Scene {
             this.movingObjects.push(obj);
         });
 
-        
-    //===================MINIJUEGOS===================
-        this.portales=[];
 
-       cofresData.forEach(data => {
-            const portal = new PortalChest(this,data,this.PlayerManager, (minijuego) => {
-            this.scene.pause();
-            this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
-            this.savePositions();
+        //===================MINIJUEGOS===================
+        this.portales = [];
+
+        cofresData.forEach(data => {
+            const portal = new PortalChest(this, data, this.PlayerManager, (minijuego) => {
+                this.scene.pause();
+                this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
+                this.savePositions();
+            });
+
+            this.portales.push(portal);
         });
-
-        this.portales.push(portal);
-    });
-    //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
-    for (let i = 0; i < this.movingObjects.length; i++) {
+        //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
+        for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.movingObjects.length; j++) {
                 this.physics.add.collider(
-                this.movingObjects[i].sprite,
-                this.movingObjects[j].sprite
-        );
+                    this.movingObjects[i].sprite,
+                    this.movingObjects[j].sprite
+                );
+            }
         }
-    }
-    for (let i = 0; i < this.movingObjects.length; i++) {
+        for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.portales.length; j++) {
                 this.physics.add.collider(
-                this.movingObjects[i].sprite,
-                this.portales[j].sprite
-        );
+                    this.movingObjects[i].sprite,
+                    this.portales[j].sprite
+                );
+            }
         }
-    }
 
- //===================PAREDES LIMITANTES===================
-        this.wallSalaSecrt=new MurosInvisibles(this,914,1036,{A:1},this.PlayerManager);
-        this.wallVuelta=new MurosInvisibles(this,455,995,{A:1},this.PlayerManager);
-        this.wallFin=new MurosInvisibles(this,455,1135,{A:1},this.PlayerManager);
+        //===================PAREDES LIMITANTES===================
+        this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036, { A: 1 }, this.PlayerManager);
+        this.wallVuelta = new MurosInvisibles(this, 455, 995, { A: 1 }, this.PlayerManager);
+        this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
         this.physics.add.existing(this.finalMsgPortal);
@@ -132,85 +137,85 @@ export default class MapScene extends Phaser.Scene {
 
 
 
-        
-    /*
-        //FURIA DEL DESIERTO:
-        //crear portal para llevar a los minijuegos
-        this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
-        this.physics.add.existing(this.portalUndertale);
 
-        //comprobamos colision con el portalMinijuegoEsquivar
-        this.physics.add.overlap(this.PlayerManager.sprite, this.portalUndertale, () => {
-            //si hay colision lo llevamos al minijuego
-            this.portalUndertale.destroy();
-            this.scene.pause();
-            this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
-            this.savePositions();
-        });
+        /*
+            //FURIA DEL DESIERTO:
+            //crear portal para llevar a los minijuegos
+            this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
+            this.physics.add.existing(this.portalUndertale);
+    
+            //comprobamos colision con el portalMinijuegoEsquivar
+            this.physics.add.overlap(this.PlayerManager.sprite, this.portalUndertale, () => {
+                //si hay colision lo llevamos al minijuego
+                this.portalUndertale.destroy();
+                this.scene.pause();
+                this.scene.start('SelectDifficultyScene', { minijuego: 'Undertale', nombre: NOMBRES_MINIJUEGOS.Undertale });
+                this.savePositions();
+            });
+    
+    
+            //Minijuego Memoria del Templo--------------------------------
+            //crear portal para llevar a los minijuegos
+            this.puzzleLightsPortal = this.add.rectangle(600, 300, 60, 60, 0xFFFFFF);
+            this.physics.add.existing(this.puzzleLightsPortal);
+    
+            //comprobamos colision con el portal de puzzle lights
+            this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
+                //si hay colision lo llevamos al minijuego
+                this.puzzleLightsPortal.destroy();
+                this.scene.pause();
+                //this.scene.start('PuzzleLights');
+                this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLights', nombre: NOMBRES_MINIJUEGOS.PuzzleLights });
+                this.savePositions();
+            });
+    
+            //Minijuego Cerrajero ancestral--------------------------------
+            //crear portal para llevar a los minijuegos
+            this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xb81414);
+            this.physics.add.existing(this.lockPickPortal);
+    
+            //comprobamos colision con el portal de puzzle lights
+            this.physics.add.overlap(this.PlayerManager.sprite, this.lockPickPortal, () => {
+                //si hay colision lo llevamos al minijuego
+                this.lockPickPortal.destroy();
+                this.scene.pause();
+                //this.scene.start('PuzzleLights');
+                this.scene.start('SelectDifficultyScene', { minijuego: 'LockPick', nombre: NOMBRES_MINIJUEGOS.LockPick });
+                this.savePositions();
+            });
+    
+            //Minijuego Cazador de reptiles--------------------------------
+            //crear portal
+            this.CrocoPortal = this.add.rectangle(600, 600, 60, 60, 0x008000);
+            this.physics.add.existing(this.CrocoPortal);
+    
+            //comprobamos colision con el portal
+            this.physics.add.overlap(this.PlayerManager.sprite, this.CrocoPortal, () => {
+                //si hay colision lo llevamos al minijuego
+                this.CrocoPortal.destroy();
+                this.scene.pause();
+    
+                this.scene.start('SelectDifficultyScene', { minijuego: 'CrocoShoot', nombre: NOMBRES_MINIJUEGOS.CrocoShoot });
+                this.savePositions();
+            });
+    
+    
+            //Minijuego Precision del escriba-----------------------------
+            //Crear portal para llevar al minijuego
+            this.portalMinijuegoBarrita = this.add.rectangle(400, 100, 60, 60, 0xD12F0F);
+            this.physics.add.existing(this.portalMinijuegoBarrita);
+    
+            //Comprobamos colision con el portal al minijuego
+            this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoBarrita, () => {
+                //si hay colision lo llevamos al minijuego
+                this.portalMinijuegoBarrita.destroy();
+                this.scene.pause();
+                //this.scene.start('SlideScene');
+                this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
+                this.savePositions();
+            });
+    */
 
-
-        //Minijuego Memoria del Templo--------------------------------
-        //crear portal para llevar a los minijuegos
-        this.puzzleLightsPortal = this.add.rectangle(600, 300, 60, 60, 0xFFFFFF);
-        this.physics.add.existing(this.puzzleLightsPortal);
-
-        //comprobamos colision con el portal de puzzle lights
-        this.physics.add.overlap(this.PlayerManager.sprite, this.puzzleLightsPortal, () => {
-            //si hay colision lo llevamos al minijuego
-            this.puzzleLightsPortal.destroy();
-            this.scene.pause();
-            //this.scene.start('PuzzleLights');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'PuzzleLights', nombre: NOMBRES_MINIJUEGOS.PuzzleLights });
-            this.savePositions();
-        });
-
-        //Minijuego Cerrajero ancestral--------------------------------
-        //crear portal para llevar a los minijuegos
-        this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xb81414);
-        this.physics.add.existing(this.lockPickPortal);
-
-        //comprobamos colision con el portal de puzzle lights
-        this.physics.add.overlap(this.PlayerManager.sprite, this.lockPickPortal, () => {
-            //si hay colision lo llevamos al minijuego
-            this.lockPickPortal.destroy();
-            this.scene.pause();
-            //this.scene.start('PuzzleLights');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'LockPick', nombre: NOMBRES_MINIJUEGOS.LockPick });
-            this.savePositions();
-        });
-
-        //Minijuego Cazador de reptiles--------------------------------
-        //crear portal
-        this.CrocoPortal = this.add.rectangle(600, 600, 60, 60, 0x008000);
-        this.physics.add.existing(this.CrocoPortal);
-
-        //comprobamos colision con el portal
-        this.physics.add.overlap(this.PlayerManager.sprite, this.CrocoPortal, () => {
-            //si hay colision lo llevamos al minijuego
-            this.CrocoPortal.destroy();
-            this.scene.pause();
-
-            this.scene.start('SelectDifficultyScene', { minijuego: 'CrocoShoot', nombre: NOMBRES_MINIJUEGOS.CrocoShoot });
-            this.savePositions();
-        });
-
-
-        //Minijuego Precision del escriba-----------------------------
-        //Crear portal para llevar al minijuego
-        this.portalMinijuegoBarrita = this.add.rectangle(400, 100, 60, 60, 0xD12F0F);
-        this.physics.add.existing(this.portalMinijuegoBarrita);
-
-        //Comprobamos colision con el portal al minijuego
-        this.physics.add.overlap(this.PlayerManager.sprite, this.portalMinijuegoBarrita, () => {
-            //si hay colision lo llevamos al minijuego
-            this.portalMinijuegoBarrita.destroy();
-            this.scene.pause();
-            //this.scene.start('SlideScene');
-            this.scene.start('SelectDifficultyScene', { minijuego: 'SlideBar', nombre: NOMBRES_MINIJUEGOS.SlideBar });
-            this.savePositions();
-        });
-*/
-         
         //===================CAMARA===================
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
@@ -229,7 +234,7 @@ export default class MapScene extends Phaser.Scene {
             portal.update();
         });
         //this.wall.update();
-        
+
     }
 
     openBinnacle() {

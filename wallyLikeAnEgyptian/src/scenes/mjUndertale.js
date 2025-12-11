@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
@@ -8,7 +14,7 @@ export default class Undertale extends Phaser.Scene {
     super('Undertale');
   }
 
-  init(data = {}){
+  init(data = {}) {
     this.isMinigame = true;
 
     // Guardamos el minijuego
@@ -39,7 +45,7 @@ export default class Undertale extends Phaser.Scene {
     });
 
     // JUGADOR
-    this.playerManager = new PlayerManager(this.inputManager, this,playerInitialData);
+    this.playerManager = new PlayerManager(this.inputManager, this, playerInitialData);
     this.player = this.playerManager.getSprite();
     this.player.setPosition(centerX, centerY);
 
@@ -412,15 +418,15 @@ export default class Undertale extends Phaser.Scene {
 
     //lanza el PostMinigameMenu
     this.scene.launch('PostMinigameMenu', {
-        result: 'victory',
-        difficulty: this.difficulty,
-        minijuego: 'Undertale',
-        options: {
-            "Volver al mapa": () => {
-                this.scene.stop('PostMinigameMenu');
-                this.scene.start('MapScene');
-            }
+      result: 'victory',
+      difficulty: this.difficulty,
+      minijuego: 'Undertale',
+      options: {
+        "Volver al mapa": () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.start('MapScene');
         }
+      }
     });
 
     this.scene.stop(); //detiene la escena del minijuego
@@ -434,21 +440,21 @@ export default class Undertale extends Phaser.Scene {
 
     //lanzamos PostMinigameMenu con resultado defeat
     this.scene.launch('PostMinigameMenu', {
-        result: 'defeat',
-        difficulty: this.difficulty,
-        minijuego: 'Undertale',
-        options: {
-            "Reintentar": () => {
-                this.scene.stop('PostMinigameMenu');
-                this.scene.stop();
-                this.scene.start('Undertale', { minijuego: this.minijuego,dificultad: this.difficulty });
-            },
-            "Salir": () => {
-                this.scene.stop('PostMinigameMenu');
-                this.scene.stop();
-                this.scene.start('MapScene');
-            }
+      result: 'defeat',
+      difficulty: this.difficulty,
+      minijuego: 'Undertale',
+      options: {
+        "Reintentar": () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.stop();
+          this.scene.start('Undertale', { minijuego: this.minijuego, dificultad: this.difficulty });
+        },
+        "Salir": () => {
+          this.scene.stop('PostMinigameMenu');
+          this.scene.stop();
+          this.scene.start('MapScene');
         }
+      }
     });
 
     //detenemos la escena actual

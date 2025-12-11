@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export default class DialogText{
 	constructor(scene, opts){
 		this.scene = scene;

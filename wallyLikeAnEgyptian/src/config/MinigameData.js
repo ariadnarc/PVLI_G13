@@ -1,3 +1,9 @@
+/**
+ * JSDOC
+ * YA
+ * A
+ */
+
 export const NOMBRES_MINIJUEGOS = {
   SlideBar: "Precision del Escriba",
   Undertale: "Furia del Desierto",
