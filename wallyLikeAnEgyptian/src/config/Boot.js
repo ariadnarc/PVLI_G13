@@ -7,14 +7,24 @@ export default class Boot extends Phaser.Scene {
 
   preload() {
 
-    //TODO: Cambiar por los assets del juego (ESTO ES UN PLACEHOLDER CON ELEMENTOS INVENTADOS)
+    // ASSETS QUE FALTAN: LOCKPICK, CROCOSHOOT, UNDERTALE,
+    // SPRITES DIÁLOGO, PROPS MAPA...
 
-    //=====FONDOS/MENUS=======
+    // MINIJUEGOS
+    //  Lockpick (PLACEHOLDER)
+    this.load.image('lock_fondo', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_fondo.png');
+    this.load.image('lock_ring', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_ring.png');
+    this.load.image('lock_lock', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lock.png');
+    this.load.image('lock_lockpick', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
+    //TODO: UNDERTALE
+    //TODO: CROCOSHOOT
+
+    // FONDOS/MENUS
     this.load.image('mainmenuBG', 'wallyLikeAnEgyptian/assets/ui/mainmenuBG.jpg');
     this.load.image('selectdiffBG', 'wallyLikeAnEgyptian/assets/ui/selectdiffBG.jpg');
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
     this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png');
-    this.load.image('fondoUnd', 'wallyLikeAnEgyptian/assets/ui/fondoUndertale.png');
+    this.load.image('fondoUndertale', 'wallyLikeAnEgyptian/assets/ui/fondoUndertale.png');
 
 
     // === IMÁGENES Y SPRITES ===
@@ -33,12 +43,12 @@ export default class Boot extends Phaser.Scene {
     /*this.load.image('gold_particle', 'assets/particles/gold.png');
     this.load.image('sand_particle', 'assets/particles/sand.png');*/
 
-    //Carga mapa en json
+    // MAPA
     this.load.image('tilesImg', 'wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
     this.load.tilemapTiledJSON('mapa', 'wallyLikeAnEgyptian/assets/mapa/mapaTiled.json');
 
 
-    // === ICONOS JEROGLÍFICOS ===
+    // ICONOS JEROGLÍFICOS
     for (let i = 1; i <= 9; i++) {
       this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
     }

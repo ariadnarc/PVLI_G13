@@ -25,7 +25,7 @@ export default class Undertale extends Phaser.Scene {
 
     // FONDOS
     this.add.image(centerX, centerY, 'paredBG') // general
-    const arenaBg = this.add.image(centerX, centerY, 'fondoUnd');; // de la zona de juego
+    const arenaBg = this.add.image(centerX, centerY, 'fondoUndertale');; // de la zona de juego
     // Área de juego
     this.gameWidth = 400; // Ancho del área jugable en píxeles
     this.gameHeight = 300; // Alto del área jugable en píxeles
