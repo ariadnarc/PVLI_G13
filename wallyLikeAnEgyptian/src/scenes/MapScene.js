@@ -30,36 +30,36 @@ export default class MapScene extends Phaser.Scene {
         //===================MAPA===================
 
         //Creacion del mapa desde json
-        const map=this.make.tilemap({key:'mapa'});
-        const tilesets=map.addTilesetImage("tiles","tilesImg");
+        const map = this.make.tilemap({ key: 'mapa' });
+        const tilesets = map.addTilesetImage("tiles", "tilesImg");
 
         //Creacion de las capas
-        const suelo=map.createLayer("Suelo",tilesets);
-        const pared=map.createLayer("Pared",tilesets);
-        const objetos=map.createLayer("objetos",tilesets);
-        const colisiones=map.createLayer("colision",tilesets);
+        const suelo = map.createLayer("Suelo", tilesets);
+        const pared = map.createLayer("Pared", tilesets);
+        const objetos = map.createLayer("objetos", tilesets);
+        const colisiones = map.createLayer("colision", tilesets);
 
         colisiones.setCollisionByExclusion([-1]);
-        
+
         //===================PLAYER===================//crear jugador y añadir sus colisiones con el mapa
-        this.PlayerManager = new PlayerManager(this.inputManager, this,playerInitialData);
+        this.PlayerManager = new PlayerManager(this.inputManager, this, playerInitialData);
         this.physics.add.collider(this.PlayerManager.sprite, colisiones);
 
         //===================OBJETOS MAPA===================
-        this.movingObjects=[];
+        this.movingObjects = [];
         objectsData.forEach((data, index) => {
-        const obj = new MovingObject(this, this.PlayerManager, colisiones, data);
-        this.movingObjects.push(obj);
+            const obj = new MovingObject(this, this.PlayerManager, colisiones, data);
+            this.movingObjects.push(obj);
         });
 
         for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.movingObjects.length; j++) {
                 this.physics.add.collider(
-                this.movingObjects[i].sprite,
-                this.movingObjects[j].sprite
-        );
-    }
-}
+                    this.movingObjects[i].sprite,
+                    this.movingObjects[j].sprite
+                );
+            }
+        }
         // portal para el mensaje final
         this.finalMsgPortal = this.add.rectangle(200, 300, 60, 60, 0x000000);
         this.physics.add.existing(this.finalMsgPortal);
@@ -79,32 +79,32 @@ export default class MapScene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
+
         this.anims.create({
             key: 'walk-up',
             frames: this.anims.generateFrameNumbers('player', { start: 7, end: 13 }),
             frameRate: 10,
             repeat: -1
         });
-        
+
         this.anims.create({
             key: 'walk-right',
             frames: this.anims.generateFrameNumbers('player', { start: 14, end: 20 }),
             frameRate: 10,
             repeat: -1
         });
-        
+
         this.anims.create({
             key: 'walk-left',
             frames: this.anims.generateFrameNumbers('player', { start: 21, end: 27 }),
             frameRate: 10,
             repeat: -1
         });
-        
-       
+
+
 
         //===================MINIJUEGOS===================
-        
+
         //FURIA DEL DESIERTO:
         //crear portal para llevar a los minijuegos
         this.portalUndertale = this.add.rectangle(500, 300, 60, 60, 0x00FF00);
@@ -134,9 +134,9 @@ export default class MapScene extends Phaser.Scene {
             this.savePositions();
         });
 
-        //Minijuego LockPick--------------------------------
+        //Minijuego Cerrajero ancestral--------------------------------
         //crear portal para llevar a los minijuegos
-        this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xFFFFFF);
+        this.lockPickPortal = this.add.rectangle(500, 600, 60, 60, 0xb81414);
         this.physics.add.existing(this.lockPickPortal);
 
         //comprobamos colision con el portal de puzzle lights
@@ -146,6 +146,21 @@ export default class MapScene extends Phaser.Scene {
             this.scene.pause();
             //this.scene.start('PuzzleLights');
             this.scene.start('SelectDifficultyScene', { minijuego: 'LockPick', nombre: NOMBRES_MINIJUEGOS.LockPick });
+            this.savePositions();
+        });
+
+        //Minijuego Cazador de reptiles--------------------------------
+        //crear portal
+        this.CrocoPortal = this.add.rectangle(600, 600, 60, 60, 0x008000);
+        this.physics.add.existing(this.CrocoPortal);
+
+        //comprobamos colision con el portal
+        this.physics.add.overlap(this.PlayerManager.sprite, this.CrocoPortal, () => {
+            //si hay colision lo llevamos al minijuego
+            this.CrocoPortal.destroy();
+            this.scene.pause();
+
+            this.scene.start('SelectDifficultyScene', { minijuego: 'CrocoShoot', nombre: NOMBRES_MINIJUEGOS.CrocoShoot });
             this.savePositions();
         });
 
@@ -165,7 +180,7 @@ export default class MapScene extends Phaser.Scene {
             this.savePositions();
         });
 
-         
+
         //===================CAMARA===================
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
@@ -173,7 +188,7 @@ export default class MapScene extends Phaser.Scene {
     }
 
     update() {
-        
+
         this.inputManager.update();
         this.PlayerManager.update();
         //this.movingObject1.update();
@@ -182,20 +197,20 @@ export default class MapScene extends Phaser.Scene {
         });
     }
 
-    openBinnacle(){
+    openBinnacle() {
         this.scene.launch("BinnacleOverlay", { parentScene: "MapScene" });
         this.scene.pause(); // Pausamos MapScene mientras el overlay está activo
     }
-    savePositions(){
+    savePositions() {
         // Guardar posición del jugador
-       playerInitialData.posInicial.x = this.PlayerManager.sprite.x;
+        playerInitialData.posInicial.x = this.PlayerManager.sprite.x;
         playerInitialData.posInicial.y = this.PlayerManager.sprite.y;
 
         // Guardar posición de los objetos movibles
         this.movingObjects.forEach((obj, index) => {
             objectsData[index].posInicial.x = obj.sprite.x;
             objectsData[index].posInicial.y = obj.sprite.y;
-    });
+        });
     }
-   
+
 }
