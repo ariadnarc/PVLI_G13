@@ -10,7 +10,7 @@ export default class CrocoShoot extends Phaser.Scene {
     constructor() {
         super('CrocoShoot');
     }
-    init(){
+    init() {
         // lo de las dificultades pa luego
     }
     preload() {
@@ -30,22 +30,33 @@ export default class CrocoShoot extends Phaser.Scene {
         }); //
 
         // --- CONSTANTES ---
-        this.GRAVITY = 600;
-        this.SHOOT_SPEED = 400;
-        this.MIN_ANGLE = -10;   // cono de 90 grados (ejemplo)
-        this.MAX_ANGLE = 80;
+        this.GRAVITY = 20;
+        this.SHOOT_SPEED = 1800;
+        this.MIN_ANGLE = -45;   // cono de 90 grados (ejemplo)
+        this.MAX_ANGLE = 45;
         this.shootCooldown = 450; // ms
         this.canShoot = true;
 
         // --- JUGADOR ---
         this.player = this.add.rectangle(80, 300, 30, 60, 0x0088ff); // marcador
-        this.player.angle = 20; // Apunta un poco hacia arriba
+        this.player.angle = 0;
 
         // --- GRÁFICOS ---
         this.trajectory = this.add.graphics();
 
         // --- GRUPO DE FLECHAS ---
         this.arrows = this.physics.add.group();
+
+        // Cocodrilo sacamuelas
+        this.crocodiles = this.physics.add.group({
+            allowGravity: false
+        });
+        this.time.addEvent({
+            delay: 2000,
+            callback: this.spawnCrocodile,
+            callbackScope: this,
+            loop: true
+        });
 
         // Física general
         this.physics.world.gravity.y = this.GRAVITY;
@@ -95,6 +106,8 @@ export default class CrocoShoot extends Phaser.Scene {
             Math.sin(angleRad) * this.SHOOT_SPEED
         );
 
+
+
         arrow.rotation = angleRad;
 
         this.arrows.add(arrow);
@@ -139,5 +152,13 @@ export default class CrocoShoot extends Phaser.Scene {
             prevX = x;
             prevY = y;
         }
+    }
+
+    spawnCrocodile() {
+        const y = Phaser.Math.Between(100, this.game.config.height - 100);
+        const croco = this.crocodiles.create(this.game.config.width - 50, y, null);
+        croco.setDisplaySize(40, 40);
+        croco.setTint(0x00ff00);
+        croco.setVelocityX(-100);
     }
 }
