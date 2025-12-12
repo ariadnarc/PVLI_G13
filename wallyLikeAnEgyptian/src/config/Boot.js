@@ -58,9 +58,7 @@ export default class Boot extends Phaser.Scene {
 
     this.load.image('papiroBar', 'wallyLikeAnEgyptian/assets/sprites/papyrusBar.jpg'); //barra de papiro para el slideBar
 
-
-    /*this.load.image('gold_particle', 'assets/particles/gold.png');
-    this.load.image('sand_particle', 'assets/particles/sand.png');*/
+    //this.load.image('sand_particle', 'assets/particles/sand.png');
 
     // MAPA
     this.load.image('tilesImg', 'wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
@@ -102,9 +100,11 @@ export default class Boot extends Phaser.Scene {
 
     // TODO: Meter img para los tiers (letras con un estilo chulo mismo)
     // === TIERS JEROGLIFICOS ===
-    this.load.image("tier_S", "wallyLikeAnEgyptian/assets/ui/ankh.png");
-    this.load.image("tier_A", "wallyLikeAnEgyptian/assets/ui/ba.jpg");
-    this.load.image("tier_B", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
+    this.load.image("ankh", "wallyLikeAnEgyptian/assets/ui/ankh.png");
+    this.load.image("ba", "wallyLikeAnEgyptian/assets/ui/ba.png");
+    this.load.image("uraeus", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
+
+    this.load.image("lock", "wallyLikeAnEgyptian/assets/ui/lock.png");
 
     // Escena Victoria
     this.load.image("gold_particle", "wallyLikeAnEgyptian/assets/minijuegos/particles.jpg");

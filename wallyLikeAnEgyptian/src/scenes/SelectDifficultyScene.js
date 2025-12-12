@@ -5,7 +5,7 @@
  */
 
 import { playerInitialData } from '../config/PlayerData.js';
-import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS, DIFICULTADES } from '../config/MinigameData.js';
+import { COSTES_DIFICULTAD, NOMBRES_MINIJUEGOS } from '../config/MinigameData.js';
 import MenuBase from '../menus/MenuBase.js';
 
 export default class SelectDifficultyScene extends MenuBase {
@@ -15,25 +15,20 @@ export default class SelectDifficultyScene extends MenuBase {
   }
 
   init(data) {
-
-    // Minijuego que se va a jugar
     this.minijuego = data.minijuego;
     this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
 
-    // Flag para saber si venimos de reintento (en principio solo pal slide)
     this.reintento = data.reintento || false;
-    this.remainingTries = data.remainingTries ?? null; // null si no hay valor
+    this.remainingTries = data.remainingTries ?? null;
   }
 
   create() {
-    super.create(); //esto es lo q inicializa el input por heredar de menubase
+    super.create();
 
     const centerX = this.cameras.main.centerX;
-    const centerY = this.cameras.main.centerY;
-
     const { width, height } = this.sys.game.config;
 
-    // === FONDO ===
+    // === Fondo ===
     const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
     bg.setDisplaySize(width, height);
     bg.setDepth(-10);
@@ -43,7 +38,6 @@ export default class SelectDifficultyScene extends MenuBase {
       fontFamily: 'Filgaia',
       fontSize: '48px',
       color: '#634830ff',
-      align: 'left',
     }).setOrigin(0.5);
 
     this.add.text(centerX / 2.25, 300, 'Selecciona la dificultad', {
@@ -52,7 +46,7 @@ export default class SelectDifficultyScene extends MenuBase {
       color: '#ffd98d',
     }).setOrigin(0.5);
 
-    // === Mostrar inventario actual ===
+    // === Inventario jugador ===
     this.jeroglificosTexto = this.add.text(
       centerX / 2.25,
       350,
@@ -60,14 +54,18 @@ export default class SelectDifficultyScene extends MenuBase {
       { fontFamily: 'Filgaia', fontSize: '20px', color: '#ffffff' }
     ).setOrigin(0.5);
 
-    // === Dificultades ===
+    // === Botones de dificultad ===
     const dificultades = ['FACIL', 'MEDIA', 'DIFICIL'];
-    const colores = [0xa46a3b, 0x8b5326, 0x774224];
 
     dificultades.forEach((dif, i) => {
       const y = 240 + i * 120;
 
-      //coste de cada dificultad
+      // Img de candado
+      if(dif === 'DIFICIL' && !playerInitialData.minijuegosCompletados[this.minijuego]) {
+        // Img de candado
+        const lock = this.add.image(650, y, 'lock').setDisplaySize(70, 70);   // tamaño del candado
+      }
+
       const costeTexto = this.getCosteTexto(dif);
       this.add.text(800, y + 45, costeTexto, {
         fontFamily: "Filgaia",
@@ -86,16 +84,26 @@ export default class SelectDifficultyScene extends MenuBase {
           fontFamily: "Filgaia",
           fontSize: "25px",
           hoverTint: 0xffb679,
-        }, 'fondoBoton'
+        },
+        'fondoBoton'
       );
     });
 
     this.createVolverButton();
   }
 
+  // ================================
+  //  NUEVA LÓGICA DE COSTES SOLICITADA
+  // ================================
   getCosteTexto(dif) {
+    const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
     const c = COSTES_DIFICULTAD[dif];
-    if (c.S + c.A + c.B === 0) return 'Gratis';
+
+    // ➤ FACIL y MEDIA son gratis la primera vez
+    if (esPrimeraVez && (dif === 'FACIL' || dif === 'MEDIA')) {
+      return 'Gratis';
+    }
+
     return `Coste: ${c.S} S , ${c.A} A , ${c.B} B`;
   }
 
@@ -103,34 +111,106 @@ export default class SelectDifficultyScene extends MenuBase {
     const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
     const coste = COSTES_DIFICULTAD[dif];
 
-    // Restriccion dificultad dificil la primera vez
+    // ➤ DIFICIL prohibida primera vez
     if (esPrimeraVez && dif === 'DIFICIL') {
-      this.mensaje.setText('La dificultad difícil se desbloquea después de jugar una vez.');
+      // Fondo oscuro semitransparente
+      const overlay = this.add.rectangle(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY,
+        this.cameras.main.width,
+        this.cameras.main.height,
+        0x000000,
+        0.6 // alpha
+      );
+      overlay.setDepth(1000);
+
+      // Texto del mensaje
+      const mensajeText = this.add.text(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY,
+        'Modo difícil bloqueado',
+        {
+          fontFamily: "Filgaia",
+          fontSize: "32px",
+          color: "#ffffff",
+          stroke: "#000000",
+          strokeThickness: 3
+        }
+      )
+      .setOrigin(0.5)
+      .setDepth(1001);
+
+      // Desaparecer tras 2 segundos
+      this.time.delayedCall(2000, () => {
+        overlay.destroy();
+        mensajeText.destroy();
+      });
+
       return;
     }
 
-    // Verificar jeroglificos
-    if (!this.tieneJeroglificos(coste)) {
-      this.mensaje.setText('No tienes suficientes jeroglíficos.');
-      return;
+    // ➤ FACIL y MEDIA gratis primera vez
+    const dificultadEsGratis =
+      esPrimeraVez &&
+      (dif === 'FACIL' || dif === 'MEDIA');
+
+    if (!dificultadEsGratis) {
+      // Comprobar y pagar normalmente
+      if (!this.tieneJeroglificos(coste)) {
+        const overlay = this.add.rectangle(
+        this.cameras.main.centerX,
+        this.cameras.main.centerY,
+        this.cameras.main.width,
+        this.cameras.main.height,
+        0x000000,
+        0.6 // alpha
+        );
+        overlay.setDepth(1000);
+
+        // Texto del mensaje
+        const mensajeText = this.add.text(
+          this.cameras.main.centerX,
+          this.cameras.main.centerY,
+          'No tienes suficientes jeroglificos.',
+          {
+            fontFamily: "Filgaia",
+            fontSize: "32px",
+            color: "#ffffff",
+            stroke: "#000000",
+            strokeThickness: 3
+          }
+        )
+        .setOrigin(0.5)
+        .setDepth(1001);
+
+        // Desaparecer tras 2 segundos
+        this.time.delayedCall(2000, () => {
+          overlay.destroy();
+          mensajeText.destroy();
+        });
+
+        return;
+      }
+
+      //Paga jeroglificos pertinentes 
+      this.pagarJeroglificos(coste);
+
+      this.jeroglificosTexto.setText(
+        `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`
+      );
     }
 
-    this.pagarJeroglificos(coste);
-    this.jeroglificosTexto.setText(
-      `Jeroglíficos: S:${playerInitialData.glyphs.S}  A:${playerInitialData.glyphs.A}  B:${playerInitialData.glyphs.B}`
-    );
-
+    // Marcar minijuego como jugado
     playerInitialData.minijuegosCompletados[this.minijuego] = true;
 
     // Lanzar minijuego
-    // Si venimos de reintento y es SlideBar, pasamos remainingTries
     const params = {
       dificultad: dif,
       minijuego: this.minijuego
     };
 
     if (this.reintento && this.minijuego === 'SlideBar') {
-      params.remainingTries = this.remainingTries; // mantenemos los intentos restantes
+      params.remainingTries = this.remainingTries;
     }
 
     this.scene.start(this.minijuego, params);
@@ -144,6 +224,12 @@ export default class SelectDifficultyScene extends MenuBase {
     );
   }
 
+  pagarJeroglificos(coste) {
+    playerInitialData.glyphs.S -= coste.S;
+    playerInitialData.glyphs.A -= coste.A;
+    playerInitialData.glyphs.B -= coste.B;
+  }
+
   createVolverButton() {
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
@@ -153,14 +239,12 @@ export default class SelectDifficultyScene extends MenuBase {
       .setScale(0.75)
       .setInteractive({ useHandCursor: true });
 
-    // --- Texto encima ---
     const btnText = this.add.text(btn.x, btn.y, "Volver al mapa", {
       fontFamily: "Filgaia",
       fontSize: "20px",
       color: '#382f23ff'
     }).setOrigin(0.5);
 
-    // --- Hover: pequeña animación ---
     btn.on("pointerover", () => {
       btn.setScale(0.85);
       btnText.setColor("#ffffaa");
@@ -171,15 +255,8 @@ export default class SelectDifficultyScene extends MenuBase {
       btnText.setColor('#382f23ff');
     });
 
-    // --- Acción del botón ---
     btn.on("pointerdown", () => {
       this.scene.start("MapScene");
     });
-  }
-
-  pagarJeroglificos(coste) {
-    playerInitialData.glyphs.S -= coste.S;
-    playerInitialData.glyphs.A -= coste.A;
-    playerInitialData.glyphs.B -= coste.B;
   }
 }

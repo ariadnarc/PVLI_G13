@@ -74,7 +74,10 @@ export default class PuzzleLights extends Phaser.Scene {
       strokeThickness: 4
     }).setOrigin(0.5);
 
-    //MATRIZ DE JEROGLIFICOS
+    // Lista de claves de jeroglíficos disponibles
+    const glyphKeys = ['A','B','C','E','I','L','M','N','O','P','Q','R','S','T','U'];
+
+    // MATRIZ DE JEROGLIFICOS
     this.tiles = [];
     const startX = centerX - (this.gridSize * (this.tileSize + this.spacing)) / 2 + this.tileSize / 2;
     const startY = centerY - (this.gridSize * (this.tileSize + this.spacing)) / 2 + this.tileSize / 2;
@@ -83,15 +86,23 @@ export default class PuzzleLights extends Phaser.Scene {
       for (let col = 0; col < this.gridSize; col++) {
         const x = startX + col * (this.tileSize + this.spacing);
         const y = startY + row * (this.tileSize + this.spacing);
-        const tile = this.add.image(x, y, `jero${this.tiles.length + 1}`).setDisplaySize(this.tileSize, this.tileSize);
+
+        // Escoger un jeroglífico aleatorio
+        const randomKey = glyphKeys[Math.floor(Math.random() * glyphKeys.length)];
+
+        const tile = this.add.image(x, y, randomKey)
+          .setDisplaySize(this.tileSize, this.tileSize);
+
         tile.setInteractive();
         tile.originalTint = 0xffffff;
-        //indice real del array
+
         const index = this.tiles.length;
         tile.on('pointerdown', () => this.handlePlayerClick(tile, index));
+
         this.tiles.push(tile);
       }
     }
+
 
     //INICIAR PRIMERA RONDA
     this.startRound();
@@ -165,7 +176,7 @@ export default class PuzzleLights extends Phaser.Scene {
     this.isPlayerTurn = false;
 
     if (this.lives <= 0) {
-      this.loseGame();
+      this.endGame();
       return;
     }
 

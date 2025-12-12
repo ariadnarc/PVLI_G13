@@ -14,36 +14,32 @@ export default class BinnacleOverlay extends Phaser.Scene {
   }
 
   init(data) {
-    // Escena padre (a la que volver)
     this.parentScene = data?.parentScene || "MapScene";
   }
 
   create() {
     const { width, height } = this.sys.game.config;
 
-    // --- GESTIÓN DE INPUT ---
+    // --- INPUT ---
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
       keyboard: true,
       keys: ["B"]
     });
 
-    // Keyboard 
     this.inputManager.on("keyDown", (key) => {
-      if (key === "B") {
-        this.closeBinnacle();
-      }
+      if (key === "B") this.closeBinnacle();
     });
 
     // --- INSTANCIA DE BITÁCORA ---
     this.binnacle = BinnacleManager.getInstance();
 
-    // --- FONDO OSCURECIDO ---
+    // --- FONDO ---
     this.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0, 0);
 
     // --- TÍTULO ---
     this.add.text(width / 2, 60, "BITÁCORA", {
-      fontFamily: 'Filgaia',
+      fontFamily: "Filgaia",
       fontSize: "36px",
       color: "#e6c480",
       fontStyle: "bold"
@@ -51,40 +47,51 @@ export default class BinnacleOverlay extends Phaser.Scene {
 
     // --- INSTRUCCIONES ---
     this.add.text(width / 2, height - 60, "Pulsa B para volver", {
-      fontFamily: 'Filgaia',
+      fontFamily: "Filgaia",
       fontSize: "20px",
       color: "#e6c480"
     }).setOrigin(0.5);
 
-    // --- CONTENIDO DE JEROGLÍFICOS ---
+    // --- CONTENIDO ---
     this.renderBinnacleContent();
   }
 
   /**
-   * Dibuja la información proporcionada por BinnacleManager con imágenes de los tiers
+   * Dibuja las imágenes, nombres y cantidades de cada tier
    */
   renderBinnacleContent() {
     const { width } = this.sys.game.config;
 
     const summary = this.binnacle.getSummary();
+    const tierData = GlyphTierConfig.TIER_DATA;
 
-    this.tierData = GlyphTierConfig.TIER_DATA;
+    const startX = width / 2 - 200;
+    const spacing = 200;
 
-    const startX = width / 2 - 200; // Ajuste horizontal inicial
-    const spacing = 200; // separación horizontal entre tiers
-    const yImage = 160;
-    const yText = yImage + 60; // debajo de la imagen
+    const yName = 160;      // Nombre + Tier
+    const yImage = 260;     // Imagen
+    const yCount = 360;     // Cantidad
 
-    this.tierData.forEach((data, index) => {
+    tierData.forEach((data, index) => {
       const x = startX + index * spacing;
 
-      // Imagen del tier
-      this.add.image(x, yImage, data.img).setOrigin(0.5).setScale(0.6);
+      // --- TÍTULO DEL SÍMBOLO ---
+      this.add.text(x, yName, `${data.img.toUpperCase()} (Tier ${data.tier})`, {
+        fontFamily: "Filgaia",
+        fontSize: "18px",
+        color: "#e6c480",
+      }).setOrigin(0.5);
 
-      // Cantidad de jeroglíficos
+      // --- IMAGEN DEL TIER ---
+      this.add.image(x, yImage, data.img)
+        .setOrigin(0.5)
+        .setScale(0.6);
+
+      // --- CANTIDAD DEL INVENTARIO ---
       const amount = summary[data.tier] || 0;
-      this.add.text(x, yText, `x${amount}`, {
-        fontFamily: 'Filgaia',
+
+      this.add.text(x, yCount, `x${amount}`, {
+        fontFamily: "Filgaia",
         fontSize: "22px",
         color: "#e6c480",
         fontStyle: "bold"

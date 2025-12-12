@@ -19,7 +19,7 @@ export default class SettingsMenu extends MenuBase {
     this.soundValue = this.game.sound.volume;
 
     //fondo
-    this.add.rectangle(0, 0, width, height, 0x00000010, 0.5).setOrigin(0).setDepth(2000);
+    this.add.rectangle(0, 0, width, height, 0x00000000, 0.90).setOrigin(0).setDepth(2000);
 
     this.add.text(width / 2, 100, 'AJUSTES DE SONIDO', {
       fontFamily: 'Filgaia',
@@ -30,7 +30,7 @@ export default class SettingsMenu extends MenuBase {
 
     //texto volumen
     this.volumeText = this.add.text(width / 2, 180,
-      `Volumen: ${(this.soundValue * 100).toFixed(0)}%`,
+      `Volumen: ${(0.5 * 100).toFixed(0)}%`,
       { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffffff' }
     ).setOrigin(0.5).setDepth(2001);
 
