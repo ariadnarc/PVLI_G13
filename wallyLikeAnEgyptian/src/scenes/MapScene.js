@@ -12,6 +12,7 @@ import { playerInitialData } from '../config/PlayerData.js';
 import PortalChest from "../core/PortalChest.js";
 import { cofresData } from "../config/cofresData.js";
 import MurosInvisibles from "../core/MurosInvisibles.js";
+import FinalPortal from './FinalPortal.js';
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
@@ -24,12 +25,16 @@ export default class MapScene extends Phaser.Scene {
         // MapScene solo escucha movimiento y tecla ESC
         this.inputManager.configure({
             cursors: true,
-            keys: ["B"]
+            keys: ["B", "E"]
         });
 
         //Bitácora
         this.inputManager.on("keyDown", (key) => {
             if (key === "B") this.openBinnacle(this.inputManager);
+            if (key === "E" && this.playerEnPortal) {
+                console.log('Portal activado con E!');
+                this.activarPortal();
+            }
         });
 
         //Creacion del mapa desde json
@@ -90,17 +95,8 @@ export default class MapScene extends Phaser.Scene {
         this.wallVuelta = new MurosInvisibles(this, 455, 995, { A: 1 }, this.PlayerManager);
         this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
 
-        // Portal para el mensaje final
-        this.finalMsgPortal = this.add.rectangle(300, 300, -50, 60, 0x000000);
-        this.physics.add.existing(this.finalMsgPortal);
-
-        // Colisión con el portal del mensaje final
-        this.physics.add.overlap(this.PlayerManager.sprite, this.finalMsgPortal, () => {
-            //si hay colision lo llevamos al mensaje, idealmente en la
-            // versión final será una exclamación, no un overlapeo
-            this.finalMsgPortal.destroy();
-            this.scene.launch('FinalMessage');
-        });
+        // Portal final
+        this.finalPortal = new FinalPortal(this, 400, 650, this.PlayerManager);
 
         // Animaciones:
         this.anims.create({
@@ -147,6 +143,7 @@ export default class MapScene extends Phaser.Scene {
             portal.update();
         });
         //this.wall.update();
+        this.finalPortal.update();
     }
 
     openBinnacle() { // Abrir bitácora

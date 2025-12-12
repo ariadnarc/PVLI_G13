@@ -62,10 +62,14 @@ export default class Boot extends Phaser.Scene {
 
     //portales cofres con animacion
     this.load.spritesheet('cofre', 'wallyLikeAnEgyptian/assets/sprites/cofreSpriteSheet.png', {
-    frameWidth: 15,  
-    frameHeight: 16  
+      frameWidth: 15,
+      frameHeight: 16
     });
-    
+    this.load.spritesheet('portalFinal', 'wallyLikeAnEgyptian/assets/sprites/portalFinal.png', {
+      frameWidth: 250,
+      frameHeight: 592
+    });
+
     // ICONOS JEROGLÍFICOS
     for (let i = 1; i <= 9; i++) {
       this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
@@ -104,7 +108,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
     this.load.audio('minigame_music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
-   
+
     //this.load.audio('sandstorm', 'assets/sounds/sandstorm.mp3');
   }
 
