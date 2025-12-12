@@ -60,32 +60,32 @@ export default class MapScene extends Phaser.Scene {
         // Minijuegos
         this.portales = [];
 
-        cofresData.forEach(data => {
+       cofresData.forEach(data => {
             const portal = new PortalChest(this, data, this.PlayerManager, (minijuego) => {
-                this.scene.pause();
-                this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
-                this.savePositions();
-            });
-
-            this.portales.push(portal);
+            this.scene.pause();
+            this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
+            this.savePositions();
         });
-        //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
-        for (let i = 0; i < this.movingObjects.length; i++) {
+
+        this.portales.push(portal);
+    });
+    //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
+    for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.movingObjects.length; j++) {
                 this.physics.add.collider(
-                    this.movingObjects[i].sprite,
-                    this.movingObjects[j].sprite
-                );
-            }
+                this.movingObjects[i].sprite,
+                this.movingObjects[j].sprite
+        );
         }
-        for (let i = 0; i < this.movingObjects.length; i++) {
+    }
+    for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.portales.length; j++) {
                 this.physics.add.collider(
-                    this.movingObjects[i].sprite,
-                    this.portales[j].sprite
-                );
-            }
+                this.movingObjects[i].sprite,
+                this.portales[j].sprite
+        );
         }
+    }
 
         // Paredes invisibles
         this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036, { A: 1 }, this.PlayerManager);
@@ -93,7 +93,7 @@ export default class MapScene extends Phaser.Scene {
         this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
 
         // Portal final
-        this.finalPortal = new FinalPortal(this, 400, 650, this.PlayerManager);
+        this.finalPortal = new FinalPortal(this, 455, 1050, this.PlayerManager);
 
         // Animaciones:
         this.anims.create({
