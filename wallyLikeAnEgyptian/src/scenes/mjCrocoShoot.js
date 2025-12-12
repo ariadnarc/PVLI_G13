@@ -32,7 +32,7 @@ export default class CrocoShoot extends Phaser.Scene {
 
         // --- CONSTANTES ---
         this.GRAVITY = 20;
-        this.SHOOT_SPEED = 1800;
+        this.SHOOT_SPEED = 600;
         this.MIN_ANGLE = -45;   // cono de 90 grados (ejemplo)
         this.MAX_ANGLE = 45;
         this.shootCooldown = 450; // ms
@@ -46,7 +46,9 @@ export default class CrocoShoot extends Phaser.Scene {
         this.trajectory = this.add.graphics();
 
         // --- GRUPO DE FLECHAS ---
-        this.arrows = this.physics.add.group();
+        this.arrows = this.physics.add.group({
+            allowGravity: false
+        });
 
         // Cocodrilo sacamuelas
         this.crocodiles = this.physics.add.group({
@@ -98,13 +100,14 @@ export default class CrocoShoot extends Phaser.Scene {
 
         const angleRad = Phaser.Math.DegToRad(this.player.angle);
 
-        let arrow = this.physics.add.image(this.player.x + 25, this.player.y, null);
+        let arrow = this.physics.add.image(this.player.x + 25, this.player.y, 'flecha');
+        arrow.setSize (20,6);
         arrow.setDisplaySize(20, 6);
         arrow.setTint(0xffffff);
 
         arrow.setVelocity(
             Math.cos(angleRad) * this.SHOOT_SPEED,
-            Math.sin(angleRad) * this.SHOOT_SPEED
+            Math.sin(angleRad) * this.SHOOT_SPEED * -1
         );
 
 

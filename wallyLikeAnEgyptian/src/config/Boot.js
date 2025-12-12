@@ -22,15 +22,18 @@ export default class Boot extends Phaser.Scene {
     this.load.image('lock_ring', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_ring.png');
     this.load.image('lock_lock', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lock.png');
     this.load.image('lock_lockpick', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
-    //TODO: UNDERTALE
-    //TODO: CROCOSHOOT
+    // Undertale (PLACEHOLDER)
+    this.load.image('fondoUndertale', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoUndertale/fondoUndertale.png');
+    // CrocoShoot (PLACEHOLDER)
+    this.load.image('fondoCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/fondoCroco.jpg');
+    this.load.image('flechaCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/flechaCroco.png');
+    this.load.image('sacamuelas', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/sacamuelas.png');
 
     // FONDOS/MENUS
     this.load.image('mainmenuBG', 'wallyLikeAnEgyptian/assets/ui/mainmenuBG.jpg');
     this.load.image('selectdiffBG', 'wallyLikeAnEgyptian/assets/ui/selectdiffBG.jpg');
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
     this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png');
-    this.load.image('fondoUndertale', 'wallyLikeAnEgyptian/assets/ui/fondoUndertale.png');
     this.load.image('fondoIntro', 'wallyLikeAnEgyptian/assets/ui/IntroScenebg.png');
 
     // === IMÁGENES Y SPRITES ===

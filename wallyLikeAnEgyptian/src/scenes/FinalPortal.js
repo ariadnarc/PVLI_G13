@@ -44,8 +44,8 @@ export default class FinalPortal {
         if (this.playerNear && !this.infoText) {
             this.infoText = this.scene.add.text(
                 this.sprite.x,
-                this.sprite.y + 150,
-                'Pulsa E para entrar',
+                this.sprite.y + 50,
+                'Enfrentar',
                 {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
