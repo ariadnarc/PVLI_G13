@@ -92,9 +92,6 @@ export default class SelectDifficultyScene extends MenuBase {
     this.createVolverButton();
   }
 
-  // ================================
-  //  NUEVA LÓGICA DE COSTES SOLICITADA
-  // ================================
   getCosteTexto(dif) {
     const esPrimeraVez = !playerInitialData.minijuegosCompletados[this.minijuego];
     const c = COSTES_DIFICULTAD[dif];
