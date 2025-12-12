@@ -124,6 +124,8 @@ export default class MapScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.cameras.main.setBackgroundColor(0x30291F);
+
         // Cámara Follow
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
