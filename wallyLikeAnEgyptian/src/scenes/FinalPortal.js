@@ -69,9 +69,9 @@ export default class FinalPortal {
             }
             this.scene.scene.launch('FinalMessage');
             //this.scene.scene.destroy();
-            this.scene.scene.pause();
+            this.scene.scene.stop();
 
-            // Opcional: destruir todo ya que vamos al minijuegfinal
+            // Opcional?: destruir todo ya que vamos al minijuegfinal
         }
     }
 }

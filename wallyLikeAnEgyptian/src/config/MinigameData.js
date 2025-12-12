@@ -119,4 +119,3 @@ export const MINIGAME_REWARDS = {
     DIFICIL: { count: 3 }
   }
 };
-

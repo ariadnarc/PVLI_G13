@@ -4,6 +4,8 @@
  * A
  */
 
+// import { playerInitialData, resetPlayerGlyphs } from "../config/PlayerData";
+
 const escena_final = 'FindLuigi'
 
 export default class FinalMessage extends Phaser.Scene {
@@ -47,6 +49,7 @@ export default class FinalMessage extends Phaser.Scene {
 
             this.scene.stop(); // Cierra esta escena
             this.scene.start(escena_final);
+            resetPlayerGlyphs(); // resetea glyphs
         });
     }
 }
