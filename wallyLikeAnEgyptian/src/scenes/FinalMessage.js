@@ -4,6 +4,8 @@
  * A
  */
 
+const escena_final = 'FindLuigi'
+
 export default class FinalMessage extends Phaser.Scene {
     constructor() {
         super('FinalMessage');
@@ -42,7 +44,9 @@ export default class FinalMessage extends Phaser.Scene {
         ).setOrigin(0.5).setInteractive();
 
         btnContinuar.on('pointerdown', () => {
+
             this.scene.stop(); // Cierra esta escena
+            this.scene.start(escena_final);
         });
     }
 }

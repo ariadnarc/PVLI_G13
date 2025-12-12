@@ -9,7 +9,7 @@ export const NOMBRES_MINIJUEGOS = {
   Undertale: "Furia del Desierto",
   PuzzleLights: "Memoria del Templo",
   LockPick: "Cerrajero Ancestral",
-  CrocoShoot: "Cazador de Reptiles"
+  CrocoShoot: "Cazador de Reptiles",
 }
 
 export const DIFICULTADES = {
@@ -41,7 +41,8 @@ export const DIFICULTADES = {
       },
       // minijuego disparar
       CrocoShoot: {
-      }
+      },
+      // minijuego final
     },
     probJeroglificos: { S: 0.05, A: 0.15, B: 0.80 }
   },

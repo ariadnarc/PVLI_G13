@@ -68,6 +68,7 @@ export default class FinalPortal {
                 this.infoText = null;
             }
             this.scene.scene.launch('FinalMessage');
+            //this.scene.scene.destroy();
             this.scene.scene.pause();
 
             // Opcional: destruir todo ya que vamos al minijuegfinal

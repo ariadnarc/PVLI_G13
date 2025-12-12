@@ -27,9 +27,9 @@ import PuzzleLights from './scenes/mjPuzzleLights.js';
 import LockPick from './scenes/mjLockPick.js';
 import CrocoShoot from './scenes/mjCrocoShoot.js';
 import SlideBar from './scenes/mjSlide.js';
+import FinalGame from './scenes/mjFinalGame.js'
 
 
-// esto q es?? (pregunta Juan)
 import MovingObject from './core/MovingObject.js';
 
 document.fonts.load('16px "Filgaia"').then(() => {
@@ -48,7 +48,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
       }
     }, // declaramos físcas globalmente
     scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
-      SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights,
+      SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights, FinalGame,
       LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage],
   };
 

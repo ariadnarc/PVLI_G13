@@ -7,7 +7,7 @@
 export const cofresData = [
   {
         posInicial: { x: 450, y: 500 },
-        minijuego: "SlideBar"
+        minijuego: "FinalGame"
   },
   {
         posInicial: { x: 540, y: 310 },
