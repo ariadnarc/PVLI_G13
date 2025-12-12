@@ -38,11 +38,11 @@ export default class PostMinigameMenu extends MenuBase {
     const { width, height } = this.sys.game.config;
 
     // Fondo translucido
-    this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setOrigin(0);
+    this.add.rectangle(0, 0, width, height, 0x3D2A0F, 1).setOrigin(0);
 
     // Mensaje principal
     const titleText = this.result === 'victory' ? '¡Victoria!' : '¡Derrota!';
-    const titleColor = this.result === 'victory' ? '#FFD700' : '#FF4444';
+    const titleColor = this.result === 'victory' ? '#d8ad36ff' : '#f58c35ff';
 
     this.add.text(width / 2, height / 2 - 180, titleText, {
       fontFamily: 'Filgaia',

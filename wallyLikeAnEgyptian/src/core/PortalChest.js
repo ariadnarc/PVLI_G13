@@ -36,7 +36,10 @@ export default class PortalChest {
                 this.infoText = this.scene.add.text(this.data.posInicial.x, this.data.posInicial.y + 150, `Pulsa E para abrir`, {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
-                    color: '#2d1a00ff'
+                    color: '#d8af75ff',
+                    fontStyle: 'bold',
+                    stroke: '#33261bff',
+                    strokeThickness: 4
                 }).setOrigin(0.5);
             }
 
