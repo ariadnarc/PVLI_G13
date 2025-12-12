@@ -4,9 +4,6 @@
  * A
  */
 
-import CrocoShoot from "../scenes/mjCrocoShoot";
-import LockPick from "../scenes/mjLockPick";
-
 /*
 export function resetPlayerGlyphs() { // función del reseteo
   playerInitialData.glyphs.S = 0;
