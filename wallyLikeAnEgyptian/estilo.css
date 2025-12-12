@@ -195,26 +195,51 @@ main {
   margin-left: 220px; /* mismo ancho que la barra expandida */
 }
 
-/* Seccion Game */
-#game {
-  display: flex;
-  flex-direction: column;   /* título arriba, canvas abajo */
-  align-items: center;      /* centra horizontalmente */
-  text-align: center;
-  height: 100%;            /* ocupa toda la pantalla */
-}
-
 #game h2 {
   margin-bottom: 20px;      /* espacio entre título y canvas */
 }
 
-#gameCanvas {
-  border: 2px solid var(--dark-brown); /* opcional: borde para destacar */
-  border-radius: 12px;                 /* opcional: esquinas redondeadas */
-  background-color: var(--beige);      /* opcional: color de fondo */
-  width: 85%;
-  height: 50%;
+
+/* Ajustes para evitar solapamiento entre controles y canvas */
+#game {
+  align-items: center;
+  justify-content: flex-start; /* antes centraba todo y provocaba solapamiento */
+  text-align: center;
 }
+
+.controls {
+  margin-bottom: 30px;  /* da aire antes del canvas */
+}
+
+#gameCanvas {
+  margin-top: 20px;      /* separa del bloque de controles */
+  max-height: 55vh;      /* evita que el canvas ocupe demasiado */
+}
+
+.controls h3 {
+  color: var(--orange);
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 40px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.controls ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.controls li {
+  font-size: 22px;
+  margin-bottom: 12px;
+  background: var(--marron-apagado);
+  padding: 12px 15px;
+  border-radius: 10px;
+  color: var(--white);
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
 
 /* Seccion Sobre nosotros */
 .cards {
