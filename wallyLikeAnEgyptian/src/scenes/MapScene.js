@@ -25,16 +25,13 @@ export default class MapScene extends Phaser.Scene {
         // MapScene solo escucha movimiento y tecla ESC
         this.inputManager.configure({
             cursors: true,
-            keys: ["B", "E"]
+            keys: ["B"]
         });
 
         //Bitácora
         this.inputManager.on("keyDown", (key) => {
             if (key === "B") this.openBinnacle(this.inputManager);
-            if (key === "E" && this.playerEnPortal) {
-                console.log('Portal activado con E!');
-                this.activarPortal();
-            }
+
         });
 
         //Creacion del mapa desde json

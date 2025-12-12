@@ -29,7 +29,7 @@ export default class FinalMessage extends Phaser.Scene {
         const texto = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY - 50,
-            'jerogíficos descifrados',
+            'jerogíficos descifrados!',
             { fontSize: '22px', color: '#000' }
         ).setOrigin(0.5);
 
