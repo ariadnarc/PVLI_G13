@@ -20,8 +20,13 @@ export default class CrocoShoot extends Phaser.Scene {
      * @property {number} killedCrocodilesCount - Cocodrilos eliminados.
      * @property {number} spawnedCrocodilesCount - Cocodrilos generados hasta ahora.
      */
-    init() {
-        const config = DIFICULTADES[this.difficulty].minijuegos.Undertale;
+    init(data = {}) {
+        const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
+        this.isMinigame = true;
+        // Guardamos el minijuego
+        this.minijuego = data.minijuego;
+        // Dificultad elegida
+        this.difficulty = data.dificultad;
 
         // Var.
         this.escapesCount = 0;
@@ -283,7 +288,7 @@ export default class CrocoShoot extends Phaser.Scene {
         // --- DERROTA (Game Over) ---
         if (this.escapesCount >= this.maxEscapes) {
             this.gameIsOver = true;
-            this.endGame('¡HAS PERDIDO! Demasiados cocodrilos escaparon.');
+            this.loseGame();
             return;
         }
 
@@ -293,29 +298,21 @@ export default class CrocoShoot extends Phaser.Scene {
         if (this.killedCrocodilesCount >= this.totalCrocodilesToKill && this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
             if (this.crocodiles.countActive(true) === 0) {
                 this.gameIsOver = true;
-                this.endGame('¡HAS GANADO! Cocodrilos neutralizados.');
+                this.winGame();
             }
         }
     }
 
-    /**
-     * Finaliza el juego y muestra un mensaje.
-     */
-    endGame() {
-        this.crocodileSpawnTimer.paused = true;
-    }
-
     // ========== VICTORIA ==========
     winGame() {
-        this.physics.pause(); // Detiene todas las físicas del juego
-        if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
-        if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
+        this.physics.pause(); // Detiene todas las físicas del juego (por si aca q no hay, pero por si aca)
+        if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false); // Elimina timer
 
         //lanza el PostMinigameMenu
         this.scene.launch('PostMinigameMenu', {
             result: 'victory',
             difficulty: this.difficulty,
-            minijuego: 'Undertale',
+            minijuego: 'CrocoShoot',
             options: {
                 "Volver al mapa": () => {
                     this.scene.stop('PostMinigameMenu');
@@ -330,19 +327,18 @@ export default class CrocoShoot extends Phaser.Scene {
     // ========== DERROTA ==========
     loseGame() {
         this.physics.pause(); // Detiene todas las fisicas del juego
-        if (this.bulletTimer) this.bulletTimer.remove(false);
-        if (this.timerEvent) this.timerEvent.remove(false);
+        if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
 
         //lanzamos PostMinigameMenu con resultado defeat
         this.scene.launch('PostMinigameMenu', {
             result: 'defeat',
             difficulty: this.difficulty,
-            minijuego: 'Undertale',
+            minijuego: 'CrocoShoot',
             options: {
                 "Reintentar": () => {
                     this.scene.stop('PostMinigameMenu');
                     this.scene.stop();
-                    this.scene.start('Undertale', { minijuego: this.minijuego, dificultad: this.difficulty });
+                    this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
                 },
                 "Salir": () => {
                     this.scene.stop('PostMinigameMenu');

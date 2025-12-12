@@ -4,12 +4,16 @@
  * A
  */
 
+import CrocoShoot from "../scenes/mjCrocoShoot";
+import LockPick from "../scenes/mjLockPick";
+
+/*
 export function resetPlayerGlyphs() { // función del reseteo
   playerInitialData.glyphs.S = 0;
   playerInitialData.glyphs.A = 0;
   playerInitialData.glyphs.B = 0;
 }// esto va a ser muy útil, se puede emplear para los minijuegos
-
+*/
 export const playerInitialData = {
 
   /* TODO: 
@@ -29,6 +33,8 @@ export const playerInitialData = {
   minijuegosCompletados: { // Control de si es la primera vez en los minijuegos
     SlideBar: false,
     PuzzleLights: false,
-    Undertale: false
+    Undertale: false,
+    CrocoShoot: false,
+    LockPick: false,
   }
 };

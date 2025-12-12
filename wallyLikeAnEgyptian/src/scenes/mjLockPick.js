@@ -1,19 +1,10 @@
 /**
- * Search "Skyrim Lockpick" for reference.
- * 
- * init: condicional minijuego, dificultad init
- * create: sprites, variables, generar cerraduras, teclas, dificultades
- * 
- * generateLockData(): crea las características de la cerradura
- * update: actualizar gráficos, gestiona el flag de transición entre cerraduras
- * 
- * handlePickMovement(delta): movimiento ganzúa
- * applyTurnLogic(delta): lo que ocurre al intentar desbloquear la cerradura
- * unlockCurrentLock(): lógica de desbloqueo
- * drawLock(lockNumber): dibujar la cerradura, para el update
- * drawPick(time): dibujar ganzúa, tiene en cuenta rotación del jugador y cerradura activa
- * drawTensionBar(): gestión visual de la tensión para el update
- * fail(): método que se ejecuta al llenar la barra de tensión, perder
+ * @file LockPick.js
+ * @class LockPick
+ * @extends Phaser.Scene
+ * @description Minijuego de ganzúa inspirado en Skyrim, donde el jugador debe encontrar
+ * el "sweetspot" (punto óptimo) de dos cerraduras consecutivas bajo presión de tensión
+ * para evitar que la ganzúa se rompa.
  */
 
 import { DIFICULTADES } from '../config/MinigameData.js';
@@ -22,19 +13,60 @@ export default class LockPick extends Phaser.Scene {
     constructor() {
         super('LockPick');
 
-        // Constantes de configuración
-        this.LOCK_ROTATION_SPEED = 0.1; // Velocidad a la cual se rota la cerradura
-        this.PICK_MOVEMENT_SPEED = 120; // Velocidad de rotación de la ganzúa
-        this.MAX_LOCK_ROTATION = 90; // Límite de rotación de la cerradura cuando el jugador se encuentra en el sweetspot(cuando llega aquí se desbloquea)
-        this.RESISTANCE_THRESHOLD = 45; // Límite de rotación de la cerradura cuando el jugador está en el "ángulo de rotación"
+        // Constantes de configuración (Valores fijos)
+        /** @type {number} Velocidad a la cual se rota la cerradura (por frame). */
+        this.LOCK_ROTATION_SPEED = 0.1; 
+        /** @type {number} Velocidad de rotación de la ganzúa (grados/segundo). */
+        this.PICK_MOVEMENT_SPEED = 120; 
+        /** @type {number} Límite de rotación de la cerradura para desbloqueo (90 grados). */
+        this.MAX_LOCK_ROTATION = 90; 
+        /** @type {number} Ángulo de la cerradura (en grados) a partir del cual aumenta la resistencia si no se está en el sweetspot. */
+        this.RESISTANCE_THRESHOLD = 45; 
     }
 
+    /**
+     * Inicializa las variables de dificultad y estado del minijuego.
+     * @param {Object} data - Datos pasados a la escena, conteniendo la dificultad.
+     * @property {boolean} isMinigame - Flag para indicar que es un minijuego.
+     * @property {string} difficulty - Nivel de dificultad ('facil', 'medio', 'dificil', etc.).
+     */
     init(data) {
         this.isMinigame = true;
-
         this.difficulty = data.dificultad;
     }
 
+    /**
+     * Crea los elementos visuales (sprites), inicializa las variables de estado y la lógica de juego.
+     * * @property {number} CENTER_X - Centro horizontal de la cámara.
+     * @property {number} CENTER_Y - Centro vertical de la cámara.
+     * * **--- Propiedades definidas por DIFICULTAD (MinigameData) ---**
+     * @property {number} SWEET_WIDTH - Rango angular del punto óptimo (leído de `config.limiteSweet`).
+     * @property {number} ROTATION_WIDTH - Rango angular donde el jugador puede intentar girar la cerradura (leído de `config.limiteRotacion`).
+     * @property {number} TENSION_INCREASE_RATE - Tasa de aumento de tensión (por milisegundo, leído de `config.tensionSube`).
+     * @property {number} TENSION_DECREASE_RATE - Tasa de disminución de tensión (por milisegundo, leído de `config.tensionBaja`).
+     * * **--- Sprites y Gráficos ---**
+     * @property {Phaser.GameObjects.Image} fondo - Fondo general de la escena.
+     * @property {Phaser.GameObjects.Image} spr_fondo - Fondo de la cerradura inferior.
+     * @property {Phaser.GameObjects.Image} spr_fondo2 - Fondo de la cerradura superior.
+     * @property {Phaser.GameObjects.Image} spr_ring1 - Anillo decorativo de la cerradura superior.
+     * @property {Phaser.GameObjects.Image} spr_ring2 - Anillo decorativo de la cerradura inferior.
+     * @property {Phaser.GameObjects.Image} spr_lock1 - Sprite de la cerradura superior (gira).
+     * @property {Phaser.GameObjects.Image} spr_lock2 - Sprite de la cerradura inferior (gira).
+     * @property {Phaser.GameObjects.Image} spr_pick - Sprite de la ganzúa.
+     * @property {Phaser.GameObjects.Graphics} tensionGraphics - Objeto para dibujar la barra de tensión.
+     * * **--- Variables de Estado y Lógica ---**
+     * @property {number} pickAngle - Ángulo actual de la ganzúa (-90 a 90 grados).
+     * @property {number} tension - Tensión actual acumulada (0 a maxTension).
+     * @property {number} maxTension - Límite máximo de tensión.
+     * @property {number} vibrationStrength - Intensidad de la vibración visual de la ganzúa.
+     * @property {boolean} isTransitioning - Bloquea inputs durante el cambio de cerradura.
+     * @property {number} currentLock - Índice de la cerradura activa (1 o 2).
+     * @property {Array<Object>} locks - Datos de configuración (sweetspot, rangos) de cada cerradura.
+     * @property {Object<number, number>} lockRotation - Guarda la rotación actual de cada cerradura (0 a MAX_LOCK_ROTATION).
+     * * **--- Controles ---**
+     * @property {Object} keys - Objeto de control de teclas de movimiento (flechas).
+     * @property {Phaser.Input.Keyboard.Key} turnKey - Tecla de acción (girar la cerradura, ESPACIO).
+     */
     create() {
         this.CENTER_X = this.cameras.main.centerX;
         this.CENTER_Y = this.cameras.main.centerY;
@@ -103,6 +135,10 @@ export default class LockPick extends Phaser.Scene {
         this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
+    /**
+     * Genera los datos de configuración aleatorios para una cerradura.
+     * @returns {Object} Contiene el centro, límites del sweetspot y límites del rango de rotación.
+     */
     generateLockData() { // Genera los datos de la cerradura
         let sweetCenter = Phaser.Math.Between(-90, 90); // Elige un ángulo aleatorio
 
@@ -115,6 +151,11 @@ export default class LockPick extends Phaser.Scene {
         };
     }
 
+    /**
+     * Bucle principal de la escena. Gestiona la lógica de input y el dibujo de elementos.
+     * @param {number} time - Tiempo total transcurrido.
+     * @param {number} delta - Tiempo transcurrido desde el último frame (milisegundos).
+     */
     update(time, delta) {
         this.tensionGraphics.clear(); // Limpia el dibujo anterior de la barra de tensión
 
@@ -131,6 +172,10 @@ export default class LockPick extends Phaser.Scene {
         this.drawTensionBar();
     }
 
+    /**
+     * Gestiona el movimiento de rotación de la ganzúa mediante las flechas izquierda/derecha.
+     * @param {number} delta - Tiempo transcurrido desde el último frame (milisegundos).
+     */
     handlePickMovement(delta) { // Movimiento de la ganzúa
         if (this.keys.left.isDown) { // Izquierda
             this.pickAngle -= this.PICK_MOVEMENT_SPEED * delta / 1000;
@@ -143,6 +188,11 @@ export default class LockPick extends Phaser.Scene {
         // Como se puede obervar
     }
 
+    /**
+     * Lógica principal del minijuego. Controla el giro de la cerradura y la tensión de la ganzúa
+     * al presionar la tecla de giro (ESPACIO).
+     * @param {number} delta - Tiempo transcurrido desde el último frame (milisegundos).
+     */
     applyTurnLogic(delta) { // LÓGICA DE GIRO (cuando pulsas SPACE)
         let lock = this.locks[this.currentLock]; // Datos de la cerradura activa
         let angle = this.pickAngle; // Ángulo actual de la ganzúa
@@ -218,6 +268,10 @@ export default class LockPick extends Phaser.Scene {
     // de cerradura, la estructura quedaría mucho más compacta si crease algunas funciones como
     // por ejemplo increaseTension, reduceRotation a parte, pero he optado por dejarlo así.
 
+    /**
+     * Gestiona el desbloqueo de la cerradura actual. Si es la primera, inicia la transición
+     * a la segunda. Si es la segunda, llama al método de victoria (`winGame`).
+     */
     unlockCurrentLock() { // Lógica de desbloqueo de cerradura
         if (this.currentLock === 1) { // Si es la primera cerradura, prepara la transición a la segunda
             this.isTransitioning = true; // Bloquea inputs durante la transición
@@ -246,17 +300,24 @@ export default class LockPick extends Phaser.Scene {
                 }
             });
         } else { // Si no es la primera entonces, es la segunda, -> acabas minijuego
-            console.log("¡Mini-juego completado!");
-            this.scene.restart(); // beta
+            this.winGame();
         }
     }
 
+    /**
+     * Dibuja y aplica la rotación al sprite de la cerradura (1 o 2).
+     * @param {number} lockNumber - El índice de la cerradura a dibujar (1 o 2).
+     */
     drawLock(lockNumber) { // Dibujar cerradura
         const sprite = lockNumber === 1 ? this.spr_lock1 : this.spr_lock2; // Selecciona el sprite
         sprite.setRotation(Phaser.Math.DegToRad(this.lockRotation[lockNumber]));
         // Cuando Phaser calcula rotaciones de sprites, lo hace en radianes
     }
 
+    /**
+     * Dibuja la ganzúa, aplica su rotación actual y añade el efecto de vibración basado en la tensión.
+     * @param {number} time - Tiempo total transcurrido (usado para la función seno de vibración).
+     */
     drawPick(time) { // Dibujar ganzúa
         // Solo vibrar cuando hay tensión
         const vibration = this.vibrationStrength > 0
@@ -271,10 +332,16 @@ export default class LockPick extends Phaser.Scene {
 
         this.spr_pick.setPosition(this.CENTER_X, targetY); // Posiciona la ganzúa
         // WARNING con esto (dependemos de dnd esté la punta en el propio sprite):
+        /**
+         * @property {number} setOrigin(0.32, 0.06) - Ajuste manual del punto de pivote para que la ganzúa gire desde su punta.
+         */
         this.spr_pick.setOrigin(0.32, 0.06); // Ajusta el origen para que gire desde la punta
         this.spr_pick.setRotation(Phaser.Math.DegToRad(angle - 135)); // Rota la ganzúa dsde ese origen
     }
 
+    /**
+     * Dibuja y actualiza la barra de tensión visual en el centro de la pantalla, cambiando de color según el nivel de tensión.
+     */
     drawTensionBar() { // Dibuja la barra de tensión en pantalla
         // No uso time porque lo recalculo desde 0 al empezar cada frame (ver clear() del update)
         // Calcula el ancho según tensión acumulada, si la tensión acumulada llega a 100, = maxTension, barra llena
@@ -295,9 +362,68 @@ export default class LockPick extends Phaser.Scene {
         this.tensionGraphics.strokeRect(this.CENTER_X - 100, this.CENTER_Y - 10, 200, 20); // Borde de la barra
     }
 
-    // Se llama cuando rompes la ganzúa (tension >= maxTension)
+    /**
+     * Método que se llama al completar con éxito todas las cerraduras.
+     * Lanza el menú de post-minijuego con resultado de victoria.
+     */
+    winGame() {
+        this.isTransitioning = true; 
+        this.tweens.killAll(); // Detiene cualquier animación pendiente
+
+        //lanza el PostMinigameMenu
+        this.scene.launch('PostMinigameMenu', {
+            result: 'victory',
+            difficulty: this.difficulty,
+            minijuego: 'LockPick',
+            options: {
+                "Volver al mapa": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.start('MapScene');
+                }
+            }
+        });
+
+        this.scene.stop(); //detiene la escena del minijuego
+    }
+
+    /**
+     * Método que se llama cuando la barra de tensión se llena (ganzúa rota).
+     * Lanza el menú de post-minijuego con resultado de derrota.
+     */
     fail() {
-        console.log("Ganzúa rota");
-        this.scene.restart(); // beta
+        // Lógica de ganzúa rota. Llama a loseGame.
+        this.loseGame();
+    }
+
+    // ========== DERROTA ==========
+    /**
+     * Gestiona la derrota del minijuego.
+     * Lanza el menú de post-minijuego con resultado de derrota.
+     */
+    loseGame() {
+        this.isTransitioning = true; 
+        this.tweens.killAll();
+
+        //lanzamos PostMinigameMenu con resultado defeat
+        this.scene.launch('PostMinigameMenu', {
+            result: 'defeat',
+            difficulty: this.difficulty,
+            minijuego: 'LockPick',
+            options: {
+                "Reintentar": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.stop();
+                    this.scene.start('LockPick', { minijuego: this.minijuego, dificultad: this.difficulty });
+                },
+                "Salir": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.stop();
+                    this.scene.start('MapScene');
+                }
+            }
+        });
+
+        //detenemos la escena actual
+        this.scene.stop();
     }
 }
