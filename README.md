@@ -1,5 +1,7 @@
 # 𓀙 Wally like an egyptian 𓀙
 
+> ⚠️ **Importante:** Este proyecto es un trabajo universitario para la asignatura de Programación de videojuegos en lenguajes interpretados impartida en la Universidad Complutense de Madrid en el curso 25-26.
+
 # **Prólogo**
 
 * Información del Estudio  
@@ -90,7 +92,8 @@ Para lograrlo, debe **descifrar jeroglíficos** y desbloquear pistas hasta encon
 | Furia del desierto | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
 | Memoria del templo | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
 | Cerrajero ancestral | Precisión | Abrir un candado interactuando cuidadosamente con una ganzúa. |
-| Francotirador en el Nilo | Apuntar y disparar | Apuntar y disparar a cocodrilos que aparecen. |
+| Cazador de Reptiles | Apuntar y disparar | Apuntar y disparar a cocodrilos que aparecen antes de que lleguen a tu posición. |
+| Buscando a Luigi | Boss final | Una combinación de los juegos anteriores que permiten al jugador acceder a la zona final. |
 
 ---
 
@@ -141,24 +144,23 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
 
 1. **Pantalla de inicio**  
    ![Pantalla de inicio](wallyLikeAnEgyptian/assets/screenshots/menuDeInicio.png)
-2. **Exploración del laberinto**  
-   ![Mapa](wallyLikeAnEgyptian/assets/screenshots/)
-3. **Diccionario de jeroglíficos**  
-   ![Diccionario](wallyLikeAnEgyptian/assets/screenshots/)
-4. **Pista / inscripción**  
-   ![Pista](wallyLikeAnEgyptian/assets/screenshots/)
-5. **Encontrar a Wally**  
-   ![Encontrar a Wally](wallyLikeAnEgyptian/assets/screenshots/)
-6. **Minijuego: Precisión del escriba**  
+2. **Escena de introducción**
+   ![Intro](wallyLikeAnEgyptian/assets/screenshots/IntroScene.png)
+3. **Exploración del laberinto**  
+   ![Mapa](wallyLikeAnEgyptian/assets/screenshots/map.png)
+4. **Diccionario de jeroglíficos**  
+   ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/bitacora.png)
+5. **Minijuego: Precisión del escriba**  
    ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/PrecisionDelEscriba.png)
-7. **Minijuego: Memoria del templo**  
+6. **Minijuego: Memoria del templo**  
    ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriaDelTemplo.png)
-8. **Minijuego: Furia del desierto**  
+7. **Minijuego: Furia del desierto**  
    ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/FuriaDelDesierto.png)
-9. **Minijuego: Cerrajero ancestral**
-   ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/)
-10. **Minijuego: Francotirador en el Nilo**
-   ![Minijuego Francotirador en el Nilo](wallyLikeAnEgyptian/assets/screenshots/)
+8. **Minijuego: Cerrajero ancestral**
+   ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/cerrajeroAncestral.png)
+9. **Minijuego: Cazador de reptiles**
+   ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/cazadorDeReptiles.png)
+
 
 ---
 
@@ -176,5 +178,6 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
 
 ---
 
-### 💻 Repositorio de GitHub
+### 💻 Repositorio de GitHub y página web
 [Cat-astrophic Games](https://github.com/ariadnarc/PVLI_G13)
+[Página web](https://ariadnarc.github.io/PVLI_G13/)
