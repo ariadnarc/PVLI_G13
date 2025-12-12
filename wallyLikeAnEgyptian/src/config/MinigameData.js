@@ -41,6 +41,9 @@ export const DIFICULTADES = {
       },
       // minijuego disparar
       CrocoShoot: {
+        vidas: 3,
+        cadencia: 1450,
+        cantSacamuelas: 10,
       },
       // minijuego final
     },
@@ -70,6 +73,9 @@ export const DIFICULTADES = {
         tensionBaja: 0.07,
       },
       CrocoShoot: {
+        vidas: 2,
+        cadencia: 1650,
+        cantSacamuelas: 15,
       }
     },
     probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
@@ -98,6 +104,9 @@ export const DIFICULTADES = {
         tensionBaja: 0.1,
       },
       CrocoShoot: {
+        vidas: 1,
+        cadencia: 1800,
+        cantSacamuelas: 18,
       }
     },
     probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }

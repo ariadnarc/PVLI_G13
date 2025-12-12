@@ -21,49 +21,53 @@ export default class CrocoShoot extends Phaser.Scene {
      * @property {number} spawnedCrocodilesCount - Cocodrilos generados hasta ahora.
      */
     init() {
-        // --- VARIABLES DEL JUEGO ---
-        this.maxEscapes = 3;
+        const config = DIFICULTADES[this.difficulty].minijuegos.Undertale;
+
+        // Var.
         this.escapesCount = 0;
-        this.totalCrocodilesToKill = 10;
         this.killedCrocodilesCount = 0;
         this.spawnedCrocodilesCount = 0;
         this.gameIsOver = false;
 
-        // --- CONSTANTES ---
-        this.ROTATION_SPEED = 0.8;   // NUEVO: Velocidad de rotación reducida
+        // Constantes
+        this.ROTATION_SPEED = 0.8;   // Velocidad de rotación balista
         this.SHOOT_SPEED = 600;      // Velocidad de la flecha (píxeles/segundo)
         this.CROCO_SPEED = -100;     // Velocidad X de los cocodrilos (píxeles/segundo)
         this.MIN_ANGLE = -45;
         this.MAX_ANGLE = 45;
-        this.shootCooldown = 1450;
         this.canShoot = true;
+
+        // Vienen dados por dificultad
+        this.maxEscapes = config.vidas;
+        this.shootCooldown = config.cadencia;
+        this.totalCrocodilesToKill = config.cantSacamuelas;
     }
 
     create() {
         this.centerX = this.cameras.main.width / 2;
         this.centerY = this.cameras.main.height / 2;
 
-        // --- FONDO ---
+        // FONDO
         this.fondo = this.add.image(0, 0, 'fondoCroco').setOrigin(0);
         this.fondo.setDisplaySize(this.game.config.width, this.game.config.height);
 
-        // --- CONTROLES ---
+        // CONTROLES
         this.keys = this.input.keyboard.addKeys({
             left: Phaser.Input.Keyboard.KeyCodes.LEFT,
             right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
-        // --- JUGADOR (BALISTA) ---
+        // JUGADOR
         this.player = this.add.rectangle(80, 450, 30, 60, 0x0088ff);
         this.player.angle = 0;
 
-        // --- GRÁFICOS Y GRUPOS ---
+        // GRÁFICOS Y GRUPOS
         this.trajectory = this.add.graphics(); // Para la línea predictiva
         this.arrows = this.add.group();
         this.crocodiles = this.add.group();
 
-        // --- GENERACIÓN DE COCODRILOS ---
+        // GENERACIÓN DE COCODRILOS
         this.crocodileSpawnTimer = this.time.addEvent({
             delay: 2000,
             callback: this.spawnCrocodile,
@@ -72,11 +76,10 @@ export default class CrocoShoot extends Phaser.Scene {
             paused: false
         });
 
-        // --- HUD (Texto de Vidas) ---
+        // HUD
         this.livesText = this.add.text(16, 16, this.getLivesText(), {
             fontSize: '24px',
             fill: '#FFF',
-            backgroundColor: '#00000088'
         }).setScrollFactor(0);
     }
 
@@ -86,7 +89,7 @@ export default class CrocoShoot extends Phaser.Scene {
         // Convertir delta de ms a segundos
         const deltaSeconds = delta / 1000;
 
-        // ----- ROTACIÓN DEL JUGADOR (Ajustada a 0.8) -----
+        // Rotación
         if (this.keys.left.isDown) {
             this.player.angle -= this.ROTATION_SPEED;
         }
@@ -95,24 +98,24 @@ export default class CrocoShoot extends Phaser.Scene {
         }
         this.player.angle = Phaser.Math.Clamp(this.player.angle, this.MIN_ANGLE, this.MAX_ANGLE);
 
-        // ----- TRAJECTORIA -----
+        // Trayectoria
         if (this.canShoot) {
             this.drawTrajectory();
         } else {
             this.trajectory.clear();
         }
 
-        // ----- DISPARO -----
+        // Pium
         if (Phaser.Input.Keyboard.JustDown(this.keys.space) && this.canShoot) {
             this.shootArrow();
         }
 
-        // ----- MOVIMIENTO MANUAL Y COLISIONES -----
+        // MOvimiento manual NO por físicas
         this.moveArrows(deltaSeconds);
         this.moveCrocodiles(deltaSeconds);
         this.checkCollisions();
 
-        // ----- LÓGICA DE JUEGO Y LIMPIEZA -----
+        // Aquí somos limpios
         this.checkGameConditions();
         this.cleanupObjects();
     }
@@ -191,9 +194,7 @@ export default class CrocoShoot extends Phaser.Scene {
         croco.setScale(0.7);
 
         croco.speedX = this.CROCO_SPEED;
-
         this.crocodiles.add(croco);
-
         this.spawnedCrocodilesCount++;
     }
 
@@ -299,16 +300,59 @@ export default class CrocoShoot extends Phaser.Scene {
 
     /**
      * Finaliza el juego y muestra un mensaje.
-     * @param {string} message - Mensaje a mostrar.
      */
-    endGame(message) {
+    endGame() {
         this.crocodileSpawnTimer.paused = true;
+    }
 
-        this.add.text(this.centerX, this.centerY, message, {
-            fontSize: '48px',
-            fill: '#FF0000',
-            backgroundColor: '#000',
-            padding: { x: 20, y: 10 }
-        }).setOrigin(0.5).setDepth(10); // setDepth alto para asegurar que se vea
+    // ========== VICTORIA ==========
+    winGame() {
+        this.physics.pause(); // Detiene todas las físicas del juego
+        if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
+        if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
+
+        //lanza el PostMinigameMenu
+        this.scene.launch('PostMinigameMenu', {
+            result: 'victory',
+            difficulty: this.difficulty,
+            minijuego: 'Undertale',
+            options: {
+                "Volver al mapa": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.start('MapScene');
+                }
+            }
+        });
+
+        this.scene.stop(); //detiene la escena del minijuego
+    }
+
+    // ========== DERROTA ==========
+    loseGame() {
+        this.physics.pause(); // Detiene todas las fisicas del juego
+        if (this.bulletTimer) this.bulletTimer.remove(false);
+        if (this.timerEvent) this.timerEvent.remove(false);
+
+        //lanzamos PostMinigameMenu con resultado defeat
+        this.scene.launch('PostMinigameMenu', {
+            result: 'defeat',
+            difficulty: this.difficulty,
+            minijuego: 'Undertale',
+            options: {
+                "Reintentar": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.stop();
+                    this.scene.start('Undertale', { minijuego: this.minijuego, dificultad: this.difficulty });
+                },
+                "Salir": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.stop();
+                    this.scene.start('MapScene');
+                }
+            }
+        });
+
+        //detenemos la escena actual
+        this.scene.stop();
     }
 }
