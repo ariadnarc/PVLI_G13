@@ -1,8 +1,9 @@
 /**
- * JSdoc por aquí cuando
- * 
- * 
- * acabe
+ * @file CrocoShoot.js
+ * @class CrocoShoot
+ * @extends Phaser.Scene
+ * @description Minijuego de balista con movimiento de proyectiles manual (sin Phaser Physics).
+ * Las flechas se mueven en línea recta y el juego incluye condiciones de Victoria/Derrota.
  */
 
 import { DIFICULTADES } from '../config/MinigameData.js';
@@ -11,71 +12,87 @@ export default class CrocoShoot extends Phaser.Scene {
     constructor() {
         super('CrocoShoot');
     }
+
+    /**
+     * @property {number} maxEscapes - Máximo de cocodrilos que pueden pasar antes de Game Over.
+     * @property {number} escapesCount - Cocodrilos que han pasado.
+     * @property {number} totalCrocodilesToKill - Total de cocodrilos a generar y matar.
+     * @property {number} killedCrocodilesCount - Cocodrilos eliminados.
+     * @property {number} spawnedCrocodilesCount - Cocodrilos generados hasta ahora.
+     */
     init() {
-        // lo de las dificultades pa luego
-    }
-    preload() {
-        // this.load.spritesheet BALISTA
-        // this.load.spritesheet COCODRILO
-        // 1 FRAME DEL PLAYER EN IDLE
-        // this.load.image FLECHA
-        // FONDO
+        // --- VARIABLES DEL JUEGO ---
+        this.maxEscapes = 3;
+        this.escapesCount = 0;
+        this.totalCrocodilesToKill = 10;
+        this.killedCrocodilesCount = 0;
+        this.spawnedCrocodilesCount = 0;
+        this.gameIsOver = false;
+
+        // --- CONSTANTES ---
+        this.ROTATION_SPEED = 0.8;   // NUEVO: Velocidad de rotación reducida
+        this.SHOOT_SPEED = 600;      // Velocidad de la flecha (píxeles/segundo)
+        this.CROCO_SPEED = -100;     // Velocidad X de los cocodrilos (píxeles/segundo)
+        this.MIN_ANGLE = -45;
+        this.MAX_ANGLE = 45;
+        this.shootCooldown = 1450;
+        this.canShoot = true;
     }
 
     create() {
+        this.centerX = this.cameras.main.width / 2;
+        this.centerY = this.cameras.main.height / 2;
+
+        // --- FONDO ---
+        this.fondo = this.add.image(0, 0, 'fondoCroco').setOrigin(0);
+        this.fondo.setDisplaySize(this.game.config.width, this.game.config.height);
+
         // --- CONTROLES ---
         this.keys = this.input.keyboard.addKeys({
             left: Phaser.Input.Keyboard.KeyCodes.LEFT,
             right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
-        }); //
+        });
 
-        // --- CONSTANTES ---
-        this.GRAVITY = 20;
-        this.SHOOT_SPEED = 600;
-        this.MIN_ANGLE = -45;   // cono de 90 grados (ejemplo)
-        this.MAX_ANGLE = 45;
-        this.shootCooldown = 450; // ms
-        this.canShoot = true;
-
-        // --- JUGADOR ---
-        this.player = this.add.rectangle(80, 300, 30, 60, 0x0088ff); // marcador
+        // --- JUGADOR (BALISTA) ---
+        this.player = this.add.rectangle(80, 450, 30, 60, 0x0088ff);
         this.player.angle = 0;
 
-        // --- GRÁFICOS ---
-        this.trajectory = this.add.graphics();
+        // --- GRÁFICOS Y GRUPOS ---
+        this.trajectory = this.add.graphics(); // Para la línea predictiva
+        this.arrows = this.add.group();
+        this.crocodiles = this.add.group();
 
-        // --- GRUPO DE FLECHAS ---
-        this.arrows = this.physics.add.group({
-            allowGravity: false
-        });
-
-        // Cocodrilo sacamuelas
-        this.crocodiles = this.physics.add.group({
-            allowGravity: false
-        });
-        this.time.addEvent({
+        // --- GENERACIÓN DE COCODRILOS ---
+        this.crocodileSpawnTimer = this.time.addEvent({
             delay: 2000,
             callback: this.spawnCrocodile,
             callbackScope: this,
-            loop: true
+            loop: true,
+            paused: false
         });
 
-        // Física general
-        this.physics.world.gravity.y = this.GRAVITY;
+        // --- HUD (Texto de Vidas) ---
+        this.livesText = this.add.text(16, 16, this.getLivesText(), {
+            fontSize: '24px',
+            fill: '#FFF',
+            backgroundColor: '#00000088'
+        }).setScrollFactor(0);
     }
 
     update(time, delta) {
+        if (this.gameIsOver) return;
 
-        // ----- ROTACIÓN DEL JUGADOR -----
+        // Convertir delta de ms a segundos
+        const deltaSeconds = delta / 1000;
+
+        // ----- ROTACIÓN DEL JUGADOR (Ajustada a 0.8) -----
         if (this.keys.left.isDown) {
-            this.player.angle -= 1.5;
+            this.player.angle -= this.ROTATION_SPEED;
         }
         if (this.keys.right.isDown) {
-            this.player.angle += 1.5;
+            this.player.angle += this.ROTATION_SPEED;
         }
-
-        // Limitar ángulo al cono permitido
         this.player.angle = Phaser.Math.Clamp(this.player.angle, this.MIN_ANGLE, this.MAX_ANGLE);
 
         // ----- TRAJECTORIA -----
@@ -89,30 +106,57 @@ export default class CrocoShoot extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.keys.space) && this.canShoot) {
             this.shootArrow();
         }
+
+        // ----- MOVIMIENTO MANUAL Y COLISIONES -----
+        this.moveArrows(deltaSeconds);
+        this.moveCrocodiles(deltaSeconds);
+        this.checkCollisions();
+
+        // ----- LÓGICA DE JUEGO Y LIMPIEZA -----
+        this.checkGameConditions();
+        this.cleanupObjects();
     }
 
     // ---------------------------------------------------------
-    //     DISPARAR FLECHAS (con cooldown)
+    //  MÉTODOS DE LÓGICA DE JUEGO
     // ---------------------------------------------------------
-    shootArrow() {
-        this.canShoot = false;
+
+    /**
+     * Dibuja una línea recta predictiva (preview lineal).
+     */
+    drawTrajectory() {
         this.trajectory.clear();
+        this.trajectory.lineStyle(2, 0xffffff, 0.8);
 
         const angleRad = Phaser.Math.DegToRad(this.player.angle);
+        const startX = this.player.x + 25;
+        const startY = this.player.y;
 
-        let arrow = this.physics.add.image(this.player.x + 25, this.player.y, 'flecha');
-        arrow.setSize (20,6);
-        arrow.setDisplaySize(20, 6);
-        arrow.setTint(0xffffff);
+        // Usamos una longitud grande para que la línea llegue al borde
+        const LINE_LENGTH = 250;
 
-        arrow.setVelocity(
-            Math.cos(angleRad) * this.SHOOT_SPEED,
-            Math.sin(angleRad) * this.SHOOT_SPEED * -1
-        );
+        const endX = startX + Math.cos(angleRad) * LINE_LENGTH;
+        const endY = startY + Math.sin(angleRad) * LINE_LENGTH * 1;
 
+        this.trajectory.strokeLineShape(new Phaser.Geom.Line(startX, startY, endX, endY));
+    }
 
+    /**
+     * Crea y dispara una flecha en línea recta.
+     */
+    shootArrow() {
+        this.canShoot = false;
 
-        arrow.rotation = angleRad;
+        const angleRad = Phaser.Math.DegToRad(this.player.angle);
+        const startY = this.player.y;
+
+        let arrow = this.add.image(this.player.x + 25, startY, 'flechaCroco');
+        arrow.setScale(0.08);
+        arrow.setRotation(angleRad);
+
+        // Calcular los componentes X e Y de la velocidad
+        arrow.speedX = Math.cos(angleRad) * this.SHOOT_SPEED;
+        arrow.speedY = Math.sin(angleRad) * this.SHOOT_SPEED * 1; // Y negativa para que suba con ángulo negativo
 
         this.arrows.add(arrow);
 
@@ -122,47 +166,149 @@ export default class CrocoShoot extends Phaser.Scene {
         });
     }
 
-    // ---------------------------------------------------------
-    //     TRAJECTORIA PREDICTIVA (preview parabólico)
-    // ---------------------------------------------------------
-    drawTrajectory() {
-        this.trajectory.clear();
-        this.trajectory.lineStyle(2, 0xffffff, 0.8);
+    /**
+     * Mueve las flechas manualmente según su velocidad (recta).
+     * @param {number} deltaSeconds - Tiempo transcurrido desde el último frame en segundos.
+     */
+    moveArrows(deltaSeconds) {
+        this.arrows.children.each(arrow => {
+            arrow.x += arrow.speedX * deltaSeconds;
+            arrow.y += arrow.speedY * deltaSeconds;
+        });
+    }
 
-        const angleRad = Phaser.Math.DegToRad(this.player.angle);
-        const speed = this.SHOOT_SPEED;
-        const gravity = this.GRAVITY;
+    /**
+     * Genera un nuevo cocodrilo y establece su velocidad.
+     */
+    spawnCrocodile() {
+        if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
+            this.crocodileSpawnTimer.paused = true;
+            return;
+        }
 
-        const startX = this.player.x + 25;
-        const startY = this.player.y;
+        const y = Phaser.Math.Between(100, this.game.config.height - 100);
+        const croco = this.add.image(this.game.config.width + 50, y, 'sacamuelas');
+        croco.setScale(0.7);
 
-        let prevX = startX;
-        let prevY = startY;
+        croco.speedX = this.CROCO_SPEED;
 
-        const STEPS = 40;
-        const TIME_STEP = 0.05;
+        this.crocodiles.add(croco);
 
-        for (let t = 0; t < STEPS; t++) {
-            const time = t * TIME_STEP;
+        this.spawnedCrocodilesCount++;
+    }
 
-            const x = startX + Math.cos(angleRad) * speed * time;
-            const y = startY + Math.sin(angleRad) * speed * time + 0.5 * gravity * time * time;
+    /**
+     * Mueve los cocodrilos manualmente hacia la izquierda.
+     * @param {number} deltaSeconds - Tiempo transcurrido desde el último frame en segundos.
+     */
+    moveCrocodiles(deltaSeconds) {
+        this.crocodiles.children.each(croco => {
+            croco.x += croco.speedX * deltaSeconds;
+        });
+    }
 
-            // si se sale de pantalla, paramos
-            if (x < 0 || x > this.game.config.width || y > this.game.config.height) break;
+    /**
+     * Verifica colisiones entre flechas y cocodrilos usando geometría (bounding boxes).
+     */
+    checkCollisions() {
+        this.arrows.children.each(arrow => {
+            this.crocodiles.children.each(crocodile => {
+                if (arrow.active && crocodile.active) {
+                    const arrowBounds = arrow.getBounds();
+                    const crocoBounds = crocodile.getBounds();
 
-            this.trajectory.strokeLineShape(new Phaser.Geom.Line(prevX, prevY, x, y));
+                    if (Phaser.Geom.Intersects.RectangleToRectangle(arrowBounds, crocoBounds)) {
+                        this.hitCrocodile(arrow, crocodile);
+                    }
+                }
+            });
+        });
+    }
 
-            prevX = x;
-            prevY = y;
+    /**
+     * Maneja la colisión entre una flecha y un cocodrilo.
+     * @param {Phaser.GameObjects.GameObject} arrow 
+     * @param {Phaser.GameObjects.GameObject} crocodile 
+     */
+    hitCrocodile(arrow, crocodile) {
+        if (this.gameIsOver) return;
+
+        arrow.destroy();
+        crocodile.destroy();
+
+        this.killedCrocodilesCount++;
+
+        this.checkGameConditions();
+    }
+
+    /**
+     * Elimina objetos que salen de la pantalla y cuenta los escapes de cocodrilos.
+     */
+    cleanupObjects() {
+        // Flechas fuera de la pantalla
+        this.arrows.children.each(arrow => {
+            if (arrow.x > this.game.config.width + 50 || arrow.x < -50 || arrow.y > this.game.config.height + 50 || arrow.y < -50) {
+                arrow.destroy();
+            }
+        });
+
+        // Cocodrilos que escapan por la izquierda
+        this.crocodiles.children.each(croco => {
+            if (croco.x < -100 && croco.active) {
+                croco.destroy();
+                this.escapesCount++;
+                this.livesText.setText(this.getLivesText());
+
+                this.checkGameConditions();
+            }
+        });
+    }
+
+    /**
+     * Genera el texto del HUD de vidas/escapes.
+     * @returns {string} Texto formateado.
+     */
+    getLivesText() {
+        const remaining = this.maxEscapes - this.escapesCount;
+        return `VIDAS: ${remaining}`;
+    }
+
+    /**
+     * Verifica las condiciones de victoria y derrota.
+     */
+    checkGameConditions() {
+        if (this.gameIsOver) return;
+
+        // --- DERROTA (Game Over) ---
+        if (this.escapesCount >= this.maxEscapes) {
+            this.gameIsOver = true;
+            this.endGame('¡HAS PERDIDO! Demasiados cocodrilos escaparon.');
+            return;
+        }
+
+        // --- VICTORIA ---
+        // Se gana si has matado el total requerido Y todos han sido generados, 
+        // Y no queda ninguno activo en pantalla.
+        if (this.killedCrocodilesCount >= this.totalCrocodilesToKill && this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
+            if (this.crocodiles.countActive(true) === 0) {
+                this.gameIsOver = true;
+                this.endGame('¡HAS GANADO! Cocodrilos neutralizados.');
+            }
         }
     }
 
-    spawnCrocodile() {
-        const y = Phaser.Math.Between(100, this.game.config.height - 100);
-        const croco = this.crocodiles.create(this.game.config.width - 50, y, null);
-        croco.setDisplaySize(40, 40);
-        croco.setTint(0x00ff00);
-        croco.setVelocityX(-100);
+    /**
+     * Finaliza el juego y muestra un mensaje.
+     * @param {string} message - Mensaje a mostrar.
+     */
+    endGame(message) {
+        this.crocodileSpawnTimer.paused = true;
+
+        this.add.text(this.centerX, this.centerY, message, {
+            fontSize: '48px',
+            fill: '#FF0000',
+            backgroundColor: '#000',
+            padding: { x: 20, y: 10 }
+        }).setOrigin(0.5).setDepth(10); // setDepth alto para asegurar que se vea
     }
 }
