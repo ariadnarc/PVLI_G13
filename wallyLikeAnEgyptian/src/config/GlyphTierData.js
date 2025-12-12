@@ -1,42 +1,54 @@
-/**
- * JSDOC
- * YA
- * A
- */
-
 import { DIFICULTADES } from './MinigameData.js'; //esto remplaza al rewards by difficulty que ya estaba hecho en el minigamedata emberdad
 
 export default class GlyphTierData {
-  
-  // === DEFINICIÓN DE TIER DATA ===
+
   static TIER_DATA = [
     { tier: "B", img: "ankh" },
     { tier: "A", img: "ba" },
     { tier: "S", img: "uraeus" },
-  ]
+  ];
 
-
-  // === COSTE PARA DESBLOQUEAR DIFICULTADES (si ya se ha jugado antes) ===
-  static unlockCosts = {
-    MEDIA: {A: 1, B: 3},
-    DIFICIL: {S: 1, A: 2, B: 5 }
+  // === PROBABILIDADES POR DIFICULTAD ===
+  static rewardsByDifficulty = {
+    easy: {
+      probabilities: { B: 0.8, A: 0.2, S: 0.0 },
+      description: 'Desafío básico — puedes obtener jeroglíficos comunes o raros.'
+    },
+    medium: {
+      probabilities: { B: 0.5, A: 0.4, S: 0.1 },
+      description: 'Desafío intermedio — mayor posibilidad de jeroglíficos de alto valor.'
+    },
+    hard: {
+      probabilities: { B: 0.2, A: 0.5, S: 0.3 },
+      description: 'Desafío supremo — más riesgo, pero también mayor recompensa.'
+    }
   };
 
-   // === METODO: Comprobar si el jugador puede acceder a una dificultad ===
+  // === RECOMPENSAS BASE POR DIFICULTAD ===
+  static baseRewards = {
+    easy:  { B: 2 },
+    medium:{ A: 1, B: 1 },
+    hard:  { A: 1, B: 2 }
+  };
+
+  // === COSTES PARA DESBLOQUEAR DIFICULTAD ===
+  static unlockCosts = {
+    medium: { A: 1, B: 3 },
+    hard:   { S: 1, A: 2, B: 5 }
+  };
+
+  // === MÉTODO: comprobar si tiene recursos para desbloquear ===
   static canUnlockDifficulty(playerInventory, difficulty) {
-    // Si es facil, siempre se puede
-    if (difficulty === 'FACIL') return true;
+    if (difficulty === 'easy') return true;
 
     const cost = this.unlockCosts[difficulty];
-    if (!cost) return true; // si no hay coste definido, se puede
+    if (!cost) return true;
 
-    // Revisa inventario del jugador
-    const hasEnough =
+    return (
       (playerInventory.S >= (cost.S || Infinity)) ||
       (playerInventory.A >= (cost.A || Infinity)) ||
-      (playerInventory.B >= (cost.B || Infinity));
-
-    return hasEnough;
+      (playerInventory.B >= (cost.B || Infinity))
+    );
   }
 
   // === METODO: Aplicar coste al desbloquear dificultad ===
@@ -44,23 +56,22 @@ export default class GlyphTierData {
     const cost = this.unlockCosts[difficulty];
     if (!cost) return;
 
-    // Restamos jeroglificos segun lo que tenga el jugador
-    if (playerInventory.S >= (cost.S || Infinity)) {
-      playerInventory.S -= cost.S;
-    } else if (playerInventory.A >= (cost.A || Infinity)) {
-      playerInventory.A -= cost.A;
-    } else if (playerInventory.B >= (cost.B || Infinity)) {
-      playerInventory.B -= cost.B;
-    }
+    if (playerInventory.S >= (cost.S || Infinity)) playerInventory.S -= cost.S;
+    else if (playerInventory.A >= (cost.A || Infinity)) playerInventory.A -= cost.A;
+    else if (playerInventory.B >= (cost.B || Infinity)) playerInventory.B -= cost.B;
   }
 
-  // === MÉTODO: Dar jeroglífico al jugador tras ganar ===
-  static grantGlyphReward(playerInventory, difficulty) {
-    const tier = this.getRewardTier(difficulty);
-    playerInventory[tier] = (playerInventory[tier] || 0) + 1;
-    return tier;
+  // -------------------------------
+  //      NUEVA LÓGICA DE RECOMPENSAS
+  // -------------------------------
+
+  // Recompensas aleatorias
+  static getRandomReward(difficulty) {
+    const probabilities = this.rewardsByDifficulty[difficulty].probabilities;
+    return this.getRewardTier(probabilities);
   }
 
+  // Recompensas aleatorias múltiples
   static getMultipleRewards(difficulty, count) {
     // 1. Normalizamos (FACIL, MEDIA, DIFICIL)
     const diffKey = difficulty.toUpperCase();
@@ -92,20 +103,27 @@ export default class GlyphTierData {
     return rewards;
   }
 
-static getRewardTier(probabilities) {
-  const rand = Math.random();
-  let cumulative = 0;
-  for (const [tier, prob] of Object.entries(probabilities)) {
-    cumulative += prob;
-    if (rand <= cumulative) return tier;
+  // BONUS por perfect score
+  static getBonusReward(difficulty) {
+    const tier = this.getRandomReward(difficulty);
+    return { [tier]: 1 };
   }
-  return 'B'; // fallback
-}
 
-static difficultyMap = {
-  FACIL: 'easy',
-  MEDIA: 'medium',
-  DIFICIL: 'hard'
-};
+  static difficultyMap = {
+    FACIL: 'easy',
+    MEDIA: 'medium',
+    DIFICIL: 'hard'
+  };
 
+  static getRewardTier(probabilities) {
+    const rand = Math.random();
+    let cumulative = 0;
+
+    for (const [tier, prob] of Object.entries(probabilities)) {
+      cumulative += prob;
+      if (rand <= cumulative) return tier;
+    }
+
+    return "B"; // seguridad por flotantes
+  }
 }
