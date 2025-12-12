@@ -33,7 +33,7 @@ export const cofresData = [
         posInicial: { x: 1300, y: 730 },
         minijuego: "LockPick"
   },
-   {
+  {
         posInicial: { x: 1110, y: 1300 },
         minijuego: "Undertale"
   }

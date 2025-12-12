@@ -285,70 +285,76 @@ export default class CrocoShoot extends Phaser.Scene {
     checkGameConditions() {
         if (this.gameIsOver) return;
 
-        // --- DERROTA (Game Over) ---
+        // DERROTA inmediata por demasiados escapes
         if (this.escapesCount >= this.maxEscapes) {
-            this.gameIsOver = true;
-            this.loseGame();
-            return;
+        this.gameIsOver = true;
+        this._endAsDefeat();
+        return;
         }
 
-        // --- VICTORIA ---
-        // Se gana si has matado el total requerido Y todos han sido generados, 
-        // Y no queda ninguno activo en pantalla.
-        if (this.killedCrocodilesCount >= this.totalCrocodilesToKill && this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
-            if (this.crocodiles.countActive(true) === 0) {
-                this.gameIsOver = true;
-                this.winGame();
-            }
+        // Si ya generamos todos los cocodrilos y no queda ninguno activo en pantalla,
+        // significa que la ronda ha terminado (todos muertos o escaparon).
+        // Entonces decidimos victoria/derrota segun kills.
+        if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill && this.crocodiles.countActive(true) === 0) {
+        this.gameIsOver = true;
+
+        // Si mataste al menos la cantidad objetivo => victoria, sino derrota.
+        if (this.killedCrocodilesCount >= this.totalCrocodilesToKill) {
+            this._endAsVictory();
+        } else {
+            this._endAsDefeat();
         }
+      return;
     }
+
+    // Nota: mantenemos la condicion anterior (si matas el 'total' antes de que se generen todos)
+    // por compatibilidad: si por alguna razon killed >= total y spawned >= total (ya cubierto arriba),
+    // no llega aquí.
+  }
+    
 
     // ========== VICTORIA ==========
-    winGame() {
-        this.physics.pause(); // Detiene todas las físicas del juego (por si aca q no hay, pero por si aca)
-        if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false); // Elimina timer
+    _endAsVictory() {
+        if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
+        this.physics.pause();
 
-        //lanza el PostMinigameMenu
+        // Lanzar menu de resultado
         this.scene.launch('PostMinigameMenu', {
-            result: 'victory',
-            difficulty: this.difficulty,
-            minijuego: 'CrocoShoot',
-            options: {
-                "Volver al mapa": () => {
-                    this.scene.stop('PostMinigameMenu');
-                    this.scene.start('MapScene');
-                }
+        result: 'victory',
+        difficulty: this.difficulty,
+        minijuego: 'CrocoShoot',
+        options: {
+            "Salir": () => {
+            this.scene.stop('PostMinigameMenu');
+            this.scene.start('MapScene');
             }
+        }
         });
 
-        this.scene.stop(); //detiene la escena del minijuego
-    }
+    this.scene.stop();
+  }
 
     // ========== DERROTA ==========
-    loseGame() {
-        this.physics.pause(); // Detiene todas las fisicas del juego
+    _endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
-
-        //lanzamos PostMinigameMenu con resultado defeat
+        this.physics.pause();
+    
         this.scene.launch('PostMinigameMenu', {
-            result: 'defeat',
-            difficulty: this.difficulty,
-            minijuego: 'CrocoShoot',
-            options: {
-                "Reintentar": () => {
-                    this.scene.stop('PostMinigameMenu');
-                    this.scene.stop();
-                    this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
-                },
-                "Salir": () => {
-                    this.scene.stop('PostMinigameMenu');
-                    this.scene.stop();
-                    this.scene.start('MapScene');
-                }
+        result: 'defeat',
+        difficulty: this.difficulty,
+        minijuego: 'CrocoShoot',
+        options: {
+            "Reintentar": () => {
+            this.scene.stop('PostMinigameMenu');
+            this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
+            },
+            "Salir": () => {
+            this.scene.stop('PostMinigameMenu');
+            this.scene.start('MapScene');
             }
+        }
         });
 
-        //detenemos la escena actual
-        this.scene.stop();
-    }
+    this.scene.stop();
+  }
 }
