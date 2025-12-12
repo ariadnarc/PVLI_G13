@@ -28,6 +28,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('fondoCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/fondoCroco.jpg');
     this.load.image('flechaCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/flechaCroco.png');
     this.load.image('sacamuelas', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/sacamuelas.png');
+    this.load.image('balista', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/Ballista.png');
     // FindLuigi (PLACEHOLDER)
     this.load.image('npc1', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoFinal/npc1.png');
     this.load.image('npc2', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoFinal/npc2.png');

@@ -49,8 +49,8 @@ export default class CrocoShoot extends Phaser.Scene {
     }
 
     create() {
-        this.centerX = this.cameras.main.width / 2;
-        this.centerY = this.cameras.main.height / 2;
+        const centerX = this.cameras.main.width / 2;
+        const centerY = this.cameras.main.height / 2;
 
         // FONDO
         this.fondo = this.add.image(0, 0, 'fondoCroco').setOrigin(0);
@@ -64,7 +64,9 @@ export default class CrocoShoot extends Phaser.Scene {
         });
 
         // JUGADOR
-        this.player = this.add.rectangle(80, 450, 30, 60, 0x0088ff);
+        this.player = this.add.image(80, 450, 'balista');
+        this.player.setOrigin(0.5, 0.5); // importante para que rote desde el centro
+        this.player.setScale(0.05);       
         this.player.angle = 0;
 
         // GRÁFICOS Y GRUPOS
@@ -82,9 +84,10 @@ export default class CrocoShoot extends Phaser.Scene {
         });
 
         // HUD
-        this.livesText = this.add.text(16, 16, this.getLivesText(), {
-            fontSize: '24px',
-            fill: '#FFF',
+        this.livesText = this.add.text(centerX- 50, 16, this.getLivesText(), {
+            fontFamily: 'Filgaia',
+            color: '#382f23ff',
+            fontSize: '32px',
         }).setScrollFactor(0);
     }
 
