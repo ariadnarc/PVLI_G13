@@ -1,8 +1,0 @@
-=========REGISTRO DE BUGS(tachar cuando se arreglen)=============
-
--Escena de victoria: no deja volver al mapa 
--Player: cuando terminas un juego vuelves al punto de spawn del 
-principio en vez de tu última posición
--Escena victoria: no lleva a ningun sitio
-- Cofre fuera del mapa
-- Cofre en la sala inicial que no furula
