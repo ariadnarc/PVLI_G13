@@ -22,7 +22,7 @@ export const cofresData = [
         minijuego: "Undertale"
   },
   {
-        posInicial: { x: 0, y: 700 },
+        posInicial: { x: 820, y: 300 },
         minijuego: "SlideBar"
   },
   {
