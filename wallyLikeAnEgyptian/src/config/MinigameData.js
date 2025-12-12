@@ -10,6 +10,7 @@ export const NOMBRES_MINIJUEGOS = {
   PuzzleLights: "Memoria del Templo",
   LockPick: "Cerrajero Ancestral",
   CrocoShoot: "Cazador de Reptiles",
+  FinalGame: "Buscando a Luigi"
 }
 
 export const DIFICULTADES = {
