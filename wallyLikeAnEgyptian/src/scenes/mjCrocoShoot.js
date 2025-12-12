@@ -21,13 +21,13 @@ export default class CrocoShoot extends Phaser.Scene {
      * @property {number} spawnedCrocodilesCount - Cocodrilos generados hasta ahora.
      */
     init(data = {}) {
-        const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
         this.isMinigame = true;
         // Guardamos el minijuego
         this.minijuego = data.minijuego;
         // Dificultad elegida
         this.difficulty = data.dificultad;
-
+        
+        const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
         // Var.
         this.escapesCount = 0;
         this.killedCrocodilesCount = 0;
