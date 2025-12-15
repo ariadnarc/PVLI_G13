@@ -19,7 +19,7 @@ export default class Undertale extends Phaser.Scene {
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
 
-    // =================== FONDO ===================
+    // ================= FONDOS =================
     this.add.image(cx, cy, 'paredBG');
     const arenaBg = this.add.image(cx, cy, 'fondoUndertale');
     this.gameWidth = 400;
@@ -36,39 +36,48 @@ export default class Undertale extends Phaser.Scene {
       this.gameHeight
     );
 
-    // =================== INPUT / PLAYER ===================
+    // ================= INPUT / PLAYER =================
     this.inputManager = new InputManager(this);
     this.inputManager.configure({ cursors: true });
 
-    this.playerManager = new PlayerManager(this.inputManager, this, playerInitialData);
+    this.playerManager = new PlayerManager(
+      this.inputManager,
+      this,
+      playerInitialData
+    );
     this.player = this.playerManager.getSprite();
     this.player.setPosition(cx, cy);
     this.player.setCollideWorldBounds(true);
 
-    // =================== PROYECTILES ===================
+    // ================= PROYECTILES =================
     this.bullets = this.physics.add.group();
 
-    // =================== VIDA ===================
+    // ================= VIDA =================
     this.health = config.vidas;
     this.maxHealth = this.health;
     this.isInvulnerable = false;
     this.invulnerabilityDuration = 1500;
 
     this.barraVidabg = this.add.rectangle(cx, 40, 120, 20, 0x333333);
-    this.barraVida = this.add.rectangle(cx - 60, 40, 120, 20, 0xff4444)
+    this.barraVida = this.add
+      .rectangle(cx - 60, 40, 120, 20, 0xff4444)
       .setOrigin(0, 0.5);
 
-    this.healthText = this.add.text(cx, 70, `Vida: ${this.health}`, {
-      fontSize: '16px',
-      color: '#ffffff'
-    }).setOrigin(0.5);
+    this.healthText = this.add
+      .text(cx, 70, `Vida: ${this.health}`, {
+        fontSize: '16px',
+        color: '#ffffff'
+      })
+      .setOrigin(0.5);
 
-    // =================== TIMER ===================
+    // ================= TIMER =================
     this.remainingTime = 30;
-    this.timerText = this.add.text(cx, 100, `SOBREVIVE: ${this.remainingTime}`, {
-      fontSize: '18px',
-      color: '#ffff66'
-    }).setOrigin(0.5);
+    this.timerText = this.add
+      .text(cx, 100, `SOBREVIVE: ${this.remainingTime}`, {
+        fontSize: '18px',
+        color: '#ffff66'
+      })
+      .setOrigin(0.5);
 
     this.timerEvent = this.time.addEvent({
       delay: 1000,
@@ -77,7 +86,7 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    // =================== ANIMACIONES ===================
+    // ================= ANIMACIONES =================
     this.anims.create({
       key: 'giragira',
       frames: this.anims.generateFrameNumbers('fase2obs', {
@@ -88,7 +97,7 @@ export default class Undertale extends Phaser.Scene {
       repeat: -1
     });
 
-    // =================== COLISIONES ===================
+    // ================= COLISIONES =================
     this.physics.add.overlap(
       this.player,
       this.bullets,
@@ -97,7 +106,7 @@ export default class Undertale extends Phaser.Scene {
       this
     );
 
-    // =================== FASES ===================
+    // ================= FASES =================
     this.attackPhase = 1;
     this.changePhase(1);
 
@@ -112,7 +121,8 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    this.sound.play('minigame-music');
+    this.bgMusic = this.sound.add('minigame-music');
+    this.bgMusic.play();
   }
 
   update() {
@@ -120,12 +130,15 @@ export default class Undertale extends Phaser.Scene {
     this.playerManager.update();
   }
 
-  // =====================================================
-  // =============== FACTORY DE PROYECTILES ===============
-  // =====================================================
-  spawnProjectile({ x, y, texture, anim = null, hitbox }) {
+  // =================================================
+  // ============== FACTORY PROYECTILES ==============
+  // =================================================
+  spawnProjectile({ x, y, texture, anim = null, hitbox, scale = 1, rotation = 0 }) {
     const proj = this.physics.add.sprite(x, y, texture);
     this.bullets.add(proj);
+
+    proj.setScale(scale);
+    proj.setRotation(rotation);
 
     if (hitbox) {
       proj.body.setSize(hitbox.w, hitbox.h, true);
@@ -138,9 +151,7 @@ export default class Undertale extends Phaser.Scene {
     return proj;
   }
 
-  // =====================================================
-  // ================== FASE 1 ===========================
-  // =====================================================
+  // ================= FASE 1 =================
   spawnDagasAttack() {
     const cam = this.cameras.main;
     const fromLeft = Phaser.Math.Between(0, 1) === 0;
@@ -149,11 +160,17 @@ export default class Undertale extends Phaser.Scene {
       ? cam.centerX - 300
       : cam.centerX + 300;
 
+    const rotation = fromLeft
+      ? Phaser.Math.DegToRad(90)
+      : Phaser.Math.DegToRad(-90);
+
     const proj = this.spawnProjectile({
       x: spawnX,
       y: this.player.y,
       texture: 'fase1obs',
-      hitbox: { w: 60, h: 16 }
+      scale: 2,
+      rotation,
+      hitbox: { w: 30, h: 8 }
     });
 
     const retreatX = fromLeft ? spawnX - 30 : spawnX + 30;
@@ -163,16 +180,13 @@ export default class Undertale extends Phaser.Scene {
       x: retreatX,
       duration: 400,
       onComplete: () => {
-        const speed = fromLeft ? 600 : -600;
-        proj.body.setVelocityX(speed);
+        proj.body.setVelocityX(fromLeft ? 600 : -600);
         this.time.delayedCall(3000, () => proj.destroy());
       }
     });
   }
 
-  // =====================================================
-  // ================== FASE 2 ===========================
-  // =====================================================
+  // ================= FASE 2 =================
   spawnCircleWave() {
     const cx = this.player.x;
     const cy = this.player.y;
@@ -188,8 +202,9 @@ export default class Undertale extends Phaser.Scene {
         x: cx + Math.cos(angle) * radius,
         y: cy + Math.sin(angle) * radius,
         texture: 'fase2obs',
-        anim: 'girogiro',
-        hitbox: { w: 18, h: 18 }
+        anim: 'giragira',
+        hitbox: { w: 35, h: 35 },
+        scale: 0.6,
       });
 
       proj.body.setVelocity(0, 0);
@@ -204,9 +219,7 @@ export default class Undertale extends Phaser.Scene {
     }
   }
 
-  // =====================================================
-  // ================== FASE 3 ===========================
-  // =====================================================
+  // ================= FASE 3 =================
   spawnSweep() {
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
@@ -232,24 +245,52 @@ export default class Undertale extends Phaser.Scene {
         vy = y < cy ? 120 : -120;
       }
 
+      const rotation = horizontal
+        ? Phaser.Math.DegToRad(90)
+        : Phaser.Math.DegToRad(0);
+
       const proj = this.spawnProjectile({
         x,
         y,
         texture: 'fase3obs',
-        hitbox: { w: 20, h: 20 }
+        scale: 1,
+        rotation,
       });
 
       proj.body.setVelocity(vx, vy);
+      if (horizontal) {
+        // --- BARRIDO HORIZONTAL ---
+        if (vx < 0) {
+          // derecha → izquierda
+          proj.setRotation(Phaser.Math.DegToRad(-90));
+        } else {
+          // izquierda → derecha
+          proj.setRotation(Phaser.Math.DegToRad(90));
+        }
+
+        proj.body.setSize(64, 10, true);
+
+      } else {
+        if (vy > 0) {
+          // arriba > abajo
+          proj.setRotation(Phaser.Math.DegToRad(180));
+        } else {
+          // abajo > arriba
+          proj.setRotation(Phaser.Math.DegToRad(0));
+        }
+
+        proj.body.setSize(10, 64, true);
+      }
+
       this.time.delayedCall(4000, () => proj.destroy());
     }
   }
 
-  // =====================================================
+  // ================= CAMBIO FASE =================
   changePhase(phase) {
     if (this.bulletTimer) this.bulletTimer.remove(false);
 
-    let callback;
-    let delay;
+    let callback, delay;
 
     switch (phase) {
       case 1:
@@ -274,7 +315,40 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  // =====================================================
+  // ================= WARNING VISUAL =================
+  showPhaseWarning(phase) {
+    const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
+
+    const text = this.add
+      .text(cx, cy, `¡FASE ${phase}!`, {
+        fontSize: '28px',
+        color: '#ff3333',
+        fontStyle: 'bold',
+        stroke: '#ffffff',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5);
+
+    this.tweens.add({
+      targets: text,
+      scale: { from: 0.5, to: 1.2 },
+      alpha: { from: 0, to: 1 },
+      duration: 300,
+      yoyo: true,
+      hold: 300,
+      onComplete: () => {
+        this.tweens.add({
+          targets: text,
+          alpha: 0,
+          duration: 500,
+          onComplete: () => text.destroy()
+        });
+      }
+    });
+  }
+
+  // ================= COLISIÓN =================
   hitPlayer(player, proj) {
     if (this.isInvulnerable) return;
 
@@ -310,67 +384,67 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  updateTimer() {
-    if (this.health <= 0) return;
-    this.remainingTime--;
-    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`);
-    if (this.remainingTime <= 0) this.winGame();
-  }
-
-
-
-  // ========== VICTORIA ==========
+  // ================= VICTORIA =================
   winGame() {
-    this.sound.stop();
+    this.bgMusic.stop();
+    this.physics.pause();
 
-    this.physics.pause(); // Detiene todas las físicas del juego
-    if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
-    if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
+    if (this.bulletTimer) this.bulletTimer.remove(false);
+    if (this.timerEvent) this.timerEvent.remove(false);
 
-    //lanza el PostMinigameMenu
     this.scene.launch('PostMinigameMenu', {
       result: 'victory',
       difficulty: this.difficulty,
       minijuego: 'Undertale',
       options: {
-        "Volver al mapa": () => {
+        'Volver al mapa': () => {
           this.scene.stop('PostMinigameMenu');
           this.scene.start('MapScene');
         }
       }
     });
 
-    this.scene.stop(); //detiene la escena del minijuego
+    this.scene.stop();
   }
 
-  // ========== DERROTA ==========
+  // ================= DERROTA =================
   loseGame() {
-    this.sound.stop();
+    this.bgMusic.stop();
+    this.physics.pause();
 
-    this.physics.pause(); // Detiene todas las fisicas del juego
     if (this.bulletTimer) this.bulletTimer.remove(false);
     if (this.timerEvent) this.timerEvent.remove(false);
 
-    //lanzamos PostMinigameMenu con resultado defeat
     this.scene.launch('PostMinigameMenu', {
       result: 'defeat',
       difficulty: this.difficulty,
       minijuego: 'Undertale',
       options: {
-        "Reintentar": () => {
+        Reintentar: () => {
           this.scene.stop('PostMinigameMenu');
-          this.scene.stop();
-          this.scene.start('Undertale', { minijuego: this.minijuego, dificultad: this.difficulty });
+          this.scene.restart({
+            minijuego: this.minijuego,
+            dificultad: this.difficulty
+          });
         },
-        "Salir": () => {
+        Salir: () => {
           this.scene.stop('PostMinigameMenu');
-          this.scene.stop();
           this.scene.start('MapScene');
         }
       }
     });
 
-    //detenemos la escena actual
     this.scene.stop();
+  }
+
+  updateTimer() {
+    if (this.health <= 0) return;
+
+    this.remainingTime--;
+    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`);
+
+    if (this.remainingTime <= 0) {
+      this.winGame();
+    }
   }
 }
