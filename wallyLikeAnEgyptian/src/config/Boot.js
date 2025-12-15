@@ -17,14 +17,20 @@ export default class Boot extends Phaser.Scene {
     // SPRITES DIÁLOGO, PROPS MAPA...
 
     // MINIJUEGOS
-    //  Lockpick (PLACEHOLDER)
+    // Lockpick
     this.load.image('lock_fondo', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_fondo.png');
     this.load.image('lock_ring', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_ring.png');
     this.load.image('lock_lock', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lock.png');
     this.load.image('lock_lockpick', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoLock/lock_lockpick.png');
-    // Undertale (PLACEHOLDER)
+    // Undertale
     this.load.image('fondoUndertale', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoUndertale/fondoUndertale.png');
-    // CrocoShoot (PLACEHOLDER)
+    this.load.image('fase1obs', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoUndertale/dagaUndertale.png');
+    this.load.spritesheet('fase2obs', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoUndertale/chakramUndertale.png', {
+      frameWidth: 64,
+      frameHeight: 64
+    });
+    this.load.image('fase3obs', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoUndertale/lanzaUndertale.png');
+    // CrocoShoot
     this.load.image('fondoCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/fondoCroco.jpg');
     this.load.image('flechaCroco', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/flechaCroco.png');
     this.load.image('sacamuelas', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoCroco/sacamuelas.png');
@@ -35,7 +41,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('npc3', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoFinal/npc3.png');
     this.load.image('wallyMinijuego', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoFinal/wallyMinijuego.png');
     this.load.image('fondoFinal', 'wallyLikeAnEgyptian/assets/minijuegos/minijuegoFinal/fondoFinal.jpg');
-    
+
     // FONDOS/MENUS
     this.load.image('mainmenuBG', 'wallyLikeAnEgyptian/assets/ui/mainmenuBG.jpg');
     this.load.image('selectdiffBG', 'wallyLikeAnEgyptian/assets/ui/selectdiffBG.jpg');

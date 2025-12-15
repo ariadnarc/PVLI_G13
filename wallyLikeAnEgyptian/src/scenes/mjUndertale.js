@@ -79,10 +79,10 @@ export default class Undertale extends Phaser.Scene {
 
     // =================== ANIMACIONES ===================
     this.anims.create({
-      key: 'shield-spin',
-      frames: this.anims.generateFrameNumbers('shieldSheet', {
+      key: 'giragira',
+      frames: this.anims.generateFrameNumbers('fase2obs', {
         start: 0,
-        end: 7
+        end: 1
       }),
       frameRate: 12,
       repeat: -1
@@ -152,7 +152,7 @@ export default class Undertale extends Phaser.Scene {
     const proj = this.spawnProjectile({
       x: spawnX,
       y: this.player.y,
-      texture: 'daggerSprite',
+      texture: 'fase1obs',
       hitbox: { w: 60, h: 16 }
     });
 
@@ -187,8 +187,8 @@ export default class Undertale extends Phaser.Scene {
       const proj = this.spawnProjectile({
         x: cx + Math.cos(angle) * radius,
         y: cy + Math.sin(angle) * radius,
-        texture: 'shieldSheet',
-        anim: 'shield-spin',
+        texture: 'fase2obs',
+        anim: 'girogiro',
         hitbox: { w: 18, h: 18 }
       });
 
@@ -235,7 +235,7 @@ export default class Undertale extends Phaser.Scene {
       const proj = this.spawnProjectile({
         x,
         y,
-        texture: 'swordSprite',
+        texture: 'fase3obs',
         hitbox: { w: 20, h: 20 }
       });
 
