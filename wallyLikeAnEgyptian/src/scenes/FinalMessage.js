@@ -49,7 +49,7 @@ export default class FinalMessage extends Phaser.Scene {
 
             this.scene.stop(); // Cierra esta escena
             this.scene.start(escena_final);
-            resetPlayerGlyphs(); // resetea glyphs
+            //resetPlayerGlyphs(); // resetea glyphs
         });
     }
 }

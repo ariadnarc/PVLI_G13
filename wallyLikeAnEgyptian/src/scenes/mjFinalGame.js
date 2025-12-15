@@ -16,6 +16,7 @@ export default class FindLuigi extends Phaser.Scene {
      * @property {number} currentPhase - La fase actual (1, 2, 3).
      * @property {number} score - Contador de Wallys encontrados (reinicia por fase).
      * @property {number} maxPhases - Número total de fases.
+     * @property {number} globalSpriteScale - Tamaño de los sprites (inicial)
      * @property {boolean} gameIsOver - Indica si el juego ha terminado.
      * @property {Phaser.Time.TimerEvent} globalTimer - Temporizador principal del juego (30s).
      * @property {Array<string>} distractorKeys - Claves de los sprites de personajes distractores (los "faroles").
@@ -34,6 +35,7 @@ export default class FindLuigi extends Phaser.Scene {
         this.score = 0;
         this.maxPhases = 3;
         this.gameIsOver = false;
+        this.globalSpriteScale = 6;
 
         this.phaseConfigs = { // Configuración de fases
             // FASE 1:
@@ -88,8 +90,16 @@ export default class FindLuigi extends Phaser.Scene {
         this.bgMusic.play();
 
         // HUD
-        this.phaseText = this.add.text(10, 10, 'Fase: 1/3', { fontSize: '30px', fill: '#FFF' })
-        this.timerText = this.add.text(this.cameras.main.width - 200, 10, 'Tiempo: 30s', { fontSize: '30px', fill: '#FFF' })
+        this.phaseText = this.add.text(10, 10, 'Fase: 1/3', {
+            fontFamily: 'Filgaia',
+            color: '#382f23ff',
+            fontSize: '32px',
+        });
+        this.timerText = this.add.text(this.cameras.main.width - 270, 10, 'Tiempo: 30s', {
+            fontFamily: 'Filgaia',
+            color: '#382f23ff',
+            fontSize: '32px',
+        });
 
         this.crowdGroup = this.add.group(); // Los faroles
 
@@ -178,13 +188,13 @@ export default class FindLuigi extends Phaser.Scene {
                 let iswally = false;
 
                 if (count === targetIndex) {
-                    charKey = 'wally';
+                    charKey = 'wallyMinijuego';
                     iswally = true;
                 } else {
                     charKey = Phaser.Utils.Array.GetRandom(this.distractorKeys);
                 }
 
-                const char = this.add.image(x, y, charKey).setScale(scale);
+                const char = this.add.image(x, y, charKey).setScale(scale * this.globalSpriteScale);
                 char.setInteractive({ useHandCursor: true });
                 char.roundTarget = iswally;
                 char.startOffset = Phaser.Math.Between(0, 1000);
