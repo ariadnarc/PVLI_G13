@@ -153,7 +153,7 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
 5. **Minijuego: Precisión del escriba**  
    ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/PrecisionDelEscriba.png)
 6. **Minijuego: Memoria del templo**  
-   ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriaDelTemplo.png)
+   ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriadelTemplo.png)
 7. **Minijuego: Furia del desierto**  
    ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/FuriaDelDesierto.png)
 8. **Minijuego: Cerrajero ancestral**
