@@ -62,7 +62,7 @@ export default class Boot extends Phaser.Scene {
 
     this.load.image('cafe', 'wallyLikeAnEgyptian/assets/sprites/cafe.png');
     this.load.image('mariano', 'wallyLikeAnEgyptian/assets/sprites/mariano.png');
-
+    this.load.image('wallyy', 'wallyLikeAnEgyptian/assets/sprites/Wally.png');
 
     this.load.image('papiroBar', 'wallyLikeAnEgyptian/assets/sprites/papyrusBar.jpg'); //barra de papiro para el slideBar
 

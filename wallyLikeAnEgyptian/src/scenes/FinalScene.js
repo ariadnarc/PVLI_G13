@@ -10,6 +10,8 @@ export default class FinalScene extends Phaser.Scene {
         this.add.image(width / 2, height / 2, 'creditsFondo')
             .setDisplaySize(width, height);
 
+        this.add.image(200, 470, 'wallyy').setDisplaySize(200,200);
+
         // Música
         this.bgMusic = this.sound.add('creditsMusic', {
             loop: false,
@@ -22,7 +24,7 @@ export default class FinalScene extends Phaser.Scene {
         PVLI 2o GDV
         
 
-        AUTORES:
+        AUTORES / ALUMNOS:
 
         David Palacios
         Ariadna Alicia Ruiz
