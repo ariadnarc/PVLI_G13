@@ -1,3 +1,8 @@
+Juan : ESTOY YO HACIENDO el gráfico completo, para antes de Año Nuevo está seguro
+
+todo lo de aquí abajo no sirve para anda, no tener en cuenta  la hora de corregir
+
+
 🏛️ Arquitectura del Proyecto — Wally Like an Egyptian
 
 Este documento describe la arquitectura del juego, incluyendo su estructura de carpetas, organización de escenas, managers, datos de configuración y flujo general.
