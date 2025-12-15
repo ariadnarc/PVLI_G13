@@ -69,7 +69,8 @@ export default class SlideBar extends Phaser.Scene {
             color: "#ffffff"
         });
 
-        this.sound.play("minigame-music");
+        this.bgMusic = this.sound.add('minigame-music');
+        this.bgMusic.play();
 
         this.updateHUD();
     }
@@ -130,11 +131,11 @@ export default class SlideBar extends Phaser.Scene {
 
     //======TERMINA MINIJUEGO=========
     endGame(victoria, remainingTries = this.tries) {
-        this.sound.stop();
         const menuOptions = {};
 
         // Reintentar
         menuOptions['Reintentar'] = () => {
+            this.bgMusic.stop();
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
 
@@ -155,6 +156,7 @@ export default class SlideBar extends Phaser.Scene {
 
         // Salir al mapa
         menuOptions['Salir'] = () => {
+            this.bgMusic.stop();
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
             this.scene.start('MapScene');

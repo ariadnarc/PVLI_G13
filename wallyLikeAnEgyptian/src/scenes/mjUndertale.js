@@ -124,7 +124,7 @@ export default class Undertale extends Phaser.Scene {
     // Proyectiles
     this.bullets = this.physics.add.group();
 
-    // Vida, invulnerabilty
+    // Vida, invulnerabilty time
     this.health = config.vidas;
     this.maxHealth = this.health;
     this.isInvulnerable = false;

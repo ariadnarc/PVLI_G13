@@ -63,7 +63,8 @@ export default class CrocoShoot extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
-        this.sound.play("minigame-music");
+        this.bgMusic = this.sound.add('minigame-music');
+        this.bgMusic.play();
 
         // JUGADOR
         this.player = this.add.image(80, 450, 'balista');
@@ -322,7 +323,7 @@ export default class CrocoShoot extends Phaser.Scene {
     // ========== VICTORIA ==========
     _endAsVictory() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
-        this.sound.stop();
+        this.bgMusic.stop();
         this.physics.pause();
 
         // Lanzar menu de resultado
@@ -345,7 +346,7 @@ export default class CrocoShoot extends Phaser.Scene {
     _endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.physics.pause();
-        this.sound.stop();
+        this.bgMusic.stop();
 
         this.scene.launch('PostMinigameMenu', {
             result: 'defeat',

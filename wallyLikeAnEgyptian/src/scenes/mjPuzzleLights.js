@@ -75,7 +75,7 @@ export default class PuzzleLights extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Lista de claves de jeroglíficos disponibles
-    const glyphKeys = ['A','B','C','E','I','L','M','N','O','P','Q','R','S','T','U'];
+    const glyphKeys = ['A', 'B', 'C', 'E', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'];
 
     // MATRIZ DE JEROGLIFICOS
     this.tiles = [];
@@ -103,7 +103,8 @@ export default class PuzzleLights extends Phaser.Scene {
       }
     }
 
-    this.sound.play("minigame-music");
+    this.bgMusic = this.sound.add('minigame-music');
+    this.bgMusic.play();
 
     //INICIAR PRIMERA RONDA
     this.startRound();
@@ -199,7 +200,7 @@ export default class PuzzleLights extends Phaser.Scene {
   }
 
   endGame(result) {
-    this.sound.stop();
+    this.bgMusic.stop();
     this.isPlayerTurn = false;
 
     this.time.delayedCall(1500, () => {
