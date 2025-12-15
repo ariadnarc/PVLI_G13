@@ -26,7 +26,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.minijuego = data.minijuego;
         // Dificultad elegida
         this.difficulty = data.dificultad;
-        
+
         const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
         // Var.
         this.escapesCount = 0;
@@ -63,10 +63,12 @@ export default class CrocoShoot extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
+        this.sound.play("minigame-music");
+
         // JUGADOR
         this.player = this.add.image(80, 450, 'balista');
         this.player.setOrigin(0.5, 0.5); // importante para que rote desde el centro
-        this.player.setScale(0.05);       
+        this.player.setScale(0.05);
         this.player.angle = 0;
 
         // GRÁFICOS Y GRUPOS
@@ -84,7 +86,7 @@ export default class CrocoShoot extends Phaser.Scene {
         });
 
         // HUD
-        this.livesText = this.add.text(centerX- 50, 16, this.getLivesText(), {
+        this.livesText = this.add.text(centerX - 50, 16, this.getLivesText(), {
             fontFamily: 'Filgaia',
             color: '#382f23ff',
             fontSize: '32px',
@@ -286,78 +288,81 @@ export default class CrocoShoot extends Phaser.Scene {
      * Verifica las condiciones de victoria y derrota.
      */
     checkGameConditions() {
+
         if (this.gameIsOver) return;
 
         // DERROTA inmediata por demasiados escapes
         if (this.escapesCount >= this.maxEscapes) {
-        this.gameIsOver = true;
-        this._endAsDefeat();
-        return;
+            this.gameIsOver = true;
+            this._endAsDefeat();
+            return;
         }
 
         // Si ya generamos todos los cocodrilos y no queda ninguno activo en pantalla,
         // significa que la ronda ha terminado (todos muertos o escaparon).
         // Entonces decidimos victoria/derrota segun kills.
         if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill && this.crocodiles.countActive(true) === 0) {
-        this.gameIsOver = true;
+            this.gameIsOver = true;
 
-        // Si mataste al menos la cantidad objetivo => victoria, sino derrota.
-        if (this.killedCrocodilesCount >= this.totalCrocodilesToKill) {
-            this._endAsVictory();
-        } else {
-            this._endAsDefeat();
+            // Si mataste al menos la cantidad objetivo => victoria, sino derrota.
+            if (this.killedCrocodilesCount >= this.totalCrocodilesToKill) {
+                this._endAsVictory();
+            } else {
+                this._endAsDefeat();
+            }
+            return;
         }
-      return;
+
+        // Nota: mantenemos la condicion anterior (si matas el 'total' antes de que se generen todos)
+        // por compatibilidad: si por alguna razon killed >= total y spawned >= total (ya cubierto arriba),
+        // no llega aquí.
     }
 
-    // Nota: mantenemos la condicion anterior (si matas el 'total' antes de que se generen todos)
-    // por compatibilidad: si por alguna razon killed >= total y spawned >= total (ya cubierto arriba),
-    // no llega aquí.
-  }
-    
 
     // ========== VICTORIA ==========
     _endAsVictory() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
+        this.sound.stop();
         this.physics.pause();
 
         // Lanzar menu de resultado
         this.scene.launch('PostMinigameMenu', {
-        result: 'victory',
-        difficulty: this.difficulty,
-        minijuego: 'CrocoShoot',
-        options: {
-            "Salir": () => {
-            this.scene.stop('PostMinigameMenu');
-            this.scene.start('MapScene');
+            result: 'victory',
+            difficulty: this.difficulty,
+            minijuego: 'CrocoShoot',
+            options: {
+                "Salir": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.start('MapScene');
+                }
             }
-        }
         });
 
-    this.scene.stop();
-  }
+        this.scene.stop();
+    }
 
     // ========== DERROTA ==========
     _endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.physics.pause();
-    
+        this.sound.stop();
+
         this.scene.launch('PostMinigameMenu', {
-        result: 'defeat',
-        difficulty: this.difficulty,
-        minijuego: 'CrocoShoot',
-        options: {
-            "Reintentar": () => {
-            this.scene.stop('PostMinigameMenu');
-            this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
-            },
-            "Salir": () => {
-            this.scene.stop('PostMinigameMenu');
-            this.scene.start('MapScene');
+            result: 'defeat',
+            difficulty: this.difficulty,
+            minijuego: 'CrocoShoot',
+            options: {
+                "Reintentar": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
+                },
+                "Salir": () => {
+                    this.scene.stop('PostMinigameMenu');
+                    this.scene.start('MapScene');
+                }
             }
-        }
         });
 
-    this.scene.stop();
-  }
+        this.scene.stop();
+    }
 }

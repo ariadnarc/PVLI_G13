@@ -84,6 +84,8 @@ export default class FindLuigi extends Phaser.Scene {
         this.fondo = this.add.image(0, 0, 'fondoFinal').setOrigin(0);
         this.fondo.setDisplaySize(this.game.config.width, this.game.config.height);
 
+        this.sound.play("minigame-music");
+
         // HUD
         this.phaseText = this.add.text(10, 10, 'Fase: 1/3', { fontSize: '30px', fill: '#FFF' })
         this.timerText = this.add.text(this.cameras.main.width - 200, 10, 'Tiempo: 30s', { fontSize: '30px', fill: '#FFF' })
@@ -284,6 +286,7 @@ export default class FindLuigi extends Phaser.Scene {
      * Finaliza el juego por tiempo agotado. Transiciona al menú principal.
      */
     gameOver() {
+        this.sound.stop();
         if (this.gameIsOver) return;
 
         this.gameIsOver = true;

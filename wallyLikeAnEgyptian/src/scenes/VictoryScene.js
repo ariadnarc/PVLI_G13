@@ -25,26 +25,23 @@ export default class VictoryScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    // -----------------------------
-    //       RECOMPENSAS
-    // -----------------------------
-    
+    // RECOMPENSAS
     const rewards = this.calculateRewards();
 
     this.binnacle.addGlyph(rewards);
     this.showResults(rewards);
 
-    // -----------------------------
-    //       MENÚ FINAL
-    // -----------------------------
+    // MENÚ FINAL
     this.scene.launch("PostMinigameMenu", {
       parentScene: this.scene.key,
       opciones: {
         "Reintentar": () => {
+          this.sound.play("click");
           this.scene.stop("VictoryScene");
           this.scene.start("SelectDifficultyScene", { minijuego: this.minigameId });
         },
         "Salir al mapa": () => {
+          this.sound.play("click");
           this.scene.stop("VictoryScene");
           this.scene.start("MapScene");
         }
@@ -52,9 +49,7 @@ export default class VictoryScene extends Phaser.Scene {
     });
   }
 
-  // --------------------------------
-  //   LÓGICA DE RECOMPENSAS TOTAL
-  // --------------------------------
+  // LÓGICA DE RECOMPENSAS TOTAL
   calculateRewards() {
 
     const total = { S: 0, A: 0, B: 0 };
@@ -78,9 +73,7 @@ export default class VictoryScene extends Phaser.Scene {
     return total;
   }
 
-  // --------------------------------
-  //    Mostrar resultados
-  // --------------------------------
+  // Mostrar resultados
   showResults(rewards) {
     const { width, height } = this.cameras.main;
     const tierColors = { S: '#ffcc00', A: '#ff6666', B: '#66ccff' };

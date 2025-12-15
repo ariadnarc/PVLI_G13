@@ -54,6 +54,7 @@ export default class PostMinigameMenu extends MenuBase {
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
       // Elegimos el count de recompensas segun la dificultad
+      this.sound.play("victory");
 
       let rewardKey = this.difficulty; // FACIL / MEDIA / DIFICIL
 
@@ -71,6 +72,7 @@ export default class PostMinigameMenu extends MenuBase {
 
     // Intentos restantes para minijuegos como SlideBar
     if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
+      this.sound.play("defeat");
       this.add.text(width / 2, height / 2 - 100,
         `Intentos restantes: ${this.remainingTries}`,
         { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
@@ -124,7 +126,10 @@ export default class PostMinigameMenu extends MenuBase {
         label,
         x,
         centerY,
-        () => callback(),
+        () => {
+          this.sound.play("click");
+          callback();
+        },
         { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
         'fondoBoton'
       );

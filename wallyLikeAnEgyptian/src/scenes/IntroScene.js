@@ -48,7 +48,7 @@ export default class IntroScene extends Phaser.Scene {
 
         // Avanzar dialogo
         this.input.keyboard.on('keydown-SPACE', () => { this.nextDialog(); }); // con space
-        this.input.on('pointerdown', () => { this.nextDialog(); }); // con click
+        this.input.on('pointerdown', () => { this.sound.play("click"); this.nextDialog(); }); // con click
 
         // Crear botón de saltar al mapa
         this.createSkipButton();
@@ -57,6 +57,7 @@ export default class IntroScene extends Phaser.Scene {
 
     showDialog() {
         if (this.dialogIndex >= this.dialogData.length) {
+            this.sound.play("click");
             this.scene.start('MapScene'); // o lo que quieras al final del diálogo
             return;
         }

@@ -103,6 +103,7 @@ export default class PuzzleLights extends Phaser.Scene {
       }
     }
 
+    this.sound.play("minigame-music");
 
     //INICIAR PRIMERA RONDA
     this.startRound();
@@ -198,6 +199,7 @@ export default class PuzzleLights extends Phaser.Scene {
   }
 
   endGame(result) {
+    this.sound.stop();
     this.isPlayerTurn = false;
 
     this.time.delayedCall(1500, () => {

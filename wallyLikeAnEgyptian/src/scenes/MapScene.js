@@ -134,7 +134,6 @@ export default class MapScene extends Phaser.Scene {
     update() {
         this.inputManager.update();
         this.PlayerManager.update();
-        //this.movingObject1.update();
         this.movingObjects.forEach(obj => {
             obj.update();
         });

@@ -69,6 +69,8 @@ export default class SlideBar extends Phaser.Scene {
             color: "#ffffff"
         });
 
+        this.sound.play("minigame-music");
+
         this.updateHUD();
     }
 
@@ -128,7 +130,7 @@ export default class SlideBar extends Phaser.Scene {
 
     //======TERMINA MINIJUEGO=========
     endGame(victoria, remainingTries = this.tries) {
-
+        this.sound.stop();
         const menuOptions = {};
 
         // Reintentar

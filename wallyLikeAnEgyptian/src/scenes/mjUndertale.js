@@ -118,6 +118,8 @@ export default class Undertale extends Phaser.Scene {
     // ========== SISTEMA DE FASES (DIFICULTAD) ==========
     this.phase = 1; // Inicializa fase de dificultad en 1
     this.changePhase(1); // Configura la fase inicial
+
+    this.sound.play("minigame-music");
   }
 
   update() {
@@ -412,10 +414,12 @@ export default class Undertale extends Phaser.Scene {
 
   // ========== VICTORIA ==========
   winGame() {
+    this.sound.stop();
+
     this.physics.pause(); // Detiene todas las físicas del juego
     if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
     if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
-
+    
     //lanza el PostMinigameMenu
     this.scene.launch('PostMinigameMenu', {
       result: 'victory',
@@ -434,6 +438,8 @@ export default class Undertale extends Phaser.Scene {
 
   // ========== DERROTA ==========
   loseGame() {
+    this.sound.stop();
+
     this.physics.pause(); // Detiene todas las fisicas del juego
     if (this.bulletTimer) this.bulletTimer.remove(false);
     if (this.timerEvent) this.timerEvent.remove(false);

@@ -61,7 +61,7 @@ export default class SelectDifficultyScene extends MenuBase {
       const y = 240 + i * 120;
 
       // Img de candado
-      if(dif === 'DIFICIL' && !playerInitialData.minijuegosCompletados[this.minijuego]) {
+      if (dif === 'DIFICIL' && !playerInitialData.minijuegosCompletados[this.minijuego]) {
         // Img de candado
         const lock = this.add.image(650, y, 'lock').setDisplaySize(70, 70);   // tamaño del candado
       }
@@ -77,7 +77,10 @@ export default class SelectDifficultyScene extends MenuBase {
         dif,
         800,
         y,
-        () => this.seleccionarDificultad(dif),
+        () => {
+          this.sound.play("click");
+          this.seleccionarDificultad(dif);
+        },
         {
           width: 200,
           height: 60,
@@ -85,8 +88,9 @@ export default class SelectDifficultyScene extends MenuBase {
           fontSize: "25px",
           hoverTint: 0xffb679,
         },
-        'fondoBoton'
+        "fondoBoton"
       );
+
     });
 
     this.createVolverButton();
@@ -110,6 +114,8 @@ export default class SelectDifficultyScene extends MenuBase {
 
     // ➤ DIFICIL prohibida primera vez
     if (esPrimeraVez && dif === 'DIFICIL') {
+      this.sound.play("locked");
+
       // Fondo oscuro semitransparente
       const overlay = this.add.rectangle(
         this.cameras.main.centerX,
@@ -134,8 +140,8 @@ export default class SelectDifficultyScene extends MenuBase {
           strokeThickness: 3
         }
       )
-      .setOrigin(0.5)
-      .setDepth(1001);
+        .setOrigin(0.5)
+        .setDepth(1001);
 
       // Desaparecer tras 2 segundos
       this.time.delayedCall(2000, () => {
@@ -154,13 +160,14 @@ export default class SelectDifficultyScene extends MenuBase {
     if (!dificultadEsGratis) {
       // Comprobar y pagar normalmente
       if (!this.tieneJeroglificos(coste)) {
+        this.sound.play("locked");
         const overlay = this.add.rectangle(
-        this.cameras.main.centerX,
-        this.cameras.main.centerY,
-        this.cameras.main.width,
-        this.cameras.main.height,
-        0x000000,
-        0.6 // alpha
+          this.cameras.main.centerX,
+          this.cameras.main.centerY,
+          this.cameras.main.width,
+          this.cameras.main.height,
+          0x000000,
+          0.6 // alpha
         );
         overlay.setDepth(1000);
 
@@ -177,8 +184,8 @@ export default class SelectDifficultyScene extends MenuBase {
             strokeThickness: 3
           }
         )
-        .setOrigin(0.5)
-        .setDepth(1001);
+          .setOrigin(0.5)
+          .setDepth(1001);
 
         // Desaparecer tras 2 segundos
         this.time.delayedCall(2000, () => {

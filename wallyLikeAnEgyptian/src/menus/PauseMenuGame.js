@@ -40,18 +40,21 @@ export default class PauseMenuGame extends MenuBase {
       //reintentar
       this.createButton('Reintentar', width / 2, 240, () => {
         this.scene.stop(this.parentScene);
+        this.sound.play("click");
         this.scene.start(this.parentScene);
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
 
       //volver al mapa
       this.createButton('Volver al mapa', width / 2, 340, () => {
         this.scene.stop(this.parentScene);
+        this.sound.play("click");
         this.scene.start('MapScene');
       }, { width: 350, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
 
       //ajustes
       this.createButton('Ajustes', width / 2, 440, () => {
         this.scene.launch('SettingsMenu', { parentScene: 'PauseMenuGame' });
+        this.sound.play("click");
         this.scene.bringToTop('SettingsMenu');
         this.scene.pause();
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
@@ -61,6 +64,7 @@ export default class PauseMenuGame extends MenuBase {
       // Ajustes
       this.createButton('Ajustes', width / 2, 280, () => {
         this.scene.launch('SettingsMenu', { parentScene: 'PauseMenuGame' });
+        this.sound.play("click");
         this.scene.bringToTop('SettingsMenu');
         this.scene.pause();
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
@@ -68,6 +72,7 @@ export default class PauseMenuGame extends MenuBase {
       // Menu principal
       this.createButton('Menú principal', width / 2, 360, () => {
         this.scene.stop(this.parentScene);
+        this.sound.play("click");
         this.scene.start('MainMenu');
         this.scene.stop();
       }, { width: 340, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);

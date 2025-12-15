@@ -59,6 +59,7 @@ export default class SettingsMenu extends MenuBase {
 
     //boton volver
     this.createButton("Volver", width / 2, 420, () => {
+      this.sound.play("click");
       this.onEscape(); // reusar comportamiento por defecto
     }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
       'fondoBoton').setDepth(2002);

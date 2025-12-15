@@ -133,6 +133,8 @@ export default class LockPick extends Phaser.Scene {
         // Configuración de teclas (no usamos el inputManager)
         this.keys = this.input.keyboard.createCursorKeys();
         this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.sound.play("minigame-music");
     }
 
     /**
@@ -367,6 +369,7 @@ export default class LockPick extends Phaser.Scene {
      * Lanza el menú de post-minijuego con resultado de victoria.
      */
     winGame() {
+        this.sound.stop();
         this.isTransitioning = true; 
         this.tweens.killAll(); // Detiene cualquier animación pendiente
 
@@ -401,6 +404,7 @@ export default class LockPick extends Phaser.Scene {
      * Lanza el menú de post-minijuego con resultado de derrota.
      */
     loseGame() {
+        this.sound.stop();
         this.isTransitioning = true; 
         this.tweens.killAll();
 
