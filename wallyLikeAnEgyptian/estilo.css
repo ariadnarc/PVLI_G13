@@ -207,37 +207,99 @@ main {
   text-align: center;
 }
 
+/* CONTROLES – TAMAÑO GENERAL */
 .controls {
-  margin-bottom: 30px;  /* da aire antes del canvas */
-}
-
-#gameCanvas {
-  margin-top: 20px;      /* separa del bloque de controles */
-  max-height: 55vh;      /* evita que el canvas ocupe demasiado */
-}
-
-.controls h3 {
-  color: var(--orange);
-  font-family: 'Luckiest Guy', cursive;
-  font-size: 40px;
-  margin-bottom: 15px;
+  margin-top: 4rem;
+  margin-bottom: 4rem; /* separación con el canvas */
   text-align: center;
 }
 
-.controls ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* Carrusel */
+.controls-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
 }
 
-.controls li {
-  font-size: 22px;
-  margin-bottom: 12px;
-  background: var(--marron-apagado);
-  padding: 12px 15px;
-  border-radius: 10px;
-  color: var(--white);
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+/* Ventana visible */
+.controls-viewport {
+  width: 600px;
+  overflow: hidden;
+}
+
+/* Track animado */
+.controls-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.controls-slide {
+  min-width: 600px;
+  text-align: center;
+
+  display: flex;              
+  flex-direction: column;      
+  align-items: center;           
+}
+
+
+/* Imagen principal de la sección */
+.controls-main-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin-bottom: 2rem;
+}
+
+.controls-icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 80%; 
+}
+
+
+.control-item {
+  display: flex;
+  flex-direction: column;   /* TEXTO DEBAJO */
+  align-items: center;
+  text-align: center;
+  width: 90px;
+}
+
+.control-item span {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.arrow:hover {
+  transform: scale(1.2);
+}
+
+/* img arrows */
+.control-item img {
+  width: 50px;
+  height: auto;
+}
+
+.control-item img.arrows {
+  width: 180px;
+}
+
+.control-item img.space {
+  width: 90px;
 }
 
 
@@ -264,37 +326,114 @@ main {
   bottom: 0;
 }*/
 
-/* Seccion Noticias y Avances */
-.chat {
+/* SECCIÓN NOTICIAS */
+
+.section.news {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  height: 70vh;       
+  padding: 2rem;
 }
-.bubble {
-  font-size: 20px;
-  padding: 15px;
-  border-radius: 12px;
-  max-width: 45vh;
 
+/* Chat contenedor */
+.news .chat {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.8rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  scroll-behavior: smooth;
 }
+
+/* Scrollbar personalizada */
+.news .chat::-webkit-scrollbar {
+  width: 8px;
+}
+
+.news .chat::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.news .chat::-webkit-scrollbar-thumb {
+  background: var(--olive);
+  border-radius: 10px;
+}
+
+.news .chat::-webkit-scrollbar-thumb:hover {
+  background: var(--marron-apagado);
+}
+
+/* Burbuja */
+.bubble {
+  font-size: 1.2rem;
+  padding: 0.6rem 0.8rem;
+  max-width: 75%;
+  border-radius: 12px;
+
+  opacity: 0;
+  transform: translateY(10px);
+  animation: bubbleIn 0.4s ease forwards;
+}
+
+/* Animación */
+@keyframes bubbleIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .bubble.left {
   background: var(--olive);
   color: var(--white);
   align-self: flex-start;
 }
+
 .bubble.right {
   background: var(--marron-apagado);
   color: var(--white);
   align-self: flex-end;
 }
+
+/* Autor */
 .author {
-  font-size: 30px;
+  font-size: 0.9rem;
   font-weight: bold;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.2rem;
+  opacity: 0.9;
 }
 
-/* Seccion Contacto */
+/* Separadores */
+.chat-separator {
+  align-self: center;
+  font-size: 1.6rem;
+  opacity: 0.6;
+  margin: 0.8rem 0;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* Seccion Redes sociales */
+.contact {
+  height: 20vh;
+}
+
+.contact .socials {
+  display: flex;
+  justify-content: center;
+  gap: 3.8rem;
+}
+
+.contact p {
+  margin-bottom: 0.5rem;
+}
 .socials {
   list-style: none;
   padding: 0;

@@ -78,10 +78,6 @@ export default class Boot extends Phaser.Scene {
       frameHeight: 592
     });
 
-    // ICONOS JEROGLÍFICOS
-    for (let i = 1; i <= 9; i++) {
-      this.load.image(`jero${i}`, `wallyLikeAnEgyptian/assets/minijuegos/luces/jero${i}.png`);
-    }
     //jeroglificos bitacora
     this.load.image('A', 'wallyLikeAnEgyptian/assets/jeroglificos/a.png');
     this.load.image('B', 'wallyLikeAnEgyptian/assets/jeroglificos/b.png');
