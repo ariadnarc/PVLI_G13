@@ -1,9 +1,3 @@
-/**
- * JSDOC
- * YA
- * A
- */
-
 import { DIFICULTADES } from '../config/MinigameData.js';
 import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
@@ -16,401 +10,314 @@ export default class Undertale extends Phaser.Scene {
 
   init(data = {}) {
     this.isMinigame = true;
-
-    // Guardamos el minijuego
     this.minijuego = data.minijuego;
-
-    // Dificultad elegida
     this.difficulty = data.dificultad;
   }
 
   create() {
-
     const config = DIFICULTADES[this.difficulty].minijuegos.Undertale;
-    const centerX = this.cameras.main.centerX; // Obtiene el centro X de la cámara principal
-    const centerY = this.cameras.main.centerY; // Obtiene el centro Y de la cámara principal
+    const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
 
-    // FONDOS
-    this.add.image(centerX, centerY, 'paredBG') // general
-    const arenaBg = this.add.image(centerX, centerY, 'fondoUndertale');; // de la zona de juego
-    // Área de juego
-    this.gameWidth = 400; // Ancho del área jugable en píxeles
-    this.gameHeight = 300; // Alto del área jugable en píxeles
+    // =================== FONDO ===================
+    this.add.image(cx, cy, 'paredBG');
+    const arenaBg = this.add.image(cx, cy, 'fondoUndertale');
+    this.gameWidth = 400;
+    this.gameHeight = 300;
     arenaBg.setDisplaySize(this.gameWidth, this.gameHeight);
 
-    // INPUTMANAGER
-    this.inputManager = new InputManager(this);
-    this.inputManager.configure({
-      cursors: true,
-    });
+    const border = this.add.rectangle(cx, cy, this.gameWidth, this.gameHeight);
+    border.setStrokeStyle(3, 0xffffff);
 
-    // JUGADOR
+    this.physics.world.setBounds(
+      cx - this.gameWidth / 2,
+      cy - this.gameHeight / 2,
+      this.gameWidth,
+      this.gameHeight
+    );
+
+    // =================== INPUT / PLAYER ===================
+    this.inputManager = new InputManager(this);
+    this.inputManager.configure({ cursors: true });
+
     this.playerManager = new PlayerManager(this.inputManager, this, playerInitialData);
     this.player = this.playerManager.getSprite();
-    this.player.setPosition(centerX, centerY);
+    this.player.setPosition(cx, cy);
+    this.player.setCollideWorldBounds(true);
 
-    // Dibuja el borde del área jugable (dsps de meter el fondo obligatorio)
-    const border = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight); // Crea rectángulo en el centro
-    border.setStrokeStyle(3, 0xffffff); // Aplica borde blanco de 3px de grosor
+    // =================== PROYECTILES ===================
+    this.bullets = this.physics.add.group();
 
-    // Establece los límites del mundo de físicas al área visible
-    this.physics.world.setBounds(
-      centerX - this.gameWidth / 2, // Límite izquierdo
-      centerY - this.gameHeight / 2, // Límite superior
-      this.gameWidth, // Ancho del área
-      this.gameHeight // Alto del área
-    );
-    this.playerManager.sprite.setCollideWorldBounds(true); // evita q el player salga
+    // =================== VIDA ===================
+    this.health = config.vidas;
+    this.maxHealth = this.health;
+    this.isInvulnerable = false;
+    this.invulnerabilityDuration = 1500;
 
-    // ========== CONTROLES ==========
-    this.playerSpeed = 200; // Define velocidad de movimiento del jugador en píxeles/segundo
+    this.barraVidabg = this.add.rectangle(cx, 40, 120, 20, 0x333333);
+    this.barraVida = this.add.rectangle(cx - 60, 40, 120, 20, 0xff4444)
+      .setOrigin(0, 0.5);
 
-    // ========== GRUPO DE PROYECTILES ==========
-    this.bullets = this.physics.add.group(); // Crea grupo de física para gestionar proyectiles
-
-    // -VIDA-
-    this.health = config.vidas; // Lo único que vamos a cambiar dependiendo de la dificultad
-    this.maxHealth = this.health; // para hacer la barraVida
-    this.isInvulnerable = false; // Estado de invencibilidad del jugador
-    this.invulnerabilityDuration = 1500; // Duración de invencibilidad en milisegundos
-    this.barraVidabg = this.add.rectangle(centerX, 40, 120, 20, 0x333333); // Ractángulo vida background
-    this.barraVida = this.add.rectangle(centerX - 60, 40, 120, 20, 0xff4444).setOrigin(0, 0.5); // Rectángulo vida activa
-    // Texto que muestra la vida numérica
-    this.healthText = this.add.text(centerX, 70, `Vida: ${this.health}`, {
+    this.healthText = this.add.text(cx, 70, `Vida: ${this.health}`, {
       fontSize: '16px',
       color: '#ffffff'
-    }).setOrigin(0.5); // Centra el texto
+    }).setOrigin(0.5);
 
-    // ========== SISTEMA DE TIEMPO ==========
-    this.remainingTime = 30; // Inicializa tiempo restante
+    // =================== TIMER ===================
+    this.remainingTime = 30;
+    this.timerText = this.add.text(cx, 100, `SOBREVIVE: ${this.remainingTime}`, {
+      fontSize: '18px',
+      color: '#ffff66'
+    }).setOrigin(0.5);
 
-    // Texto del contador de tiempo
-    this.timerText = this.add.text(centerX, 100, `Tiempo: ${this.remainingTime}`, {
-      fontSize: '18px', // Tamaño de fuente
-      color: '#ffff66' // Color amarillo claro
-    }).setOrigin(0.5); // Centra el texto
-
-    // Timer que decrementa el contador cada segundo
     this.timerEvent = this.time.addEvent({
-      delay: 1000, // Ejecuta cada 1000ms (1 segundo)
-      callback: this.updateTimer, // Función a ejecutar
-      callbackScope: this, // Contexto de 'this' en el callback
-      loop: true // Se repite indefinidamente
+      delay: 1000,
+      callback: this.updateTimer,
+      callbackScope: this,
+      loop: true
     });
 
-    // ========== COLISIONES ==========
-    this.physics.add.overlap(this.player, this.bullets, this.hitPlayer, null, this); // Detecta superposición entre jugador y proyectiles
+    // =================== ANIMACIONES ===================
+    this.anims.create({
+      key: 'shield-spin',
+      frames: this.anims.generateFrameNumbers('shieldSheet', {
+        start: 0,
+        end: 7
+      }),
+      frameRate: 12,
+      repeat: -1
+    });
 
-    // ========== SISTEMA DE PATRONES DE ATAQUE ==========
-    this.attackPhase = 1; // Inicializa fase de ataque en 1
+    // =================== COLISIONES ===================
+    this.physics.add.overlap(
+      this.player,
+      this.bullets,
+      this.hitPlayer,
+      null,
+      this
+    );
+
+    // =================== FASES ===================
+    this.attackPhase = 1;
+    this.changePhase(1);
+
     this.patternTimer = this.time.addEvent({
-      delay: 10000, // Cambia de patrón cada 10 segundos
-      callback: () => { // Función anónima que ejecuta al cumplirse el delay
-        this.attackPhase++; // Incrementa la fase de ataque
-        if (this.attackPhase > 0)
-          this.changePhase(this.attackPhase); // Cambiamos el switch de fases que toma el valor de la fase de ataque
-        this.showPhaseWarning(this.attackPhase); // Muestra aviso visual del cambio de patrón
+      delay: 10000,
+      callback: () => {
+        this.attackPhase++;
+        if (this.attackPhase > 3) this.attackPhase = 1;
+        this.changePhase(this.attackPhase);
+        this.showPhaseWarning(this.attackPhase);
       },
-      callbackScope: this, // Contexto de 'this' en el callback
-      loop: true // Se repite indefinidamente
+      loop: true
     });
 
-    // ========== SISTEMA DE FASES (DIFICULTAD) ==========
-    this.phase = 1; // Inicializa fase de dificultad en 1
-    this.changePhase(1); // Configura la fase inicial
-
-    this.sound.play("minigame-music");
+    this.sound.play('minigame-music');
   }
 
   update() {
-
     this.inputManager.update();
     this.playerManager.update();
-
-    //TODO :
-    const body = this.player.body; // Obtiene referencia al cuerpo físico del jugador
   }
 
-  // ========== ACTUALIZACIÓN DEL TEMPORIZADOR ==========
-  updateTimer() {
-    if (this.health <= 0) return; // Sale si el jugador está muerto
+  // =====================================================
+  // =============== FACTORY DE PROYECTILES ===============
+  // =====================================================
+  spawnProjectile({ x, y, texture, anim = null, hitbox }) {
+    const proj = this.physics.add.sprite(x, y, texture);
+    this.bullets.add(proj);
 
-    this.remainingTime--; // Decrementa tiempo restante
-    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`); // Actualiza texto del timer
-
-    // Victoria cuando el tiempo llega a 0
-    if (this.remainingTime <= 0) {
-      this.winGame(); // Ejecuta función de victoria
+    if (hitbox) {
+      proj.body.setSize(hitbox.w, hitbox.h, true);
     }
-  }
 
-  // ========== GENERACIÓN DE PROYECTILES SEGÚN PATRÓN ==========
-  spawnCylinder() {
-    const centerX = this.cameras.main.centerX; // Centro X de la cámara
-    const centerY = this.cameras.main.centerY; // Centro Y de la cámara
-
-    // Selecciona patrón según la fase de ataque actual
-    switch (this.attackPhase) {
-      case 1: // Patrón dirigido al jugador
-        this.spawnDagasAttack();
-        break;
-      case 2: // Ataque de Undyne
-        this.spawnCircleWave(centerX, centerY);
-        break;
-      case 3: // Patrón de barrido horizontal/vertical
-        this.spawnSweep(centerX, centerY);
-        break;
+    if (anim) {
+      proj.anims.play(anim);
     }
+
+    return proj;
   }
 
+  // =====================================================
+  // ================== FASE 1 ===========================
+  // =====================================================
   spawnDagasAttack() {
-
     const cam = this.cameras.main;
-    const gameWidth = cam.width;
-
-    // 1. La posición Y se basa en la posición del jugador
-    const spawnY = this.player.y;
-
-    // 2. Decide si aparece por la izquierda o derecha
     const fromLeft = Phaser.Math.Between(0, 1) === 0;
-    const spawnX = fromLeft ? + 80 : gameWidth - 80;
 
-    // 3. Crear cilindro
-    const cyl = this.add.rectangle(spawnX, spawnY, 100, 25, 0x000000);
-    this.physics.add.existing(cyl);
-    this.bullets.add(cyl);
+    const spawnX = fromLeft
+      ? cam.centerX - 300
+      : cam.centerX + 300;
 
-    // Velocidad final (solo en horizontal)
-    const attackSpeed = 600;
+    const proj = this.spawnProjectile({
+      x: spawnX,
+      y: this.player.y,
+      texture: 'daggerSprite',
+      hitbox: { w: 60, h: 16 }
+    });
 
-    // 4. Animación de aviso (retroceso corto)
     const retreatX = fromLeft ? spawnX - 30 : spawnX + 30;
 
     this.tweens.add({
-      targets: cyl,
+      targets: proj,
       x: retreatX,
-      duration: 500,
+      duration: 400,
       onComplete: () => {
-        // 5. Ataque en línea recta horizontal
-        const velocity = fromLeft ? attackSpeed : -attackSpeed;
-        cyl.body.setVelocityX(velocity);
+        const speed = fromLeft ? 600 : -600;
+        proj.body.setVelocityX(speed);
+        this.time.delayedCall(3000, () => proj.destroy());
       }
     });
   }
 
-
-
-  // ========== PATRÓN 2: CÍRCULO CONVERGENTE ==========
+  // =====================================================
+  // ================== FASE 2 ===========================
+  // =====================================================
   spawnCircleWave() {
-    const centerX = this.player.x;
-    const centerY = this.player.y;
+    const cx = this.player.x;
+    const cy = this.player.y;
 
-    const numProjectiles = 8;
+    const count = 8;
     const radius = 240;
     const speed = 140;
-    const pauseTime = 500;
 
-    for (let i = 0; i < numProjectiles; i++) {
+    for (let i = 0; i < count; i++) {
+      const angle = Phaser.Math.PI2 * (i / count);
 
-      const angle = (i / numProjectiles) * Phaser.Math.PI2;
-      const x = centerX + Math.cos(angle) * radius;
-      const y = centerY + Math.sin(angle) * radius;
+      const proj = this.spawnProjectile({
+        x: cx + Math.cos(angle) * radius,
+        y: cy + Math.sin(angle) * radius,
+        texture: 'shieldSheet',
+        anim: 'shield-spin',
+        hitbox: { w: 18, h: 18 }
+      });
 
-      const cyl = this.add.rectangle(x, y, 20, 20, 0xff3333);
-      this.physics.add.existing(cyl);
-      this.bullets.add(cyl);
+      proj.body.setVelocity(0, 0);
 
-      // Inicialmente velocidad cero
-      cyl.body.setVelocity(0, 0);
-
-      // Después del pauseTime, empieza a moverse hacia el jugador
-      this.time.delayedCall(pauseTime, () => {
-        cyl.body.setVelocity(-Math.cos(angle) * speed, -Math.sin(angle) * speed);
-
-        // Destruir automáticamente después de 2,7s
-        this.time.delayedCall(2700, () => cyl.destroy(), [], this);
-      }, [], this);
+      this.time.delayedCall(500, () => {
+        proj.body.setVelocity(
+          -Math.cos(angle) * speed,
+          -Math.sin(angle) * speed
+        );
+        this.time.delayedCall(3000, () => proj.destroy());
+      });
     }
   }
 
-  // ========== PATRÓN 3: BARRIDO HORIZONTAL/VERTICAL ==========
-  spawnSweep(centerX, centerY) {
-    const horizontal = Phaser.Math.Between(0, 1) === 0; // Decide aleatoriamente si es horizontal (true) o vertical (false)
-    const numProjectiles = 8; // Número de proyectiles en el barrido
-    const speed = 120; // Velocidad de los cilindros
+  // =====================================================
+  // ================== FASE 3 ===========================
+  // =====================================================
+  spawnSweep() {
+    const cx = this.cameras.main.centerX;
+    const cy = this.cameras.main.centerY;
+    const horizontal = Phaser.Math.Between(0, 1) === 0;
 
-    // Crea línea de proyectiles
-    for (let i = 0; i < numProjectiles; i++) {
-      const totalSpread = (numProjectiles - 1) * 40; // Calcula ancho total dinámicamente
-      const startOffset = -totalSpread / 2; // Centra el punto inicial
-      const offset = startOffset + (i * 40); // Distribución centrada
+    for (let i = 0; i < 8; i++) {
+      const offset = (i - 3.5) * 40;
+      let x, y, vx, vy;
 
-      let x, y, vx, vy; // Variables para posición y velocidad
-
-      if (horizontal) { // Barrido horizontal
-        x = (Phaser.Math.Between(0, 1) === 0) // Decide aleatoriamente lado de aparición
-          ? centerX - this.gameWidth / 2 - 100 // Aparece a la izquierda
-          : centerX + this.gameWidth / 2 + 100; // Aparece a la derecha
-        y = centerY + offset; // Y distribuido verticalmente
-        vx = (x < centerX) ? speed : -speed; // Velocidad hacia el centro horizontal
-        vy = 0; // Sin movimiento vertical
-      } else { // Barrido vertical
-        y = (Phaser.Math.Between(0, 1) === 0) // Decide aleatoriamente lado de aparición
-          ? centerY - this.gameHeight / 2 - 100 // Aparece arriba
-          : centerY + this.gameHeight / 2 + 100; // Aparece abajo
-        x = centerX + offset; // X distribuido horizontalmente
-        vy = (y < centerY) ? speed : -speed; // Velocidad hacia el centro vertical
-        vx = 0; // Sin movimiento horizontal
+      if (horizontal) {
+        x = Phaser.Math.Between(0, 1)
+          ? cx - this.gameWidth / 2 - 80
+          : cx + this.gameWidth / 2 + 80;
+        y = cy + offset;
+        vx = x < cx ? 120 : -120;
+        vy = 0;
+      } else {
+        y = Phaser.Math.Between(0, 1)
+          ? cy - this.gameHeight / 2 - 80
+          : cy + this.gameHeight / 2 + 80;
+        x = cx + offset;
+        vx = 0;
+        vy = y < cy ? 120 : -120;
       }
 
-      const cyl = this.add.rectangle(x, y, 20, 20, 0x66ccff); // Crea cuadrado azul claro
-      this.physics.add.existing(cyl); // Añade físicas
-      this.bullets.add(cyl); // Añade al grupo
-      cyl.body.setVelocity(vx, vy); // Aplica velocidad calculada
-      this.time.delayedCall(4000, () => cyl.destroy(), [], this); // Destruye después de 4 segundos
+      const proj = this.spawnProjectile({
+        x,
+        y,
+        texture: 'swordSprite',
+        hitbox: { w: 20, h: 20 }
+      });
+
+      proj.body.setVelocity(vx, vy);
+      this.time.delayedCall(4000, () => proj.destroy());
     }
   }
 
-  // ========== AVISO VISUAL DE CAMBIO DE PATRÓN ==========
-  showPhaseWarning(phase) {
-    const centerX = this.cameras.main.centerX; // Centro X de la cámara
-    const centerY = this.cameras.main.centerY; // Centro Y de la cámara
+  // =====================================================
+  changePhase(phase) {
+    if (this.bulletTimer) this.bulletTimer.remove(false);
 
-    // Determina nombre del patrón según la fase
-    let phaseName;
+    let callback;
+    let delay;
+
     switch (phase) {
-      case 1: phaseName = "¡Fase 1!"; break; // Nombre para patrón 1
-      case 2: phaseName = "¡Fase 2!"; break; // Nombre para patrón 2
-      case 3: phaseName = "¡Fase 3!"; break; // Nombre para patrón 3
+      case 1:
+        callback = this.spawnDagasAttack;
+        delay = 400;
+        break;
+      case 2:
+        callback = this.spawnCircleWave;
+        delay = 1800;
+        break;
+      case 3:
+        callback = this.spawnSweep;
+        delay = 2000;
+        break;
     }
 
-    // Crea texto de aviso centrado
-    const warningText = this.add.text(centerX, centerY, phaseName, {
-      fontSize: '28px', // Tamaño grande
-      color: '#ff3333', // Color rojo
-      fontStyle: 'bold', // Negrita
-      stroke: '#ffffff', // Borde blanco
-      strokeThickness: 4 // Grosor del borde
-    }).setOrigin(0.5); // Centra el texto
-
-    // Animación de aparición del texto
-    this.tweens.add({
-      targets: warningText, // Objeto a animar
-      scale: { from: 0.5, to: 1.2 }, // Escala de 0.5 a 1.2
-      alpha: { from: 0, to: 1 }, // Opacidad de 0 a 1
-      duration: 300, // Duración de 300ms
-      yoyo: true, // Revierte la animación
-      hold: 300, // Mantiene por 300ms antes de revertir
-      onComplete: () => { // Al completar la primera animación
-        this.tweens.add({ // Inicia segunda animación
-          targets: warningText, // Mismo texto
-          alpha: 0, // Desvanece a transparente
-          duration: 500, // En 500ms
-          onComplete: () => warningText.destroy() // Destruye el texto al terminar
-        });
-      }
-    });
-
-    // Crea rectángulo para efecto de parpadeo del borde
-    const borderFlash = this.add.rectangle(centerX, centerY, this.gameWidth, this.gameHeight)
-      .setStrokeStyle(4, 0x000000) // Borde amarillo de 4px
-      .setAlpha(0); // Inicialmente invisible
-
-    // Animación de parpadeo del borde
-    this.tweens.add({
-      targets: borderFlash, // Objeto a animar
-      alpha: { from: 0, to: 1 }, // Opacidad de 0 a 1
-      duration: 150, // Duración de 150ms
-      repeat: 4, // Repite 4 veces
-      yoyo: true, // Alterna entre valores
-      onComplete: () => borderFlash.destroy() // Destruye al terminar
+    this.bulletTimer = this.time.addEvent({
+      delay,
+      callback,
+      callbackScope: this,
+      loop: true
     });
   }
 
-  // ========== CAMBIO DE FASE DE DIFICULTAD ==========
-  changePhase(newPhase) {
-    this.phase = newPhase; // Actualiza fase actual
-
-    // Detiene timers anteriores si existen
-    if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles sin destruir callbacks
-    if (this.circleTimer) this.circleTimer.remove(false); // Elimina timer de círculos sin destruir callbacks
-
-    // Configura parámetros según la nueva fase
-    switch (newPhase) {
-      case 1: // Fase 1: Solo proyectiles dirigidos rápidos
-        this.bulletDelay = 400; // Dispara cada 400ms
-        this.bulletTimer = this.time.addEvent({
-          delay: this.bulletDelay, // Delay configurado
-          callback: this.spawnCylinder, // Función de generación
-          callbackScope: this, // Contexto de this
-          loop: true // Se repite indefinidamente
-        });
-        break;
-
-      case 2: // Fase 2: Solo círculos convergentes lentos
-        this.bulletDelay = 1800; // Convergen cada 1,8s
-        this.bulletTimer = this.time.addEvent({
-          delay: this.bulletDelay, // Delay configurado
-          callback: this.spawnCircleWave, // Función de círculo
-          callbackScope: this, // Contexto de this
-          loop: true // Se repite indefinidamente
-        });
-        break;
-
-      case 3: // Fase 3: Combinación de dirigidos rápidos + círculos
-        this.bulletDelay = 2000; // Barrido cada 2s
-        this.bulletTimer = this.time.addEvent({
-          delay: this.bulletDelay, // Delay configurado
-          callback: this.spawnCylinder, // Función de generación
-          callbackScope: this, // Contexto de this
-          loop: true // Se repite indefinidamente
-        });
-        break;
-    }
-  }
-
-  // ========== COLISIÓN JUGADOR-PROYECTIL ==========
-  hitPlayer(player, cyl) {
-    // Ignora colisión si el jugador es invulnerable
+  // =====================================================
+  hitPlayer(player, proj) {
     if (this.isInvulnerable) return;
 
-    cyl.destroy(); // Elimina el proyectil que impactó
-    this.health--; // Reduce vida del jugador en 1
+    proj.destroy();
+    this.health--;
 
-    // Actualiza interfaz de vida
-    this.healthText.setText(`Vida: ${this.health}`); // Actualiza texto numérico
-    this.barraVida.width = 120 * (this.health / this.maxHealth); // Ajusta ancho de barra proporcionalmente
+    this.healthText.setText(`Vida: ${this.health}`);
+    this.barraVida.width = 120 * (this.health / this.maxHealth);
 
-    // Activa invencibilidad
     this.activateInvulnerability();
 
-    // Verifica condición de derrota
-    if (this.health <= 0) this.loseGame(); // Ejecuta función de derrota
+    if (this.health <= 0) this.loseGame();
   }
 
-  // ========== SISTEMA DE INVENCIBILIDAD ==========
   activateInvulnerability() {
-    this.isInvulnerable = true; // Activa estado de invencibilidad
+    this.isInvulnerable = true;
 
-    // Efecto visual de parpadeo
     this.tweens.add({
-      targets: this.player, // El jugador es el objeto a animar
-      alpha: 0.3, // Reduce opacidad a 30%
-      duration: 100, // Duración de cada parpadeo: 100ms
-      yoyo: true, // Alterna entre valores (0.3 y 1)
-      repeat: 5, // Repite 7 veces (total: 8 cambios en 1600ms aprox)
-      onComplete: () => { // Al terminar la animación
-        this.player.alpha = 1; // Restaura opacidad completa
-        this.isInvulnerable = false; // Desactiva invencibilidad
+      targets: this.player,
+      alpha: 0.3,
+      duration: 100,
+      yoyo: true,
+      repeat: 5,
+      onComplete: () => {
+        this.player.alpha = 1;
+        this.isInvulnerable = false;
       }
     });
 
-    // Timer de seguridad para desactivar invencibilidad
     this.time.delayedCall(this.invulnerabilityDuration, () => {
-      this.isInvulnerable = false; // Garantiza que se desactive después del tiempo
-      this.player.alpha = 1; // Garantiza opacidad completa
-    }, [], this);
+      this.isInvulnerable = false;
+      this.player.alpha = 1;
+    });
   }
+
+  updateTimer() {
+    if (this.health <= 0) return;
+    this.remainingTime--;
+    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`);
+    if (this.remainingTime <= 0) this.winGame();
+  }
+
+
 
   // ========== VICTORIA ==========
   winGame() {
@@ -419,7 +326,7 @@ export default class Undertale extends Phaser.Scene {
     this.physics.pause(); // Detiene todas las físicas del juego
     if (this.bulletTimer) this.bulletTimer.remove(false); // Elimina timer de proyectiles
     if (this.timerEvent) this.timerEvent.remove(false); // Elimina timer del contador
-    
+
     //lanza el PostMinigameMenu
     this.scene.launch('PostMinigameMenu', {
       result: 'victory',
@@ -467,15 +374,3 @@ export default class Undertale extends Phaser.Scene {
     this.scene.stop();
   }
 }
-
-// SPRITES
-
-// CASE 1: serpientes desde arriba*
-// CASE 2: escudos que giran / arma circular que gira*
-// CASE 3: espadas rollo egipcio
-// FONDO: lo que salga (wait team)
-// BG ZONA JUGADOR: arena? desde arriba*
-// BORDE: cactus?
-// VIDAS: corazonzitos*
-// PLAYER: rostro del character que elijamos para ser prota (wait team)*
-// *: animado
