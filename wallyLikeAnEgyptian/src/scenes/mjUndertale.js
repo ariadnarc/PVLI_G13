@@ -3,11 +3,82 @@ import InputManager from '../core/InputManager.js';
 import PlayerManager from '../core/PlayerManager.js';
 import { playerInitialData } from '../config/PlayerData.js';
 
+/**
+ * @typedef {Object} UndertaleMinigameConfig
+ * @property {number} vidas La cantidad inicial de vida del jugador para esta dificultad
+ */
+
+/**
+ * @typedef {Object} SceneData
+ * @property {string} minijuego Nombre del minijuego
+ * @property {string} dificultad Dificultad seleccionada
+ */
+
+/**
+ * Mini-Juego inspirado en Undertale!! Un bullet hell de toda la vida
+ * El objetivo es sobrevivir a las oleadas de proyectiles durante un tiempo determinado
+ * @extends Phaser.Scene
+ */
 export default class Undertale extends Phaser.Scene {
+  /**
+   * Constructor de la escena.
+   */
   constructor() {
     super('Undertale');
+
+    /** @type {boolean} Indica si esta escena es un minijuego */
+    this.isMinigame = true;
+    /** @type {string} Nombre del minijuego */
+    this.minijuego = '';
+    /** @type {string} Dificultad del minijuego */
+    this.difficulty = '';
+
+    /** @type {number} Ancho del área de juego */
+    this.gameWidth = 0;
+    /** @type {number} Alto del área de juego */
+    this.gameHeight = 0;
+
+    /** @type {InputManager} Input Manager */
+    this.inputManager = null;
+    /** @type {PlayerManager} Player Manager */
+    this.playerManager = null;
+    /** @type {Phaser.Physics.Arcade.Sprite} Jugador */
+    this.player = null;
+    /** @type {Phaser.Physics.Arcade.Group} Proyectiles para las colisiones */
+    this.bullets = null;
+
+    /** @type {number} Vida actual del jugador */
+    this.health = 0;
+    /** @type {number} Vida máxima del jugador */
+    this.maxHealth = 0;
+    /** @type {boolean} Flajj de invulnerabilidad tras ser golpeado */
+    this.isInvulnerable = false;
+    /** @type {number} Duración de la invulnerabilidad en milisegundos */
+    this.invulnerabilityDuration = 1500;
+    /** @type {Phaser.GameObjects.Text} Objeto de texto para mostrar la vida */
+    this.healthText = null;
+    /** @type {Phaser.GameObjects.Rectangle} Lo mismo pero objeto rectángulo */
+    this.barraVida = null;
+
+    /** @type {number} Tiempo restante para ganar (seg.) */
+    this.remainingTime = 0;
+    /** @type {Phaser.GameObjects.Text} Objeto de texto para mostrar el tiempo restante */
+    this.timerText = null;
+    /** @type {Phaser.Time.TimerEvent} Temporizador para la cuenta atrás (event) */
+    this.timerEvent = null;
+
+    /** @type {number} Fase de ataque actual (1 - 3) */
+    this.attackPhase = 1;
+    /** @type {Phaser.Time.TimerEvent} Temporizador para generar proyectiles (event) */
+    this.bulletTimer = null;
+    /** @type {Phaser.Sound.BaseSound} Rolita */
+    this.bgMusic = null;
   }
 
+  /**
+   * Inicializa la escena, cargando datos de configuración
+   * @param {SceneData} data - Datos pasados a la escena, incluyendo el nombre del minijuego y la dificultad
+   */
   init(data = {}) {
     this.isMinigame = true;
     this.minijuego = data.minijuego;
@@ -15,11 +86,12 @@ export default class Undertale extends Phaser.Scene {
   }
 
   create() {
+    /** @type {UndertaleMinigameConfig} Declaramos el config para poder declarar variaables que pasan pr dif.*/
     const config = DIFICULTADES[this.difficulty].minijuegos.Undertale;
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
 
-    // ================= FONDOS =================
+    // Fondo, área de juego, físicas
     this.add.image(cx, cy, 'paredBG');
     const arenaBg = this.add.image(cx, cy, 'fondoUndertale');
     this.gameWidth = 400;
@@ -36,7 +108,7 @@ export default class Undertale extends Phaser.Scene {
       this.gameHeight
     );
 
-    // ================= INPUT / PLAYER =================
+    // Player
     this.inputManager = new InputManager(this);
     this.inputManager.configure({ cursors: true });
 
@@ -49,10 +121,10 @@ export default class Undertale extends Phaser.Scene {
     this.player.setPosition(cx, cy);
     this.player.setCollideWorldBounds(true);
 
-    // ================= PROYECTILES =================
+    // Proyectiles
     this.bullets = this.physics.add.group();
 
-    // ================= VIDA =================
+    // Vida, invulnerabilty
     this.health = config.vidas;
     this.maxHealth = this.health;
     this.isInvulnerable = false;
@@ -70,7 +142,7 @@ export default class Undertale extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // ================= TIMER =================
+    // Tiempo de juego
     this.remainingTime = 30;
     this.timerText = this.add
       .text(cx, 100, `SOBREVIVE: ${this.remainingTime}`, {
@@ -86,7 +158,7 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    // ================= ANIMACIONES =================
+    // Anims (solo hay 1, las del player aquí no)
     this.anims.create({
       key: 'giragira',
       frames: this.anims.generateFrameNumbers('fase2obs', {
@@ -97,7 +169,7 @@ export default class Undertale extends Phaser.Scene {
       repeat: -1
     });
 
-    // ================= COLISIONES =================
+    // Colisiones
     this.physics.add.overlap(
       this.player,
       this.bullets,
@@ -106,12 +178,16 @@ export default class Undertale extends Phaser.Scene {
       this
     );
 
-    // ================= FASES =================
+    // Fase y música
+    // Juan: sé que es algo raro separarlo en 2 variables, pero
+    // viene genial para hacer por un lado oleadas y proyectiles
+    // y por el otro HUD, tldr, comodidad para programar
     this.attackPhase = 1;
     this.changePhase(1);
 
+    /** @type {Phaser.Time.TimerEvent} Temporizador (event). */
     this.patternTimer = this.time.addEvent({
-      delay: 10000,
+      delay: 10000, // 10 segs.
       callback: () => {
         this.attackPhase++;
         if (this.attackPhase > 3) this.attackPhase = 1;
@@ -125,14 +201,26 @@ export default class Undertale extends Phaser.Scene {
     this.bgMusic.play();
   }
 
-  update() {
+
+  update() { // Player e Input
     this.inputManager.update();
     this.playerManager.update();
   }
 
-  // =================================================
-  // ============== FACTORY PROYECTILES ==============
-  // =================================================
+  /**
+   * Genera un nuevo proyectil físico en la escena y lo añade al grupo de balas.
+   * @param {Object} options - Opciones para el proyectil
+   * @param {number} options.x - Posición x inicial
+   * @param {number} options.y - Posición y inicial
+   * @param {string} options.texture - Nombre sprite
+   * @param {string} [options.anim] - Animación (solo si queremos, declaramos como null)
+   * @param {Object} [options.hitbox] - Configuración opcional para el tamaño del cuerpo de la física
+   * @param {number} options.hitbox.w - Ancho del hitbox
+   * @param {number} options.hitbox.h - Alto del hitbox
+   * @param {number} [options.scale=1] - Escala del sprite
+   * @param {number} [options.rotation=0] - Rotación inicial en radianes
+   * @returns {Phaser.Physics.Arcade.Sprite} El nuevo objeto proyectil
+   */
   spawnProjectile({ x, y, texture, anim = null, hitbox, scale = 1, rotation = 0 }) {
     const proj = this.physics.add.sprite(x, y, texture);
     this.bullets.add(proj);
@@ -151,7 +239,10 @@ export default class Undertale extends Phaser.Scene {
     return proj;
   }
 
-  // ================= FASE 1 =================
+  /**
+   * FASE 1
+   * Dagas desde los 2 lados
+   */
   spawnDagasAttack() {
     const cam = this.cameras.main;
     const fromLeft = Phaser.Math.Between(0, 1) === 0;
@@ -186,7 +277,10 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  // ================= FASE 2 =================
+  /**
+   * FASE 2
+   * Proyectiles que se mueven desde una posición circular hacia el centro (el jugador)
+   */
   spawnCircleWave() {
     const cx = this.player.x;
     const cy = this.player.y;
@@ -219,7 +313,10 @@ export default class Undertale extends Phaser.Scene {
     }
   }
 
-  // ================= FASE 3 =================
+  /**
+   * FASE 3
+   * Barrido doble lo largo de un eje
+   */
   spawnSweep() {
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
@@ -259,12 +356,11 @@ export default class Undertale extends Phaser.Scene {
 
       proj.body.setVelocity(vx, vy);
       if (horizontal) {
-        // --- BARRIDO HORIZONTAL ---
         if (vx < 0) {
-          // derecha → izquierda
+          // derecha > izquierda
           proj.setRotation(Phaser.Math.DegToRad(-90));
         } else {
-          // izquierda → derecha
+          // izquierda > derecha
           proj.setRotation(Phaser.Math.DegToRad(90));
         }
 
@@ -286,7 +382,11 @@ export default class Undertale extends Phaser.Scene {
     }
   }
 
-  // ================= CAMBIO FASE =================
+  /**
+   * CAMBIO FASE
+   * Detiene el patrón de ataque actual e inicia uno nuevo
+   * @param {number} phase - La nueva fase de ataque (1 - 3)
+   */
   changePhase(phase) {
     if (this.bulletTimer) this.bulletTimer.remove(false);
 
@@ -315,7 +415,10 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  // ================= WARNING VISUAL =================
+  /**
+   * Texto de que cambiamos de fase
+   * @param {number} phase - El número de la fase que comienza
+   */
   showPhaseWarning(phase) {
     const cx = this.cameras.main.centerX;
     const cy = this.cameras.main.centerY;
@@ -349,6 +452,13 @@ export default class Undertale extends Phaser.Scene {
   }
 
   // ================= COLISIÓN =================
+
+  /**
+   * Colisión entre el jugador y un proyectil
+   * Vida--, isInvulnerable = true llamando a otro método (el q está justo abajo)
+   * @param {Phaser.Physics.Arcade.Sprite} player - El sprite del jugador
+   * @param {Phaser.Physics.Arcade.Sprite} proj - El sprite del proyectil
+   */
   hitPlayer(player, proj) {
     if (this.isInvulnerable) return;
 
@@ -363,6 +473,9 @@ export default class Undertale extends Phaser.Scene {
     if (this.health <= 0) this.loseGame();
   }
 
+  /**
+   * Gestión de la invulnerabilidad
+   */
   activateInvulnerability() {
     this.isInvulnerable = true;
 
@@ -384,7 +497,23 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  // ================= VICTORIA =================
+  /**
+ * Temporizador
+ */
+  updateTimer() {
+    if (this.health <= 0) return;
+
+    this.remainingTime--;
+    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`);
+
+    if (this.remainingTime <= 0) {
+      this.winGame();
+    }
+  }
+
+  /**
+   * WIN
+   */
   winGame() {
     this.bgMusic.stop();
     this.physics.pause();
@@ -407,7 +536,9 @@ export default class Undertale extends Phaser.Scene {
     this.scene.stop();
   }
 
-  // ================= DERROTA =================
+  /**
+   * LOSE
+   */
   loseGame() {
     this.bgMusic.stop();
     this.physics.pause();
@@ -435,16 +566,5 @@ export default class Undertale extends Phaser.Scene {
     });
 
     this.scene.stop();
-  }
-
-  updateTimer() {
-    if (this.health <= 0) return;
-
-    this.remainingTime--;
-    this.timerText.setText(`SOBREVIVE: ${this.remainingTime}`);
-
-    if (this.remainingTime <= 0) {
-      this.winGame();
-    }
   }
 }
