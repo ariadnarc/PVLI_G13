@@ -261,6 +261,7 @@ export default class FindLuigi extends Phaser.Scene {
                 this.startPhase();
             } else {
                 // Victoria:
+                this.bgMusic.stop();
                 this.scene.start('FinalScene');
                 this.scene.stop();
             }

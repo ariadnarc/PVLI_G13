@@ -48,6 +48,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('paredBG', 'wallyLikeAnEgyptian/assets/ui/paredBG.jpg');
     this.load.image('fondoBoton', 'wallyLikeAnEgyptian/assets/ui/boton.png');
     this.load.image('fondoIntro', 'wallyLikeAnEgyptian/assets/ui/IntroScenebg.png');
+    this.load.image('creditsFondo', 'wallyLikeAnEgyptian/assets/ui/creditsBG.png');
 
     // === IMÁGENES Y SPRITES ===
     this.load.spritesheet('player', 'wallyLikeAnEgyptian/assets/sprites/playerSpriteSheet.png', {
@@ -76,7 +77,7 @@ export default class Boot extends Phaser.Scene {
 
     //portales cofres con animacion
     this.load.spritesheet('cofre', 'wallyLikeAnEgyptian/assets/sprites/cofreSpriteSheet.png', {
-      frameWidth: 15,
+      frameWidth: 16,
       frameHeight: 16
     });
     this.load.spritesheet('portalFinal', 'wallyLikeAnEgyptian/assets/sprites/portalFinal.png', {
@@ -120,6 +121,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
     this.load.audio('minigame-music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
+    this.load.audio('creditsMusic', 'wallyLikeAnEgyptian/assets/sounds/credits_sound.mp3');
   }
 
   create() {

@@ -11,6 +11,7 @@ import MapScene from './scenes/MapScene.js';
 import FinalMessage from './scenes/FinalMessage.js';
 import SelectDifficultyScene from './scenes/SelectDifficultyScene.js';
 import IntroScene from './scenes/IntroScene.js';
+import FinalScene from './scenes/FinalScene.js';
 
 // overlays
 import BinnacleOverlay from './overlay/BinnacleOverlay.js';
@@ -49,7 +50,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
     }, // declaramos físcas globalmente
     scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
       SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights, FinalGame,
-      LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage],
+      LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage, FinalScene],
   };
 
   // Condicional que obliga a buscar el canvas q tenemos en el index
