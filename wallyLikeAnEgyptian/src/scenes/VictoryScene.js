@@ -62,14 +62,6 @@ export default class VictoryScene extends Phaser.Scene {
     const randomTier = GlyphTierData.getRandomReward(this.difficulty);
     total[randomTier]++;
 
-    // 3. BONUS por puntuación perfecta
-    if (this.perfectScore) {
-      const bonus = GlyphTierData.getBonusReward(this.difficulty);
-      for (const tier in bonus) {
-        total[tier] += bonus[tier];
-      }
-    }
-
     return total;
   }
 
@@ -98,14 +90,6 @@ export default class VictoryScene extends Phaser.Scene {
 
         offsetY += 40;
       }
-    }
-
-    if (this.perfectScore) {
-      this.add.text(width / 2, height / 2 + 20 + offsetY + 20,
-        '¡BONUS por puntación perfecta!', {
-          fontSize: '20px',
-          color: '#FFD700'
-        }).setOrigin(0.5);
     }
   }
 }
