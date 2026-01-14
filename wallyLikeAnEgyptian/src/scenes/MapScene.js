@@ -93,7 +93,7 @@ export default class MapScene extends Phaser.Scene {
         this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
 
         // Portal final
-        this.finalPortal = new FinalPortal(this, 500, 500, this.PlayerManager);
+        this.finalPortal = new FinalPortal(this,  455, 1050, this.PlayerManager);
 
         // Animaciones:
         this.anims.create({
@@ -142,6 +142,9 @@ export default class MapScene extends Phaser.Scene {
         });
         //this.wall.update();
         this.finalPortal.update();
+        this.wallSalaSecrt.update();
+        this.wallVuelta.update();
+        this.wallFin.update();
     }
 
     openBinnacle() { // Abrir bitácora

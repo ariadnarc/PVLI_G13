@@ -29,31 +29,34 @@ export default class MurosInvisibles {
                 // Bloquear paso
                 this.PlayerManager.sprite.setVelocity(0, 0);
                 //escribimos texto con info
-                /*const centerX = this.scene.cameras.main.centerX;
-                const centerY = this.scene.cameras.main.centerY;
-                this.infoText = this.scene.add.text(centerX, centerY+150, `No tienes jeroglíficos suficientes: ${JSON.stringify(this.requiredGlyphs)}`, {
+                this.infoText = this.scene.add.text(this.x, this.y + 100, `No tienes jeroglificos suficientes`, {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
-                    color: '#2d1a00ff'
-            }).setOrigin(0.5);
-                */
+                    color: '#d8af75ff',
+                    fontStyle: 'bold',
+                    stroke: '#33261bff',
+                    strokeThickness: 4
+                }).setOrigin(0.5);
             } else {
                 // Desactivar la pared para dejar pasar
                 wallSprite.disableBody(true, false);
             }
         });
     }
-    /*
+    
     update(){
-        if (!this.infoText) return; // nada que eliminar
+         const distance = Phaser.Math.Distance.Between(
+            this.PlayerManager.sprite.x,
+            this.PlayerManager.sprite.y,
+            this.x,
+            this.y
+        );
 
-        const playerRect = this.PlayerManager.sprite.getBounds();
-        const wallRect = this.wall.getBounds();
-
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(playerRect, wallRect)){
-            this.infoText.destroy();
-            this.infoText = null;
-            this.playerBlocked = false;
-        }   
-    }*/
+        if (distance >50) { // 50 px de tolerancia
+            if (this.infoText) {
+                this.infoText.destroy();
+                this.infoText = null;
+            }
+        }
+    }
 }
