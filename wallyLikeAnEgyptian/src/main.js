@@ -31,16 +31,17 @@ import SlideBar from './scenes/mjSlide.js';
 import FinalGame from './scenes/mjFinalGame.js'
 
 
-import MovingObject from './core/MovingObject.js';
-
 document.fonts.load('16px "Filgaia"').then(() => {
 
   const config = {
     type: Phaser.CANVAS,
     width: 1200,
     height: 600,
-    backgroundColor: '#e87722',
     canvas: document.getElementById('gameCanvas'),
+    scale: {
+      mode: Phaser.Scale.NONE,
+    },
+    backgroundColor: '#e87722',
     physics: {
       default: 'arcade',
       arcade: {

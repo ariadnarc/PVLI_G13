@@ -24,17 +24,6 @@
 </head>
 
 <body>
-  <!-- Barra lateral -->
-  <nav id="sidebar">
-    <ul>
-      <li><a href="#home"><span class="icon">🏠</span><span class="label">Home</span></a></li>
-      <li><a href="#about"><span class="icon">👥</span><span class="label">Sobre Nosotros</span></a></li>
-      <li><a href="#game"><span class="icon">🎮</span><span class="label">Juego</span></a></li>
-      <li><a href="#news"><span class="icon">💬</span><span class="label">Noticias</span></a></li>
-      <li><a href="#contact"><span class="icon">📱</span><span class="label">Contacto</span></a></li>
-    </ul>
-  </nav>
-
   <!-- Contenido principal -->
   <main>
     <!-- Home -->
@@ -80,102 +69,106 @@
 
     <!-- Juego -->
     <section id="game" class="section game">
-      <h2>Wally like an Egyptian</h2>
-      <p class="game-desc">
-        Nuestro juego trata sobre una aventura en la que el objetivo principal es encontrar a Wally dentro de una
-        pirámide del antiguo Egipto.
-        Para conseguirlo, el jugador debe seguir una serie de pistas escritas en alfabeto jeroglífico, lo que hará que
-        necesite derribar las fronteras del lenguaje para poder avanzar.
-      </p>
+      <div class="game-box">
+        <h2>Wally like an Egyptian</h2>
+        <p class="game-desc">
+          Nuestro juego trata sobre una aventura en la que el objetivo principal es encontrar a Wally dentro de una
+          pirámide del antiguo Egipto.
+          Para conseguirlo, el jugador debe seguir una serie de pistas escritas en alfabeto jeroglífico, lo que hará que
+          necesite derribar las fronteras del lenguaje para poder avanzar.
+        </p>
 
-      <!-- CONTROLES DEL JUEGO -->
-      <div class="controls">
-        <h3>Controles</h3>
+        <!-- CONTROLES DEL JUEGO -->
+        <div class="controls">
+          <h3>Controles</h3>
 
-        <div class="controls-carousel">
-          <button class="arrow left" id="controlsPrev">◀</button>
+          <div class="controls-carousel">
+            <button class="arrow left" id="controlsPrev">◀</button>
 
-          <div class="controls-viewport">
-            <div class="controls-track" id="controlsTrack">
-              <!-- MENÚS -->
-              <div class="controls-slide">
-                <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/menu.png" alt="Menús">
+            <div class="controls-viewport">
+              <div class="controls-track" id="controlsTrack">
+                <!-- MENÚS -->
+                <div class="controls-slide">
+                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/menu.png" alt="Menús">
 
-                <div class="controls-icons">
-                  <div class="control-item">
-                    <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
-                    <span>Seleccionar</span>
+                  <div class="controls-icons">
+                    <div class="control-item">
+                      <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
+                      <span>Seleccionar</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- MAPA PRINCIPAL -->
-              <div class="controls-slide">
-                <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/mapa.png"
-                  alt="Mapa principal">
+                <!-- MAPA PRINCIPAL -->
+                <div class="controls-slide">
+                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/mapa.png"
+                    alt="Mapa principal">
 
-                <div class="controls-icons">
-                  <div class="control-item">
-                    <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
-                    <span>Abrir bitácora</span>
-                  </div>
-                  <div class="control-item">
-                    <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png" alt="Moverse">  
-                    <span>Moverse</span>
-                  </div>
-                  <div class="control-item">
-                    <img src="wallyLikeAnEgyptian/assets/recursos-web/e.png" alt="Minijuegos">
-                    <span>Entrar a minijuego</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- BITÁCORA -->
-              <div class="controls-slide">
-                <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/bitacora.png" alt="Menús">
-
-                <div class="controls-icons">
-                  <div class="control-item">
-                    <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
-                    <span>Cerrar bitácora</span>
+                  <div class="controls-icons">
+                    <div class="control-item">
+                      <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
+                      <span>Abrir bitácora</span>
+                    </div>
+                    <div class="control-item">
+                      <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png"
+                        alt="Moverse">
+                      <span>Moverse</span>
+                    </div>
+                    <div class="control-item">
+                      <img src="wallyLikeAnEgyptian/assets/recursos-web/e.png" alt="Minijuegos">
+                      <span>Entrar a minijuego</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- MINIJUEGOS -->
-              <div class="controls-slide">
-                <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/minijuego.png"
-                  alt="Minijuegos">
+                <!-- BITÁCORA -->
+                <div class="controls-slide">
+                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/bitacora.png" alt="Menús">
 
-                <div class="controls-icons">
-                  <div class="control-item">
-                    <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
-                    <span>Seleccionar</span>
+                  <div class="controls-icons">
+                    <div class="control-item">
+                      <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
+                      <span>Cerrar bitácora</span>
+                    </div>
                   </div>
-                  <div class="control-item">
-                    <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png" alt="Moverse">
-                    <span>Moverse</span>
-                  </div>
-                  <div class="control-item">
-                    <img class="control-icon space" src="wallyLikeAnEgyptian/assets/recursos-web/space.png" alt="Esapcio">
-                    <span>Disparar</span>
+                </div>
+
+                <!-- MINIJUEGOS -->
+                <div class="controls-slide">
+                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/minijuego.png"
+                    alt="Minijuegos">
+
+                  <div class="controls-icons">
+                    <div class="control-item">
+                      <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
+                      <span>Seleccionar</span>
+                    </div>
+                    <div class="control-item">
+                      <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png"
+                        alt="Moverse">
+                      <span>Moverse</span>
+                    </div>
+                    <div class="control-item">
+                      <img class="control-icon space" src="wallyLikeAnEgyptian/assets/recursos-web/space.png"
+                        alt="Esapcio">
+                      <span>Disparar</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <button class="arrow right" id="controlsNext">▶</button>
+            <button class="arrow right" id="controlsNext">▶</button>
+          </div>
+        </div>
+
+        <h2>Juego</h2>
+        <div class="game-wrapper">
+          <canvas id="gameCanvas">
+            Tu navegador no soporta canvas.
+          </canvas>
         </div>
       </div>
-
-      <div> 
-        <h2>Juego</h2>
-        <canvas id="gameCanvas">
-        Tu navegador no soporta canvas.
-      </canvas>
-      </div>
-      
     </section>
 
 
@@ -183,7 +176,7 @@
     <section id="news" class="section news">
       <h2>Noticias y Avances</h2>
       <div class="chat">
-        <div class="chat-separator">📅 Octubre 2025</div>  <!-- Hito 1 -->
+        <div class="chat-separator">📅 Octubre 2025</div> <!-- Hito 1 -->
 
         <div class="bubble left">
           <span class="author">👾 David:</span>
@@ -200,7 +193,7 @@
           ¡Tenemos Redes Sociales!
         </div>
 
-        <div class="chat-separator">📅 Noviembre 2025</div>  <!-- Hito 2 -->
+        <div class="chat-separator">📅 Noviembre 2025</div> <!-- Hito 2 -->
 
         <div class="bubble left">
           <span class="author">👾 Juan:</span>
@@ -227,7 +220,7 @@
           Minijuego estilo Undertale en progreso.
         </div>
 
-        <div class="chat-separator">📅 Diciembre 2025</div>  <!-- Hito 3 -->
+        <div class="chat-separator">📅 Diciembre 2025</div> <!-- Hito 3 -->
 
         <div class="bubble left">
           <span class="author">👾 Juan:</span>
