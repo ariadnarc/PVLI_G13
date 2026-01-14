@@ -1,18 +1,3 @@
-/* Barra lateral */ 
-const sidebar = document.getElementById("sidebar");
-
-// Mostrar barra si el ratón toca el borde izquierdo (0–10px)
-document.addEventListener("mousemove", (e) => {
-  if (e.clientX <= 10) {
-    sidebar.classList.add("expanded");
-  }
-});
-
-// Ocultar barra al salir de ella
-sidebar.addEventListener("mouseleave", () => {
-  sidebar.classList.remove("expanded");
-});
-
 /* Sección Home */ 
 
 document.addEventListener("DOMContentLoaded", () => {
