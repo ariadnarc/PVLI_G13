@@ -69,7 +69,7 @@ export default class MapScene extends Phaser.Scene {
 
         this.portales.push(portal);
     });
-    //===================COLIDER OBJETOS CON COFRES Y ENTRE ELLOS===================
+    //=== COLIDER OBJETOS CON COFRES Y ENTRE ELLOS ===
     for (let i = 0; i < this.movingObjects.length; i++) {
             for (let j = i + 1; j < this.movingObjects.length; j++) {
                 this.physics.add.collider(

@@ -20,7 +20,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
   create() {
     const { width, height } = this.sys.game.config;
 
-    // --- INPUT ---
+    //=== INPUT ===
     this.inputManager = new InputManager(this);
     this.inputManager.configure({
       keyboard: true,
@@ -31,13 +31,13 @@ export default class BinnacleOverlay extends Phaser.Scene {
       if (key === "B") this.closeBinnacle();
     });
 
-    // --- INSTANCIA DE BITÁCORA ---
+    //=== INSTANCIA DE BITÁCORA ===
     this.binnacle = BinnacleManager.getInstance();
 
-    // --- FONDO ---
+    //=== FONDO ===
     this.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0, 0);
 
-    // --- TÍTULO ---
+    //=== TÍTULO ===
     this.add.text(width / 2, 60, "BITÁCORA", {
       fontFamily: "Filgaia",
       fontSize: "36px",
@@ -45,20 +45,18 @@ export default class BinnacleOverlay extends Phaser.Scene {
       fontStyle: "bold"
     }).setOrigin(0.5);
 
-    // --- INSTRUCCIONES ---
+    //=== INSTRUCCIONES ===
     this.add.text(width / 2, height - 60, "Pulsa B para volver", {
       fontFamily: "Filgaia",
       fontSize: "20px",
       color: "#e6c480"
     }).setOrigin(0.5);
 
-    // --- CONTENIDO ---
+    //=== CONTENIDO ===
     this.renderBinnacleContent();
   }
 
-  /**
-   * Dibuja las imágenes, nombres y cantidades de cada tier
-   */
+  // Dibuja las imágenes, nombres y cantidades de cada tier
   renderBinnacleContent() {
     const { width } = this.sys.game.config;
 
@@ -75,19 +73,19 @@ export default class BinnacleOverlay extends Phaser.Scene {
     tierData.forEach((data, index) => {
       const x = startX + index * spacing;
 
-      // --- TÍTULO DEL SÍMBOLO ---
+      //=== TÍTULO DEL SÍMBOLO ===
       this.add.text(x, yName, `${data.img.toUpperCase()} (Tier ${data.tier})`, {
         fontFamily: "Filgaia",
         fontSize: "18px",
         color: "#e6c480",
       }).setOrigin(0.5);
 
-      // --- IMAGEN DEL TIER ---
+      //=== IMAGEN DEL TIER ===
       this.add.image(x, yImage, data.img)
         .setOrigin(0.5)
         .setScale(0.6);
 
-      // --- CANTIDAD DEL INVENTARIO ---
+      //=== CANTIDAD DEL INVENTARIO ===
       const amount = summary[data.tier] || 0;
 
       this.add.text(x, yCount, `x${amount}`, {

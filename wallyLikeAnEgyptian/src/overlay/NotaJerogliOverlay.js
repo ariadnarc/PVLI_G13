@@ -24,9 +24,9 @@ export default class NotaJerogliOverlay {
     this.binnacle = BinnacleManager.getInstance();
 
     this.items = [];
-    this.#drawInitialGlyphs();
+    this.drawInitialGlyphs();
   }
-  #drawInitialGlyphs() {
+  drawInitialGlyphs() {
     this.mensaje.forEach((letra, i) => {
       const tier = this.letraJerogMap[letra];
 

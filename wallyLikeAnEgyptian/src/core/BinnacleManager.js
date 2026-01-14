@@ -19,8 +19,9 @@ export default class BinnacleManager {
     this.glyphs = playerInitialData.glyphs; 
   }
 
-  /** Añade uno o varios jeroglíficos al registro del jugador */
+  // Añade uno o varios jeroglíficos al registro del jugador 
   addGlyph(glyphsEarned) {
+
     // Validación: debe ser un objeto con pares { tier: cantidad }
     if (typeof glyphsEarned !== 'object' || glyphsEarned === null) {
       console.warn('[Bitácora] Formato inválido en addGlyph. Se esperaba un objeto.');
@@ -42,12 +43,12 @@ export default class BinnacleManager {
     }
   }
 
-  /** Comprueba si tiene jeroglificos necesarios para cierta accion */
+  // Comprueba si tiene jeroglificos necesarios para cierta accion 
   hasGlyphs(tier, amount) {
   return this.glyphs[tier] >= amount;
   }
 
-  /** Gasta jeroglíficos al seleccionar dificultad o eventos */
+  // Gasta jeroglíficos al seleccionar dificultad o eventos 
   spendGlyphs(tier, amount) {
     if (this.glyphs[tier] >= amount) {
       this.glyphs[tier] -= amount;
@@ -56,13 +57,12 @@ export default class BinnacleManager {
     return false;
   }
 
-  /** Devuelve un resumen completo */
-  // ...variable devuelve una copia superficial para evitar modificaciones
+  // Devuelve un resumen completo y la variable devuelve una copia superficial para evitar modificaciones
   getSummary() {
     return { ...this.glyphs };
   }
 
-  /** Resetea la bitácora (por nueva partida, etc.) */
+  // Resetea la bitácora (por nueva partida, etc.) 
   reset() {
     this.glyphs = { S: 0, A: 0, B: 0 };
   }

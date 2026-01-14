@@ -58,7 +58,7 @@ export default class IntroScene extends Phaser.Scene {
     showDialog() {
         if (this.dialogIndex >= this.dialogData.length) {
             this.sound.play("click");
-            this.scene.start('MapScene'); // o lo que quieras al final del diálogo
+            this.scene.start('MapScene'); 
             return;
         }
 
@@ -94,14 +94,14 @@ export default class IntroScene extends Phaser.Scene {
             .setScale(0.75)
             .setInteractive({ useHandCursor: true });
 
-        // --- Texto encima ---
+        //=== Texto encima ===
         const btnText = this.add.text(btn.x, btn.y, "Ir al mapa", {
             fontFamily: "Filgaia",
             fontSize: "20px",
             color: '#382f23ff'
         }).setOrigin(0.5);
 
-        // --- Hover: pequeña animación ---
+        //=== Hover: pequeña animación ===
         btn.on("pointerover", () => {
             btn.setScale(0.85);
             btnText.setColor("#ffffaa");
@@ -112,7 +112,7 @@ export default class IntroScene extends Phaser.Scene {
             btnText.setColor('#382f23ff');
         });
 
-        // --- Acción del botón ---
+        //=== Acción del botón ===
         btn.on("pointerdown", () => {
             this.scene.start("MapScene");
         });

@@ -91,16 +91,12 @@ export default class ButtonManager {
     });
   }
 
-  /**
-   * Permite cambiar el texto del botón externamente.
-   */
+  // Permite cambiar el texto del botón externamente.
   setText(newText) {
     this.text.setText(newText);
   }
 
-  /**
-   * Devuelve el contenedor por si quieres añadirlo a layouts externos.
-   */
+  // Devuelve el contenedor por si quieres añadirlo a layouts externos.
   getContainer() {
     return this.container;
   }

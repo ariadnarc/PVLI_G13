@@ -18,15 +18,7 @@ export default class PortalChest {
 
         this.sprite.setScale(1.5);
         this.sprite.body.setImmovable(true);
-
-        if (!scene.anims.exists('cofre_open')) {
-            scene.anims.create({
-                key: 'cofre_open',
-                frames: this.scene.anims.generateFrameNumbers('cofre', { start: 0, end: 4 }),
-                frameRate: 10,
-                repeat: 0
-            });
-        }
+        
         // Detectar si el jugador está encima
         scene.physics.add.overlap(this.player.sprite, this.sprite, () => {
             if (!this.canOpen) {

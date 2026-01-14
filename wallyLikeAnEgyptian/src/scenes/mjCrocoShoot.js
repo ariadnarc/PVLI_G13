@@ -66,18 +66,18 @@ export default class CrocoShoot extends Phaser.Scene {
         this.bgMusic = this.sound.add('minigame-music');
         this.bgMusic.play();
 
-        // JUGADOR
+        //=== JUGADOR ===
         this.player = this.add.image(80, 450, 'balista');
         this.player.setOrigin(0.5, 0.5); // importante para que rote desde el centro
         this.player.setScale(0.05);
         this.player.angle = 0;
 
-        // GRÁFICOS Y GRUPOS
+        //=== GRÁFICOS Y GRUPOS ===
         this.trajectory = this.add.graphics(); // Para la línea predictiva
         this.arrows = this.add.group();
         this.crocodiles = this.add.group();
 
-        // GENERACIÓN DE COCODRILOS
+        //=== GENERACIÓN DE COCODRILOS ===
         this.crocodileSpawnTimer = this.time.addEvent({
             delay: 2000,
             callback: this.spawnCrocodile,
@@ -86,7 +86,7 @@ export default class CrocoShoot extends Phaser.Scene {
             paused: false
         });
 
-        // HUD
+        //=== HUD ===
         this.livesText = this.add.text(centerX - 50, 16, this.getLivesText(), {
             fontFamily: 'Filgaia',
             color: '#382f23ff',
@@ -116,17 +116,17 @@ export default class CrocoShoot extends Phaser.Scene {
             this.trajectory.clear();
         }
 
-        // Pium
+        // Disparo
         if (Phaser.Input.Keyboard.JustDown(this.keys.space) && this.canShoot) {
             this.shootArrow();
         }
 
-        // MOvimiento manual NO por físicas
+        // Movimiento manual NO por físicas
         this.moveArrows(deltaSeconds);
         this.moveCrocodiles(deltaSeconds);
         this.checkCollisions();
 
-        // Aquí somos limpios
+        // Limpiar
         this.checkGameConditions();
         this.cleanupObjects();
     }
@@ -135,9 +135,7 @@ export default class CrocoShoot extends Phaser.Scene {
     //  MÉTODOS DE LÓGICA DE JUEGO
     // ---------------------------------------------------------
 
-    /**
-     * Dibuja una línea recta predictiva (preview lineal).
-     */
+    // Dibuja una línea recta predictiva (preview lineal).
     drawTrajectory() {
         this.trajectory.clear();
         this.trajectory.lineStyle(2, 0xffffff, 0.8);
@@ -155,9 +153,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.trajectory.strokeLineShape(new Phaser.Geom.Line(startX, startY, endX, endY));
     }
 
-    /**
-     * Crea y dispara una flecha en línea recta.
-     */
+    // Crea y dispara una flecha en línea recta.
     shootArrow() {
         this.canShoot = false;
 
@@ -191,9 +187,7 @@ export default class CrocoShoot extends Phaser.Scene {
         });
     }
 
-    /**
-     * Genera un nuevo cocodrilo y establece su velocidad.
-     */
+    // Genera un nuevo cocodrilo y establece su velocidad.
     spawnCrocodile() {
         if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
             this.crocodileSpawnTimer.paused = true;
@@ -219,9 +213,7 @@ export default class CrocoShoot extends Phaser.Scene {
         });
     }
 
-    /**
-     * Verifica colisiones entre flechas y cocodrilos usando geometría (bounding boxes).
-     */
+    // Verifica colisiones entre flechas y cocodrilos usando geometría (bounding boxes).
     checkCollisions() {
         this.arrows.children.each(arrow => {
             this.crocodiles.children.each(crocodile => {
@@ -253,9 +245,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.checkGameConditions();
     }
 
-    /**
-     * Elimina objetos que salen de la pantalla y cuenta los escapes de cocodrilos.
-     */
+    // Elimina objetos que salen de la pantalla y cuenta los escapes de cocodrilos.
     cleanupObjects() {
         // Flechas fuera de la pantalla
         this.arrows.children.each(arrow => {
@@ -285,9 +275,7 @@ export default class CrocoShoot extends Phaser.Scene {
         return `VIDAS: ${remaining}`;
     }
 
-    /**
-     * Verifica las condiciones de victoria y derrota.
-     */
+    // Verifica las condiciones de victoria y derrota.
     checkGameConditions() {
 
         if (this.gameIsOver) return;
@@ -320,7 +308,7 @@ export default class CrocoShoot extends Phaser.Scene {
     }
 
 
-    // ========== VICTORIA ==========
+    //=== VICTORIA ===
     endAsVictory() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.bgMusic.stop();
@@ -342,7 +330,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.scene.stop();
     }
 
-    // ========== DERROTA ==========
+    //=== DERROTA ===
     endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.physics.pause();

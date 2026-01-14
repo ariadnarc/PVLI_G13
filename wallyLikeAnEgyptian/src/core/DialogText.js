@@ -14,7 +14,6 @@ export default class DialogText{
 		// Mira si hay parámetros que se pasan, en caso de que no, se usan los por defecto
 		if (!opts) opts = {};
 		
-		// set properties from opts object or use defaults
 		this.borderThickness = opts.borderThickness || 3;
 		this.borderColor = opts.borderColor || 0x907748;
 		this.borderAlpha = opts.borderAlpha || 1;
@@ -41,8 +40,8 @@ export default class DialogText{
 		this.graphics = null;
 		this.closeBtn = null;
 		
-		//Crea la ventana de dialogo
-		this._createWindow();
+		// Crea la ventana de dialogo
+		this.createWindow();
 	}
 
 	// Método que cierra y abre la ventana de diálogo
@@ -70,7 +69,7 @@ export default class DialogText{
 		var tempText = animate ? '' : text;
 		
 		//llama al metodo que calcula la pos del texto y lo crea
-		this._setText(tempText); 
+		this.setText(tempText); 
 
 		if (animate) {
 
@@ -92,17 +91,17 @@ export default class DialogText{
 	}
 
 	// Consigue el ancho del juego (en funcion del tamaño en la escena) 
-	_getGameWidth() {
+	getGameWidth() {
 		return this.scene.sys.game.config.width;
 	}
 
 	// Consigue el alto del juego (en funcion del tamaño de la escena) 
-	_getGameHeight() {
+	getGameHeight() {
 		return this.scene.sys.game.config.height;
 	}
 
 	// Calcula las dimensiones y pos de la ventana en funcion del tamaño de la pantalla de juego
-	_calculateWindowDimensions(width, height) {
+	calculateWindowDimensions(width, height) {
 		var x = this.padding;
 		var y = height - this.windowHeight - this.padding;
 		var rectWidth = width - (this.padding * 2);
@@ -111,7 +110,7 @@ export default class DialogText{
 	}
 
 	// Crea la ventana interior, donde se muestra el texto 
-	_createInnerWindow(x, y, rectWidth, rectHeight) {
+	createInnerWindow(x, y, rectWidth, rectHeight) {
 		//rellena con el color y alpha especificados en las propiedades
 		this.graphics.fillStyle(this.windowColor, this.windowAlpha);
 		
@@ -120,7 +119,7 @@ export default class DialogText{
 	}
 
 	// Creates the border rectangle of the dialog window
-	_createOuterWindow(x, y, rectWidth, rectHeight) {
+	createOuterWindow(x, y, rectWidth, rectHeight) {
 		//Se usa para especificar el estilo de la linea exterior: grosor, color...
 		this.graphics.lineStyle(this.borderThickness, this.borderColor, this.borderAlpha);
 		
@@ -129,33 +128,33 @@ export default class DialogText{
 	}
 
 	// Método que crea la ventana de diálogo
-	_createWindow() {
+	createWindow() {
 		//Obtenemos las dimensiones del juego
-		const gameHeight = this._getGameHeight();
-		const gameWidth = this._getGameWidth();
+		const gameHeight = this.getGameHeight();
+		const gameWidth = this.getGameWidth();
 
 		//Se calcula la dimension de la ventana de diálogo
-		const dimensions = this._calculateWindowDimensions(gameWidth, gameHeight);
+		const dimensions = this.calculateWindowDimensions(gameWidth, gameHeight);
 		this.graphics = this.scene.add.graphics();
 		
 		//Se crean las ventanas interior y exterior
-		this._createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
-		this._createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
+		this.createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
+		this.createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
 		
-		this._createCloseModalButton(); //se muestra el boton de cerrar en la ventana
-		this._createCloseModalButtonBorder(); // se muestra el borde del boton de cerrar
+		this.createCloseModalButton(); //se muestra el boton de cerrar en la ventana
+		this.createCloseModalButtonBorder(); // se muestra el borde del boton de cerrar
 	}
 
 	// Con el siguiente código se crea el boton de cerrar la ventana de diálogo
-	_createCloseModalButton() {
+	createCloseModalButton() {
 		const self = this;
 		this.closeBtn = this.scene.make.text({
-			//se crea el boton con las posiciones x e y siguientes
+			// se crea el boton con las posiciones x e y siguientes
 			// se calculan de forma dinámica para que funcione para diferentes tamaños de pantalla
-			x: this._getGameWidth() - this.padding - 14,
-			y: this._getGameHeight() - this.windowHeight - this.padding + 3,
+			x: this.getGameWidth() - this.padding - 14,
+			y: this.getGameHeight() - this.windowHeight - this.padding + 3,
 			
-			//el boton queda representado como una X con su estilo debajo
+			// el boton queda representado como una X con su estilo debajo
 			text: 'X',
 			style: { font: 'bold 12px TimesNewRoman', fill: this.closeBtnColor }
 		});
@@ -164,7 +163,7 @@ export default class DialogText{
 
 		this.closeBtn.on('pointerover', function () { this.setTint(0xff0000);}); //cuando el cursor se encuentra encima se cambia de color
 		
-		this.closeBtn.on('pointerout', function () { this.clearTint(); });//vuelve al color original al quitar el cursor
+		this.closeBtn.on('pointerout', function () { this.clearTint(); }); //vuelve al color original al quitar el cursor
 		
 		this.closeBtn.on('pointerdown', function () {
 			self.toggleWindow(); //se llama al método que cierra o muestra la ventana de diálogo
@@ -176,33 +175,33 @@ export default class DialogText{
 	}
 
 	// Se crea el borde del botón
-	_createCloseModalButtonBorder() {
-		const x = this._getGameWidth() - this.padding - 20;
-		const y = this._getGameHeight() - this.windowHeight - this.padding;
+	createCloseModalButtonBorder() {
+		const x = this.getGameWidth() - this.padding - 20;
+		const y = this.getGameHeight() - this.windowHeight - this.padding;
 		
-		//Se crea el borde del botón sin relleno
+		// Se crea el borde del botón sin relleno
 		this.graphics.strokeRect(x, y, 20, 20);
 	}
 
 	// Hace aparecer al texto lentamente en pantalla
-	_animateText() {
+	animateText() {
 		this.eventCounter++;
 		
-		//se va actualizando el texto de nuestro game object llamando a setText
+		// se va actualizando el texto de nuestro game object llamando a setText
 		this.text.setText(this.text.text + this.dialog[this.eventCounter - 1]);
 		
-		//Cuando eventCounter sea igual a la longitud del texto, se detiene el evento
+		// Cuando eventCounter sea igual a la longitud del texto, se detiene el evento
 		if (this.eventCounter === this.dialog.length) this.timedEvent.remove();
 		
 	}
 
 	// Calcula la pos del texto en la ventana
-	_setText(text) {
+	setText(text) {
 		// Resetea el game object del texto si ya estaba seteada la propiedad del texto del plugin
 		if (this.text) this.text.destroy();
 
 		const x = this.padding + 10;
-		const y = this._getGameHeight() - this.windowHeight - this.padding + 10;
+		const y = this.getGameHeight() - this.windowHeight - this.padding + 10;
 
 		//Crea un game object que sea texto
 		this.text = this.scene.make.text({
@@ -211,7 +210,7 @@ export default class DialogText{
 			text,
 			style: {
 				//se obliga al texto a permanecer dentro de unos limites determinados
-				wordWrap: { width: this._getGameWidth() - (this.padding * 2) - 25 },
+				wordWrap: { width: this.getGameWidth() - (this.padding * 2) - 25 },
 				fontSize: this.fontSize +'px',
 				fontFamily: this.fontFamily
 			}

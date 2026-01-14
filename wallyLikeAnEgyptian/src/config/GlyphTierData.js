@@ -1,4 +1,4 @@
-import { DIFICULTADES } from './MinigameData.js'; //esto remplaza al rewards by difficulty que ya estaba hecho en el minigamedata emberdad
+import { DIFICULTADES } from './MinigameData.js'; 
 
 export default class GlyphTierData {
 
@@ -8,7 +8,7 @@ export default class GlyphTierData {
     { tier: "S", img: "uraeus" },
   ];
 
-  // === PROBABILIDADES POR DIFICULTAD ===
+  //=== PROBABILIDADES POR DIFICULTAD ===
   static rewardsByDifficulty = {
     easy: {
       probabilities: { B: 0.8, A: 0.2, S: 0.0 },
@@ -24,20 +24,20 @@ export default class GlyphTierData {
     }
   };
 
-  // === RECOMPENSAS BASE POR DIFICULTAD ===
+  //=== RECOMPENSAS BASE POR DIFICULTAD ===
   static baseRewards = {
     easy:  { B: 2 },
     medium:{ A: 1, B: 1 },
     hard:  { A: 1, B: 2 }
   };
 
-  // === COSTES PARA DESBLOQUEAR DIFICULTAD ===
+  //=== COSTES PARA DESBLOQUEAR DIFICULTAD ===
   static unlockCosts = {
     medium: { A: 1, B: 3 },
     hard:   { S: 1, A: 2, B: 5 }
   };
 
-  // === MÉTODO: comprobar si tiene recursos para desbloquear ===
+  //=== MÉTODO: comprobar si tiene recursos para desbloquear ===
   static canUnlockDifficulty(playerInventory, difficulty) {
     if (difficulty === 'easy') return true;
 
@@ -51,7 +51,7 @@ export default class GlyphTierData {
     );
   }
 
-  // === METODO: Aplicar coste al desbloquear dificultad ===
+  //=== METODO: Aplicar coste al desbloquear dificultad ===
   static applyUnlockCost(playerInventory, difficulty) {
     const cost = this.unlockCosts[difficulty];
     if (!cost) return;
