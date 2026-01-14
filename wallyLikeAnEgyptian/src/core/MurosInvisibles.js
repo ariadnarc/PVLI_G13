@@ -29,7 +29,8 @@ export default class MurosInvisibles {
                 // Bloquear paso
                 this.PlayerManager.sprite.setVelocity(0, 0);
                 //escribimos texto con info
-                this.infoText = this.scene.add.text(this.x, this.y + 100, `No tienes jeroglificos suficientes`, {
+                if(!this.infoText){
+                    this.infoText = this.scene.add.text(this.x, this.y + 100, `No tienes jeroglificos suficientes`, {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
                     color: '#d8af75ff',
@@ -37,9 +38,12 @@ export default class MurosInvisibles {
                     stroke: '#33261bff',
                     strokeThickness: 4
                 }).setOrigin(0.5);
+                }
+                
             } else {
                 // Desactivar la pared para dejar pasar
                 wallSprite.disableBody(true, false);
+                this.infoText.destroy();
             }
         });
     }

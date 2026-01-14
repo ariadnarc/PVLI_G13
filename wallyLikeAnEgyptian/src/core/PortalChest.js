@@ -32,8 +32,8 @@ export default class PortalChest {
             if (!this.canOpen) {
                 this.canOpen = true;
                 //escribimos texto con info
-
-                this.infoText = this.scene.add.text(this.data.posInicial.x, this.data.posInicial.y + 150, `Pulsa E para abrir`, {
+                if(!this.infoText){
+                     this.infoText = this.scene.add.text(this.data.posInicial.x, this.data.posInicial.y + 150, `Pulsa E para abrir`, {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
                     color: '#d8af75ff',
@@ -41,6 +41,7 @@ export default class PortalChest {
                     stroke: '#33261bff',
                     strokeThickness: 4
                 }).setOrigin(0.5);
+                }
             }
 
         }, null, this);
