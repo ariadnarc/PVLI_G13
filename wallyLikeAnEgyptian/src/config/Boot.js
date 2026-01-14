@@ -122,9 +122,60 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
     this.load.audio('minigame-music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
     this.load.audio('creditsMusic', 'wallyLikeAnEgyptian/assets/sounds/credits_sound.mp3');
+
+
+    
   }
 
   create() {
+
+  // === ANIMACIONES ===
+
+    //Player:
+    this.anims.create({
+        key: 'walk-down',
+        frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'walk-up',
+        frames: this.anims.generateFrameNumbers('player', { start: 7, end: 13 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'walk-right',
+        frames: this.anims.generateFrameNumbers('player', { start: 14, end: 20 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'walk-left',
+        frames: this.anims.generateFrameNumbers('player', { start: 21, end: 27 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    //Portal final:
+    this.anims.create({
+      key: 'portal_idle',
+      frames: this.anims.generateFrameNumbers('portalFinal', { start: 0, end: 3 }),
+      frameRate: 6,
+      repeat: -1
+    });
+
+    //Undertale
+    this.anims.create({
+      key: 'giragira',
+      frames: this.anims.generateFrameNumbers('fase2obs', { start: 0, end: 1 }),
+      frameRate: 12,
+      repeat: -1
+    });
+
     this.scene.start('MainMenu'); // escena principal de título o menú
   }
 }

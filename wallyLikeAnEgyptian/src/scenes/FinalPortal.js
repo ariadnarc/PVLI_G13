@@ -14,15 +14,7 @@ export default class FinalPortal {
         this.sprite.body.setImmovable(true);
 
         this.playerNear = false; // flag de interacción
-
-        if (!scene.anims.exists('portal_idle')) {
-            scene.anims.create({
-                key: 'portal_idle',
-                frames: this.scene.anims.generateFrameNumbers('portalFinal', { start: 0, end: 3 }),
-                frameRate: 6,
-                repeat: -1 // loop
-            });
-        }
+        
         this.sprite.play('portal_idle');
 
         this.keyE = scene.input.keyboard.addKey('E');

@@ -95,35 +95,6 @@ export default class MapScene extends Phaser.Scene {
         // Portal final
         this.finalPortal = new FinalPortal(this,  455, 1050, this.PlayerManager);
 
-        // Animaciones:
-        this.anims.create({
-            key: 'walk-down',
-            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'walk-up',
-            frames: this.anims.generateFrameNumbers('player', { start: 7, end: 13 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'walk-right',
-            frames: this.anims.generateFrameNumbers('player', { start: 14, end: 20 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'walk-left',
-            frames: this.anims.generateFrameNumbers('player', { start: 21, end: 27 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
         this.cameras.main.setBackgroundColor(0x30291F);
 
         // Cámara Follow

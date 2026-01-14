@@ -295,7 +295,7 @@ export default class CrocoShoot extends Phaser.Scene {
         // DERROTA inmediata por demasiados escapes
         if (this.escapesCount >= this.maxEscapes) {
             this.gameIsOver = true;
-            this._endAsDefeat();
+            this.endAsDefeat();
             return;
         }
 
@@ -307,9 +307,9 @@ export default class CrocoShoot extends Phaser.Scene {
 
             // Si mataste al menos la cantidad objetivo => victoria, sino derrota.
             if (this.killedCrocodilesCount >= this.totalCrocodilesToKill) {
-                this._endAsVictory();
+                this.endAsVictory();
             } else {
-                this._endAsDefeat();
+                this.endAsDefeat();
             }
             return;
         }
@@ -321,7 +321,7 @@ export default class CrocoShoot extends Phaser.Scene {
 
 
     // ========== VICTORIA ==========
-    _endAsVictory() {
+    endAsVictory() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.bgMusic.stop();
         this.physics.pause();
@@ -343,7 +343,7 @@ export default class CrocoShoot extends Phaser.Scene {
     }
 
     // ========== DERROTA ==========
-    _endAsDefeat() {
+    endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.physics.pause();
         this.bgMusic.stop();

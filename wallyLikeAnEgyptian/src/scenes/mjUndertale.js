@@ -158,16 +158,7 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    // Anims (solo hay 1, las del player aquí no)
-    this.anims.create({
-      key: 'giragira',
-      frames: this.anims.generateFrameNumbers('fase2obs', {
-        start: 0,
-        end: 1
-      }),
-      frameRate: 12,
-      repeat: -1
-    });
+    
 
     // Colisiones
     this.physics.add.overlap(
