@@ -498,7 +498,6 @@ main {
 }
 
 /* medida para evitar desbordamiento de la zona de juego */
-
 .game-box {
   max-width: 1200px;
   width: calc(100% - 4rem);

@@ -31,7 +31,7 @@ export default class MainMenu extends MenuBase {
     }).setOrigin(0.5);
 
     this.add.text(450, 223,
-      'La entrega del café más importante de tu vida ☕',
+      '¿Qué se esconde en lo profundo de la pirámide? ☕',
       {
         fontFamily: 'Filgaia',
         fontSize: '23px',
