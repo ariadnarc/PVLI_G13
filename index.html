@@ -8,7 +8,8 @@
   <link rel="icon" type="image/png" href="wallyLikeAnEgyptian/assets/identidad-visual/favicon.ico">
   <!-- Icono pestaña -->
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Luckiest+Guy&display=swap"
-    rel="stylesheet"> <!-- Para meter las fuentes de la Identidad visual del Estudio -->
+    rel="stylesheet">
+  <!-- Para meter las fuentes de la Identidad visual del Estudio -->
   <style>
     @font-face {
       font-family: "Filgaia";
@@ -26,29 +27,31 @@
 <body>
   <!-- Contenido principal -->
   <main>
-    <!-- Home -->
+    <!-- ========== HOME ========== -->
     <section id="home" class="section home">
       <div class="home-content">
         <!-- Logo del estudio con el nombre -->
         <img src="wallyLikeAnEgyptian/assets/identidad-visual/Logo-Nombre.png" alt="Logo Cat-astrophic Games"
           class="logo">
-          <!-- Botón de jugar -->
+        <!-- Botón de jugar -->
         <button id="playBtn" class="play-btn">Jugar</button>
       </div>
     </section>
 
-    <!-- Juego -->
+    <!-- ========== JUEGO ========== -->
     <section id="game" class="section game">
       <div class="game-box">
-        <!--jueguito-->
+        <!-- Título del juego -->
         <h2>Wally like an Egyptian</h2>
+
+        <!-- Canvas del juego -->
         <div class="game-wrapper">
           <canvas id="gameCanvas">
             Tu navegador no soporta canvas.
           </canvas>
         </div>
 
-        <!--description-->
+        <!-- Descripción del juego -->
         <p class="game-desc">
           Consigue adentrarte en lo profundo de la cripta para salvar a tu amigo Wally,
           en tu aventura te acompañarán retos y fuertes enemigos a los que tendrás que
@@ -56,19 +59,19 @@
           al gran enigma con el cual te encuentras. ¡Suerte!
         </p>
 
-        <!--controles-->
+        <!-- Controles del juego -->
         <div class="controls">
           <h3>Controles</h3>
 
           <div class="controls-carousel">
-            <button class="arrow left" id="controlsPrev">◀</button>
+            <button class="arrow left" id="controlsPrev" aria-label="Anterior">◀</button>
 
             <div class="controls-viewport">
               <div class="controls-track" id="controlsTrack">
-                <!-- MENÚS -->
+                
+                <!-- SLIDE 1: MENÚS -->
                 <div class="controls-slide">
                   <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/menu.png" alt="Menús">
-
                   <div class="controls-icons">
                     <div class="control-item">
                       <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
@@ -77,15 +80,14 @@
                   </div>
                 </div>
 
-                <!-- MAPA PRINCIPAL -->
+                <!-- SLIDE 2: MAPA PRINCIPAL -->
                 <div class="controls-slide">
                   <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/mapa.png"
                     alt="Mapa principal">
-
                   <div class="controls-icons">
                     <div class="control-item">
                       <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
-                      <span>Abrir bitácora</span>
+                      <span>Bitácora</span>
                     </div>
                     <div class="control-item">
                       <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png"
@@ -94,15 +96,15 @@
                     </div>
                     <div class="control-item">
                       <img src="wallyLikeAnEgyptian/assets/recursos-web/e.png" alt="Minijuegos">
-                      <span>Entrar a minijuego</span>
+                      <span>Interactuar</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- BITÁCORA -->
+                <!-- SLIDE 3: BITÁCORA -->
                 <div class="controls-slide">
-                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/bitacora.png" alt="Menús">
-
+                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/bitacora.png"
+                    alt="Bitácora">
                   <div class="controls-icons">
                     <div class="control-item">
                       <img src="wallyLikeAnEgyptian/assets/recursos-web/b.png" alt="Bitácora">
@@ -110,174 +112,68 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- MINIJUEGOS -->
-                <div class="controls-slide">
-                  <img class="controls-main-img" src="wallyLikeAnEgyptian/assets/recursos-web/minijuego.png"
-                    alt="Minijuegos">
-
-                  <div class="controls-icons">
-                    <div class="control-item">
-                      <img src="wallyLikeAnEgyptian/assets/recursos-web/mouse.png" alt="Ratón">
-                      <span>Seleccionar</span>
-                    </div>
-                    <div class="control-item">
-                      <img class="control-icon arrows" src="wallyLikeAnEgyptian/assets/recursos-web/arrows.png"
-                        alt="Moverse">
-                      <span>Moverse</span>
-                    </div>
-                    <div class="control-item">
-                      <img class="control-icon space" src="wallyLikeAnEgyptian/assets/recursos-web/space.png"
-                        alt="Esapcio">
-                      <span>Disparar</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
-            <button class="arrow right" id="controlsNext">▶</button>
+            <button class="arrow right" id="controlsNext" aria-label="Siguiente">▶</button>
           </div>
         </div>
 
-        
       </div>
     </section>
 
-
-    <!-- Noticias estilo chat -->
-    <section id="news" class="section news">
-      <h2>Noticias y Avances</h2>
-      <div class="chat">
-        <div class="chat-separator">📅 Octubre 2025</div> <!-- Hito 1 -->
-
-        <div class="bubble left">
-          <span class="author">👾 David:</span>
-          ¡Tenemos Identidad Visual!
-        </div>
-
-        <div class="bubble right">
-          <span class="author">🎨 Ariadna:</span>
-          Diseñé el Logo del Estudio, así como el nombre de este.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👥 Blanca:</span>
-          ¡Tenemos Redes Sociales!
-        </div>
-
-        <div class="chat-separator">📅 Noviembre 2025</div> <!-- Hito 2 -->
-
-        <div class="bubble left">
-          <span class="author">👾 Juan:</span>
-          Listo el player con movimiento base.
-        </div>
-
-        <div class="bubble right">
-          <span class="author">👾 David:</span>
-          Diseño del minijuego de 'Memoria del Templo hecho'.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👾 Blanca:</span>
-          Mapa de bloques como placeholder terminado.
-        </div>
-
-        <div class="bubble right">
-          <span class="author">👾 David:</span>
-          Diseño del minijuego de 'Memoria del Templo hecho'.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👾 Juan:</span>
-          Minijuego estilo Undertale en progreso.
-        </div>
-
-        <div class="chat-separator">📅 Diciembre 2025</div> <!-- Hito 3 -->
-
-        <div class="bubble left">
-          <span class="author">👾 Juan:</span>
-          Nuevo minijuego: 'Cerrajero del escriba'
-        </div>
-
-        <div class="bubble right">
-          <span class="author">👾 David:</span>
-          Tenemos placeholders para los menús del juego.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👾 Blanca:</span>
-          Objetos interactuables del juego en camino.
-        </div>
-
-        <div class="bubble right">
-          <span class="author">🎨 Ariadna:</span>
-          Assets para minijuegos niquelados. Fondos e iconos de ui a punto.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👾 Juan:</span>
-          'Cazador de Reptiles' llega a la lista de minijuegos.
-        </div>
-
-        <div class="bubble right">
-          <span class="author">🎨 David:</span>
-          Metidos algunos sonidos para acciones basicas del juego y melodía de fondo para minijuegos.
-        </div>
-
-        <div class="bubble left">
-          <span class="author">👾 Juan:</span>
-          Minijuego final 'Buscando a Luigi' esta ready.
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Contacto -->
+    <!-- ========== CONTACTO ========== -->
     <section id="contact" class="section contact">
       <h2>Sobre Nosotros</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>Juan</h3>
-            <p>Programador</p>
-          </div>
-          <div class="card">
-            <h3>Blanca</h3>
-            <p>Programadora, Community Manager, Artista</p>
-          </div>
-          <div class="card">
-            <h3>Ariadna</h3>
-            <p>Programadora, Diseñadora, Artista</p>
-          </div>
-          <div class="card">
-            <h3>David</h3>
-            <p>Programador, Diseñador</p>
-          </div>
+      
+      <!-- Tarjetas del equipo -->
+      <div class="cards">
+        <div class="card">
+          <h3>Juan</h3>
+          <p>Programador</p>
         </div>
+        <div class="card">
+          <h3>Blanca</h3>
+          <p>Programadora, Community Manager, Artista</p>
+        </div>
+        <div class="card">
+          <h3>Ariadna</h3>
+          <p>Programadora, Diseñadora, Artista</p>
+        </div>
+        <div class="card">
+          <h3>David</h3>
+          <p>Programador, Diseñador</p>
+        </div>
+      </div>
+
+      <!-- Redes sociales -->
       <h2>Redes Sociales</h2>
       <p>Síguenos en:</p>
       <ul class="socials">
         <li>
-          <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr " target="_blank">
+          <a href="https://www.instagram.com/cat_astrophicgames?igsh=YjRhdjdyd2EyZzNz&utm_source=qr" target="_blank"
+            aria-label="Instagram">
             <i class="fab fa-instagram"></i>
           </a>
         </li>
         <li>
-          <a href="https://x.com/cat_astrophicos" target="_blank">
+          <a href="https://x.com/cat_astrophicos" target="_blank" aria-label="Twitter">
             <i class="fa-brands fa-x-twitter"></i>
           </a>
         </li>
         <li>
-          <a href="https://github.com/ariadnarc/PVLI_G13" target="_blank">
+          <a href="https://github.com/ariadnarc/PVLI_G13" target="_blank" aria-label="GitHub">
             <i class="fab fa-github"></i>
           </a>
         </li>
       </ul>
     </section>
 
-    <script src="wallyLikeAnEgyptian/script.js"></script>
-    <script type="module" src="wallyLikeAnEgyptian/src/main.js"></script>
   </main>
+
+  <!-- Scripts -->
+  <script src="wallyLikeAnEgyptian/script.js"></script>
+  <script type="module" src="wallyLikeAnEgyptian/src/main.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Paso 2: mostrar botón después
   setTimeout(() => {
     playBtn.classList.add("show");
-  }, 1500);
+  }, 1000);
 
   // Paso 3: reducimos tamaño del Logo
   setTimeout(() => {
@@ -56,15 +56,3 @@ prevBtn.addEventListener("click", () => {
   index = (index - 1 + slides.length) % slides.length;
   updateCarousel();
 });
-
-
-// Sección NEWS
-// Scroll al ultimo mensaje
-const chat = document.querySelector(".news .chat");
-
-function scrollChatToBottom() {
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// Al cargar la página
-window.addEventListener("load", scrollChatToBottom);
