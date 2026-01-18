@@ -21,6 +21,20 @@ export default class FinalPortal {
     }
 
     update() {
+
+        // ====== GUARDS (MUY IMPORTANTES) ======
+    if (!this.scene || !this.scene.physics ||
+        !this.scene.physics.world ||
+        !this.player ||
+        !this.player.sprite ||
+        !this.player.sprite.body ||
+        !this.sprite ||
+        !this.sprite.body
+    ) {
+        return;
+    }
+    // =====================================
+
         this.playerNear = false; // reset
 
         // 2. Ver si hay overlapeo REAL este frame

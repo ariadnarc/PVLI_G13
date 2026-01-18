@@ -9,7 +9,7 @@ import PauseController from './core/PauseController.js';
 // Scenes
 import MapScene from './scenes/MapScene.js';
 import FinalMessage from './scenes/FinalMessage.js';
-import SelectDifficultyScene from './scenes/SelectDifficultyScene.js';
+import PreMinigameScene from './scenes/PreMinigameScene.js';
 import IntroScene from './scenes/IntroScene.js';
 import FinalScene from './scenes/FinalScene.js';
 
@@ -50,7 +50,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
       }
     }, // declaramos físcas globalmente
     scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
-      SettingsMenu, SelectDifficultyScene, Undertale, PuzzleLights, FinalGame,
+      SettingsMenu, PreMinigameScene, Undertale, PuzzleLights, FinalGame,
       LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage, FinalScene],
   };
 

@@ -19,8 +19,9 @@ export default class SlideBar extends Phaser.Scene {
         // Guardamos el minijuego
         this.minijuego = data.minijuego;
 
-        // Dificultad elegida
-        this.difficulty = data.dificultad;
+        // Dificultad 
+        this.difficulty = data.dificultad ?? 'FACIL';
+        this.jeroglificoId = data.jeroglificoId;
 
         // Si venimos de un reintento, mantenemos los intentos restantes
         // Si no hay valor, usamos los intentos completos según la dificultad
@@ -148,8 +149,10 @@ export default class SlideBar extends Phaser.Scene {
                 });
             } else {
                 // Ultimo intento perdido o victoria -> Reintentar lleva a SelectDifficultyScene
-                this.scene.start('SelectDifficultyScene', {
-                    minijuego: this.minijuego
+                this.scene.start('PreMinigameScene', {
+                    minijuego: this.minijuego,
+                    dificultad: this.difficulty,
+                    jeroglificoId: this.jeroglificoId
                 });
             }
         };

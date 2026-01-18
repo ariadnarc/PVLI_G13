@@ -32,6 +32,8 @@ export default class PlayerManager {
 
   update() {
 
+    if (!this.sprite || !this.sprite.body) return;
+    
     const dir = this.inputManager.getMovementVector();
     const body = this.sprite.body;
 

@@ -34,6 +34,17 @@ export default class MapScene extends Phaser.Scene {
 
         });
 
+        console.log('window.savedPlayerPos al iniciar create:', window.savedPlayerPos);
+        if (window.savedPlayerPos) {
+            console.log('Restaurando posición:', window.savedPlayerPos);
+            playerInitialData.posInicial.x = window.savedPlayerPos.x;
+            playerInitialData.posInicial.y = window.savedPlayerPos.y;
+            console.log('✅ Posición restaurada:', window.savedPlayerPos);
+        }else {
+            console.log('NO hay posición guardada');
+        }
+        console.log('playerInitialData.posInicial:', playerInitialData.posInicial);
+
         //Creacion del mapa desde json
         const map = this.make.tilemap({ key: 'mapa' });
         const tilesets = map.addTilesetImage("tiles", "tilesImg");
@@ -55,39 +66,68 @@ export default class MapScene extends Phaser.Scene {
         objectsData.forEach((data, index) => {
             const obj = new MovingObject(this, this.PlayerManager, colisiones, data);
             this.movingObjects.push(obj);
-        });
 
-        // Minijuegos
+            // Restaurar posición si existe
+            if (window.savedObjectsPos && window.savedObjectsPos[index]) {
+                obj.sprite.x = window.savedObjectsPos[index].x;
+                obj.sprite.y = window.savedObjectsPos[index].y;
+            }
+        });
+        
+        // === COFRES / PORTALES ===
         this.portales = [];
 
-       cofresData.forEach(data => {
-            const portal = new PortalChest(this, data, this.PlayerManager, (minijuego) => {
-            this.scene.pause();
-            this.scene.start('SelectDifficultyScene', { minijuego, nombre: minijuego });
-            this.savePositions();
+        cofresData.forEach(data => {
+            const portal = new PortalChest(
+                this,
+                data,
+                this.PlayerManager,
+                () => {
+                    
+                    console.log('CALLBACK DEL COFRE EJECUTADO'); 
+      
+                    this.savePositions();
+                    
+                    console.log('savePositions() llamado'); 
+                    this.scene.stop('MapScene');
+
+                    //Lanzar escena SIN destruir el mapa
+                    this.scene.start('PreMinigameScene', {
+                        minijuego: data.minijuego,
+                        dificultad: data.dificultad,
+                        jeroglificoId: data.jeroglificoId,
+                        controles: data.controles,
+                        parentScene: 'MapScene'
+                    });
+                    
+                }
+            );
+
+            this.portales.push(portal);
         });
 
-        this.portales.push(portal);
-    });
-    //=== COLIDER OBJETOS CON COFRES Y ENTRE ELLOS ===
-    for (let i = 0; i < this.movingObjects.length; i++) {
-            for (let j = i + 1; j < this.movingObjects.length; j++) {
-                this.physics.add.collider(
-                this.movingObjects[i].sprite,
-                this.movingObjects[j].sprite
-        );
+            
+        //=== COLISIONES OBJETOS ENTRE SÍ ===
+        for (let i = 0; i < this.movingObjects.length; i++) {
+                for (let j = i + 1; j < this.movingObjects.length; j++) {
+                    this.physics.add.collider(
+                    this.movingObjects[i].sprite,
+                    this.movingObjects[j].sprite
+                );
+            }
         }
-    }
-    for (let i = 0; i < this.movingObjects.length; i++) {
-            for (let j = i + 1; j < this.portales.length; j++) {
-                this.physics.add.collider(
-                this.movingObjects[i].sprite,
-                this.portales[j].sprite
-        );
-        }
-    }
 
-        // Paredes invisibles
+        //=== COLISIONES OBJETOS - COFRES ===
+        for (let i = 0; i < this.movingObjects.length; i++) {
+                for (let j = i + 1; j < this.portales.length; j++) {
+                    this.physics.add.collider(
+                    this.movingObjects[i].sprite,
+                    this.portales[j].sprite
+                );
+            }
+        }
+
+        //=== MUROS INVISIBLES ===
         this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036, { A: 1 }, this.PlayerManager);
         this.wallVuelta = new MurosInvisibles(this, 455, 995, { A: 1 }, this.PlayerManager);
         this.wallFin = new MurosInvisibles(this, 455, 1135, { A: 1 }, this.PlayerManager);
@@ -105,13 +145,10 @@ export default class MapScene extends Phaser.Scene {
     update() {
         this.inputManager.update();
         this.PlayerManager.update();
-        this.movingObjects.forEach(obj => {
-            obj.update();
-        });
-        this.portales.forEach(portal => {
-            portal.update();
-        });
-        //this.wall.update();
+
+        this.movingObjects.forEach(obj => obj.update());
+        this.portales.forEach(portal => portal.update());
+
         this.finalPortal.update();
         this.wallSalaSecrt.update();
         this.wallVuelta.update();
@@ -124,14 +161,31 @@ export default class MapScene extends Phaser.Scene {
     }
 
     savePositions() { // Save coords del player
-        // Guardar posición del jugador
-        playerInitialData.posInicial.x = this.PlayerManager.sprite.x;
-        playerInitialData.posInicial.y = this.PlayerManager.sprite.y;
 
-        // Guardar posición de los objetos movibles
+        console.log('SAVEPOSITIONS LLAMADO');
+        console.log('Posición actual del jugador:', this.PlayerManager.sprite.x, this.PlayerManager.sprite.y);
+        // Guardar en una variable global
+        if (!window.savedPlayerPos) {
+            window.savedPlayerPos = {};
+        }
+
+        console.log('Guardado en window.savedPlayerPos:', window.savedPlayerPos);
+        
+        window.savedPlayerPos.x = this.PlayerManager.sprite.x;
+        window.savedPlayerPos.y = this.PlayerManager.sprite.y;
+
+        // Guardar objetos también
+        if (!window.savedObjectsPos) {
+            window.savedObjectsPos = [];
+        }
+        
         this.movingObjects.forEach((obj, index) => {
-            objectsData[index].posInicial.x = obj.sprite.x;
-            objectsData[index].posInicial.y = obj.sprite.y;
+            window.savedObjectsPos[index] = {
+            x: obj.sprite.x,
+            y: obj.sprite.y
+            };
         });
+        
+        console.log('Guardado en window:', window.savedPlayerPos);
     }
 }

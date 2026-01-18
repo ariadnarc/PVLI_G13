@@ -28,6 +28,8 @@ export default class MovingObject {
   }
 
   update() {
+
+    if (!this.sprite || !this.sprite.body) return;
     // Verificar si ACTUALMENTE está colisionando (Phaser mantiene esta info)
     const touchingPlayer = this.sprite.body.touching.none === false;
     const touchingWall = this.sprite.body.blocked.none === false || this.sprite.body.immovable;

@@ -153,5 +153,11 @@ export default class MenuBase extends Phaser.Scene {
   shutdown() {
     this.menuElements.forEach(el => el.destroy());
     this.menuElements = [];
+
+    // Limpiar InputManager
+    if (this.inputManager) {
+        this.inputManager.destroy(); // <-- destruir listeners internos
+        this.inputManager = null;
+    }
   }
 }
