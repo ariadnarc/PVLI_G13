@@ -145,6 +145,7 @@ export default class SlideBar extends Phaser.Scene {
                 this.scene.start('SlideBar', {
                     minijuego: this.minijuego,
                     dificultad: this.difficulty,
+                    jeroglificoId: this.jeroglificoId,
                     remainingTries: remainingTries
                 });
             } else {
@@ -170,6 +171,7 @@ export default class SlideBar extends Phaser.Scene {
             result: victoria ? 'victory' : 'defeat',
             difficulty: this.difficulty,
             minijuego: this.minijuego,
+            jeroglificoId: this.jeroglificoId,
             options: menuOptions,
             remainingTries: remainingTries // <-- importante para mostrar en PostMinigameMenu
         });

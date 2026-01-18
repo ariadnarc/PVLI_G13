@@ -33,6 +33,8 @@ export default class Undertale extends Phaser.Scene {
     /** @type {string} Dificultad del minijuego */
     this.difficulty = '';
 
+    this.jeroglificoId = 0;
+
     /** @type {number} Ancho del área de juego */
     this.gameWidth = 0;
     /** @type {number} Alto del área de juego */
@@ -83,6 +85,7 @@ export default class Undertale extends Phaser.Scene {
     this.isMinigame = true;
     this.minijuego = data.minijuego;
     this.difficulty = data.dificultad;
+    this.jeroglificoId = data.jeroglificoId;
   }
 
   create() {
@@ -516,6 +519,7 @@ export default class Undertale extends Phaser.Scene {
       result: 'victory',
       difficulty: this.difficulty,
       minijuego: 'Undertale',
+      jeroglificoId: this.jeroglificoId,
       options: {
         'Volver al mapa': () => {
           this.scene.stop('PostMinigameMenu');
@@ -541,12 +545,14 @@ export default class Undertale extends Phaser.Scene {
       result: 'defeat',
       difficulty: this.difficulty,
       minijuego: 'Undertale',
+      jeroglificoId: this.jeroglificoId,
       options: {
         Reintentar: () => {
           this.scene.stop('PostMinigameMenu');
           this.scene.restart({
             minijuego: this.minijuego,
-            dificultad: this.difficulty
+            dificultad: this.difficulty,
+            jeroglificoId: this.jeroglificoId
           });
         },
         Salir: () => {

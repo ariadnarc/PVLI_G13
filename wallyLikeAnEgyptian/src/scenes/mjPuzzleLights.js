@@ -13,8 +13,10 @@ export default class PuzzleLights extends Phaser.Scene {
   }
 
   init(data) {
-    this.isMinigame = true; //flag que marca que es un minijuego
-    this.difficulty = data?.dificultad || 'FACIL'; //guardamos la dificultad para pasarla despues
+    this.isMinigame = true;
+    this.minijuego = data?.minijuego; 
+    this.difficulty = data?.dificultad || 'FACIL';
+    this.jeroglificoId = data?.jeroglificoId; 
   }
 
   create() {
@@ -178,7 +180,7 @@ export default class PuzzleLights extends Phaser.Scene {
     this.isPlayerTurn = false;
 
     if (this.lives <= 0) {
-      this.endGame();
+      this.endGame('defeat');
       return;
     }
 
@@ -209,6 +211,7 @@ export default class PuzzleLights extends Phaser.Scene {
         result: result,
         difficulty: this.difficulty,
         minijuego: 'PuzzleLights',
+        jeroglificoId: this.jeroglificoId, 
         options: this.getMenuOptions(result)
       });
     });
@@ -226,7 +229,11 @@ export default class PuzzleLights extends Phaser.Scene {
       return {
         'Reintentar': () => {
           this.scene.stop('PostMinigameMenu');
-          this.scene.restart();
+          this.scene.restart({
+            minijuego: this.minijuego,
+            dificultad: this.difficulty,
+            jeroglificoId: this.jeroglificoId 
+          });
         },
         'Salir': () => {
           this.scene.stop('PostMinigameMenu');

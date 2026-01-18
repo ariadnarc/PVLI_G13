@@ -26,6 +26,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.minijuego = data.minijuego;
         // Dificultad elegida
         this.difficulty = data.dificultad;
+        this.jeroglificoId = data.jeroglificoId;
 
         const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
         // Var.
@@ -319,6 +320,7 @@ export default class CrocoShoot extends Phaser.Scene {
             result: 'victory',
             difficulty: this.difficulty,
             minijuego: 'CrocoShoot',
+            jeroglificoId: this.jeroglificoId,
             options: {
                 "Salir": () => {
                     this.scene.stop('PostMinigameMenu');
@@ -340,10 +342,15 @@ export default class CrocoShoot extends Phaser.Scene {
             result: 'defeat',
             difficulty: this.difficulty,
             minijuego: 'CrocoShoot',
+            jeroglificoId: this.jeroglificoId,
             options: {
                 "Reintentar": () => {
                     this.scene.stop('PostMinigameMenu');
-                    this.scene.start('CrocoShoot', { minijuego: this.minijuego, dificultad: this.difficulty });
+                    this.scene.start('CrocoShoot', { 
+                        minijuego: this.minijuego, 
+                        dificultad: this.difficulty,
+                        jeroglificoId: this.jeroglificoId
+                    });
                 },
                 "Salir": () => {
                     this.scene.stop('PostMinigameMenu');

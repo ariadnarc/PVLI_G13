@@ -4,10 +4,9 @@
  * A
  */
 
-import { MINIGAME_REWARDS } from '../config/MinigameData.js';
 import MenuBase from './MenuBase.js';
-import GlyphTierData from '../config/GlyphTierData.js';
-import BinnacleManager from '../core/BinnacleManager.js';
+import { JEROGLIFICOS_DATA } from '../config/JeroglificosData.js';
+import { addJeroglifico } from '../config/PlayerData.js';
 
 /** 
  * ===IMPORTANTE===
@@ -25,6 +24,7 @@ export default class PostMinigameMenu extends MenuBase {
     this.result = data?.result || 'defeat';
     this.difficulty = data?.difficulty || 'FACIL';
     this.minijuego = data?.minijuego;
+    this.jeroglificoId = data?.jeroglificoId
     this.options = data?.options || {};
     // Para minijuegos con varios intentos, si vienen en data
     this.remainingTries = data?.remainingTries;
@@ -53,21 +53,12 @@ export default class PostMinigameMenu extends MenuBase {
 
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
-      // Elegimos el count de recompensas segun la dificultad
-      this.sound.play("victory");
-
-      let rewardKey = this.difficulty; // FACIL / MEDIA / DIFICIL
-
-      const rewardCount = MINIGAME_REWARDS.rewardSettings[rewardKey].count;
-
-      const rewards = GlyphTierData.getMultipleRewards(this.difficulty, rewardCount);
-
-      // Registrar en bitacora
-      this.binnacle = BinnacleManager.getInstance();
-      this.binnacle.addGlyph(rewards);
-
-      // Mostrar en pantalla
-      this.showResults(rewards);
+      
+      //AÑADIR EL JEROGLÍFICO GANADO
+      const esNuevo = addJeroglifico(this.jeroglificoId);
+      
+      //MOSTRAR EL JEROGLÍFICO OBTENIDO
+      this.showJeroglifico(esNuevo);
     }
 
     // Intentos restantes para minijuegos como SlideBar
@@ -83,32 +74,47 @@ export default class PostMinigameMenu extends MenuBase {
     this.createMenuButtons();
   }
 
-  showResults(rewards) {
-
+  showJeroglifico(esNuevo) {
     const { width, height } = this.sys.game.config;
-    const tierColors = { S: '#ffcc00', A: '#ff6666', B: '#66ccff' };
+    
+    // Buscar datos del jeroglífico
+    const jero = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
+    
+    if (!jero) {
+      console.error(`❌ Jeroglífico ${this.jeroglificoId} no encontrado`);
+      return;
+    }
 
-    this.add.text(width / 2, height / 2 - 50, 'Has conseguido:', {
+    // Texto
+    const texto = esNuevo ? '¡Nuevo jeroglífico obtenido!' : 'Jeroglífico obtenido';
+    const color = esNuevo ? '#FFD700' : '#CCCCCC';
+
+    this.add.text(width / 2, height / 2 - 80, texto, {
       fontFamily: 'Filgaia',
-      fontSize: '22px',
-      color: '#fff',
+      fontSize: '24px',
+      color: color,
+      fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    let offsetY = 0;
-
-    for (const [tier, count] of Object.entries(rewards)) {
-      this.add.text(width / 2, height / 2 + 20 + offsetY,
-        `x${count} Jeroglífico(s) Tier ${tier}`,
-        {
-          fontFamily: 'Filgaia',
-          fontSize: '24px',
-          color: tierColors[tier] || '#fff',
-          fontStyle: 'bold',
-        }
-      ).setOrigin(0.5);
-
-      offsetY += 40;
+    if (!esNuevo) {
+      this.add.text(width / 2, height / 2 - 50, '(Ya lo tenías)', {
+        fontFamily: 'Filgaia',
+        fontSize: '18px',
+        color: '#999999'
+      }).setOrigin(0.5);
     }
+
+    // Imagen del jeroglífico
+    this.add.image(width / 2, height / 2 + 20, jero.simbolo)
+      .setScale(0.6);
+
+    // Letra
+    this.add.text(width / 2, height / 2 + 90, `"${jero.letra}"`, {
+      fontFamily: 'Filgaia',
+      fontSize: '28px',
+      color: '#e6c480',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
   }
 
   createMenuButtons() {
@@ -137,7 +143,6 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   onEscape() {
-
     this.scene.stop();
     this.scene.start('MapScene');
   }

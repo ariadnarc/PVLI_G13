@@ -83,12 +83,9 @@ export default class MapScene extends Phaser.Scene {
                 data,
                 this.PlayerManager,
                 () => {
-                    
-                    console.log('CALLBACK DEL COFRE EJECUTADO'); 
       
                     this.savePositions();
                     
-                    console.log('savePositions() llamado'); 
                     this.scene.stop('MapScene');
 
                     //Lanzar escena SIN destruir el mapa
