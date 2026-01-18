@@ -79,26 +79,21 @@ export default class Boot extends Phaser.Scene {
     });
 
     //=== JEROGLIFICOS ===
-    this.load.image('A', 'wallyLikeAnEgyptian/assets/jeroglificos/a.png');
-    this.load.image('B', 'wallyLikeAnEgyptian/assets/jeroglificos/b.png');
-    this.load.image('C', 'wallyLikeAnEgyptian/assets/jeroglificos/c.png');
-    this.load.image('E', 'wallyLikeAnEgyptian/assets/jeroglificos/e.png');
-    this.load.image('I', 'wallyLikeAnEgyptian/assets/jeroglificos/i.png');
-    this.load.image('L', 'wallyLikeAnEgyptian/assets/jeroglificos/l.png');
-    this.load.image('M', 'wallyLikeAnEgyptian/assets/jeroglificos/m.png');
-    this.load.image('N', 'wallyLikeAnEgyptian/assets/jeroglificos/n.png');
-    this.load.image('O', 'wallyLikeAnEgyptian/assets/jeroglificos/o.png');
-    this.load.image('P', 'wallyLikeAnEgyptian/assets/jeroglificos/p.png');
-    this.load.image('Q', 'wallyLikeAnEgyptian/assets/jeroglificos/q.png');
-    this.load.image('R', 'wallyLikeAnEgyptian/assets/jeroglificos/r.png');
-    this.load.image('S', 'wallyLikeAnEgyptian/assets/jeroglificos/s.png');
-    this.load.image('T', 'wallyLikeAnEgyptian/assets/jeroglificos/t.png');
-    this.load.image('U', 'wallyLikeAnEgyptian/assets/jeroglificos/u.png');
-
-    //=== TIERS JEROGLIFICOS ===
-    this.load.image("ankh", "wallyLikeAnEgyptian/assets/ui/ankh.png");
-    this.load.image("ba", "wallyLikeAnEgyptian/assets/ui/ba.png");
-    this.load.image("uraeus", "wallyLikeAnEgyptian/assets/ui/uraeus.png");
+    this.load.image('uraeus', 'wallyLikeAnEgyptian/assets/jeroglificos/uraeus.png');
+    this.load.image('ankh', 'wallyLikeAnEgyptian/assets/jeroglificos/ankh.png');
+    this.load.image('scarab', 'wallyLikeAnEgyptian/assets/jeroglificos/scarab.png');
+    this.load.image('sun', 'wallyLikeAnEgyptian/assets/jeroglificos/sun.png');
+    this.load.image('ba', 'wallyLikeAnEgyptian/assets/jeroglificos/ba.png');
+    this.load.image('djed', 'wallyLikeAnEgyptian/assets/jeroglificos/djed.png');
+    this.load.image('lotus', 'wallyLikeAnEgyptian/assets/jeroglificos/lotus.png');
+    this.load.image('cobra', 'wallyLikeAnEgyptian/assets/jeroglificos/cobra.png');
+    this.load.image('reed', 'wallyLikeAnEgyptian/assets/jeroglificos/reed.png');
+    this.load.image('owl', 'wallyLikeAnEgyptian/assets/jeroglificos/owl.png');
+    this.load.image('water', 'wallyLikeAnEgyptian/assets/jeroglificos/water.png');
+    this.load.image('bread', 'wallyLikeAnEgyptian/assets/jeroglificos/bread.png');
+    this.load.image('rope', 'wallyLikeAnEgyptian/assets/jeroglificos/rope.png');
+    this.load.image('hand', 'wallyLikeAnEgyptian/assets/jeroglificos/hand.png');
+    this.load.image('foot', 'wallyLikeAnEgyptian/assets/jeroglificos/foot.png');
 
     //=== VICTORY SCENE ===
     this.load.image("gold_particle", "wallyLikeAnEgyptian/assets/minijuegos/particles.jpg");
