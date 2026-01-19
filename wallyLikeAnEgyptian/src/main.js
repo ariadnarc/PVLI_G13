@@ -15,6 +15,7 @@ import FinalScene from './scenes/FinalScene.js';
 
 // overlays
 import BinnacleOverlay from './overlay/BinnacleOverlay.js';
+import NotaJerogliOverlay from './overlay/NotaJerogliOverlay.js';
 
 // menus
 import MainMenu from './menus/MainMenu.js';
@@ -49,7 +50,7 @@ document.fonts.load('16px "Filgaia"').then(() => {
         debug: true        // hitboxes
       }
     }, // declaramos físcas globalmente
-    scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay, PauseMenuGame,
+    scene: [Boot, MainMenu, MapScene, IntroScene, PauseController, BinnacleOverlay,NotaJerogliOverlay, PauseMenuGame,
       SettingsMenu, PreMinigameScene, Undertale, PuzzleLights, FinalGame,
       LockPick, CrocoShoot, SlideBar, PostMinigameMenu, FinalMessage, FinalScene],
   };

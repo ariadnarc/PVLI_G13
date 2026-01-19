@@ -23,3 +23,14 @@ export const JEROGLIFICOS_DATA = [
   { id: 14, tipo: 'B', simbolo: 'hand', letra: 'N' },
   { id: 15, tipo: 'B', simbolo: 'foot', letra: 'Q' },
 ];
+//matriz de como se disponen los jeroglificos en la nota
+export const JEROGLIFICOS_NOTA_DATA=[
+  [0,0,0,1,5,0,0,0,0,15,6,5,2,4,2,1,0],
+  [0,0,0,0,2,14,13,9,14,12,4,3,4,11,2,0,0],
+  [10,4,5,11,2,4,9,0,0,0,0,1,6,7,2,0,0],
+  [0,0,8,3,1,0,0,0,2,1,13,3,8,2,4,3,1]
+];
+//Busqueda de la letra por el id
+export const MAPA_JEROGLIFICOS = Object.fromEntries(
+  JEROGLIFICOS_DATA.map(j => [j.id, j])
+);
