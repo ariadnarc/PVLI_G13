@@ -59,10 +59,13 @@ export default class PostMinigameMenu extends MenuBase {
 
       //MOSTRAR EL JEROGLÍFICO OBTENIDO
       this.showJeroglifico(esNuevo);
+
+      // Sonido victoria
+      this.sound.play ("victory");
     }
 
     if (this.result = 'defeat') {
-      this.sound.play("defeat");
+      //this.sound.play("defeat");
     }
 
     // Intentos restantes para minijuegos como SlideBar
