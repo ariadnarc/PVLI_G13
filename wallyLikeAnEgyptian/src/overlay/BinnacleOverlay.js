@@ -61,9 +61,6 @@ export default class BinnacleOverlay extends Phaser.Scene {/*
     this.renderJeroglificos();
   }
 
-<<<<<<< Updated upstream
-  renderJeroglificos() {
-=======
   
    // Dibuja las imágenes, nombres y cantidades de cada tier
    
@@ -166,7 +163,6 @@ export default class BinnacleOverlay extends Phaser.Scene {/*
    // Dibuja las imágenes, nombres y cantidades de cada tier
    
   renderBinnacleContent() {
->>>>>>> Stashed changes
     const { width } = this.sys.game.config;
     
     // Configuración de la cuadrícula
