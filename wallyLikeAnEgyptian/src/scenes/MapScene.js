@@ -13,6 +13,7 @@ import PortalChest from "../core/PortalChest.js";
 import { cofresData } from "../config/cofresData.js";
 import MurosInvisibles from "../core/MurosInvisibles.js";
 import FinalPortal from './FinalPortal.js';
+import NotaJerogliOverlay from "../overlay/NotaJerogliOverlay.js";
 
 export default class MapScene extends Phaser.Scene {
     constructor() {
@@ -31,6 +32,11 @@ export default class MapScene extends Phaser.Scene {
         //Bitácora
         this.inputManager.on("keyDown", (key) => {
             if (key === "B") this.openBinnacle(this.inputManager);
+
+        });
+        //Nota
+        this.inputManager.on("keyDown", (key) => {
+            if (key === "H") this.abrirNota(this.inputManager);
 
         });
 
@@ -154,6 +160,10 @@ export default class MapScene extends Phaser.Scene {
 
     openBinnacle() { // Abrir bitácora
         this.scene.launch("BinnacleOverlay", { parentScene: "MapScene" });
+        this.scene.pause(); // Pausamos MapScene mientras el overlay está activo
+    }
+    abrirNota() { 
+        this.scene.launch("NotaJerogloOverlay", { parentScene: "MapScene" });
         this.scene.pause(); // Pausamos MapScene mientras el overlay está activo
     }
 

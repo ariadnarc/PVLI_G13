@@ -28,9 +28,32 @@ export const playerInitialData = {
   get jeroglificosObtenidos() {
     return window.gameState.jeroglificosObtenidos;
   },
-  
-  get minijuegosCompletados() {
-    return window.gameState.minijuegosCompletados;
+  //Guardamos que jeroglificos tiene el jugador
+  jeroglificosNota:{
+      A:false, 
+      E: false, 
+      N: false, 
+      S: false,
+      I: false, 
+      U: false, 
+      C: false, 
+      T: false, 
+      R: false,
+      Q: false, 
+      M: false, 
+      P: false, 
+      O: false, 
+      B: false, 
+      L: false
+
+  },
+
+  minijuegosCompletados: { // Control de si es la primera vez en los minijuegos
+    SlideBar: false,
+    PuzzleLights: false,
+    Undertale: false,
+    CrocoShoot: false,
+    LockPick: false,
   }
 };
 
