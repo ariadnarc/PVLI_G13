@@ -5,6 +5,7 @@
  */
 
 import { DIFICULTADES } from '../config/MinigameData.js';
+import { cofresData } from '../config/cofresData.js';
 import InputManager from '../core/InputManager.js';
 
 export default class SlideBar extends Phaser.Scene {
@@ -14,7 +15,6 @@ export default class SlideBar extends Phaser.Scene {
     }
 
     init(data = {}) {
-
         this.isMinigame = true;
         // Guardamos el minijuego
         this.minijuego = data.minijuego;
@@ -109,11 +109,15 @@ export default class SlideBar extends Phaser.Scene {
         if (acierto) {
 
             console.log("¡ACIERTO!");
+            this.bgMusic.stop();
+
             this.endGame(true); // termina el juego con victoria
 
         } else {
 
             console.log("FALLASTE");
+            this.bgMusic.stop();
+
 
             this.tries--;
             this.updateHUD();
@@ -133,34 +137,8 @@ export default class SlideBar extends Phaser.Scene {
     //======TERMINA MINIJUEGO=========
     endGame(victoria, remainingTries = this.tries) {
         const menuOptions = {};
-
-        // Reintentar
-        menuOptions['Reintentar'] = () => {
-            this.bgMusic.stop();
-            this.scene.stop('PostMinigameMenu');
-            this.scene.stop();
-
-            if (!victoria && remainingTries > 0) {
-                // Todavia quedan intentos -> volvemos a SlideBar con los intentos restantes
-                this.scene.start('SlideBar', {
-                    minijuego: this.minijuego,
-                    dificultad: this.difficulty,
-                    jeroglificoId: this.jeroglificoId,
-                    remainingTries: remainingTries
-                });
-            } else {
-                // Ultimo intento perdido o victoria -> Reintentar lleva a SelectDifficultyScene
-                this.scene.start('PreMinigameScene', {
-                    minijuego: this.minijuego,
-                    dificultad: this.difficulty,
-                    jeroglificoId: this.jeroglificoId
-                });
-            }
-        };
-
         // Salir al mapa
         menuOptions['Salir'] = () => {
-            this.bgMusic.stop();
             this.scene.stop('PostMinigameMenu');
             this.scene.stop();
             this.scene.start('MapScene');
@@ -176,6 +154,4 @@ export default class SlideBar extends Phaser.Scene {
             remainingTries: remainingTries // <-- importante para mostrar en PostMinigameMenu
         });
     };
-
-
 }

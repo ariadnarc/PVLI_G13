@@ -346,10 +346,10 @@ export default class CrocoShoot extends Phaser.Scene {
             options: {
                 "Reintentar": () => {
                     this.scene.stop('PostMinigameMenu');
-                    this.scene.start('CrocoShoot', { 
-                        minijuego: this.minijuego, 
+                    this.scene.start('CrocoShoot', {
+                        minijuego: this.minijuego,
                         dificultad: this.difficulty,
-                        jeroglificoId: this.jeroglificoId
+                        jeroglificoId: this.jeroglificoId,
                     });
                 },
                 "Salir": () => {

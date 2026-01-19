@@ -28,7 +28,7 @@ export const cofresData = [
         jeroglificoId: 3,
         controles: [
             "Usa ← / → para girar",
-            "Encuentra el punto correcto y pulsa espacio."]
+            "Encuentra el punto correcto y mantén espacio."]
     },
     {
         posInicial: { x: 720, y: 120 },  
@@ -78,7 +78,7 @@ export const cofresData = [
         jeroglificoId: 9,
         controles: [
             "Usa ← / → para girar",
-            "Encuentra el punto correcto y pulsa espacio."]
+            "Encuentra el punto correcto y mantén espacio."]
     },
     {
         posInicial: { x: 1300, y: 730 },
@@ -129,6 +129,6 @@ export const cofresData = [
         jeroglificoId: 15,
         controles: [
             "Usa ← / → para girar",
-            "Encuentra el punto correcto y pulsa espacio."]
+            "Encuentra el punto correcto y mantén espacio."]
     }
 ]

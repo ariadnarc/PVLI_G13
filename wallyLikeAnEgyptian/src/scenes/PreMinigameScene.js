@@ -7,6 +7,7 @@
 import MenuBase from '../menus/MenuBase.js';
 import { JEROGLIFICOS_DATA } from '../config/JeroglificosData.js';
 import { NOMBRES_MINIJUEGOS } from '../config/MinigameData.js';
+import { addJeroglifico, hasJeroglifico } from '../config/PlayerData.js';
 
 export default class PreMinigameScene extends MenuBase {
 
@@ -33,6 +34,8 @@ export default class PreMinigameScene extends MenuBase {
     const centerX = this.cameras.main.centerX;
     const { width, height } = this.sys.game.config;
 
+    const jeroOwned = hasJeroglifico(this.jeroglificoId);
+
     // === Fondo ===
     const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
     bg.setDisplaySize(width, height);
@@ -56,11 +59,20 @@ export default class PreMinigameScene extends MenuBase {
       this.add.image(centerX, 225, this.jeroglifico.simbolo)
         .setScale(0.6);
 
-      this.add.text(centerX, 300, this.jeroglifico.letra, {
-        fontFamily: 'Filgaia',
-        fontSize: '18px',
-        color: '#ffffff',
-      }).setOrigin(0.5);
+      if (jeroOwned) {
+        this.add.text(centerX, 300, this.jeroglifico.letra + ' (Ya lo tienes)', {
+          fontFamily: 'Filgaia',
+          fontSize: '18px',
+          color: '#ffffffd7',
+        }).setOrigin(0.5);
+      }
+      else {
+        this.add.text(centerX, 300, this.jeroglifico.letra, {
+          fontFamily: 'Filgaia',
+          fontSize: '18px',
+          color: '#ffffff',
+        }).setOrigin(0.5);
+      }
     }
 
     // === Dificultad ===
@@ -96,7 +108,7 @@ export default class PreMinigameScene extends MenuBase {
         jeroglificoId: this.jeroglificoId
       });
     });
-    
+
 
     // === Botón VOLVER ===
     this.createOptButton('VOLVER', centerX - (centerX / 2), height - 70, () => {
@@ -106,7 +118,7 @@ export default class PreMinigameScene extends MenuBase {
     });
   }
 
-  createOptButton(texto, x, y, callback){
+  createOptButton(texto, x, y, callback) {
 
     const btn = this.add.image(x, y, "fondoBoton")
       .setInteractive({ useHandCursor: true });
@@ -118,11 +130,11 @@ export default class PreMinigameScene extends MenuBase {
     }).setOrigin(0.5);
 
     btn.once("pointerdown", callback);
-    return btn;  
+    return btn;
   }
 
   shutdown() {
-  super.shutdown(); // Limpiar todo lo de MenuBase
-}
+    super.shutdown(); // Limpiar todo lo de MenuBase
+  }
 
 }

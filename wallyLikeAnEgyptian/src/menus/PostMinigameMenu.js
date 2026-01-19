@@ -53,12 +53,16 @@ export default class PostMinigameMenu extends MenuBase {
 
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
-      
+
       //AÑADIR EL JEROGLÍFICO GANADO
       const esNuevo = addJeroglifico(this.jeroglificoId);
-      
+
       //MOSTRAR EL JEROGLÍFICO OBTENIDO
       this.showJeroglifico(esNuevo);
+    }
+
+    if (this.result = 'defeat') {
+      this.sound.play("defeat");
     }
 
     // Intentos restantes para minijuegos como SlideBar
@@ -76,10 +80,10 @@ export default class PostMinigameMenu extends MenuBase {
 
   showJeroglifico(esNuevo) {
     const { width, height } = this.sys.game.config;
-    
+
     // Buscar datos del jeroglífico
     const jero = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
-    
+
     if (!jero) {
       console.error(`❌ Jeroglífico ${this.jeroglificoId} no encontrado`);
       return;
