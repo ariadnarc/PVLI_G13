@@ -60,8 +60,8 @@ export default class NotaJerogliOverlay extends Phaser.Scene {
       const W = this.scale.width;
       const H = this.scale.height;
 
-      const margenSuperior = 60;
-      const margenInterior = 4;
+      const margenSuperior = 100;
+      const margenInterior = 60;
 
       const areaY = margenSuperior;
       const areaH = H - margenSuperior;
@@ -76,18 +76,18 @@ export default class NotaJerogliOverlay extends Phaser.Scene {
       //Recorre la matriz de la nota
       for(let i=0;i<filas;i++){
         for(let j=0;j<columnas;j++){
-            const jeroID=JEROGLIFICOS_NOTA_DATA[i,j];
+            const jeroID=JEROGLIFICOS_NOTA_DATA[i][j];
           if(jeroID!=0){
               
               const obtenido=playerInitialData.jeroglificosObtenidos.includes(jeroID);
             if(obtenido){
-              const x = j * anchoBloque + margenInterior;
+              const x = j * anchoBloque + margenInterior-20;
               const y = areaY + i * altoBloque + margenInterior;
 
                const letra=this.getLetra(jeroID);
                this.add.text(x, y, letra, {
                 fontFamily: "Filgaia",
-                fontSize: `${altoBloque * 0.7}px`,
+                fontSize: `${altoBloque * 0.35}px`,
                 color: "#e6c480"
                 }).setOrigin(0.5);
   
@@ -96,7 +96,7 @@ export default class NotaJerogliOverlay extends Phaser.Scene {
                 const x = j * anchoBloque + anchoBloque / 2;
                 const y = areaY + i * altoBloque + altoBloque / 2;
               const jero=this.getJero(jeroID);
-              const img = this.add.image(x, y, jero).setScale(0.5);
+              const img = this.add.image(x, y, jero).setScale(0.35);
             }
           }
         }
