@@ -87,26 +87,10 @@ export default class BinnacleOverlay extends Phaser.Scene {
       const img = this.add.image(0, 0, jero.simbolo).setScale(0.5);
 
       if (!obtenido) {
-        // Si NO lo tiene, oscurecer y poner signo de interrogación
+        // Si NO lo tiene, oscurecer 
         img.setTint(0x444444);
         img.setAlpha(0.3);
-        
-        // Icono de candado o interrogación
-        this.add.text(0, 0, '?', {
-          fontFamily: "Filgaia",
-          fontSize: "48px",
-          color: "#666666",
-          fontStyle: "bold"
-        }).setOrigin(0.5);
       }
-
-      // Letra debajo
-      this.add.text(0, 55, obtenido ? jero.letra : '?', {
-        fontFamily: "Filgaia",
-        fontSize: "22px",
-        color: obtenido ? "#e6c480" : "#555555",
-        fontStyle: "bold"
-      }).setOrigin(0.5);
 
       container.add([img]);
     });

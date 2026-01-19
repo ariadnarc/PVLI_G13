@@ -53,8 +53,8 @@ export default class PreMinigameScene extends MenuBase {
         color: '#ffd98d',
       }).setOrigin(0.5);
 
-      this.add.image(centerX, 225, this.jeroglifico.simbolo)
-        .setScale(0.6);
+      this.add.image(centerX, 230, this.jeroglifico.simbolo)
+        .setScale(0.4);
 
       this.add.text(centerX, 300, this.jeroglifico.letra, {
         fontFamily: 'Filgaia',

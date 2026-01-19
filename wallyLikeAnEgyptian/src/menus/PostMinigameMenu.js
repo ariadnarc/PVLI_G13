@@ -106,7 +106,7 @@ export default class PostMinigameMenu extends MenuBase {
 
     // Imagen del jeroglífico
     this.add.image(width / 2, height / 2 + 20, jero.simbolo)
-      .setScale(0.6);
+      .setScale(0.4);
 
     // Letra
     this.add.text(width / 2, height / 2 + 90, `"${jero.letra}"`, {

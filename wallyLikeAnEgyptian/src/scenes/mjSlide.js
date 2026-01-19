@@ -134,29 +134,25 @@ export default class SlideBar extends Phaser.Scene {
     endGame(victoria, remainingTries = this.tries) {
         const menuOptions = {};
 
-        // Reintentar
-        menuOptions['Reintentar'] = () => {
-            this.bgMusic.stop();
-            this.scene.stop('PostMinigameMenu');
-            this.scene.stop();
+        if(!victoria && remainingTries > 0){
 
-            if (!victoria && remainingTries > 0) {
-                // Todavia quedan intentos -> volvemos a SlideBar con los intentos restantes
-                this.scene.start('SlideBar', {
-                    minijuego: this.minijuego,
-                    dificultad: this.difficulty,
-                    jeroglificoId: this.jeroglificoId,
-                    remainingTries: remainingTries
-                });
-            } else {
-                // Ultimo intento perdido o victoria -> Reintentar lleva a SelectDifficultyScene
-                this.scene.start('PreMinigameScene', {
-                    minijuego: this.minijuego,
-                    dificultad: this.difficulty,
-                    jeroglificoId: this.jeroglificoId
-                });
-            }
-        };
+            // Reintentar
+            menuOptions['Reintentar'] = () => {
+                this.bgMusic.stop();
+                this.scene.stop('PostMinigameMenu');
+                this.scene.stop();
+    
+                if (!victoria && remainingTries > 0) {
+                    // Todavia quedan intentos -> volvemos a SlideBar con los intentos restantes
+                    this.scene.start('SlideBar', {
+                        minijuego: this.minijuego,
+                        dificultad: this.difficulty,
+                        jeroglificoId: this.jeroglificoId,
+                        remainingTries: remainingTries
+                    });
+                } 
+            };
+        }
 
         // Salir al mapa
         menuOptions['Salir'] = () => {
