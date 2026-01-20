@@ -36,7 +36,7 @@ export default class MurosInvisibles {
                     stroke: '#33261bff',
                     strokeThickness: 4
                 }).setOrigin(0.5);
-
+                //texto con cantidad de jeroglificos que te faltan
                 this.infoTextJero = this.scene.add.text(this.x, this.y + 150, `Te faltan `+ jeroRestantes, {
                     fontFamily: 'Filgaia',
                     fontSize: '15px',

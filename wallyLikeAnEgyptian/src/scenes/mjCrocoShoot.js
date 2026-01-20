@@ -27,7 +27,8 @@ export default class CrocoShoot extends Phaser.Scene {
         // Dificultad elegida
         this.difficulty = data.dificultad;
         this.jeroglificoId = data.jeroglificoId;
-
+        //Verifica si la sala es secreta 
+        this.secreta=data.secreta;
         const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
         // Var.
         this.escapesCount = 0;
@@ -321,6 +322,7 @@ export default class CrocoShoot extends Phaser.Scene {
             difficulty: this.difficulty,
             minijuego: 'CrocoShoot',
             jeroglificoId: this.jeroglificoId,
+            secreta:this.secreta,
             options: {
                 "Salir": () => {
                     this.scene.stop('PostMinigameMenu');
@@ -343,6 +345,7 @@ export default class CrocoShoot extends Phaser.Scene {
             difficulty: this.difficulty,
             minijuego: 'CrocoShoot',
             jeroglificoId: this.jeroglificoId,
+            secreta:this.secreta,
             options: {
                 "Reintentar": () => {
                     this.scene.stop('PostMinigameMenu');

@@ -58,3 +58,12 @@ export function resetJeroglificos() {
   window.gameState.jeroglificosObtenidos = [];
   console.log('Jeroglíficos reseteados');
 }
+export function deleteUltimoJeroglifico(jeroglificoId) {
+  if (window.gameState.jeroglificosObtenidos.includes(jeroglificoId)) {
+    window.gameState.jeroglificosObtenidos.pop(jeroglificoId);
+    console.log(`Jeroglífico ${jeroglificoId} eliminado. Total: ${window.gameState.jeroglificosObtenidos.length}/15`);
+    return true; // Devuelve true si estaba
+  }
+  return false;
+}
+

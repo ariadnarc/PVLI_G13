@@ -13,6 +13,7 @@ import PortalChest from "../core/PortalChest.js";
 import { cofresData } from "../config/cofresData.js";
 import MurosInvisibles from "../core/MurosInvisibles.js";
 import FinalPortal from './FinalPortal.js';
+import {MINIJUEGOS_SECRETA} from '../config/SalaSecretaBoot.js'
 //import NotaJerogliOverlay from "../overlay/NotaJerogliOverlay.js";
 
 export default class MapScene extends Phaser.Scene {
@@ -108,8 +109,29 @@ export default class MapScene extends Phaser.Scene {
 
             this.portales.push(portal);
         });
+        //=== SALA SECRETA ===
+        const elegido = MINIJUEGOS_SECRETA[Math.floor(Math.random() * MINIJUEGOS_SECRETA.length)];
+        const portalSalaSecreta = new PortalChest(
+                this,
+                {posInicial: { x: 450, y: 550 }},
+                this.PlayerManager,
+                () => {
+      
+                    this.savePositions();
+                    
+                    this.scene.stop('MapScene');
 
-            
+                    //Lanzar escena SIN destruir el mapa
+                    this.scene.start('SalaSecreta', {
+                        minijuego:  elegido.minijuego,
+                        dificultad:  elegido.dificultad,
+                        controles:  elegido.controles,
+                        parentScene: 'MapScene'
+                    });
+                    
+                }
+            );
+            this.portales.push(portalSalaSecreta);
         //=== COLISIONES OBJETOS ENTRE SÍ ===
         for (let i = 0; i < this.movingObjects.length; i++) {
                 for (let j = i + 1; j < this.movingObjects.length; j++) {
@@ -132,11 +154,11 @@ export default class MapScene extends Phaser.Scene {
 
         //=== MUROS INVISIBLES ===
         this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036,15, this.PlayerManager,playerInitialData);
-        this.wallVuelta = new MurosInvisibles(this, 455, 995, 15,this.PlayerManager,playerInitialData);
-        this.wallFin = new MurosInvisibles(this, 455, 1135,5, this.PlayerManager,playerInitialData);
+        this.wallVuelta = new MurosInvisibles(this, 455, 995, 5,this.PlayerManager,playerInitialData);
+        this.wallFin = new MurosInvisibles(this, 455, 1135,15, this.PlayerManager,playerInitialData);
 
         // Portal final
-        this.finalPortal = new FinalPortal(this,  455, 1050, this.PlayerManager);
+        this.finalPortal = new FinalPortal(this,  455, 1050, this.PlayerManager,playerInitialData);
 
         this.cameras.main.setBackgroundColor(0x30291F);
 

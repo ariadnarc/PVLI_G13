@@ -3,81 +3,59 @@
  * YA
  * A
  */
-
 import MenuBase from '../menus/MenuBase.js';
 import { JEROGLIFICOS_DATA } from '../config/JeroglificosData.js';
 import { NOMBRES_MINIJUEGOS } from '../config/MinigameData.js';
 import { addJeroglifico, hasJeroglifico } from '../config/PlayerData.js';
-
-export default class PreMinigameScene extends MenuBase {
-
-  constructor() {
-    super('PreMinigameScene');
+export default class SalaSecreta extends MenuBase{
+    constructor() {
+    super('SalaSecreta');
   }
 
   init(data) {
-    super.init(data);
 
-    this.minijuego = data.minijuego;
+    this.minijuego = data.minijuego ;
     this.dificultad = data.dificultad;
-    this.jeroglificoId = data.jeroglificoId;
     this.controles = data.controles || [];
-    this.parentScene = data.parentScene;
-    this.secreta=false;
+    this.parentScene =data.parentScene;
+    this.secreta=true;
 
-    this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
-    this.jeroglifico = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
+    //this.jeroglifico = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
   }
-
   create() {
     super.create();
 
     const centerX = this.cameras.main.centerX;
     const { width, height } = this.sys.game.config;
 
-    const jeroOwned = hasJeroglifico(this.jeroglificoId);
-
     // === Fondo ===
     const bg = this.add.image(width / 2, height / 2, 'selectdiffBG');
     bg.setDisplaySize(width, height);
     bg.setDepth(-10);
 
-    // === Título Minijuego ===
-    this.add.text(centerX, 90, this.nombreMinijuego, {
+    // === Título ===
+    this.add.text(centerX, 90, 'Sala Secreta', {
       fontFamily: 'Filgaia',
       fontSize: '48px',
       color: '#634830ff',
     }).setOrigin(0.5);
 
-    // === Jeroglífico ===
-    if (this.jeroglifico) {
-      this.add.text(centerX, 150, 'Jeroglífico que obtendrás', {
+    // === Explicacion ===
+     this.add.text(centerX, 170, '  Si GANAS-> ganas 3 jeroglificos \nSi PIERDES-> pierdes 5 jeroglificos', {
         fontFamily: 'Filgaia',
-        fontSize: '26px',
+        fontSize: '30px',
         color: '#ffd98d',
       }).setOrigin(0.5);
 
-      this.add.image(centerX, 230, this.jeroglifico.simbolo)
-        .setScale(0.4);
-
-      if (jeroOwned) {
-        this.add.text(centerX, 300, this.jeroglifico.letra + ' (Ya lo tienes)', {
-          fontFamily: 'Filgaia',
-          fontSize: '18px',
-          color: '#ffffffd7',
-        }).setOrigin(0.5);
-      }
-      else {
-        this.add.text(centerX, 300, this.jeroglifico.letra, {
-          fontFamily: 'Filgaia',
-          fontSize: '18px',
-          color: '#ffffff',
-        }).setOrigin(0.5);
-      }
-    }
+    // === Minijuego ===
+    this.add.text(centerX, 280, `Minijuego: ${this.minijuego}`, {
+        fontFamily: 'Filgaia',
+      fontSize: '30px',
+      color: '#ffffff',
+    }).setOrigin(0.5);
 
     // === Dificultad ===
-    this.add.text(centerX, 360, `Dificultad: ${this.dificultad}`, {
+    this.add.text(centerX, 320, `Dificultad: ${this.dificultad}`, {
       fontFamily: 'Filgaia',
       fontSize: '24px',
       color: '#ffffff',
@@ -86,14 +64,14 @@ export default class PreMinigameScene extends MenuBase {
     // === Controles ===
     this.add.text(centerX, 400, 'Controles:', {
       fontFamily: 'Filgaia',
-      fontSize: '24px',
+      fontSize: '20px',
       color: '#ffd98d',
     }).setOrigin(0.5);
 
     const controlesTexto = this.controles.join('\n');
     this.add.text(centerX, 450, controlesTexto, { // ajustado Y para que quede debajo del título
       fontFamily: 'Filgaia',
-      fontSize: '20px',
+      fontSize: '18px',
       color: '#ffffff',
       align: 'center',
       lineSpacing: 8,
@@ -102,11 +80,10 @@ export default class PreMinigameScene extends MenuBase {
 
     // === Botón JUGAR ===
     this.createOptButton('JUGAR', centerX + (centerX / 2), height - 70, () => {
-      this.scene.stop('PreMinigameScene'); // Cerrar este menú
+      this.scene.stop('SalaSecreta'); // Cerrar este menú
       this.scene.stop('MapScene'); // Cerrar el mapa
       this.scene.start(this.minijuego, { // Iniciar el minijuego
         dificultad: this.dificultad,
-        jeroglificoId: this.jeroglificoId,
         secreta:this.secreta
       });
     });
@@ -114,7 +91,7 @@ export default class PreMinigameScene extends MenuBase {
 
     // === Botón VOLVER ===
     this.createOptButton('VOLVER', centerX - (centerX / 2), height - 70, () => {
-      this.scene.stop('PreMinigameScene'); // Cerrar este menú
+      this.scene.stop('SalaSecreta'); // Cerrar este menú
       this.scene.stop('MapScene'); // Cerrar el mapa
       this.scene.start('MapScene');
     });

@@ -6,7 +6,7 @@
 
 import MenuBase from './MenuBase.js';
 import { JEROGLIFICOS_DATA } from '../config/JeroglificosData.js';
-import { addJeroglifico } from '../config/PlayerData.js';
+import { addJeroglifico, hasJeroglifico,deleteUltimoJeroglifico } from '../config/PlayerData.js';
 
 /** 
  * ===IMPORTANTE===
@@ -26,6 +26,7 @@ export default class PostMinigameMenu extends MenuBase {
     this.minijuego = data?.minijuego;
     this.jeroglificoId = data?.jeroglificoId
     this.options = data?.options || {};
+    this.secreta=data.secreta;
     // Para minijuegos con varios intentos, si vienen en data
     this.remainingTries = data?.remainingTries;
   }
@@ -53,18 +54,42 @@ export default class PostMinigameMenu extends MenuBase {
 
     //============RECOMPENSAS=================
     if (this.result === 'victory') {
+      //Comprueba si es la sala secreta
+      if(!this.secreta){
+        //AÑADIR EL JEROGLÍFICO GANADO
+        const esNuevo = addJeroglifico(this.jeroglificoId);
 
-      //AÑADIR EL JEROGLÍFICO GANADO
-      const esNuevo = addJeroglifico(this.jeroglificoId);
-
-      //MOSTRAR EL JEROGLÍFICO OBTENIDO
-      this.showJeroglifico(esNuevo);
+        //MOSTRAR EL JEROGLÍFICO OBTENIDO
+        this.showJeroglifico(esNuevo);
+      }
+      else{
+        let contadorAded=0;
+        let contaJero=JEROGLIFICOS_DATA.length;
+        const nuevos=[];
+        while(contadorAded<3&&contaJero>0){
+          if(!hasJeroglifico(contaJero)){
+            addJeroglifico(contaJero);
+            contadorAded=contadorAded+1;
+          }
+          contaJero=contaJero-1;
+        }
+      }
 
       // Sonido victoria
       this.sound.play ("victory");
     }
 
     if (this.result = 'defeat') {
+      let contadorAded=0;
+        let contaJero=1;
+        const nuevos=[];
+        while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length+1){
+          if(hasJeroglifico(contaJero)){
+           deleteUltimoJeroglifico(contaJero);
+            contadorAded=contadorAded-1;
+          }
+          contaJero=contaJero-1;
+        }
       //this.sound.play("defeat");
     }
 

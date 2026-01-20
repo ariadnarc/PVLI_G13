@@ -37,7 +37,7 @@ export default class FinalPortal {
 
         this.playerNear = false; // reset
 
-        // 2. Ver si hay overlapeo REAL este frame
+        // Ver si hay overlapeo REAL este frame
         this.scene.physics.world.overlap(
             this.player.sprite,
             this.sprite,
@@ -46,7 +46,7 @@ export default class FinalPortal {
             }
         );
 
-        // 3. Crear texto si está cerca
+        // Crear texto si está cerca
         if (this.playerNear && !this.infoText) {
             this.infoText = this.scene.add.text(
                 this.sprite.x,
@@ -60,7 +60,7 @@ export default class FinalPortal {
             ).setOrigin(0.5);
         }
 
-        // 4. Borrar texto si NO está cerca
+        // Borrar texto si NO está cerca
         if (!this.playerNear && this.infoText) {
             this.infoText.destroy();
             this.infoText = null;
@@ -77,7 +77,6 @@ export default class FinalPortal {
             //this.scene.scene.destroy();
             this.scene.scene.stop();
 
-            // Opcional?: destruir todo ya que vamos al minijuegfinal
         }
     }
 }
