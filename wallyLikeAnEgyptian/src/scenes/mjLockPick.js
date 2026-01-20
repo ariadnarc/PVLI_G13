@@ -35,6 +35,7 @@ export default class LockPick extends Phaser.Scene {
         this.minijuego = data.minijuego;
         this.difficulty = data.dificultad;
         this.jeroglificoId = data.jeroglificoId;
+        this.secreta=data.secreta;
     }
 
     /**
@@ -383,6 +384,7 @@ export default class LockPick extends Phaser.Scene {
             difficulty: this.difficulty,
             minijuego: 'LockPick',
             jeroglificoId: this.jeroglificoId,
+            secreta:this.secreta,
             options: {
                 "Volver al mapa": () => {
                     this.scene.stop('PostMinigameMenu');
@@ -419,6 +421,7 @@ export default class LockPick extends Phaser.Scene {
             difficulty: this.difficulty,
             minijuego: 'LockPick',
             jeroglificoId: this.jeroglificoId,
+            secreta:this.secreta,
             options: {
                 "Reintentar": () => {
                     this.scene.stop('PostMinigameMenu');

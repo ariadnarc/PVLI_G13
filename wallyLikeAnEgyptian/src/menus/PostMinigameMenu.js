@@ -72,9 +72,11 @@ export default class PostMinigameMenu extends MenuBase {
           if(!hasJeroglifico(contaJero)){
             addJeroglifico(contaJero);
             contadorAded=contadorAded+1;
+            nuevos.push(contaJero)
           }
           contaJero=contaJero-1;
         }
+        this.showJeroglificos(nuevos);
       }
 
       // Sonido victoria
@@ -85,16 +87,17 @@ export default class PostMinigameMenu extends MenuBase {
       if(this.secreta){
         let contadorAded=0;
         let contaJero=1;
-        const nuevos=[];
+        const eliminados=[];
         while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length){
           if(hasJeroglifico(contaJero)){
            deleteUltimoJeroglifico(contaJero);
+           eliminados.push(contaJero);
             contadorAded=contadorAded+1;
           }
           contaJero=contaJero+11;
         }
-      }
-      
+        this.showJeroglificos(eliminados);
+      }      
       //this.sound.play("defeat");
     }
 
@@ -153,7 +156,48 @@ export default class PostMinigameMenu extends MenuBase {
       fontStyle: 'bold'
     }).setOrigin(0.5);
   }
+  //enseña los jeroglificos (perdidos o ganados) en la sala secreta
+  showJeroglificos(jeros){
+    const { width, height } = this.sys.game.config;
 
+    // Texto
+    const texto = this.result == 'victory' ? '¡Nuevos jeroglíficos obtenidos!' : 'Jeroglíficos quitados T_T';
+    const color = this.result == 'victory' ? '#FFD700' : '#440000ff';
+
+    this.add.text(width / 2, height / 2 - 80, texto, {
+      fontFamily: 'Filgaia',
+      fontSize: '24px',
+      color: color,
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    const startX = width / 2 - 360; // Centrado
+    const startY = 160;
+    const spacingX = 180;
+    const spacingY = 160;
+    jeros.forEach((jeroglificoId, index) => {
+          const x = startX + spacingX;
+          const y = startY + spacingY;
+
+          // Buscar datos del jeroglífico
+          const data = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
+          if (!data) {
+            console.error(`❌ Jeroglífico ${this.jeroglificoId} no encontrado`);
+            return;
+          }
+    
+          // Imagen del jeroglífico
+          this.add.image(x, y, data.simbolo).setScale(0.5);
+          // Letra
+          this.add.text(width / 2, height / 2 + 90, `"${data.letra}"`, {
+            fontFamily: 'Filgaia',
+            fontSize: '28px',
+            color: '#e6c480',
+            fontStyle: 'bold'
+          }).setOrigin(0.5);
+        });
+
+  }
   createMenuButtons() {
     const { width, height } = this.sys.game.config;
     const centerY = height / 2 + 150;
