@@ -23,7 +23,6 @@ export default class PreMinigameScene extends MenuBase {
     this.jeroglificoId = data.jeroglificoId;
     this.controles = data.controles || [];
     this.parentScene = data.parentScene;
-    this.secreta=false;
 
     this.nombreMinijuego = NOMBRES_MINIJUEGOS[this.minijuego];
     this.jeroglifico = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
@@ -106,8 +105,7 @@ export default class PreMinigameScene extends MenuBase {
       this.scene.stop('MapScene'); // Cerrar el mapa
       this.scene.start(this.minijuego, { // Iniciar el minijuego
         dificultad: this.dificultad,
-        jeroglificoId: this.jeroglificoId,
-        secreta:this.secreta
+        jeroglificoId: this.jeroglificoId
       });
     });
 

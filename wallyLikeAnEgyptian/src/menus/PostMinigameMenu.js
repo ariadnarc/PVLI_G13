@@ -21,6 +21,8 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   init(data) {
+    //asumimos q nunca es secreta, si lo es se sobreescribe
+    this.secreta=false;
     this.result = data?.result || 'defeat';
     this.difficulty = data?.difficulty || 'FACIL';
     this.minijuego = data?.minijuego;
@@ -80,23 +82,26 @@ export default class PostMinigameMenu extends MenuBase {
     }
 
     if (this.result = 'defeat') {
-      let contadorAded=0;
+      if(this.secreta){
+        let contadorAded=0;
         let contaJero=1;
         const nuevos=[];
-        while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length+1){
+        while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length){
           if(hasJeroglifico(contaJero)){
            deleteUltimoJeroglifico(contaJero);
-            contadorAded=contadorAded-1;
+            contadorAded=contadorAded+1;
           }
-          contaJero=contaJero-1;
+          contaJero=contaJero+11;
         }
+      }
+      
       //this.sound.play("defeat");
     }
 
     // Intentos restantes para minijuegos como SlideBar
     if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
       this.sound.play("defeat");
-      this.add.text(width / 2, height / 2 - 120,
+      this.add.text(width / 2, height / 2 - 100,
         `Intentos restantes: ${this.remainingTries}`,
         { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
       ).setOrigin(0.5);

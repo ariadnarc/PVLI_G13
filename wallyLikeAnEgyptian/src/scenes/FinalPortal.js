@@ -77,6 +77,7 @@ export default class FinalPortal {
             //this.scene.scene.destroy();
             this.scene.scene.stop();
 
+            // Opcional?: destruir todo ya que vamos al minijuegfinal
         }
     }
 }

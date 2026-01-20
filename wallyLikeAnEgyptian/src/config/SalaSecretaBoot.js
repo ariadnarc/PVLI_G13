@@ -3,7 +3,7 @@
  * YA
  * A
  */
-//contine todos los minijuegos en dificil menos el slide
+//contine los posibles minijuegos de la sala secreta en dificil 
 export const MINIJUEGOS_SECRETA = [
     {
         minijuego: "CrocoShoot",
@@ -17,12 +17,6 @@ export const MINIJUEGOS_SECRETA = [
         controles: [
             "Usa las flechas para moverte.",
             "Esquiva los misiles para ganar."]
-    },
-    {
-        minijuego: "PuzzleLights",
-        dificultad: "DIFICIL",
-        controles: [
-            "Haz click en los jeroglíficos que se iluminen siguiendo el orden."]
     },
     {
         minijuego: "LockPick",

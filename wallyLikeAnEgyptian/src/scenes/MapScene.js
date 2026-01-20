@@ -153,8 +153,8 @@ export default class MapScene extends Phaser.Scene {
         }
 
         //=== MUROS INVISIBLES ===
-        this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036,15, this.PlayerManager,playerInitialData);
-        this.wallVuelta = new MurosInvisibles(this, 455, 995, 5,this.PlayerManager,playerInitialData);
+        this.wallSalaSecrt = new MurosInvisibles(this, 914, 1036,5, this.PlayerManager,playerInitialData);
+        this.wallVuelta = new MurosInvisibles(this, 455, 995, 15,this.PlayerManager,playerInitialData);
         this.wallFin = new MurosInvisibles(this, 455, 1135,15, this.PlayerManager,playerInitialData);
 
         // Portal final
