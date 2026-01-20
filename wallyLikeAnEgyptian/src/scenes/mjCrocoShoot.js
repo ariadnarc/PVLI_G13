@@ -64,7 +64,7 @@ export default class CrocoShoot extends Phaser.Scene {
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
-        this.bgMusic = this.sound.add('minigame-music');
+        this.bgMusic = this.sound.add('crocoshootTheme');
         this.bgMusic.play();
 
         //=== JUGADOR ===

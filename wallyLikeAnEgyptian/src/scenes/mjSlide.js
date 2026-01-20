@@ -65,12 +65,12 @@ export default class SlideBar extends Phaser.Scene {
         this.direction = 1; // 1 = derecha, -1 = izquierda
 
         //==========HUD=============
-        this.hud = this.add.text(20, 20, "", {
+        this.hud = this.add.text(20, 15, "", {
             fontSize: "24px",
             color: "#ffffff"
         });
 
-        this.bgMusic = this.sound.add('minigame-music');
+        this.bgMusic = this.sound.add('slideBarTheme');
         this.bgMusic.play();
 
         this.updateHUD();

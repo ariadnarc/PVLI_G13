@@ -191,7 +191,7 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    this.bgMusic = this.sound.add('minigame-music');
+    this.bgMusic = this.sound.add('undertaleTheme');
     this.bgMusic.play();
   }
 

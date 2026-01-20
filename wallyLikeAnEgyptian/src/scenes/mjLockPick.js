@@ -137,7 +137,7 @@ export default class LockPick extends Phaser.Scene {
         this.turnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Música
-        this.bgMusic = this.sound.add('minigame-music');
+        this.bgMusic = this.sound.add('lockPickTheme');
         this.bgMusic.play();
     }
 

@@ -105,7 +105,13 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('locked', 'wallyLikeAnEgyptian/assets/sounds/locked.wav');
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
     this.load.audio('start', 'wallyLikeAnEgyptian/assets/sounds/start.wav');
-    this.load.audio('minigame-music', 'wallyLikeAnEgyptian/assets/sounds/minigame_sound.mp3');
+    this.load.audio('slideBarTheme', 'wallyLikeAnEgyptian/assets/sounds/slideBarTheme.mp3');
+    this.load.audio('crocoshootTheme', 'wallyLikeAnEgyptian/assets/sounds/crocoshootTheme.mp3');
+    this.load.audio('undertaleTheme', 'wallyLikeAnEgyptian/assets/sounds/undertaleTheme.mp3');
+    this.load.audio('puzzleLightsTheme', 'wallyLikeAnEgyptian/assets/sounds/puzzleLightsTheme.mp3');
+    this.load.audio('lockPickTheme', 'wallyLikeAnEgyptian/assets/sounds/lockPickTheme.mp3');
+    this.load.audio('walkLikeAnEgyptian', 'wallyLikeAnEgyptian/assets/sounds/walkLikeAnEgyptian.mp3');
+    this.load.audio('finalBossTheme', 'wallyLikeAnEgyptian/assets/sounds/finalBossTheme.mp3');
     this.load.audio('creditsMusic', 'wallyLikeAnEgyptian/assets/sounds/credits_sound.mp3');
 
   }

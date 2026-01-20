@@ -71,7 +71,7 @@ export default class PostMinigameMenu extends MenuBase {
     // Intentos restantes para minijuegos como SlideBar
     if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
       this.sound.play("defeat");
-      this.add.text(width / 2, height / 2 - 100,
+      this.add.text(width / 2, height / 2 - 120,
         `Intentos restantes: ${this.remainingTries}`,
         { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
       ).setOrigin(0.5);
