@@ -1,11 +1,43 @@
-Decisiones de arte, música, ambientación, etc.
+# Estética visual y sonora ୭ ˚.
 
+---
 
-LISTA COMPLETA DE ASSETS: TO/DO
+## Estética visual ✎ᝰ
+En este proyecto hemos usado una mezcla de fondos y assets hechos a mano y otros encontrados en sitios como itchio. Para los fondos hemos usado Procreate y para los assets hemos usado Piskel.
 
-poner, o al menos, intentar poner los links a todos los assets que son ajenos a nuestra creación
+### Fondos hechos a mano:
+- Fondo del menú inicial.
+- Fondo de la escena inicial de la cafetería.
+- Fondo del menú pre-minijuego.
+- Fondos de los minijuegos "Precisión del escriba", "Memoria de luces", "Furia del desierto" y "Cerrajero ancestral".
+- Imagen base de todos los botones.
 
-Juan: Los assets que he integrado yo ya están más o menos todos en una lista, diferenciando los que he creado yo y los que he cogido prestados, excepto alguno del minijuego lock
-que va a ser complicado sonsacar la info ya que no recuerdo muy bien de dónde vienen la combo de imágenes
-El resto de assets que hayáis añadido vosotros, por favor añadir links si son de fuera o decir que son nuestros, asap.
-miaumiau
+### Assets hechos a mano:
+- Mariano, el personaje principal.
+- Wally.
+- NPCs del juego final.
+- El café corto.
+- Los jeroglíficos.
+
+### Assets creados por artistas externos y sus fuentes: 
+- Tilemap del mapa, cofres y objetos movibles: [aquí](https://kloworks.itch.io/desert-dungeon-pack)
+- Minijuego "Cazador de reptiles": mezcla de imágenes independientes encontradas en imágenes de Google.
+- Juego final: fondo encontrado en imágenes de Google.
+- Minijuego "Cerrajero ancestral": mezcla de imágenes independientes encontradas en imágenes de Google.
+- Minijuego "Furia del desierto": mezcla de imágenes independientes encontradas en imágenes de Google.
+- Fondo de los créditos: encontrado en imágenes de Google.
+
+---
+
+## Estética sonora ‧₊˚♪ 
+Parte de las melodías de Wally like an egyptian han sido compuestas por el equipo y otras han sido interpretaciones de canciones existentes grabadas por el equipo. Para las canciones compuestas se ha usado la escala Re Menor Frigia Dominante y tanto para estas como para las interpretaciones se han usado instrumentos como el Rubab, la Flauta, el Sitar y el Derbake para mantener la coherencia con la ubicación espaciotemporal del juego.
+
+### Canciones del proyecto:
+- Canciones de los minijuegos: compuestas y grabadas por el equipo.
+- Canción de exploración del mapa: versión de [Walk like an Egyptian](https://www.youtube.com/watch?v=-tZ-iH_pkSo&list=RD-tZ-iH_pkSo&start_radio=1) de The Bangles, interpretada y grabada por el equipo.
+- Canción del juego final: tema del [Anuncio de aceite Afia](https://www.youtube.com/watch?v=gpYQBV-HeXA&list=RDgpYQBV-HeXA&start_radio=1) de Savola Foods, empresa de Arabia Saudí.
+- Canción de los créditos: canción [Still Alive](https://www.youtube.com/watch?v=Y6ljFaKRTrI) del videojuego Portal (Valve, 2007).
+
+### Sonidos del proyecto:
+Los sonidos como el "click", "victoria" o "candado" han sido sacados de la página [Pixabay](https://pixabay.com/es/).
+
