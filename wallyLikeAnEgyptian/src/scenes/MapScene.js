@@ -46,7 +46,6 @@ export default class MapScene extends Phaser.Scene {
             console.log('Restaurando posición:', window.savedPlayerPos);
             playerInitialData.posInicial.x = window.savedPlayerPos.x;
             playerInitialData.posInicial.y = window.savedPlayerPos.y;
-            console.log('✅ Posición restaurada:', window.savedPlayerPos);
         }else {
             console.log('NO hay posición guardada');
         }
@@ -63,6 +62,16 @@ export default class MapScene extends Phaser.Scene {
         const colisiones = map.createLayer("colision", tilesets);
 
         colisiones.setCollisionByExclusion([-1]);
+
+        // Solo crear si no existe
+        if (!this.bgMusic) {
+            this.bgMusic = this.sound.add('walkLikeAnEgyptian', { loop: true });
+        }
+        
+        // Solo reproducir si no está sonando
+        if (!this.bgMusic.isPlaying) {
+            this.bgMusic.play();
+        }
 
         // Crear jugador y añadir sus colisiones con el mapa
         this.PlayerManager = new PlayerManager(this.inputManager, this, playerInitialData);
@@ -93,6 +102,10 @@ export default class MapScene extends Phaser.Scene {
       
                     this.savePositions();
                     
+                    if (this.bgMusic) {
+                        this.bgMusic.stop();
+                    }
+
                     this.scene.stop('MapScene');
 
                     //Lanzar escena SIN destruir el mapa
@@ -216,5 +229,26 @@ export default class MapScene extends Phaser.Scene {
         });
         
         console.log('Guardado en window:', window.savedPlayerPos);
+    }
+
+    pause() {
+        if (this.bgMusic && this.bgMusic.isPlaying) {
+            this.bgMusic.pause();
+        }
+    }
+
+    resume() {
+        // Reanudar la música
+        if (this.bgMusic && !this.bgMusic.isPlaying) {
+            this.bgMusic.resume();
+        }
+    }
+
+    shutdown() {
+        console.log('MapScene cerrada');
+        if (this.bgMusic) {
+            this.bgMusic.stop();
+            this.bgMusic = null;
+        }
     }
 }
