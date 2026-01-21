@@ -38,6 +38,8 @@ export default class PostMinigameMenu extends MenuBase {
 
     super.create(); // Inicializa InputManager y ESC
 
+    const soundManager = this.registry.get('soundManager');
+
     const { width, height } = this.sys.game.config;
 
     // Fondo translucido
@@ -80,7 +82,7 @@ export default class PostMinigameMenu extends MenuBase {
       }
 
       // Sonido victoria
-      this.sound.play ("victory");
+      soundManager.play('victory');
     }
 
     if (this.result === 'defeat') {
@@ -98,12 +100,12 @@ export default class PostMinigameMenu extends MenuBase {
         }
         this.showJeroglificos(eliminados);
       }      
-      //this.sound.play("defeat");
+      soundManager.play('defeat');
     }
 
     // Intentos restantes para minijuegos como SlideBar
     if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
-      this.sound.play("defeat");
+      soundManager.play('defeat');
       this.add.text(width / 2, height / 2 - 120,
         `Intentos restantes: ${this.remainingTries}`,
         { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
@@ -121,7 +123,7 @@ export default class PostMinigameMenu extends MenuBase {
     const jero = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
 
     if (!jero) {
-      console.error(`❌ Jeroglífico ${this.jeroglificoId} no encontrado`);
+      console.error(`Jeroglífico ${this.jeroglificoId} no encontrado`);
       return;
     }
 
@@ -214,7 +216,7 @@ export default class PostMinigameMenu extends MenuBase {
         x,
         centerY,
         () => {
-          this.sound.play("click");
+          soundManager.play("click");
           callback();
         },
         { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
