@@ -99,7 +99,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image("gold_particle", "wallyLikeAnEgyptian/assets/minijuegos/particles.jpg");
 
     //=== SONIDOS ===
-    this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.wav');
+    this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.mp3');
     this.load.audio('defeat', 'wallyLikeAnEgyptian/assets/sounds/defeat.wav');
     this.load.audio('click', 'wallyLikeAnEgyptian/assets/sounds/click.wav');
     this.load.audio('locked', 'wallyLikeAnEgyptian/assets/sounds/locked.wav');

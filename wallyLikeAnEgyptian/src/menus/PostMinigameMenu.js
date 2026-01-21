@@ -83,7 +83,7 @@ export default class PostMinigameMenu extends MenuBase {
       this.sound.play ("victory");
     }
 
-    if (this.result = 'defeat') {
+    if (this.result === 'defeat') {
       if(this.secreta){
         let contadorAded=0;
         let contaJero=1;
@@ -182,7 +182,7 @@ export default class PostMinigameMenu extends MenuBase {
           // Buscar datos del jeroglífico
           const data = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
           if (!data) {
-            console.error(`❌ Jeroglífico ${this.jeroglificoId} no encontrado`);
+            console.error(`Jeroglífico ${this.jeroglificoId} no encontrado`);
             return;
           }
     

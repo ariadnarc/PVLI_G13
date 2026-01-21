@@ -55,7 +55,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
   }
 
   
-  // Dibuja las imágenes, nombres y cantidades de cada tier
+  // Dibuja las imágenes y nombres 
    
   renderBinnacleContent() {
     const { width } = this.sys.game.config;
