@@ -68,6 +68,8 @@ export default class PostMinigameMenu extends MenuBase {
         let contadorAded=0;
         let contaJero=JEROGLIFICOS_DATA.length;
         const nuevos=[];
+        //busca 3 jeroglificos de mayor tier q el player no tenga
+        //y los añade
         while(contadorAded<3&&contaJero>0){
           if(!hasJeroglifico(contaJero)){
             addJeroglifico(contaJero);
@@ -88,6 +90,8 @@ export default class PostMinigameMenu extends MenuBase {
         let contadorAded=0;
         let contaJero=1;
         const eliminados=[];
+        //busca 5 jeroglificos de menor tier en los q tiene el player 
+        //y los elimina
         while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length){
           if(hasJeroglifico(contaJero)){
            deleteUltimoJeroglifico(contaJero);
