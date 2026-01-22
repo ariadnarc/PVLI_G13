@@ -5,7 +5,7 @@ export default class SoundManager {
 
     const keys = ['victory','defeat','click','locked','unlocked',
         'start','slideBarTheme','crocoshootTheme','undertaleTheme',
-        'puzzleLightsTheme','lockPickTheme','walkLikeAnEgyptian','finalBossTheme','creditsMusic'];
+        'puzzleLightsTheme','lockPickTheme','walkLikeAnEgyptian','finalBossTheme','creditsMusic', 'ambience'];
 
     keys.forEach(key => {
     this.sounds[key] = this.scene.sound.add(key);

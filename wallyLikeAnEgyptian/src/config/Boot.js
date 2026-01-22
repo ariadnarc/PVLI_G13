@@ -114,6 +114,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('walkLikeAnEgyptian', 'wallyLikeAnEgyptian/assets/sounds/walkLikeAnEgyptian.mp3');
     this.load.audio('finalBossTheme', 'wallyLikeAnEgyptian/assets/sounds/finalBossTheme.mp3');
     this.load.audio('creditsMusic', 'wallyLikeAnEgyptian/assets/sounds/credits_sound.mp3');
+    this.load.audio('ambience', 'wallyLikeAnEgyptian/assets/sounds/introAmbience.mp3');
 
   }
 

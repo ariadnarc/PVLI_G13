@@ -15,8 +15,10 @@ export default class MainMenu extends MenuBase {
     super.create();
 
     const { width, height } = this.sys.game.config;
-    this.soundManager = this.registry.get('soundManager');
 
+    this.soundManager = this.registry.get('soundManager');
+    this.soundManager.playMusic('walkLikeAnEgyptian');
+    
     // === FONDO ===
     const bg = this.add.image(width / 2, height / 2, 'mainmenuBG');
     bg.setDisplaySize(width, height);
@@ -24,13 +26,13 @@ export default class MainMenu extends MenuBase {
 
     // color debajo por si no carga el fondo:
     // this.add.rectangle(0, 0, width, height, 0x2c3e50).setOrigin(0);
-
+    
     this.add.text(450, 150, 'WALLY LIKE AN EGYPTIAN', {
       fontFamily: 'Filgaia',
       fontSize: '40px',
       color: '#634830ff',
     }).setOrigin(0.5);
-
+    
     this.add.text(450, 223,
       '¿Qué se esconde en lo profundo de la pirámide? ☕',
       {
@@ -42,19 +44,22 @@ export default class MainMenu extends MenuBase {
         align: 'center',
       })
       .setOrigin(0.5);
-
-    this.createButton('Jugar', 450, 320, () => {
-      this.soundManager?.play('click');
-      this.scene.start('IntroScene');
-    }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
+      
+      this.createButton('Jugar', 450, 320, () => {
+        this.soundManager?.stopMusic();
+        this.soundManager?.play('click');
+        this.scene.start('IntroScene');
+      }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
       'fondoBoton');
-
-    this.createButton('Ajustes', 450, 420, () => {
-      this.soundManager?.play('click');
-      this.scene.launch('SettingsMenu', { parentScene: 'MainMenu' });
-      this.scene.pause();
-    }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
+      
+      this.createButton('Ajustes', 450, 420, () => {
+        this.soundManager?.play('click');
+        this.scene.launch('SettingsMenu', { parentScene: 'MainMenu' });
+        this.scene.pause();
+      }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
       'fondoBoton');
+      
+      
   }
 
   // MainMenu: ESC no hace nada

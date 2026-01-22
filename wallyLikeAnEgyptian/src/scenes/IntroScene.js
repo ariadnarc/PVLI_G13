@@ -32,9 +32,9 @@ export default class IntroScene extends Phaser.Scene {
             .setOrigin(0.5);
 
         this.portraitSprite = this.add.image(125, 250, 'mariano')
-            .setScale(0.18)
-            .setVisible(false);
-
+        .setScale(0.18)
+        .setVisible(false);
+        
         // Crear ventana de dialogo
         this.dialogWindow = new DialogText(this, {
             windowHeight: 190,
@@ -42,10 +42,13 @@ export default class IntroScene extends Phaser.Scene {
             fontSize: 28,
             fontFamily: 'Filgaia'
         });
-
+        
+        this.soundManager = this.registry.get('soundManager');
+        this.soundManager.playMusic('ambience', { loop: true });
+        
         // Mostrar el primer dialogo
         this.showDialog();
-
+        
         // Avanzar dialogo
         this.input.keyboard.on('keydown-SPACE', () => { this.nextDialog(); }); // con space
         this.input.on('pointerdown', () => { this.sound.play("click"); this.nextDialog(); }); // con click
@@ -57,6 +60,7 @@ export default class IntroScene extends Phaser.Scene {
 
     showDialog() {
         if (this.dialogIndex >= this.dialogData.length) {
+            this.soundManager?.stop();
             this.sound.play("click");
             this.scene.start('MapScene'); 
             return;
@@ -114,6 +118,7 @@ export default class IntroScene extends Phaser.Scene {
 
         //=== Acción del botón ===
         btn.on("pointerdown", () => {
+            this.soundManager?.stopMusic();
             this.scene.start("MapScene");
         });
     }
