@@ -21,6 +21,7 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   init(data) {
+    this.menuConfig = data || {};
     //asumimos q nunca es secreta, si lo es se sobreescribe
     this.secreta=false;
     this.result = data?.result || 'defeat';
@@ -38,7 +39,7 @@ export default class PostMinigameMenu extends MenuBase {
 
     super.create(); // Inicializa InputManager y ESC
 
-    const soundManager = this.registry.get('soundManager');
+    this.soundManager = this.registry.get('soundManager');
 
     const { width, height } = this.sys.game.config;
 
@@ -67,45 +68,45 @@ export default class PostMinigameMenu extends MenuBase {
         this.showJeroglifico(esNuevo);
       }
       else{
-        let contadorAded=0;
-        let contaJero=JEROGLIFICOS_DATA.length;
-        const nuevos=[];
-        while(contadorAded<3&&contaJero>0){
-          if(!hasJeroglifico(contaJero)){
+        let contadorAded = 0;
+        let contaJero = JEROGLIFICOS_DATA.length;
+        const nuevos = [];
+        while (contadorAded < 3 && contaJero > 0) {
+          if (!hasJeroglifico(contaJero)) {
             addJeroglifico(contaJero);
-            contadorAded=contadorAded+1;
-            nuevos.push(contaJero)
+            contadorAded++;
+            nuevos.push(contaJero);
           }
-          contaJero=contaJero-1;
+          contaJero--;
         }
         this.showJeroglificos(nuevos);
       }
 
       // Sonido victoria
-      soundManager.play('victory');
+      this.soundManager.play('victory');
     }
 
-    if (this.result === 'defeat') {
+    else if (this.result === 'defeat') {
       if(this.secreta){
-        let contadorAded=0;
-        let contaJero=1;
-        const eliminados=[];
-        while(contadorAded<5&&contaJero<JEROGLIFICOS_DATA.length){
-          if(hasJeroglifico(contaJero)){
-           deleteUltimoJeroglifico(contaJero);
-           eliminados.push(contaJero);
-            contadorAded=contadorAded+1;
+        let contadorAded = 0;
+        let contaJero = 1;
+        const eliminados= [];
+        while(contadorAded <5 && contaJero <= JEROGLIFICOS_DATA.length){
+          if (hasJeroglifico(contaJero)){
+            deleteUltimoJeroglifico(contaJero);
+            eliminados.push(contaJero);
+            contadorAded++;
           }
-          contaJero=contaJero+11;
+          contaJero += 11;
         }
         this.showJeroglificos(eliminados);
       }      
-      soundManager.play('defeat');
+      this.soundManager.play('defeat');
     }
 
     // Intentos restantes para minijuegos como SlideBar
     if (this.remainingTries !== undefined && this.remainingTries > 0 && this.result === 'defeat') {
-      soundManager.play('defeat');
+      this.soundManager.play('defeat');
       this.add.text(width / 2, height / 2 - 120,
         `Intentos restantes: ${this.remainingTries}`,
         { fontFamily: 'Filgaia', fontSize: '22px', color: '#ffffff' }
@@ -118,6 +119,11 @@ export default class PostMinigameMenu extends MenuBase {
 
   showJeroglifico(esNuevo) {
     const { width, height } = this.sys.game.config;
+
+    if (!this.jeroglificoId) {
+      console.error(`PostMinigameMenu: no hay jeroglificoId para mostrar`);
+      return;
+    }
 
     // Buscar datos del jeroglífico
     const jero = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
@@ -161,6 +167,10 @@ export default class PostMinigameMenu extends MenuBase {
   //enseña los jeroglificos (perdidos o ganados) en la sala secreta
   showJeroglificos(jeros){
     const { width, height } = this.sys.game.config;
+    if (!Array.isArray(jeros) || jeros.length === 0) {
+      // nada que mostrar
+      return;
+    }
 
     // Texto
     const texto = this.result == 'victory' ? '¡Nuevos jeroglíficos obtenidos!' : 'Jeroglíficos quitados T_T';
@@ -173,41 +183,54 @@ export default class PostMinigameMenu extends MenuBase {
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    const startX = width / 2 - 360; // Centrado
-    const startY = 160;
-    const spacingX = 180;
-    const spacingY = 160;
-    jeros.forEach((jeroglificoId, index) => {
-          const x = startX + spacingX;
-          const y = startY + spacingY;
+    const cols = Math.min(3, jeros.length);
+    const spacingX = 160;
+    const spacingY = 140;
+    const startX = width / 2 - ((cols - 1) * spacingX) / 2;
+    const startY = height / 2 - 10;
 
-          // Buscar datos del jeroglífico
-          const data = JEROGLIFICOS_DATA.find(j => j.id === this.jeroglificoId);
-          if (!data) {
-            console.error(`Jeroglífico ${this.jeroglificoId} no encontrado`);
-            return;
-          }
-    
-          // Imagen del jeroglífico
-          this.add.image(x, y, data.simbolo).setScale(0.5);
-          // Letra
-          this.add.text(width / 2, height / 2 + 90, `"${data.letra}"`, {
-            fontFamily: 'Filgaia',
-            fontSize: '28px',
-            color: '#e6c480',
-            fontStyle: 'bold'
-          }).setOrigin(0.5);
-        });
+    jeros.forEach((jeroglificoId, index) => {
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+
+      const x = startX + col * spacingX;
+      const y = startY + row * spacingY;
+
+      const data = JEROGLIFICOS_DATA.find(j => j.id === jeroglificoId);
+      if (!data) {
+        console.warn(`Jeroglífico ${jeroglificoId} no encontrado`);
+        return;
+      }
+
+      this.add.image(x, y, data.simbolo).setScale(0.5);
+      this.add.text(x, y + 40, `"${data.letra}"`, {
+        fontFamily: 'Filgaia',
+        fontSize: '22px',
+        color: '#e6c480',
+        fontStyle: 'bold'
+      }).setOrigin(0.5);
+    });
 
   }
   createMenuButtons() {
     const { width, height } = this.sys.game.config;
     const centerY = height / 2 + 150;
 
+    this.soundManager = this.registry.get('soundManager');
+
     const entries = Object.entries(this.options);
     const spacing = 300;
-    const totalWidth = (entries.length - 1) * spacing;
+    const totalWidth = entries.length > 0 ? (entries.length - 1) * spacing : 0;
     const startX = width / 2 - totalWidth / 2;
+
+    if (entries.length === 0) {
+      // Si no hay opciones pasadas, ponemos una opción por defecto: "Volver al mapa"
+      this.createButton('Volver', width / 2, centerY, () => {
+        this.soundManager?.play('click');
+        this.scene.start('MapScene');
+      }, { width: 300, height: 60, hoverTint: 0xffaa00, fontSize: '26px' }, 'fondoBoton');
+      return;
+    }
 
     entries.forEach(([label, callback], i) => {
       const x = startX + i * spacing;
@@ -216,7 +239,7 @@ export default class PostMinigameMenu extends MenuBase {
         x,
         centerY,
         () => {
-          soundManager.play("click");
+          this.soundManager.play("click");
           callback();
         },
         { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px', fontFamily: 'Filgaia' },
@@ -226,7 +249,12 @@ export default class PostMinigameMenu extends MenuBase {
   }
 
   onEscape() {
-    this.scene.stop();
-    this.scene.start('MapScene');
+    if (this.menuConfig?.parentScene) {
+      super.onEscape();
+    } else {
+      // por defecto volver al mapa
+      this.scene.stop();
+      this.scene.start('MapScene');
   }
+}
 }

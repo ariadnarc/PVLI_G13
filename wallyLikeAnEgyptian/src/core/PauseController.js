@@ -19,21 +19,28 @@ export default class PauseController extends Phaser.Scene {
 
   handlePause() {
     const topScene = this.getTopScene();
+    this.soundManager = this.registry.get('soundManager');
 
     if (topScene === 'PauseMenuGame') {
-      this.scene.stop('PauseMenuGame');
-      const parent = this.scene.get('PauseMenuGame').parentScene;
-      this.scene.resume(parent);
-      return;
+    this.scene.stop('PauseMenuGame');
+
+    const parent = this.scene.get('PauseMenuGame').parentScene;
+    this.scene.resume(parent);
+
+    this.soundManager?.resumeAll();
+    return;
     }
 
     if (topScene) {
-      const parentSceneInstance = this.scene.get(topScene);
-      this.scene.pause(topScene);
-      this.scene.launch('PauseMenuGame', {
-        parentScene: topScene,
-        isMinigame: parentSceneInstance.isMinigame || false
-      });
+    const parentSceneInstance = this.scene.get(topScene);
+
+    this.scene.pause(topScene);
+    this.scene.launch('PauseMenuGame', {
+      parentScene: topScene,
+      isMinigame: parentSceneInstance.isMinigame || false
+    });
+
+    this.soundManager?.pauseAll();
     }
   }
 

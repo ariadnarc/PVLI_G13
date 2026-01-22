@@ -15,6 +15,7 @@ export default class MainMenu extends MenuBase {
     super.create();
 
     const { width, height } = this.sys.game.config;
+    this.soundManager = this.registry.get('soundManager');
 
     // === FONDO ===
     const bg = this.add.image(width / 2, height / 2, 'mainmenuBG');
@@ -43,14 +44,14 @@ export default class MainMenu extends MenuBase {
       .setOrigin(0.5);
 
     this.createButton('Jugar', 450, 320, () => {
-      this.sound.play("click");
+      this.soundManager?.play('click');
       this.scene.start('IntroScene');
     }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
       'fondoBoton');
 
     this.createButton('Ajustes', 450, 420, () => {
+      this.soundManager?.play('click');
       this.scene.launch('SettingsMenu', { parentScene: 'MainMenu' });
-      this.sound.play("click");
       this.scene.pause();
     }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' },
       'fondoBoton');

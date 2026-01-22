@@ -39,7 +39,11 @@ export default class SoundManager {
     }
   }
 
-  stopAll() {
-    Object.values(this.sounds).forEach(s => s.stop());
+  pauseAll() {
+    this.scene.sound.pauseAll();
+  }
+
+  resumeAll() {
+    this.scene.sound.resumeAll();
   }
 }
