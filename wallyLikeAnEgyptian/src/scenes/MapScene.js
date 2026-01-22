@@ -22,35 +22,19 @@ export default class MapScene extends Phaser.Scene {
     }
 
     create() {
+        // ===== INPUT =====
         this.inputManager = new InputManager(this);
+        this.inputManager.configure({ cursors: true, keys: ["B","H"] });
 
-        // MapScene solo escucha movimiento y tecla ESC
-        this.inputManager.configure({
-            cursors: true,
-            keys: ["B","H"]
-        });
-
-        //Bitácora
         this.inputManager.on("keyDown", (key) => {
             if (key === "B") this.openBinnacle(this.inputManager);
-
-        });
-        //Nota
-        this.inputManager.on("keyDown", (key) => {
             if (key === "H") this.abrirNota(this.inputManager);
-
         });
 
-        console.log('window.savedPlayerPos al iniciar create:', window.savedPlayerPos);
         if (window.savedPlayerPos) {
-            console.log('Restaurando posición:', window.savedPlayerPos);
             playerInitialData.posInicial.x = window.savedPlayerPos.x;
             playerInitialData.posInicial.y = window.savedPlayerPos.y;
-            console.log('✅ Posición restaurada:', window.savedPlayerPos);
-        }else {
-            console.log('NO hay posición guardada');
         }
-        console.log('playerInitialData.posInicial:', playerInitialData.posInicial);
 
         //Creacion del mapa desde json
         const map = this.make.tilemap({ key: 'mapa' });
@@ -61,10 +45,13 @@ export default class MapScene extends Phaser.Scene {
         const pared = map.createLayer("Pared", tilesets);
         const objetos = map.createLayer("objetos", tilesets);
         const colisiones = map.createLayer("colision", tilesets);
-
         colisiones.setCollisionByExclusion([-1]);
 
-        // Crear jugador y añadir sus colisiones con el mapa
+        // ===== SOUND MANAGER =====
+        this.soundManager = this.registry.get('soundManager');
+        this.soundManager?.playMusic('walkLikeAnEgyptian');
+
+        // ===== PLAYER =====
         this.PlayerManager = new PlayerManager(this.inputManager, this, playerInitialData);
         this.physics.add.collider(this.PlayerManager.sprite, colisiones);
 
@@ -83,55 +70,37 @@ export default class MapScene extends Phaser.Scene {
         
         // === COFRES / PORTALES ===
         this.portales = [];
-
         cofresData.forEach(data => {
-            const portal = new PortalChest(
-                this,
-                data,
-                this.PlayerManager,
-                () => {
-      
-                    this.savePositions();
-                    
-                    this.scene.stop('MapScene');
-
-                    //Lanzar escena SIN destruir el mapa
-                    this.scene.start('PreMinigameScene', {
-                        minijuego: data.minijuego,
-                        dificultad: data.dificultad,
-                        jeroglificoId: data.jeroglificoId,
-                        controles: data.controles,
-                        parentScene: 'MapScene'
-                    });
-                    
-                }
-            );
-
+            const portal = new PortalChest(this, data, this.PlayerManager, () => {
+                this.savePositions();
+                this.soundManager?.stopMusic();
+                this.scene.stop('MapScene');
+                this.scene.start('PreMinigameScene', {
+                    minijuego: data.minijuego,
+                    dificultad: data.dificultad,
+                    jeroglificoId: data.jeroglificoId,
+                    controles: data.controles,
+                    parentScene: 'MapScene'
+                });
+            });
             this.portales.push(portal);
         });
+
         //=== SALA SECRETA ===
         const elegido = MINIJUEGOS_SECRETA[Math.floor(Math.random() * MINIJUEGOS_SECRETA.length)];
-        const portalSalaSecreta = new PortalChest(
-                this,
-                {posInicial: { x: 450, y: 550 }},
-                this.PlayerManager,
-                () => {
-      
-                    this.savePositions();
-                    
-                    this.scene.stop('MapScene');
+        const portalSalaSecreta = new PortalChest(this, {posInicial: { x: 450, y: 550 }}, this.PlayerManager, () => {
+                this.savePositions();
+                this.soundManager?.stopMusic();
+                this.scene.stop('MapScene');
+                this.scene.start('SalaSecreta', {
+                    minijuego:  elegido.minijuego,
+                    dificultad:  elegido.dificultad,
+                    controles:  elegido.controles,
+                    parentScene: 'MapScene'
+                });
+            });
+        this.portales.push(portalSalaSecreta);
 
-                    //Lanzar escena SIN destruir el mapa
-                    this.scene.start('SalaSecreta', {
-                        minijuego:  elegido.minijuego,
-                        dificultad:  elegido.dificultad,
-                        controles:  elegido.controles,
-                        parentScene: 'MapScene'
-                    });
-                    
-                }
-            );
-            this.portales.push(portalSalaSecreta);
         //=== COLISIONES OBJETOS ENTRE SÍ ===
         for (let i = 0; i < this.movingObjects.length; i++) {
                 for (let j = i + 1; j < this.movingObjects.length; j++) {
@@ -191,30 +160,26 @@ export default class MapScene extends Phaser.Scene {
 
     savePositions() { // Save coords del player
 
-        console.log('SAVEPOSITIONS LLAMADO');
-        console.log('Posición actual del jugador:', this.PlayerManager.sprite.x, this.PlayerManager.sprite.y);
-        // Guardar en una variable global
-        if (!window.savedPlayerPos) {
-            window.savedPlayerPos = {};
-        }
-
-        console.log('Guardado en window.savedPlayerPos:', window.savedPlayerPos);
-        
+        if (!window.savedPlayerPos) window.savedPlayerPos = {};
         window.savedPlayerPos.x = this.PlayerManager.sprite.x;
         window.savedPlayerPos.y = this.PlayerManager.sprite.y;
 
         // Guardar objetos también
-        if (!window.savedObjectsPos) {
-            window.savedObjectsPos = [];
-        }
-        
+        if (!window.savedObjectsPos) window.savedObjectsPos = [];
         this.movingObjects.forEach((obj, index) => {
-            window.savedObjectsPos[index] = {
-            x: obj.sprite.x,
-            y: obj.sprite.y
-            };
+            window.savedObjectsPos[index] = { x: obj.sprite.x, y: obj.sprite.y };
         });
-        
-        console.log('Guardado en window:', window.savedPlayerPos);
+    }
+
+    pause() {
+        this.soundManager?.pauseMusic();
+    }
+
+    resume() {
+        this.soundManager?.resumeMusic();
+    }
+
+    shutdown() {
+        this.soundManager?.stopMusic();
     }
 }

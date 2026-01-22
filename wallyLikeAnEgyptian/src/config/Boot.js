@@ -5,6 +5,7 @@
  */
 
 import { playerInitialData } from './PlayerData.js';
+import SoundManager from '../core/SoundManager.js';
 
 export default class Boot extends Phaser.Scene {
   constructor() {
@@ -99,8 +100,8 @@ export default class Boot extends Phaser.Scene {
     this.load.image("gold_particle", "wallyLikeAnEgyptian/assets/minijuegos/particles.jpg");
 
     //=== SONIDOS ===
-    this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.wav');
-    this.load.audio('defeat', 'wallyLikeAnEgyptian/assets/sounds/defeat.wav');
+    this.load.audio('victory', 'wallyLikeAnEgyptian/assets/sounds/victory.mp3');
+    this.load.audio('defeat', 'wallyLikeAnEgyptian/assets/sounds/defeat.mp3');
     this.load.audio('click', 'wallyLikeAnEgyptian/assets/sounds/click.wav');
     this.load.audio('locked', 'wallyLikeAnEgyptian/assets/sounds/locked.wav');
     this.load.audio('unlocked', 'wallyLikeAnEgyptian/assets/sounds/unlocked.wav');
@@ -118,60 +119,63 @@ export default class Boot extends Phaser.Scene {
 
   create() {
 
-  // === ANIMACIONES ===
-
+    const soundManager = new SoundManager(this);
+    // === ANIMACIONES ===
+    
     //Player:
     this.anims.create({
-        key: 'walk-down',
+      key: 'walk-down',
         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: -1
-    });
-
-    this.anims.create({
+      });
+      
+      this.anims.create({
         key: 'walk-up',
         frames: this.anims.generateFrameNumbers('player', { start: 7, end: 13 }),
         frameRate: 10,
         repeat: -1
-    });
-
-    this.anims.create({
+      });
+      
+      this.anims.create({
         key: 'walk-right',
         frames: this.anims.generateFrameNumbers('player', { start: 14, end: 20 }),
         frameRate: 10,
         repeat: -1
-    });
-
-    this.anims.create({
+      });
+      
+      this.anims.create({
         key: 'walk-left',
         frames: this.anims.generateFrameNumbers('player', { start: 21, end: 27 }),
         frameRate: 10,
         repeat: -1
-    });
-
-    //Portal final:
-    this.anims.create({
-      key: 'portal_idle',
-      frames: this.anims.generateFrameNumbers('portalFinal', { start: 0, end: 3 }),
-      frameRate: 6,
-      repeat: -1
-    });
-
-    //Undertale;
-    this.anims.create({
-      key: 'giragira',
-      frames: this.anims.generateFrameNumbers('fase2obs', { start: 0, end: 1 }),
-      frameRate: 12,
-      repeat: -1
-    });
-
-    //Cofres:
-    this.anims.create({
-      key: 'cofre_open',
-      frames: this.anims.generateFrameNumbers('cofre', { start: 0, end: 4 }),
-      frameRate: 10,
-      repeat: 0
-    });
+      });
+      
+      //Portal final:
+      this.anims.create({
+        key: 'portal_idle',
+        frames: this.anims.generateFrameNumbers('portalFinal', { start: 0, end: 3 }),
+        frameRate: 6,
+        repeat: -1
+      });
+      
+      //Undertale;
+      this.anims.create({
+        key: 'giragira',
+        frames: this.anims.generateFrameNumbers('fase2obs', { start: 0, end: 1 }),
+        frameRate: 12,
+        repeat: -1
+      });
+      
+      //Cofres:
+      this.anims.create({
+        key: 'cofre_open',
+        frames: this.anims.generateFrameNumbers('cofre', { start: 0, end: 4 }),
+        frameRate: 10,
+        repeat: 0
+      });
+      
+    this.registry.set('soundManager', soundManager);
 
     this.scene.start('MainMenu'); // escena principal de título o menú
   }

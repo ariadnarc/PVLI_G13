@@ -10,6 +10,7 @@ export default class PauseMenuGame extends MenuBase {
 
   constructor() {
     super('PauseMenuGame');
+    this.isOverlay = true;
   }
 
   init(data) {
@@ -19,6 +20,9 @@ export default class PauseMenuGame extends MenuBase {
 
   create() {
     super.create(); //activa ESC + InputManager
+
+    this.soundManager = this.registry.get('soundManager');
+    this.soundManager?.pauseAll();
 
     this.scene.bringToTop(); //aseguramos que la escena este encima de todo
     const { width, height } = this.sys.game.config;
@@ -39,22 +43,24 @@ export default class PauseMenuGame extends MenuBase {
     if (this.isMinigame) {
       //reintentar
       this.createButton('Reintentar', width / 2, 240, () => {
+        this.soundManager?.play('click');
+        this.soundManager?.resumeAll();
         this.scene.stop(this.parentScene);
-        this.sound.play("click");
         this.scene.start(this.parentScene);
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
 
       //volver al mapa
       this.createButton('Volver al mapa', width / 2, 340, () => {
+        this.soundManager?.play('click');
+        this.soundManager?.resumeAll();
         this.scene.stop(this.parentScene);
-        this.sound.play("click");
         this.scene.start('MapScene');
       }, { width: 350, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
 
       //ajustes
       this.createButton('Ajustes', width / 2, 440, () => {
+        this.soundManager?.play('click');
         this.scene.launch('SettingsMenu', { parentScene: 'PauseMenuGame' });
-        this.sound.play("click");
         this.scene.bringToTop('SettingsMenu');
         this.scene.pause();
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
@@ -63,16 +69,17 @@ export default class PauseMenuGame extends MenuBase {
     {
       // Ajustes
       this.createButton('Ajustes', width / 2, 280, () => {
+        this.soundManager?.play('click');
         this.scene.launch('SettingsMenu', { parentScene: 'PauseMenuGame' });
-        this.sound.play("click");
         this.scene.bringToTop('SettingsMenu');
         this.scene.pause();
       }, { width: 250, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
 
       // Menu principal
       this.createButton('Menú principal', width / 2, 360, () => {
+        this.soundManager?.play('click');
+        this.soundManager?.stopMusic();
         this.scene.stop(this.parentScene);
-        this.sound.play("click");
         this.scene.start('MainMenu');
         this.scene.stop();
       }, { width: 340, height: 60, hoverTint: 0xffaa00, fontSize: '28px' }, 'fondoBoton').setDepth(1002);
@@ -87,6 +94,8 @@ export default class PauseMenuGame extends MenuBase {
   }
 
   onEscape() {
+    this.soundManager = this.registry.get('soundManager');
+    this.soundManager?.resumeAll();
     // ESC = reanudar juego
     this.scene.stop();
     const parent = this.scene.get(this.parentScene);

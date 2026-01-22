@@ -11,6 +11,7 @@ import { playerInitialData } from "../config/PlayerData.js";
 export default class BinnacleOverlay extends Phaser.Scene {
  constructor() {
     super("BinnacleOverlay");
+    this.isOverlay = true;
   }
 
   init(data) {
@@ -55,7 +56,7 @@ export default class BinnacleOverlay extends Phaser.Scene {
   }
 
   
-  // Dibuja las imágenes, nombres y cantidades de cada tier
+  // Dibuja las imágenes y nombres 
    
   renderBinnacleContent() {
     const { width } = this.sys.game.config;

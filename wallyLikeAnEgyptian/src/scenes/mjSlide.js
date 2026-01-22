@@ -70,8 +70,8 @@ export default class SlideBar extends Phaser.Scene {
             color: "#ffffff"
         });
 
-        this.bgMusic = this.sound.add('slideBarTheme');
-        this.bgMusic.play();
+        this.soundManager = this.registry.get('soundManager');
+        this.soundManager.playMusic('slideBarTheme');
 
         this.updateHUD();
     }
@@ -109,14 +109,14 @@ export default class SlideBar extends Phaser.Scene {
         if (acierto) {
 
             console.log("¡ACIERTO!");
-            this.bgMusic.stop();
+            this.soundManager.stopMusic();
 
             this.endGame(true); // termina el juego con victoria
 
         } else {
 
             console.log("FALLASTE");
-            this.bgMusic.stop();
+            this.soundManager.stopMusic();
 
 
             this.tries--;
@@ -142,7 +142,7 @@ export default class SlideBar extends Phaser.Scene {
 
             // Reintentar
             menuOptions['Reintentar'] = () => {
-                this.bgMusic.stop();
+                this.soundManager.stopMusic();
                 this.scene.stop('PostMinigameMenu');
                 this.scene.stop();
     

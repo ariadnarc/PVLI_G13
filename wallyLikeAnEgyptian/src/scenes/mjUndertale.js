@@ -192,8 +192,8 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
-    this.bgMusic = this.sound.add('undertaleTheme');
-    this.bgMusic.play();
+    this.soundManager = this.registry.get('soundManager');
+    this.soundManager.playMusic('undertaleTheme');
   }
 
 
@@ -510,7 +510,7 @@ export default class Undertale extends Phaser.Scene {
    * WIN
    */
   winGame() {
-    this.bgMusic.stop();
+    this.soundManager.stopMusic();
     this.physics.pause();
 
     if (this.bulletTimer) this.bulletTimer.remove(false);
@@ -537,7 +537,7 @@ export default class Undertale extends Phaser.Scene {
    * LOSE
    */
   loseGame() {
-    this.bgMusic.stop();
+    this.soundManager.stopMusic();
     this.physics.pause();
 
     if (this.bulletTimer) this.bulletTimer.remove(false);

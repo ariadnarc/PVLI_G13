@@ -86,8 +86,8 @@ export default class FindLuigi extends Phaser.Scene {
         this.fondo = this.add.image(0, 0, 'fondoFinal').setOrigin(0);
         this.fondo.setDisplaySize(this.game.config.width, this.game.config.height);
 
-        this.bgMusic = this.sound.add('finalBossTheme');
-        this.bgMusic.play();
+        this.soundManager = this.registry.get('soundManager');
+        this.soundManager.playMusic('finalBossTheme');
 
         // HUD
         this.phaseText = this.add.text(10, 10, 'Fase: 1/3', {
@@ -261,7 +261,7 @@ export default class FindLuigi extends Phaser.Scene {
                 this.startPhase();
             } else {
                 // Victoria:
-                this.bgMusic.stop();
+                this.soundManager.stopMusic();
                 this.scene.start('FinalScene');
                 this.scene.stop();
             }
@@ -298,7 +298,7 @@ export default class FindLuigi extends Phaser.Scene {
      * Finaliza el juego por tiempo agotado. Transiciona al menú principal.
      */
     gameOver() {
-        this.bgMusic.stop();
+        this.soundManager.stopMusic();
         if (this.gameIsOver) return;
 
         this.gameIsOver = true;

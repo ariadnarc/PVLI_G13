@@ -16,6 +16,7 @@ export default class ButtonManager {
   constructor(scene, x, y, label, config = {}) {
     this.scene = scene;
 
+    this.soundManager = scene.registry.get('soundManager');
     // Configuración por defecto
     this.config = {
       width: config.width || 200,
@@ -81,8 +82,11 @@ export default class ButtonManager {
     this.background.on("pointerdown", () => {
       this.background.setFillStyle(cfg.pressedColor);
 
-      // Sonido si existe en la escena
-      this.scene.sound?.play("click");
+      if (this.soundManager) {
+        this.soundManager.playSound('click');
+      } else {
+        this.scene.sound?.play('click'); // fallback por si no hay SoundManager
+      }
     });
 
     this.background.on("pointerup", () => {
