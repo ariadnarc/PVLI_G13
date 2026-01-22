@@ -67,28 +67,29 @@ Para lograrlo, debe **descifrar jeroglíficos** y desbloquear pistas hasta encon
 ### ⚙️ Mecánicas
 
 #### Progresión
-- Desbloqueo de recompensas para jugar minijuegos más complejos.  
-- Colección de jeroglíficos que sirven de pista al vencer minijuegos.
+- Desbloqueo de jeroglificos que descifran la nota donde te indica el lugar del boss final.
+- Debes recorrer el mapa completo para adquirir todos los jeroglificos.
+- Progresion de la dificultad de los minijuegos a lo largo del recorrido.
 
 #### Exploración del laberinto
-- Mapa que se revela gradualmente.  
-- Puertas o caminos que se abren tras completar minijuegos.  
-- Laberinto con zonas interactivas y objetos movibles.
+- Necesidad de recorrer el mapa completo para llegar al final, necesitas 15 jeroglificos para pasar al boss.
+- Fomentamos la exploracion con la existencia de una sala oculta que te permita ganar varios jeroglificos.
+- Obstaculos en el mapa para complicar el movimineto.
 
 #### Minijuegos adaptativos
-- Dificultad que escala según el progreso.  
-- Bonificaciones por completar minijuegos de forma perfecta (mejores jeroglíficos según tier).
+- Dificultad que escala según el progreso.
 
 #### Mecánica narrativa
-- Bitácora que registra los jeroglíficos encontrados. Esta se abre pulsando una tecla.
-
+- Bitácora, que registra los jeroglíficos encontrados. Esta se abre pulsando una tecla.
+- Nota de Wally, contiene una pista para llegar al final y completar el juego, esta nota fue dejada por Wally y hay que descifrarla.
 ---
 
-### 📋 Lista de minijuegos
+### 📋 Minijuegos
+- Precisión del escriba: Barra con un escarabajo sagrado con movimiento lateral, el objetivo es detener el escarabajo encima de la gema. La dificultad aumenta disminuyendo los intentos y aumentando la velocidad del movimiento del escarabajo.
+- Cazador de Reptiles: Apuntar utilizando las flechas (izq/der) y disparar a los cocodrillos que aparecen a la derecha de la pantalla y se mueven hacia la izquierda. El objetivo es que ningun cocodrilo consiga cruzar la parte derecha de la pantalla. La velocidad aumenta disminuyendo la vidas, es decir la cantidad de cocodrilos que pueden llegar al final, aumentando la cantidad de cocodrilos y aumentando el tiempo de recarga.
+- Cerrajero ancestral: El objetivo es abrir las dos cerraduras, para e 
+- Furia del desierto: Evitar proyectiles, contine  dos fases, la primera fase lanza dagas de forma lateral desde la derecha y la izquierda,
 
-| Minijuego | Descripción | Mecánicas principales |
-|-----------|------------|--------------------|
-| Precisión del escriba | Exactitud y reflejos | Barra con un escarabajo sagrado en movimiento; detener encima de la gema. Dificultad aumenta reduciendo la franja y aumentando velocidad. |
 | Furia del desierto | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
 | Memoria del templo | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
 | Cerrajero ancestral | Precisión | Abrir un candado interactuando cuidadosamente con una ganzúa. |
