@@ -88,7 +88,7 @@ export default class MapScene extends Phaser.Scene {
 
         //=== SALA SECRETA ===
         const elegido = MINIJUEGOS_SECRETA[Math.floor(Math.random() * MINIJUEGOS_SECRETA.length)];
-        const portalSalaSecreta = new PortalChest(this, {posInicial: { x: 450, y: 550 }}, this.PlayerManager, () => {
+        const portalSalaSecreta = new PortalChest(this, {posInicial: { x: 870, y: 1120 }}, this.PlayerManager, () => {
                 this.savePositions();
                 this.soundManager?.stopMusic();
                 this.scene.stop('MapScene');

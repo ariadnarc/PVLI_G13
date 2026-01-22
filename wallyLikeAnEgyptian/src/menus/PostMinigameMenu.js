@@ -207,7 +207,7 @@ export default class PostMinigameMenu extends MenuBase {
       }
 
       this.add.image(x, y, data.simbolo).setScale(0.5);
-      this.add.text(x, y + 40, `"${data.letra}"`, {
+      this.add.text(x, y + 60, `"${data.letra}"`, {
         fontFamily: 'Filgaia',
         fontSize: '22px',
         color: '#e6c480',
