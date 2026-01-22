@@ -13,6 +13,7 @@ import { MAPA_JEROGLIFICOS} from "../config/JeroglificosData.js"
 export default class NotaJerogliOverlay extends Phaser.Scene {
   constructor() {
     super("NotaJerogliOverlay");
+    this.isOverlay = true;
   }
     init(data) {
       this.parentScene = data?.parentScene || "MapScene";

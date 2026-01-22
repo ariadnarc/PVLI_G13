@@ -17,48 +17,49 @@ export default class PauseController extends Phaser.Scene {
   }
 
   handlePause() {
-    const topSceneKey = this.getTopScene();
-    if (!topSceneKey) return; // No hay ninguna escena activa
+    const topKey = this.getTopSceneKey();
+    if (!topKey) return;
 
+    const topScene = this.scene.get(topKey);
     const soundManager = this.registry.get('soundManager');
 
-    // Si el topScene es el menú de pausa, lo cerramos y reanudamos la escena padre
-    if (topSceneKey === 'PauseMenuGame') {
-      const pauseScene = this.scene.get('PauseMenuGame');
-      const parentKey = pauseScene.parentScene;
-
-      this.scene.stop('PauseMenuGame');
-
-      if (parentKey) {
-        this.scene.resume(parentKey); // Reanudar escena padre
-      }
-
-      soundManager?.resumeAll(); // Reanudar música global
+    // SI estamos en un overlay que NO es el menú de pausa → ignorar ESC
+    if (topScene.isOverlay && topKey !== 'PauseMenuGame') {
       return;
     }
 
-    // Evitar abrir múltiples menús de pausa encima de otro
-    const existingPause = this.scene.get('PauseMenuGame');
-    if (existingPause && existingPause.scene.isActive()) {
-      return; // ya hay un menú de pausa abierto, ignoramos
+    // CERRAR PAUSA
+    if (this.scene.isActive('PauseMenuGame')) {
+      const pauseMenu = this.scene.get('PauseMenuGame');
+      const parent = pauseMenu.parentScene;
+
+      this.scene.stop('PauseMenuGame');
+      if (parent) this.scene.resume(parent);
+
+      soundManager?.resumeAll();
+      return;
     }
 
-    // Pausar la escena actual y lanzar menú de pausa
-    const topScene = this.scene.get(topSceneKey);
-    this.scene.pause(topSceneKey);
-
+    // ABRIR PAUSA (solo si la escena top es jugable)
+    this.scene.pause(topKey);
     this.scene.launch('PauseMenuGame', {
-      parentScene: topSceneKey,
+      parentScene: topKey,
       isMinigame: topScene.isMinigame || false
     });
 
-    soundManager?.pauseAll(); // Pausar música global
+    soundManager?.pauseAll();
   }
 
-
-  getTopScene() {
+  getTopSceneKey() {
     const scenes = this.scene.manager.getScenes(true);
-    const filtered = scenes.filter(s => s.scene.key !== 'PauseController');
-    return filtered.length > 0 ? filtered[filtered.length - 1].scene.key : null;
+
+    // Quitamos el propio controller
+    const filtered = scenes.filter(
+      s => s.scene.key !== 'PauseController'
+    );
+
+    return filtered.length
+      ? filtered[filtered.length - 1].scene.key
+      : null;
   }
 }

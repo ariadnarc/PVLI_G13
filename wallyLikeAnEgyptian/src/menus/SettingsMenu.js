@@ -10,6 +10,7 @@ export default class SettingsMenu extends MenuBase {
 
   constructor() {
     super('SettingsMenu');
+    this.isOverlay = true;
   }
 
   init(data){

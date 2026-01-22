@@ -10,6 +10,7 @@ export default class PauseMenuGame extends MenuBase {
 
   constructor() {
     super('PauseMenuGame');
+    this.isOverlay = true;
   }
 
   init(data) {

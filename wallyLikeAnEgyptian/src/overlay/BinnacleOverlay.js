@@ -11,6 +11,7 @@ import { playerInitialData } from "../config/PlayerData.js";
 export default class BinnacleOverlay extends Phaser.Scene {
  constructor() {
     super("BinnacleOverlay");
+    this.isOverlay = true;
   }
 
   init(data) {
