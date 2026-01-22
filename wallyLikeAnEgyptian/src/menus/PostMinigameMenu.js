@@ -68,7 +68,6 @@ export default class PostMinigameMenu extends MenuBase {
         this.showJeroglifico(esNuevo);
       }
       else{
-<<<<<<< HEAD
         let contadorAded=0;
         let contaJero=JEROGLIFICOS_DATA.length;
         const nuevos=[];
@@ -76,13 +75,6 @@ export default class PostMinigameMenu extends MenuBase {
         //y los añade
         while(contadorAded<3&&contaJero>0){
           if(!hasJeroglifico(contaJero)){
-=======
-        let contadorAded = 0;
-        let contaJero = JEROGLIFICOS_DATA.length;
-        const nuevos = [];
-        while (contadorAded < 3 && contaJero > 0) {
-          if (!hasJeroglifico(contaJero)) {
->>>>>>> bdd8787355e26882544ea8844aed29f126426013
             addJeroglifico(contaJero);
             contadorAded++;
             nuevos.push(contaJero);
@@ -98,7 +90,6 @@ export default class PostMinigameMenu extends MenuBase {
 
     else if (this.result === 'defeat') {
       if(this.secreta){
-<<<<<<< HEAD
         let contadorAded=0;
         let contaJero=1;
         const eliminados=[];
@@ -109,16 +100,6 @@ export default class PostMinigameMenu extends MenuBase {
            deleteUltimoJeroglifico(contaJero);
            eliminados.push(contaJero);
             contadorAded=contadorAded+1;
-=======
-        let contadorAded = 0;
-        let contaJero = 1;
-        const eliminados= [];
-        while(contadorAded <5 && contaJero <= JEROGLIFICOS_DATA.length){
-          if (hasJeroglifico(contaJero)){
-            deleteUltimoJeroglifico(contaJero);
-            eliminados.push(contaJero);
-            contadorAded++;
->>>>>>> bdd8787355e26882544ea8844aed29f126426013
           }
           contaJero += 11;
         }
