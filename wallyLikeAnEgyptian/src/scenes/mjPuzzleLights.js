@@ -107,8 +107,8 @@ export default class PuzzleLights extends Phaser.Scene {
       }
     }
 
-    this.bgMusic = this.sound.add('puzzleLightsTheme');
-    this.bgMusic.play();
+    this.soundManager = this.registry.get('soundManager');
+    this.soundManager.playMusic('puzzleLightsTheme');
 
     //INICIAR PRIMERA RONDA
     this.startRound();
@@ -204,7 +204,7 @@ export default class PuzzleLights extends Phaser.Scene {
   }
 
   endGame(result) {
-    this.bgMusic.stop();
+    this.soundManager.stopMusic();
     this.isPlayerTurn = false;
 
     this.time.delayedCall(1500, () => {

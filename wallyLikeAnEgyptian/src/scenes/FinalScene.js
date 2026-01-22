@@ -13,11 +13,8 @@ export default class FinalScene extends Phaser.Scene {
         this.add.image(200, 470, 'wallyy').setDisplaySize(200,200);
 
         // Música
-        this.bgMusic = this.sound.add('creditsMusic', {
-            loop: false,
-            volume: 0.6
-        });
-        this.bgMusic.play();
+        this.soundManager = this.registry.get('soundManager');
+        this.soundManager?.playMusic('creditsMusic', { loop: false, volume: 0.6 });
 
         // Texto de créditos
         const creditsText = `
@@ -26,16 +23,16 @@ export default class FinalScene extends Phaser.Scene {
 
         AUTORES / ALUMNOS:
 
-        David Palacios
-        Ariadna Alicia Ruiz
-        Blanca Navajas
-        Juan Sánchez
+        David Palacios Daza
+        Ariadna Alicia Ruiz Castillo
+        Blanca Navajas Gómez
+        Juan Sánchez Arias
 
 
         DOCENTES:
         
-        Toni
-        Pablo
+        Antonio Calvo Morata
+        Pablo Gutiérrez Sánchez
 
 
         GRACIAS POR JUGAR
@@ -125,8 +122,20 @@ export default class FinalScene extends Phaser.Scene {
 
         // Acciones
         yesButton.on('pointerdown', () => {
-            this.bgMusic.stop();
+            this.soundManager?.stopMusic();
             this.scene.start('MainMenu'); // escena principal
         });
+    }
+
+    pause() {
+        this.soundManager?.pauseMusic();
+    }
+
+    resume() {
+        this.soundManager?.resumeMusic();
+    }
+
+    shutdown() {
+        this.soundManager?.stopMusic();
     }
 }
