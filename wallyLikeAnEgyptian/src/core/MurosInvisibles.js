@@ -3,31 +3,37 @@
  * YA
  * A
  */
+import { playerInitialData } from '../config/PlayerData.js';
 
 export default class MurosInvisibles {
-    constructor(scene, x, y, requiredGlyphs, PlayerManager,playerData) {
+    constructor(scene, x, y, requiredGlyphs, PlayerManager) {
         this.scene = scene;
         this.x = x;
         this.y = y;
         this.requiredGlyphs = requiredGlyphs;
         this.PlayerManager = PlayerManager;
-        this.playerData=playerData;
 
         this.wall = this.scene.physics.add.staticSprite(x, y, null);
         this.wall.setSize(60, 10);
         this.wall.setVisible(false);
 
+        this.infoText = null;
+        this.infoTextJero = null;
+
         // Collider con el jugador
         this.scene.physics.add.collider(this.PlayerManager.sprite, this.wall, (playerSprite, wallSprite) => {
-            const jeroObtenidos=this.playerData.jeroglificosObtenidos.length;
-            // Comprobar si tiene suficientes jeroglíficos
-            const jeroRestantes=this.requiredGlyphs-jeroObtenidos;
 
-            if (jeroRestantes>0) {
+            const jeroObtenidos = playerInitialData.jeroglificosObtenidos.length;
+            // Comprobar si tiene suficientes jeroglíficos
+            const jeroRestantes = this.requiredGlyphs - jeroObtenidos;
+
+            if (jeroRestantes > 0) {
+
                 // Bloquear paso
                 this.PlayerManager.sprite.setVelocity(0, 0);
+
                 //escribimos texto con info
-                if(!this.infoText&&!this.infoTextJero){
+                if(!this.infoText && !this.infoTextJero){
                     this.infoText = this.scene.add.text(this.x, this.y + 100, `No tienes jeroglificos suficientes`, {
                     fontFamily: 'Filgaia',
                     fontSize: '20px',
@@ -49,9 +55,15 @@ export default class MurosInvisibles {
                 
             } else {
                 // Desactivar la pared para dejar pasar
-                wallSprite.disableBody(true, false);
-                this.infoText.destroy();
-                this.infoTextJero.destroy();
+                wallSprite.disableBody(true, true);
+                if (this.infoText) {
+                    this.infoText.destroy();
+                    this.infoText = null;
+                }
+                if (this.infoTextJero) {
+                    this.infoTextJero.destroy();
+                    this.infoTextJero = null;
+                }
             }
         });
     }
@@ -64,12 +76,14 @@ export default class MurosInvisibles {
             this.y
         );
 
-        if (distance >50) { // 50 px de tolerancia
-            if (this.infoText&&this.infoTextJero) {
+        if (distance > 50) { // 50 px de tolerancia
+            if (this.infoText) {
                 this.infoText.destroy();
-                this.infoTextJero.destroy();
                 this.infoText = null;
-                this.infoTextJero=null;
+            }
+            if (this.infoTextJero) {
+                this.infoTextJero.destroy();
+                this.infoTextJero = null;
             }
         }
     }

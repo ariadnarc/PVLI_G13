@@ -13,9 +13,11 @@ export default class FinalPortal {
         this.sprite.setScale(0.1);
         this.sprite.body.setImmovable(true);
 
-        this.playerNear = false; // flag de interacción
-        
         this.sprite.play('portal_idle');
+
+        this.playerNear = false; // flag de interacción
+        this.infoText = null;
+        this.isActivated = false;
 
         this.keyE = scene.input.keyboard.addKey('E');
     }
@@ -29,8 +31,7 @@ export default class FinalPortal {
         !this.player.sprite ||
         !this.player.sprite.body ||
         !this.sprite ||
-        !this.sprite.body
-    ) {
+        !this.sprite.body) {
         return;
     }
     // =====================================
@@ -67,17 +68,41 @@ export default class FinalPortal {
         }
 
         if (this.playerNear && Phaser.Input.Keyboard.JustDown(this.keyE)) {
+            this.activatePortal();
+        }
+    }
 
-            // Quitar texto del portal
-            if (this.infoText) {
-                this.infoText.destroy();
-                this.infoText = null;
-            }
-            this.scene.scene.launch('FinalMessage');
-            //this.scene.scene.destroy();
-            this.scene.scene.stop();
+    activatePortal() {
+        this.isActivated = true;
 
-            // Opcional?: destruir todo ya que vamos al minijuegfinal
+        // limpiar texto
+        if (this.infoText) {
+            this.infoText.destroy();
+            this.infoText = null;
+        }
+
+        // parar escena actual 
+        const currentSceneKey = this.scene.scene.key;
+        this.scene.scene.stop(currentSceneKey);
+
+        // ir DIRECTO al final
+        this.scene.scene.start('FinalGame');
+    }
+
+    destroy() {
+        if (this.infoText) {
+            this.infoText.destroy();
+            this.infoText = null;
+        }
+
+        if (this.sprite) {
+            this.sprite.destroy();
+            this.sprite = null;
+        }
+
+        if (this.keyE) {
+            this.keyE.destroy();
+            this.keyE = null;
         }
     }
 }

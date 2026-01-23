@@ -27,11 +27,11 @@ export default class NotaJerogliOverlay extends Phaser.Scene {
       this.inputManager = new InputManager(this);
       this.inputManager.configure({
         keyboard: true,
-        keys: ["H"]
+        keys: ["N"]
       });
   
       this.inputManager.on("keyDown", (key) => {
-        if (key === "H") this.cierraNota();
+        if (key === "N") this.cierraNota();
       });
   
   
@@ -47,7 +47,7 @@ export default class NotaJerogliOverlay extends Phaser.Scene {
       }).setOrigin(0.5);
   
       // --- INSTRUCCIONES ---
-      this.add.text(width / 4, 60, "Pulsa H para volver", {
+      this.add.text(width / 4, 60, "Pulsa N para volver", {
         fontFamily: "Filgaia",
         fontSize: "20px",
         color: "#e6c480"

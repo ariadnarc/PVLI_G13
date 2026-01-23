@@ -24,11 +24,11 @@ export default class MapScene extends Phaser.Scene {
     create() {
         // ===== INPUT =====
         this.inputManager = new InputManager(this);
-        this.inputManager.configure({ cursors: true, keys: ["B","H"] });
+        this.inputManager.configure({ cursors: true, keys: ["B","N"] });
 
         this.inputManager.on("keyDown", (key) => {
             if (key === "B") this.openBinnacle(this.inputManager);
-            if (key === "H") this.abrirNota(this.inputManager);
+            if (key === "N") this.abrirNota(this.inputManager);
         });
 
         if (window.savedPlayerPos) {
@@ -134,6 +134,11 @@ export default class MapScene extends Phaser.Scene {
         // Cámara Follow
         this.cameras.main.startFollow(this.PlayerManager.getSprite());
         this.cameras.main.setZoom(1.5);
+
+        this.hudIcons = this.add.image(280, 420, 'keyInfo')
+            .setScrollFactor(0)
+            .setDepth(1000)
+            .setScale(0.1);
     }
 
     update() {

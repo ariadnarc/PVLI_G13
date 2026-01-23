@@ -1,14 +1,14 @@
 /**
- * @file FindLuigi.js
- * @class FindLuigi
+ * @file mjFinalGame.js
+ * @class FinalGame
  * @extends Phaser.Scene
  * @description Minijuego "Find Wally".
  * El jugador debe encontrar a Wally en una multitud de personajes en 3 fases
  * de dificultad creciente, todo ello bajo un temporizador global.
  */
-export default class FindLuigi extends Phaser.Scene {
+export default class FinalGame extends Phaser.Scene {
     constructor() {
-        super('FindLuigi');
+        super('FinalGame');
     }
 
     /**
@@ -101,7 +101,7 @@ export default class FindLuigi extends Phaser.Scene {
             fontSize: '32px',
         });
 
-        this.crowdGroup = this.add.group(); // Los faroles
+        this.crowdGroup = this.add.group(); // Wally + distractores
 
         // Temporizador
         this.globalTimer = this.time.addEvent({
@@ -334,4 +334,4 @@ export default class FindLuigi extends Phaser.Scene {
 
         this.input.off('gameobjectdown', this.handleInput, this);
     }
-}
+}   

@@ -106,6 +106,10 @@
         },
         {
             "speaker":"Café",
+            "text":"Te daré un par de consejos antes de dejarte solo. Siempre que quieras comprobar cuánto has aprendido puedes pulsar B para abrir tu diccionario o N para revisar la nota que te lleva hacia Wally."
+        },
+        {
+            "speaker":"Café",
             "text":"Busca por los cofres del camino si quieres lograr saber el contenido completo de la nota. Y encontrar a Wally, por supuesto."
         }
 ]
