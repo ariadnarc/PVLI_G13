@@ -386,7 +386,7 @@ export default class LockPick extends Phaser.Scene {
             jeroglificoId: this.jeroglificoId,
             secreta:this.secreta,
             options: {
-                "Volver al mapa": () => {
+                "Salir": () => {
                     this.scene.stop('PostMinigameMenu');
                     this.scene.start('MapScene');
                 }

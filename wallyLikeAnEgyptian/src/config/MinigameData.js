@@ -1,9 +1,17 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file MinigameData.js
+ * @description
+ * Configuración global de los minijuegos del juego:
+ * - Nombres visibles de cada minijuego
+ * - Definición de dificultades
+ * - Parámetros específicos por minijuego y dificultad
  */
 
+/**
+ * Nombres mostrados al jugador para cada minijuego.
+ * La clave debe coincidir con el nombre interno del minijuego.
+ * @type {Object.<string, string>}
+ */
 export const NOMBRES_MINIJUEGOS = {
   SlideBar: "Precision del Escriba",
   Undertale: "Furia del Desierto",
@@ -13,42 +21,90 @@ export const NOMBRES_MINIJUEGOS = {
   FinalGame: "Buscando a Luigi"
 }
 
+/**
+ * @typedef {Object} PuzzleLightsConfig
+ * @property {number} vidas - Número de errores permitidos.
+ * @property {number[]} rondas - Número de luces por ronda.
+ * @property {number} velocidad - Tiempo en ms entre luces.
+ */
+
+/**
+ * @typedef {Object} UndertaleConfig
+ * @property {number} vidas - Golpes que el jugador puede recibir.
+ */
+
+/**
+ * @typedef {Object} SlideBarConfig
+ * @property {number} intentos - Intentos disponibles.
+ * @property {number} velocidadBarra - Velocidad de movimiento del escarabajo.
+ */
+
+/**
+ * @typedef {Object} LockPickConfig
+ * @property {number} limiteSweet - Margen de error permitido (grados).
+ * @property {number} limiteRotacion - Límite máximo de rotación del lockpick.
+ * @property {number} tensionSube - Velocidad de aumento de tensión (0–1).
+ * @property {number} tensionBaja - Velocidad de reducción de tensión (0–1).
+ */
+
+/**
+ * @typedef {Object} CrocoShootConfig
+ * @property {number} vidas - Intentos disponibles.
+ * @property {number} cadencia - Tiempo mínimo entre disparos (ms).
+ * @property {number} cantSacamuelas - Disparos necesarios para ganar.
+ */
+
+/**
+ * @typedef {Object} MinijuegosConfig
+ * @property {PuzzleLightsConfig} [PuzzleLights]
+ * @property {UndertaleConfig} [Undertale]
+ * @property {SlideBarConfig} [SlideBar]
+ * @property {LockPickConfig} [LockPick]
+ * @property {CrocoShootConfig} [CrocoShoot]
+ */
+
+/**
+ * @typedef {Object} DificultadConfig
+ * @property {string} nombre - Nombre mostrado al jugador.
+ * @property {number} multiplicadorPuntuacion - Multiplicador global de puntuación.
+ * @property {MinijuegosConfig} minijuegos - Configuración específica por minijuego.
+ */
+
+/**
+ * Configuración de dificultades del juego.
+ * Cada dificultad define parámetros específicos para cada minijuego.
+ * 
+ * @type {Object.<string, DificultadConfig>}
+ */
 export const DIFICULTADES = {
   FACIL: {
     nombre: "Iniciado del Templo",
     multiplicadorPuntuacion: 1.0,
     minijuegos: {
-      // minijuego de patrones
       PuzzleLights: {
         vidas: 3,
         rondas: [3, 3, 4],
-        velocidad: 900, // ms entre luces
+        velocidad: 900, 
       },
-      // minijuego de esquivar
       Undertale: {
         vidas: 4,
       },
-      //minijuego de barrita
       SlideBar: {
         intentos: 3,
         velocidadBarra: 200,
       },
-      // minijuego cerradura
       LockPick: {
-        limiteSweet: 13, // Min.: 1, Máx.: 90 (ya que solo hay 180 grados)
-        limiteRotacion: 26, // Siempre > que limiteSweet
-        tensionSube: 0.1, // 0 - 1
-        tensionBaja: 0.04, // 0 - 1
+        limiteSweet: 13, 
+        limiteRotacion: 26, 
+        tensionSube: 0.1, 
+        tensionBaja: 0.04, 
       },
-      // minijuego disparar
       CrocoShoot: {
         vidas: 3,
         cadencia: 1450,
         cantSacamuelas: 10,
       },
-      // minijuego final
     },
-    probJeroglificos: { S: 0.05, A: 0.15, B: 0.80 }
   },
 
   MEDIA: {
@@ -79,7 +135,6 @@ export const DIFICULTADES = {
         cantSacamuelas: 15,
       }
     },
-    probJeroglificos: { S: 0.10, A: 0.25, B: 0.65 }
   },
 
   DIFICIL: {
@@ -110,22 +165,6 @@ export const DIFICULTADES = {
         cantSacamuelas: 18,
       }
     },
-    probJeroglificos: { S: 0.25, A: 0.40, B: 0.35 }
   }
 };
 
-// determina el coste en jeroglíficos por reintentar minijuegos ya jugados
-export const COSTES_DIFICULTAD = {
-  FACIL: { S: 0, A: 0, B: 0 },
-  MEDIA: { S: 0, A: 1, B: 3 },
-  DIFICIL: { S: 1, A: 2, B: 5 }
-};
-
-// recompensas minijuegos
-export const MINIGAME_REWARDS = {
-  rewardSettings: {
-    FACIL: { count: 1 },
-    MEDIA: { count: 2 },
-    DIFICIL: { count: 3 }
-  }
-};

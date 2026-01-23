@@ -26,6 +26,7 @@ En este proyecto hemos usado una mezcla de fondos y assets hechos a mano y otros
 - Minijuego "Cerrajero ancestral": mezcla de imágenes independientes encontradas en imágenes de Google.
 - Minijuego "Furia del desierto": mezcla de imágenes independientes encontradas en imágenes de Google.
 - Fondo de los créditos: encontrado en imágenes de Google.
+- Escaleras y portal final: cogidas de Google y modificadas con Piskel.
 
 ---
 
@@ -34,7 +35,7 @@ Parte de las melodías de Wally like an egyptian han sido compuestas por el equi
 
 ### Canciones del proyecto:
 - Canciones de los minijuegos: compuestas y grabadas por el equipo.
-- Canción de exploración del mapa: versión de [Walk like an Egyptian](https://www.youtube.com/watch?v=-tZ-iH_pkSo&list=RD-tZ-iH_pkSo&start_radio=1) de The Bangles, interpretada y grabada por el equipo.
+- Canción del menú y exploración del mapa: versión de [Walk like an Egyptian](https://www.youtube.com/watch?v=-tZ-iH_pkSo&list=RD-tZ-iH_pkSo&start_radio=1) de The Bangles, interpretada y grabada por el equipo.
 - Canción del juego final: tema del [Anuncio de aceite Afia](https://www.youtube.com/watch?v=gpYQBV-HeXA&list=RDgpYQBV-HeXA&start_radio=1) de Savola Foods, empresa de Arabia Saudí.
 - Canción de los créditos: canción [Still Alive](https://www.youtube.com/watch?v=Y6ljFaKRTrI) del videojuego Portal (Valve, 2007).
 

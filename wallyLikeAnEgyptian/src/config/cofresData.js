@@ -1,10 +1,31 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file CofresData.js
+ * @description Configuración de todos los cofres del mapa.
+ * Define la posición inicial de cada cofre, el minijuego asociado,
+ * la dificultad, el jeroglífico que contiene y los textos de controles
+ * que se muestran al jugador.
+ *
+ * Este archivo actúa como fuente para la colocación y
+ * progresión de cofres a lo largo del mapa.
+ */
+
+/**
+ * @typedef {Object} CofreData
+ * @property {{x: number, y: number}} posInicial - Posición inicial del cofre en el mapa.
+ * @property {string} minijuego - Nombre de la escena del minijuego asociado al cofre.
+ * @property {string} dificultad - Nivel de dificultad del minijuego ('FACIL', 'MEDIA', 'DIFICIL').
+ * @property {number} jeroglificoId - Identificador del jeroglífico que se obtiene al completar el cofre.
+ * @property {string[]} controles - Textos que indican los controles del minijuego.
+ */
+
+/**
+ * Array con la configuración de todos los cofres del juego,
+ * ordenados por dificultad y progresión dentro del mapa.
+ * @type {CofreData[]}
  */
 
 export const cofresData = [
+
     //=== DIFICULTAD FÁCIL ===
     {
         posInicial: { x: 450, y: 500 },
@@ -47,6 +68,7 @@ export const cofresData = [
         controles: [
             "Haz click en los jeroglíficos que se iluminen siguiendo el orden."]
     },
+
     //=== DIFICULTAD MEDIA ===
     {
         posInicial: { x: 1230, y: 90 },
@@ -89,6 +111,7 @@ export const cofresData = [
             "Usa las flechas para moverte.",
             "Esquiva los misiles para ganar."]
     },
+    
     //=== DIFICULTAD DIFÍCIL ===
     {
         posInicial: { x: 1250, y: 1300 },
