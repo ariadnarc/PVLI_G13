@@ -61,11 +61,11 @@ export default class Boot extends Phaser.Scene {
       frameHeight: 32
     }); 
     
-    this.load.image("lock", "wallyLikeAnEgyptian/assets/ui/lock.png");
     this.load.image('caja', 'wallyLikeAnEgyptian/assets/sprites/caja.png'); 
     this.load.image('cafe', 'wallyLikeAnEgyptian/assets/sprites/cafe.png');
     this.load.image('mariano', 'wallyLikeAnEgyptian/assets/sprites/mariano.png');
     this.load.image('wallyy', 'wallyLikeAnEgyptian/assets/sprites/Wally.png');
+    this.load.image('escaleras', 'wallyLikeAnEgyptian/assets/sprites/stairs.png');
 
     //=== MAPA ===
     this.load.image('tilesImg', 'wallyLikeAnEgyptian/assets/mapa/tileSetProp.png');
