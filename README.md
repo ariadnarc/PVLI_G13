@@ -87,27 +87,18 @@ Para lograrlo, debe **descifrar jeroglíficos** y desbloquear pistas hasta encon
 ### 📋 Minijuegos
 - Precisión del escriba: Barra con un escarabajo sagrado con movimiento lateral, el objetivo es detener el escarabajo encima de la gema. La dificultad aumenta disminuyendo los intentos y aumentando la velocidad del movimiento del escarabajo.
 - Cazador de Reptiles: Apuntar utilizando las flechas (izq/der) y disparar a los cocodrillos que aparecen a la derecha de la pantalla y se mueven hacia la izquierda. El objetivo es que ningun cocodrilo consiga cruzar la parte derecha de la pantalla. La velocidad aumenta disminuyendo la vidas, es decir la cantidad de cocodrilos que pueden llegar al final, aumentando la cantidad de cocodrilos y aumentando el tiempo de recarga.
-- Cerrajero ancestral: El objetivo es abrir las dos cerraduras, para e 
-- Furia del desierto: Evitar proyectiles, contine  dos fases, la primera fase lanza dagas de forma lateral desde la derecha y la izquierda,
-
-| Furia del desierto | Evitar proyectiles | Control con flechas; 3 vidas; sobrevivir un tiempo determinado mientras proyectiles se dirigen hacia ti, cada vez más rápido y con comportamientos aleatorios. |
-| Memoria del templo | Memoria visual | Repetir secuencias de luces en cuadrícula 3x3; vidas limitadas; dificultad progresiva. |
-| Cerrajero ancestral | Precisión | Abrir un candado interactuando cuidadosamente con una ganzúa. |
-| Cazador de Reptiles | Apuntar y disparar | Apuntar y disparar a cocodrilos que aparecen antes de que lleguen a tu posición. |
-| Buscando a Luigi | Boss final | Una combinación de los juegos anteriores que permiten al jugador acceder a la zona final. |
+- Cerrajero ancestral: El objetivo es abrir las dos cerraduras, para conseguir ese objetivo hay una ganzua en cada cerradura y una barra de tension de la ganzua. Debes mover la ganzua con las flechas (izq/der) hasta encontrar el punto justo donde esta se abre, evitando que la ganzua se rompa si fuerzas en el lugar incorrecto. La dificulatd aumenta disminuyendo el tamaño del "sweet spot" y aumentando la velocidad de llenado de la barra de tension.
+- Memoria del templo: El objetivo es seguir y replicar la secuencia, para ello tenemos una cuadricula 3x3 de jeroglificos. Por turnos te mostraran una secuencia de jeroglificos y despues tu tendras que replicarla. La dificultad aumenta reduciendo las vidas, aumentando las rondas y aumentando la velocidad de la muestra del patron. 
+- Furia del desierto: Evitar proyectiles, contine  dos fases, la primera fase lanza dagas de forma lateral desde la derecha y la izquierda, la segunda fase lanza dagas de forma circular alrededor del jugador. El objetivo el finalizar el tiempo con al menos una vida. La dificultad aumenta reduciendi el nuemro de vidas.
+- Buscando a Luigi (Boss final): Ultimo minijuego, consta de 3 fases donde varias caras iguales se mueven por una cuadricula, el objetivo es encontrar la cara de Wally entre el resto.
 
 ---
 
-### 📜 Sistema de Jeroglíficos
-
-Los jeroglíficos representan **símbolos antiguos equivalentes a las letras del abecedario latino**.   
-Para reflejar su valor histórico y simbólico, se agrupan en **tres niveles de rareza**, denominados **Tiers**.
-
-| Tier | Nombre | Letras | Descripción |
-|------|--------|--------|-------------|
-| I | Comunes (“Símbolos del Pueblo”) | A, E, I, O, U, S, N, T, L, R, M | Simples y frecuentes en los textos antiguos, representan el conocimiento básico del idioma sagrado. Obtenibles en minijuegos iniciales. |
-| II | Inusuales (“Símbolos de los Escribas”) | C, D, G, H, P, B, F, V, Y | Más complejos, aparecen en textos más elaborados, usados por escribas o sacerdotes en rituales o registros ceremoniales. Aparecen en minijuegos intermedios ya que simbolizan simbolizan la erudición y el dominio del lenguaje. |
-| III | Legendarios (“Símbolos del Sol”) | K, Q, W, X, Z, J | Raros y poderosos, empleados solo en textos sagrados o con propósitos mágicos. Representan el conocimiento oculto de los dioses y el poder ancestral de la palabra. Obtenibles solo en minijuegos difíciles o perfectos. |
+### 📜 Nota de Wally
+La nota traducida dice "Si quieres encontrarme primero sube las escaleras", esto no lleva a la sala secreta. Como ya hemos dicho los "tiers" de los jeroglificos ahora solo sirven para el nivel de dificultad.
+- Niveles faciles tienen estas letras: S, E, A, R, I
+- Niveles medios tienen estas letras: U, B, L, O, P
+- Niveles dificiles tienen estas letras: M, T, C, N, Q
 
 ---
 

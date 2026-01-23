@@ -9,14 +9,14 @@ export const JEROGLIFICOS_DATA = [
   { id: 2, simbolo: 'ankh', letra: 'E' },
   { id: 3, simbolo: 'scarab', letra: 'A' },
   { id: 4, simbolo: 'sun', letra: 'R' },
-
   { id: 5, simbolo: 'ba', letra: 'I' },
+
   { id: 6, simbolo: 'djed', letra: 'U' },
   { id: 7, simbolo: 'lotus', letra: 'B' },
   { id: 8, simbolo: 'cobra', letra: 'L' },
-
   { id: 9, simbolo: 'reed', letra: 'O' },
   { id: 10, simbolo: 'owl', letra: 'P' },
+  
   { id: 11, simbolo: 'water', letra: 'M' },
   { id: 12, simbolo: 'bread', letra: 'T' },
   { id: 13, simbolo: 'rope', letra: 'C' },
