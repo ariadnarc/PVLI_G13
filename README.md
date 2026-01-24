@@ -132,7 +132,7 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
 
 ¿Seremos capaces de entregar el café a tiempo? Eso es lo que los jugadores tendrán que descubrir en *Wally like an Egyptian*.
 
-#### Bocetos / Screenshots
+#### Screenshots del gameplay
 
 1. **Pantalla de inicio**  
    ![Pantalla de inicio](wallyLikeAnEgyptian/assets/screenshots/menuDeInicio.png)
@@ -140,18 +140,36 @@ Mariano miró fijamente al café corto. Luego miró el reloj de pared. Efectivam
    ![Intro](wallyLikeAnEgyptian/assets/screenshots/IntroScene.png)
 3. **Exploración del laberinto**  
    ![Mapa](wallyLikeAnEgyptian/assets/screenshots/map.png)
-4. **Diccionario de jeroglíficos**  
+4. **Nota de pista hacia Wally**  
+   ![Mapa](wallyLikeAnEgyptian/assets/screenshots/notaEncriptada.png)
+5. **Diccionario de jeroglíficos**  
    ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/bitacora.png)
-5. **Minijuego: Precisión del escriba**  
+6. **Menú de pausa**  
+   ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/MenuPausa.png)
+7. **Pantalla pre-minijuego**  
+   ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/preMiniGameScene.png)   
+8. **Minijuego: Precisión del escriba**  
    ![Minijuego Precisión del escriba](wallyLikeAnEgyptian/assets/screenshots/PrecisionDelEscriba.png)
-6. **Minijuego: Memoria del templo**  
+9. **Minijuego: Memoria del templo**  
    ![Minijuego Memoria del templo](wallyLikeAnEgyptian/assets/screenshots/MemoriaDelTemplo.png)
-7. **Minijuego: Furia del desierto**  
+10. **Minijuego: Furia del desierto**  
    ![Minijuego Furia del desierto](wallyLikeAnEgyptian/assets/screenshots/FuriaDelDesierto.png)
-8. **Minijuego: Cerrajero ancestral**
+11. **Minijuego: Cerrajero ancestral**
    ![Minijuego Cerrajero ancestral](wallyLikeAnEgyptian/assets/screenshots/cerrajeroAncestral.png)
-9. **Minijuego: Cazador de reptiles**
+12. **Minijuego: Cazador de reptiles**
    ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/cazadorDeReptiles.png)
+13. **Escena de victoria**
+   ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/PantallaVictoria.png)
+14. **Escena de derrota**
+   ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/PantallaDerrota.png)
+15. **Sala secreta**  
+   ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/SalaSecreta.png)
+16. **Pantalla pre-sala secreta**  
+   ![Bitácora](wallyLikeAnEgyptian/assets/screenshots/PreSalaSecreta.png)
+17. **Minijuego final**
+   ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/FinalGame.png)
+18. **Final: Wally encontrado + créditos**
+   ![Minijuego Cazador de reptiles](wallyLikeAnEgyptian/assets/screenshots/wallyCreditos.png)
 
 
 ---
