@@ -13,7 +13,7 @@
  * @type {Object.<string, string>}
  */
 export const NOMBRES_MINIJUEGOS = {
-  SlideBar: "Precision del Escriba",
+  SlideBar: "Precisión del Escriba",
   Undertale: "Furia del Desierto",
   PuzzleLights: "Memoria del Templo",
   LockPick: "Cerrajero Ancestral",
