@@ -36,7 +36,7 @@ export const cofresData = [
     },
     {
         posInicial: { x: 540, y: 310 },
-        minijuego: "CrocoShoot",
+        minijuego: "SlideBar",
         dificultad: "FACIL",
         jeroglificoId: 2,
         controles: ["Pulsa ← / → para girar,",
@@ -44,7 +44,7 @@ export const cofresData = [
     },
     {
         posInicial: { x: 400, y: 120 },
-        minijuego: "LockPick",
+        minijuego: "SlideBar",
         dificultad: "FACIL",
         jeroglificoId: 3,
         controles: [
@@ -53,7 +53,7 @@ export const cofresData = [
     },
     {
         posInicial: { x: 720, y: 120 },  
-        minijuego: "Undertale",
+        minijuego: "SlideBar",
         dificultad: "FACIL",
         jeroglificoId: 4,
         controles: [
@@ -62,7 +62,7 @@ export const cofresData = [
     },
     {
         posInicial: { x: 996, y: 89 },
-        minijuego: "PuzzleLights",
+        minijuego: "SlideBar",
         dificultad: "FACIL",
         jeroglificoId: 5,
         controles: [
@@ -72,8 +72,8 @@ export const cofresData = [
     //=== DIFICULTAD MEDIA ===
     {
         posInicial: { x: 1230, y: 90 },
-        minijuego: "PuzzleLights",
-        dificultad: "MEDIA",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 6,
         controles: [
             "Haz click en los jeroglíficos que se iluminen siguiendo el orden."]
@@ -81,22 +81,22 @@ export const cofresData = [
     {
         posInicial: { x: 820, y: 260 },
         minijuego: "SlideBar",
-        dificultad: "MEDIA",
+        dificultad: "FACIL",
         jeroglificoId: 7,
         controles: ["Pulsa espacio para parar al escarabajo sobre la gema."]
     },
     {   
         posInicial: { x: 1050, y: 730 },
-        minijuego: "CrocoShoot",
-        dificultad: "MEDIA",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 8,
         controles: ["Pulsa ← / → para girar,",
                     "Pulsa espacio para disparar."]
     },
     {
         posInicial: { x: 1380, y: 730 },
-        minijuego: "LockPick",
-        dificultad: "MEDIA",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 9,
         controles: [
             "Usa ← / → para girar",
@@ -104,8 +104,8 @@ export const cofresData = [
     },
     {
         posInicial: { x: 1300, y: 730 },
-        minijuego: "Undertale",
-        dificultad: "MEDIA",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 10,
         controles: [
             "Usa las flechas para moverte.",
@@ -115,16 +115,16 @@ export const cofresData = [
     //=== DIFICULTAD DIFÍCIL ===
     {
         posInicial: { x: 1250, y: 1300 },
-        minijuego: "CrocoShoot",
-        dificultad: "DIFICIL",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 11,
         controles: ["Pulsa ← / → para girar,",
                     "Pulsa espacio para disparar."]
     },
     {
         posInicial: { x: 1110, y: 1300 },
-        minijuego: "Undertale",
-        dificultad: "DIFICIL",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 12,
         controles: [
             "Usa las flechas para moverte.",
@@ -133,22 +133,22 @@ export const cofresData = [
     {
         posInicial: { x: 870, y: 1400 },
         minijuego: "SlideBar",
-        dificultad: "DIFICIL",
+        dificultad: "FACIL",
         jeroglificoId: 13,
         controles: ["Pulsa espacio para parar al escarabajo sobre la gema."]
     },
     {
         posInicial: { x: 560, y: 1370 },
-        minijuego: "PuzzleLights",
-        dificultad: "DIFICIL",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 14,
         controles: [
             "Haz click en los jeroglíficos que se iluminen siguiendo el orden."]
     },
     {
         posInicial: { x: 270, y: 1370 },
-        minijuego: "LockPick",
-        dificultad: "DIFICIL",
+        minijuego: "SlideBar",
+        dificultad: "FACIL",
         jeroglificoId: 15,
         controles: [
             "Usa ← / → para girar",

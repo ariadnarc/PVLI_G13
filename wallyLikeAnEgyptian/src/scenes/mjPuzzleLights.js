@@ -126,8 +126,12 @@ export default class PuzzleLights extends Phaser.Scene {
       this.sequence.push(Phaser.Math.Between(0, 8));
     }
 
-    // Mostrar secuencia al jugador
-    this.showSequence();
+    // aviso previo
+    this.turnText.setText('Prepárate…');
+
+    this.time.delayedCall(1200, () => {
+      this.showSequence();
+    });
   }
 
   async showSequence() {
@@ -138,20 +142,32 @@ export default class PuzzleLights extends Phaser.Scene {
       const tileIndex = this.sequence[i];
       const tile = this.tiles[tileIndex];
       await this.flashTile(tile, this.delay);
+      await this.wait(150);
     }
 
     this.isPlayerTurn = true;
     this.turnText.setText('¡Tu turno!');
   }
 
+  wait(ms) {
+    return new Promise(resolve => {
+      this.time.delayedCall(ms, resolve);
+    });
+  }
+
   flashTile(tile, duration) {
     return new Promise((resolve) => {
+      tile.setTint(0xffff00);
       this.tweens.add({
         targets: tile,
-        alpha: { from: 1, to: 0.3 },
+        alpha: { from: 1, to: 0.2 }, // oscurecer bastante
         yoyo: true,
         duration: duration,
-        onComplete: resolve
+        onComplete: () => {
+          tile.clearTint();            // restauramos tint
+          tile.setAlpha(1);            // restauramos alpha
+          resolve();
+        }
       });
     });
   }
