@@ -7,7 +7,6 @@
  * y de inicializar sistemas base como el SoundManager y las animaciones.
  */
 
-import { playerInitialData } from './PlayerData.js';
 import SoundManager from '../core/SoundManager.js';
 
 export default class Boot extends Phaser.Scene {
