@@ -99,9 +99,9 @@ export default class FinalScene extends Phaser.Scene {
             height / 2 - 60,
             '¿Quieres volver a jugar?',
             {
-                fontFamily: 'Arial',
+                fontFamily: 'Filgaia',
                 fontSize: '36px',
-                color: '#ffffff'
+                color: '#563314'
             }
         ).setOrigin(0.5).setDepth(20);
 
@@ -111,9 +111,9 @@ export default class FinalScene extends Phaser.Scene {
             height / 2 + 20,
             'SÍ',
             {
-                fontFamily: 'Arial',
+                fontFamily: 'Filgaia',
                 fontSize: '32px',
-                color: '#00ff00'
+                color: '#e39f40'
             }
         )
             .setOrigin(0.5)
