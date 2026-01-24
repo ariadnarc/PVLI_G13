@@ -2,14 +2,61 @@
  * @file FinalScene.js
  * @class FinalScene
  * @extends Phaser.Scene
- * @description Escena de créditos con scroll suave y opción de reiniciar el juego al terminar.
+ * @description
+ * Escena final del juego.
+ * Muestra los créditos con scroll vertical, reproduce música de cierre
+ * y permite reiniciar completamente el juego al finalizar.
  */
-
 export default class FinalScene extends Phaser.Scene {
+
+    /**
+     * Crea la escena FinalScene.
+     */
     constructor() {
         super('FinalScene');
+
+        /**
+         * Gestor de sonido global.
+         * @type {Object|undefined}
+         */
+        this.soundManager = undefined;
+
+        /**
+         * Texto de créditos que se desplaza verticalmente.
+         * @type {Phaser.GameObjects.Text|undefined}
+         */
+        this.credits = undefined;
+
+        /**
+         * Velocidad del desplazamiento de los créditos (px/seg).
+         * @type {number}
+         */
+        this.scrollSpeed = 0;
+
+        /**
+         * Posición Y donde los créditos se detienen.
+         * @type {number}
+         */
+        this.stopY = 0;
+
+        /**
+         * Indica si los créditos han terminado su desplazamiento.
+         * @type {boolean}
+         */
+        this.creditsStopped = false;
+
+        /**
+         * Rectángulo usado para el fade a negro.
+         * @type {Phaser.GameObjects.Rectangle|undefined}
+         */
+        this.fadeRect = undefined;
     }
 
+    /**
+     * Crea los elementos visuales y sonoros de la escena final.
+     * Configura el fondo, los créditos, la música y el sistema de fade.
+     * @override
+     */
     create() {
         const { width, height } = this.scale;
 
@@ -56,7 +103,7 @@ export default class FinalScene extends Phaser.Scene {
             }
         ).setOrigin(0.5, 0);
 
-        // Velocidad del scroll
+        // Configuración del scroll
         this.scrollSpeed = 40;
         this.stopY = height - 1500;
         this.creditsStopped = false;
@@ -68,6 +115,15 @@ export default class FinalScene extends Phaser.Scene {
 
     }
 
+    /**
+     * Actualiza la posición del texto de créditos.
+     * Detiene el scroll al llegar a la posición final y lanza
+     * la transición de fade a negro.
+     *
+     * @param {number} time - Tiempo total de ejecución.
+     * @param {number} delta - Tiempo transcurrido desde el último frame.
+     * @override
+     */
     update(time, delta) {
         if (!this.creditsStopped) {
             this.credits.y -= this.scrollSpeed * (delta / 1000);
@@ -80,6 +136,10 @@ export default class FinalScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * Inicia la transición de fade a negro.
+     * Al finalizar el fade, muestra la opción de reiniciar el juego.
+     */
     startFadeToBlack() {
         this.tweens.add({
             targets: this.fadeRect,
@@ -90,6 +150,10 @@ export default class FinalScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * Muestra el mensaje de confirmación para volver a jugar.
+     * Permite reiniciar completamente el juego mediante recarga de página.
+     */
     showRestartPrompt() {
         const { width, height } = this.scale;
 
@@ -107,26 +171,38 @@ export default class FinalScene extends Phaser.Scene {
 
         // Botón SÍ
         const yesButton = this.add.sprite(
-        width / 2 - 100,
-        height / 2 + 20,
-        'fondoboton'
-    ).setInteractive({ useHandCursor: true }).setDepth(20);
+            width / 2 - 100,
+            height / 2 + 20,
+            'fondoboton'
+        ).setInteractive({ useHandCursor: true }).setDepth(20);
 
-    yesButton.on('pointerdown', () => {
-        this.soundManager?.stopMusic();
+        yesButton.on('pointerdown', () => {
+            this.soundManager?.stopMusic();
 
-        window.location.reload();
-    });
+            window.location.reload();
+        });
     }
     
+    /**
+     * Pausa la música de la escena final.
+     * Puede ser llamado si la escena pierde el foco.
+     */
     pause() {
         this.soundManager?.pauseMusic();
     }
 
+    /**
+     * Reanuda la música de la escena final.
+     * Puede ser llamado al volver a mostrar la escena.
+     */
     resume() {
         this.soundManager?.resumeMusic();
     }
 
+    /**
+     * Limpia recursos al cerrar la escena.
+     * Detiene la música de créditos.
+     */
     shutdown() {
         this.soundManager?.stopMusic();
     }

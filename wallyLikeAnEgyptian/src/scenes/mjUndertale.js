@@ -174,9 +174,6 @@ export default class Undertale extends Phaser.Scene {
     );
 
     // Fase y música
-    // Juan: sé que es algo raro separarlo en 2 variables, pero
-    // viene genial para hacer por un lado oleadas y proyectiles
-    // y por el otro HUD, tldr, comodidad para programar
     this.attackPhase = 1;
     this.changePhase(1);
 
@@ -192,12 +189,13 @@ export default class Undertale extends Phaser.Scene {
       loop: true
     });
 
+    // Música
     this.soundManager = this.registry.get('soundManager');
     this.soundManager.playMusic('undertaleTheme');
   }
 
 
-  update() { // Player e Input
+  update() { 
     this.inputManager.update();
     this.playerManager.update();
   }
@@ -446,8 +444,6 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  // ================= COLISIÓN =================
-
   /**
    * Colisión entre el jugador y un proyectil
    * Vida--, isInvulnerable = true llamando a otro método (el q está justo abajo)
@@ -492,7 +488,7 @@ export default class Undertale extends Phaser.Scene {
     });
   }
 
-  /**
+/**
  * Temporizador
  */
   updateTimer() {

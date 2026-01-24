@@ -2,23 +2,192 @@
  * @file CrocoShoot.js
  * @class CrocoShoot
  * @extends Phaser.Scene
- * @description Minijuego de balista con movimiento de proyectiles manual (sin Phaser Physics).
- * Las flechas se mueven en línea recta y el juego incluye condiciones de Victoria/Derrota.
+ * @description
+ * Minijuego de balista con movimiento de proyectiles manual (sin Phaser Physics).
+ * Las flechas se mueven en línea recta según su velocidad calculada
+ * y los cocodrilos se desplazan horizontalmente. Incluye condiciones
+ * de victoria y derrota en función de los cocodrilos eliminados y los que escapan.
  */
-
 import { DIFICULTADES } from '../config/MinigameData.js';
 
+/**
+ * Escena del minijuego "CrocoShoot".
+ * El jugador controla una balista que dispara flechas a cocodrilos
+ * que avanzan horizontalmente por la pantalla.
+ */
 export default class CrocoShoot extends Phaser.Scene {
+    /**
+     * Crea la escena CrocoShoot.
+     */
     constructor() {
         super('CrocoShoot');
+
+        /**
+         * Indica si esta escena se utiliza como minijuego.
+         * @type {boolean}
+         */
+        this.isMinigame = true;
+
+        /**
+         * Identificador del minijuego (para menús y tracking).
+         * @type {string|undefined}
+         */
+        this.minijuego = undefined;
+
+        /**
+         * Dificultad actual del minijuego.
+         * @type {string|undefined}
+         */
+        this.difficulty = undefined;
+
+        /**
+         * ID del jeroglífico asociado a este minijuego.
+         * @type {string|number|undefined}
+         */
+        this.jeroglificoId = undefined;
+
+        /**
+         * Indica si el minijuego se está jugando desde la sala secreta.
+         * @type {boolean|undefined}
+         */
+        this.secreta = undefined;
+
+        /**
+         * Máximo de cocodrilos que pueden escapar antes de provocar derrota.
+         * @type {number}
+         */
+        this.maxEscapes = 0;
+
+        /**
+         * Número de cocodrilos que han escapado por la izquierda.
+         * @type {number}
+         */
+        this.escapesCount = 0;
+
+        /**
+         * Total de cocodrilos que deben ser eliminados según la dificultad.
+         * @type {number}
+         */
+        this.totalCrocodilesToKill = 0;
+
+        /**
+         * Número de cocodrilos eliminados por el jugador.
+         * @type {number}
+         */
+        this.killedCrocodilesCount = 0;
+
+        /**
+         * Número de cocodrilos generados hasta el momento.
+         * @type {number}
+         */
+        this.spawnedCrocodilesCount = 0;
+
+        /**
+         * Indica si la partida ha terminado (victoria o derrota).
+         * @type {boolean}
+         */
+        this.gameIsOver = false;
+
+        /**
+         * Velocidad de rotación de la balista (grados por frame).
+         * @type {number}
+         */
+        this.ROTATION_SPEED = 0.8;
+
+        /**
+         * Velocidad de las flechas en píxeles por segundo.
+         * @type {number}
+         */
+        this.SHOOT_SPEED = 600;
+
+        /**
+         * Velocidad horizontal de los cocodrilos en píxeles por segundo.
+         * Negativa, ya que se mueven hacia la izquierda.
+         * @type {number}
+         */
+        this.CROCO_SPEED = -100;
+
+        /**
+         * Ángulo mínimo de disparo (en grados).
+         * @type {number}
+         */
+        this.MIN_ANGLE = -45;
+
+        /**
+         * Ángulo máximo de disparo (en grados).
+         * @type {number}
+         */
+        this.MAX_ANGLE = 45;
+
+        /**
+         * Flag que indica si el jugador puede disparar (respeta cooldown).
+         * @type {boolean}
+         */
+        this.canShoot = true;
+
+        /**
+         * Tiempo de recarga entre disparos en milisegundos.
+         * @type {number}
+         */
+        this.shootCooldown = 0;
+
+        /**
+         * Gráfico auxiliar para dibujar la trayectoria de disparo.
+         * @type {Phaser.GameObjects.Graphics|undefined}
+         */
+        this.trajectory = undefined;
+
+        /**
+         * Grupo de flechas disparadas por el jugador.
+         * @type {Phaser.GameObjects.Group|undefined}
+         */
+        this.arrows = undefined;
+
+        /**
+         * Grupo de cocodrilos activos en pantalla.
+         * @type {Phaser.GameObjects.Group|undefined}
+         */
+        this.crocodiles = undefined;
+
+        /**
+         * Evento temporizado para generar cocodrilos periódicamente.
+         * @type {Phaser.Time.TimerEvent|undefined}
+         */
+        this.crocodileSpawnTimer = undefined;
+
+        /**
+         * Texto de HUD que muestra las vidas/escapes restantes.
+         * @type {Phaser.GameObjects.Text|undefined}
+         */
+        this.livesText = undefined;
+
+        /**
+         * Gestor de sonido global.
+         * @type {Object|undefined}
+         */
+        this.soundManager = undefined;
+
+        /**
+         * Sprite de la balista controlada por el jugador.
+         * @type {Phaser.GameObjects.Image|undefined}
+         */
+        this.player = undefined;
+
+        /**
+         * Conjunto de teclas de control (izquierda, derecha, disparo).
+         * @type {Object|undefined}
+         */
+        this.keys = undefined;
     }
 
     /**
-     * @property {number} maxEscapes - Máximo de cocodrilos que pueden pasar antes de Game Over.
-     * @property {number} escapesCount - Cocodrilos que han pasado.
-     * @property {number} totalCrocodilesToKill - Total de cocodrilos a generar y matar.
-     * @property {number} killedCrocodilesCount - Cocodrilos eliminados.
-     * @property {number} spawnedCrocodilesCount - Cocodrilos generados hasta ahora.
+     * Inicializa el minijuego CrocoShoot con la configuración correspondiente.
+     *
+     * @param {Object} [data={}] - Datos de entrada del minijuego.
+     * @param {string} [data.minijuego] - Identificador del minijuego.
+     * @param {string} [data.dificultad] - Dificultad seleccionada.
+     * @param {string|number} [data.jeroglificoId] - ID del jeroglífico asociado.
+     * @param {boolean} [data.secreta=false] - Indica si se juega desde sala secreta.
      */
     init(data = {}) {
         this.isMinigame = true;
@@ -29,14 +198,16 @@ export default class CrocoShoot extends Phaser.Scene {
         this.jeroglificoId = data.jeroglificoId;
         //Verifica si la sala es secreta 
         this.secreta=data.secreta;
+
         const config = DIFICULTADES[this.difficulty].minijuegos.CrocoShoot;
-        // Var.
+
+        // Variables de estado
         this.escapesCount = 0;
         this.killedCrocodilesCount = 0;
         this.spawnedCrocodilesCount = 0;
         this.gameIsOver = false;
 
-        // Constantes
+        // Constantes de juego
         this.ROTATION_SPEED = 0.8;   // Velocidad de rotación balista
         this.SHOOT_SPEED = 600;      // Velocidad de la flecha (píxeles/segundo)
         this.CROCO_SPEED = -100;     // Velocidad X de los cocodrilos (píxeles/segundo)
@@ -50,28 +221,33 @@ export default class CrocoShoot extends Phaser.Scene {
         this.totalCrocodilesToKill = config.cantSacamuelas;
     }
 
+    /**
+     * Crea el entorno visual, controles, HUD,
+     * grupos de flechas/cocodrilos y el sistema de spawn.
+     * @override
+     */
     create() {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
-        // FONDO
+        //=== FONDO ===
         this.fondo = this.add.image(0, 0, 'fondoCroco').setOrigin(0);
         this.fondo.setDisplaySize(this.game.config.width, this.game.config.height);
 
-        // CONTROLES
+        //=== CONTROLES ===
         this.keys = this.input.keyboard.addKeys({
             left: Phaser.Input.Keyboard.KeyCodes.LEFT,
             right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
             space: Phaser.Input.Keyboard.KeyCodes.SPACE
         });
 
+        //=== MÚSICA / SONIDOS ===
         this.soundManager = this.registry.get('soundManager');
         this.soundManager.playMusic('crocoshootTheme');
-        
 
         //=== JUGADOR ===
         this.player = this.add.image(80, 450, 'balista');
-        this.player.setOrigin(0.5, 0.5); // importante para que rote desde el centro
+        this.player.setOrigin(0.5, 0.5); // Importante para que rote desde el centro
         this.player.setScale(0.05);
         this.player.angle = 0;
 
@@ -97,6 +273,15 @@ export default class CrocoShoot extends Phaser.Scene {
         }).setScrollFactor(0);
     }
 
+    /**
+     * Actualiza el estado del minijuego en cada frame:
+     * rotación, disparo, movimiento de flechas y cocodrilos,
+     * colisiones y condiciones de victoria/derrota.
+     *
+     * @param {number} time - Tiempo total transcurrido.
+     * @param {number} delta - Tiempo desde el último frame en ms.
+     * @override
+     */
     update(time, delta) {
         if (this.gameIsOver) return;
 
@@ -129,7 +314,7 @@ export default class CrocoShoot extends Phaser.Scene {
         this.moveCrocodiles(deltaSeconds);
         this.checkCollisions();
 
-        // Limpiar
+        // Limpieza y condiciones de fin de partida
         this.checkGameConditions();
         this.cleanupObjects();
     }
@@ -138,7 +323,10 @@ export default class CrocoShoot extends Phaser.Scene {
     //  MÉTODOS DE LÓGICA DE JUEGO
     // ---------------------------------------------------------
 
-    // Dibuja una línea recta predictiva (preview lineal).
+    /**
+     * Dibuja una línea recta predictiva que representa
+     * la trayectoria aproximada de la flecha.
+     */
     drawTrajectory() {
         this.trajectory.clear();
         this.trajectory.lineStyle(2, 0xffffff, 0.8);
@@ -156,7 +344,10 @@ export default class CrocoShoot extends Phaser.Scene {
         this.trajectory.strokeLineShape(new Phaser.Geom.Line(startX, startY, endX, endY));
     }
 
-    // Crea y dispara una flecha en línea recta.
+    /**
+     * Crea y dispara una flecha en línea recta,
+     * asignándole una velocidad X/Y basada en el ángulo de la balista.
+     */
     shootArrow() {
         this.canShoot = false;
 
@@ -169,11 +360,11 @@ export default class CrocoShoot extends Phaser.Scene {
 
         // Calcular los componentes X e Y de la velocidad
         arrow.speedX = Math.cos(angleRad) * this.SHOOT_SPEED;
-        arrow.speedY = Math.sin(angleRad) * this.SHOOT_SPEED * 1; // Y negativa para que suba con ángulo negativo
+        arrow.speedY = Math.sin(angleRad) * this.SHOOT_SPEED * 1; 
 
         this.arrows.add(arrow);
 
-        // Reactivar disparo
+        // Reactivar disparo tras el cooldown
         this.time.delayedCall(this.shootCooldown, () => {
             this.canShoot = true;
         });
@@ -190,7 +381,10 @@ export default class CrocoShoot extends Phaser.Scene {
         });
     }
 
-    // Genera un nuevo cocodrilo y establece su velocidad.
+    /**
+     * Genera un nuevo cocodrilo en el borde derecho de la pantalla
+     * y lo añade al grupo, con velocidad hacia la izquierda.
+     */
     spawnCrocodile() {
         if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill) {
             this.crocodileSpawnTimer.paused = true;
@@ -216,7 +410,10 @@ export default class CrocoShoot extends Phaser.Scene {
         });
     }
 
-    // Verifica colisiones entre flechas y cocodrilos usando geometría (bounding boxes).
+    /**
+     * Verifica colisiones entre flechas y cocodrilos usando bounding boxes.
+     * Si detecta intersección, delega en {@link CrocoShoot#hitCrocodile}.
+     */
     checkCollisions() {
         this.arrows.children.each(arrow => {
             this.crocodiles.children.each(crocodile => {
@@ -234,8 +431,10 @@ export default class CrocoShoot extends Phaser.Scene {
 
     /**
      * Maneja la colisión entre una flecha y un cocodrilo.
-     * @param {Phaser.GameObjects.GameObject} arrow 
-     * @param {Phaser.GameObjects.GameObject} crocodile 
+     * Destruye ambos y actualiza el contador de kills.
+     *
+     * @param {Phaser.GameObjects.GameObject} arrow - Flecha que impacta.
+     * @param {Phaser.GameObjects.GameObject} crocodile - Cocodrilo impactado.
      */
     hitCrocodile(arrow, crocodile) {
         if (this.gameIsOver) return;
@@ -248,7 +447,10 @@ export default class CrocoShoot extends Phaser.Scene {
         this.checkGameConditions();
     }
 
-    // Elimina objetos que salen de la pantalla y cuenta los escapes de cocodrilos.
+    /**
+     * Elimina objetos que salen fuera de la pantalla y
+     * contabiliza los cocodrilos que escapan por la izquierda.
+     */
     cleanupObjects() {
         // Flechas fuera de la pantalla
         this.arrows.children.each(arrow => {
@@ -270,15 +472,19 @@ export default class CrocoShoot extends Phaser.Scene {
     }
 
     /**
-     * Genera el texto del HUD de vidas/escapes.
-     * @returns {string} Texto formateado.
+     * Genera el texto del HUD de vidas/escapes restantes.
+     * @returns {string} Texto formateado para el HUD.
      */
     getLivesText() {
         const remaining = this.maxEscapes - this.escapesCount;
         return `VIDAS: ${remaining}`;
     }
 
-    // Verifica las condiciones de victoria y derrota.
+    /**
+     * Verifica las condiciones de victoria y derrota:
+     * - Derrota si se supera el número máximo de escapes.
+     * - Evaluación de victoria/derrota al terminar la oleada de cocodrilos.
+     */
     checkGameConditions() {
 
         if (this.gameIsOver) return;
@@ -292,7 +498,7 @@ export default class CrocoShoot extends Phaser.Scene {
 
         // Si ya generamos todos los cocodrilos y no queda ninguno activo en pantalla,
         // significa que la ronda ha terminado (todos muertos o escaparon).
-        // Entonces decidimos victoria/derrota segun kills.
+        // Entonces decidimos victoria/derrota según kills.
         if (this.spawnedCrocodilesCount >= this.totalCrocodilesToKill && this.crocodiles.countActive(true) === 0) {
             this.gameIsOver = true;
 
@@ -304,14 +510,13 @@ export default class CrocoShoot extends Phaser.Scene {
             }
             return;
         }
-
-        // Nota: mantenemos la condicion anterior (si matas el 'total' antes de que se generen todos)
-        // por compatibilidad: si por alguna razon killed >= total y spawned >= total (ya cubierto arriba),
-        // no llega aquí.
     }
 
-
-    //=== VICTORIA ===
+    /**
+     * Lógica de final de minijuego en caso de victoria.
+     * Detiene la generación de cocodrilos, pausa físicas y
+     * lanza el menú de post-minijuego con resultado "victory".
+     */
     endAsVictory() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.soundManager.stopMusic();
@@ -335,7 +540,11 @@ export default class CrocoShoot extends Phaser.Scene {
         this.scene.stop();
     }
 
-    //=== DERROTA ===
+    /**
+     * Lógica de final de minijuego en caso de derrota.
+     * Detiene la generación de cocodrilos, pausa físicas y
+     * lanza el menú de post-minijuego con opciones de reintentar o salir.
+     */
     endAsDefeat() {
         if (this.crocodileSpawnTimer) this.crocodileSpawnTimer.remove(false);
         this.soundManager.stopMusic();
