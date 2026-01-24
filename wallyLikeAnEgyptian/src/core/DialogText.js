@@ -1,17 +1,46 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file DialogText.js
+ * @description
+ * Clase para crear y gestionar ventanas de diálogo.
+ * Permite mostrar texto estático o animado, con borde, fondo semitransparente,
+ * botón de cierre y ajuste dinámico según tamaño de pantalla.
  */
 
+/**
+ * Configuración opcional de una ventana de diálogo.
+ * @typedef {Object} DialogTextOptions
+ * @property {number} [borderThickness=3] - Grosor del borde de la ventana.
+ * @property {number} [borderColor=0x907748] - Color del borde.
+ * @property {number} [borderAlpha=1] - Transparencia del borde.
+ * @property {number} [windowAlpha=0.8] - Transparencia del fondo de la ventana.
+ * @property {number} [windowColor=0x303030] - Color del fondo de la ventana.
+ * @property {number} [windowHeight=150] - Altura de la ventana de diálogo.
+ * @property {number} [padding=32] - Padding alrededor de la ventana.
+ * @property {string} [closeBtnColor='darkgoldenrod'] - Color de la X de cierre.
+ * @property {number} [dialogSpeed=3] - Velocidad de animación del texto.
+ * @property {number} [fontSize=28] - Tamaño de la fuente.
+ * @property {string} [fontFamily='Filgaia'] - Familia de la fuente.
+ */
+
+/**
+ * Clase para mostrar ventanas de diálogo con texto animado en Phaser.
+ */
 export default class DialogText{
+	/**
+   * Crea una ventana de diálogo.
+   * @param {Phaser.Scene} scene - Escena de Phaser donde se mostrará el diálogo.
+   * @param {DialogTextOptions} [opts={}] - Opciones de configuración de la ventana.
+   */
 	constructor(scene, opts){
 		this.scene = scene;
 		this.init(opts);
 	}
 
+	/**
+   * Inicializa la ventana con parámetros por defecto o los pasados.
+   * @param {DialogTextOptions} opts
+   */
 	init(opts) {
-		// Mira si hay parámetros que se pasan, en caso de que no, se usan los por defecto
 		if (!opts) opts = {};
 		
 		this.borderThickness = opts.borderThickness || 3;
@@ -26,25 +55,25 @@ export default class DialogText{
 		this.fontSize = opts.fontSize || 28;
 		this.fontFamily = opts.fontFamily || 'Filgaia';
 		
-		// se usa para animar el texto
 		this.eventCounter = 0;
-		
-		// si la ventana de diálogo se muestra
 		this.visible = true;
 		
-		// texto que hay en la ventana
+		/** @type {Phaser.GameObjects.Text|null} */
 		this.text = null;
 		
-		// texto que se renderizará en la ventana
+		/** @type {string[]|null} */
 		this.dialog = null;
+
+		/** @type {Phaser.GameObjects.Graphics|null} */
 		this.graphics = null;
+
+		/** @type {Phaser.GameObjects.Text|null} */
 		this.closeBtn = null;
 		
-		// Crea la ventana de dialogo
 		this.createWindow();
 	}
 
-	// Método que cierra y abre la ventana de diálogo
+	/** Muestra u oculta la ventana de diálogo */
 	toggleWindow() {
 		this.visible = !this.visible;
 		if (this.text) this.text.visible = this.visible;
@@ -52,20 +81,17 @@ export default class DialogText{
 		if (this.closeBtn) this.closeBtn.visible = this.visible;
 	}
 
-	// con esta función se nos permite añadir texto a la ventana
-	// Este método se llamara desde la escena que corresponda
+	/**
+   * Establece el texto de la ventana.
+   * @param {string} text - Texto a mostrar.
+   * @param {boolean} [animate=false] - Si el texto se muestra letra a letra.
+   */
 	setText(text, animate) {
-		//el parametro animate nos permite saber si el texto sera animado o no
 		this.eventCounter = 0;
-		
-		//se crea un array con cada caracter en la cadena de texto y se 
-		// guarda en la propiedad diálogo
 		this.dialog = text.split('');
 
-		//se mira si hay otro evento de tiempo corriendo y lo elimina
 		if (this.timedEvent) this.timedEvent.remove();
 
-		//esta variable es un string vacio si animate es true, de otra manera es la variable text
 		var tempText = animate ? '' : text;
 		
 		//llama al metodo que calcula la pos del texto y lo crea
@@ -76,31 +102,30 @@ export default class DialogText{
 			const delay= Math.max(1,150-(this.dialogSpeed*30));
 			//se crea un evento temporizado
 			this.timedEvent = this.scene.time.addEvent({
-				//delay indica el tiempo en ms hasta que se empieza el evento      
 				delay,
-				//se llama a la funcion de animar el texto
-				//Cada vez que se llama a la funcion de animar se aumenta el eventCounter
-				callback: this._animateText,
-				//especifica en qué scope se muestra el texto
+				callback: this.animateText(),
 				callbackScope: this,
-				//el evento se repite
 				loop: true
 			});
 		}
 		
 	}
 
-	// Consigue el ancho del juego (en funcion del tamaño en la escena) 
+	/** Consigue el ancho del juego */ 
 	getGameWidth() {
 		return this.scene.sys.game.config.width;
 	}
 
-	// Consigue el alto del juego (en funcion del tamaño de la escena) 
+	/** Consigue el alto del juego */ 
 	getGameHeight() {
 		return this.scene.sys.game.config.height;
 	}
 
-	// Calcula las dimensiones y pos de la ventana en funcion del tamaño de la pantalla de juego
+	/**
+   * Calcula las dimensiones y pos de la ventana en funcion del tamaño de la pantalla de juego
+   * @param {number} width
+   * @param {number} height
+   */
 	calculateWindowDimensions(width, height) {
 		var x = this.padding;
 		var y = height - this.windowHeight - this.padding;
@@ -109,107 +134,79 @@ export default class DialogText{
 		return { x, y, rectWidth, rectHeight };
 	}
 
-	// Crea la ventana interior, donde se muestra el texto 
+	/** Crea la ventana interior */ 
 	createInnerWindow(x, y, rectWidth, rectHeight) {
-		//rellena con el color y alpha especificados en las propiedades
 		this.graphics.fillStyle(this.windowColor, this.windowAlpha);
-		
-		//Se crea el rectangulo pasandole las propiedades de posicion y dimensiones
 		this.graphics.fillRect(x + 1, y + 1, rectWidth - 1, rectHeight - 1);
 	}
 
-	// Creates the border rectangle of the dialog window
+	/** Crea el borde de la ventana */
 	createOuterWindow(x, y, rectWidth, rectHeight) {
-		//Se usa para especificar el estilo de la linea exterior: grosor, color...
 		this.graphics.lineStyle(this.borderThickness, this.borderColor, this.borderAlpha);
-		
-		//permite dibujar un rectangulo sin darle relleno
 		this.graphics.strokeRect(x, y, rectWidth, rectHeight);
 	}
 
-	// Método que crea la ventana de diálogo
+	/** Crea la ventana completa */
 	createWindow() {
-		//Obtenemos las dimensiones del juego
 		const gameHeight = this.getGameHeight();
 		const gameWidth = this.getGameWidth();
-
-		//Se calcula la dimension de la ventana de diálogo
 		const dimensions = this.calculateWindowDimensions(gameWidth, gameHeight);
 		this.graphics = this.scene.add.graphics();
-		
-		//Se crean las ventanas interior y exterior
+
 		this.createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
 		this.createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
 		
-		this.createCloseModalButton(); //se muestra el boton de cerrar en la ventana
-		this.createCloseModalButtonBorder(); // se muestra el borde del boton de cerrar
+		this.createCloseModalButton(); 
+		this.createCloseModalButtonBorder(); 
 	}
 
-	// Con el siguiente código se crea el boton de cerrar la ventana de diálogo
+	/** Crea el botón de cerrar */
 	createCloseModalButton() {
 		const self = this;
 		this.closeBtn = this.scene.make.text({
-			// se crea el boton con las posiciones x e y siguientes
-			// se calculan de forma dinámica para que funcione para diferentes tamaños de pantalla
 			x: this.getGameWidth() - this.padding - 14,
 			y: this.getGameHeight() - this.windowHeight - this.padding + 3,
-			
-			// el boton queda representado como una X con su estilo debajo
 			text: 'X',
 			style: { font: 'bold 12px TimesNewRoman', fill: this.closeBtnColor }
 		});
 		
-		this.closeBtn.setInteractive(); //hace interactuable el boton de cierre
+		this.closeBtn.setInteractive(); 
 
-		this.closeBtn.on('pointerover', function () { this.setTint(0xff0000);}); //cuando el cursor se encuentra encima se cambia de color
-		
-		this.closeBtn.on('pointerout', function () { this.clearTint(); }); //vuelve al color original al quitar el cursor
-		
+		this.closeBtn.on('pointerover', function () { this.setTint(0xff0000);}); 
+		this.closeBtn.on('pointerout', function () { this.clearTint(); }); 
 		this.closeBtn.on('pointerdown', function () {
-			self.toggleWindow(); //se llama al método que cierra o muestra la ventana de diálogo
-			
-			// elimina el game object con el texto y borra el evento
+			self.toggleWindow(); 
 			if (self.timedEvent) self.timedEvent.remove();
 			if (self.text) self.text.destroy();
 		});
 	}
 
-	// Se crea el borde del botón
+	/** Crea el borde del botón de cerrar */
 	createCloseModalButtonBorder() {
 		const x = this.getGameWidth() - this.padding - 20;
 		const y = this.getGameHeight() - this.windowHeight - this.padding;
-		
-		// Se crea el borde del botón sin relleno
 		this.graphics.strokeRect(x, y, 20, 20);
 	}
 
-	// Hace aparecer al texto lentamente en pantalla
+	/** Animación de texto letra a letra */
 	animateText() {
 		this.eventCounter++;
-		
-		// se va actualizando el texto de nuestro game object llamando a setText
 		this.text.setText(this.text.text + this.dialog[this.eventCounter - 1]);
-		
-		// Cuando eventCounter sea igual a la longitud del texto, se detiene el evento
 		if (this.eventCounter === this.dialog.length) this.timedEvent.remove();
-		
 	}
 
-	// Calcula la pos del texto en la ventana
+	/** Calcula la posición y crea el texto */
 	setText(text) {
-		// Resetea el game object del texto si ya estaba seteada la propiedad del texto del plugin
 		if (this.text) this.text.destroy();
 
 		const x = this.padding + 10;
 		const y = this.getGameHeight() - this.windowHeight - this.padding + 10;
 
-		//Crea un game object que sea texto
 		this.text = this.scene.make.text({
 			x,
 			y,
 			text,
 			style: {
-				//se obliga al texto a permanecer dentro de unos limites determinados
 				wordWrap: { width: this.getGameWidth() - (this.padding * 2) - 25 },
 				fontSize: this.fontSize +'px',
 				fontFamily: this.fontFamily

@@ -1,10 +1,23 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file PortalChest.js
+ * @description
+ * Clase que gestiona un cofre interactivo que funciona como portal.
+ * Permite al jugador abrirlo con la tecla E y ejecutar un callback al abrir.
+ * Muestra texto de interacción cuando el jugador está cerca.
  */
 
+ /**
+  * Clase PortalChest
+  */
 export default class PortalChest {
+    /**
+     * Crea un PortalChest.
+     * @param {Phaser.Scene} scene - Escena donde se añadirá el cofre.
+     * @param {Object} data - Datos iniciales del cofre.
+     * @param {Phaser.Math.Vector2} data.posInicial - Posición inicial {x, y}.
+     * @param {PlayerManager} player - Instancia del jugador.
+     * @param {function} [onOpenCallback] - Función que se ejecuta al abrir el cofre.
+     */
     constructor(scene, data, player, onOpenCallback) {
         this.scene = scene;
         this.data = data;
@@ -47,6 +60,14 @@ export default class PortalChest {
         this.keyE = scene.input.keyboard.addKey('E');
     }
 
+    /**
+     * Actualiza el estado del cofre.
+     * Debe llamarse en el update() de la escena.
+     * - Detecta la interacción del jugador.
+     * - Reproduce animación de abrir.
+     * - Ejecuta callback.
+     * - Oculta texto si el jugador se aleja.
+     */
     update() {
         // Abrir cofre si jugador está encima y presiona E
         if (this.canOpen && Phaser.Input.Keyboard.JustDown(this.keyE) && !this.isAnimating) {

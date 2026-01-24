@@ -1,15 +1,31 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file PlayerManager.js
+ * @description
+ * Clase que gestiona al jugador.
+ * Controla el sprite, animaciones, velocidad y movimiento según un InputManager.
+ * Incluye manejo de animaciones walk/idle y normalización de diagonales.
  */
 
+ /**
+  * Clase PlayerManager
+  */
 export default class PlayerManager {
+  /**
+   * Crea un PlayerManager.
+   * @param {InputManager} inputManager - Instancia de InputManager configurada.
+   * @param {Phaser.Scene} scene - Escena donde se añadirá el jugador.
+   * @param {Object} data - Datos iniciales del jugador (posición, sprite, velocidad, escala).
+   * @param {Phaser.Math.Vector2} data.posInicial - Posición inicial {x, y}.
+   * @param {string} data.spriteName - Nombre del sprite en preload.
+   * @param {number} [data.speed=200] - Velocidad de movimiento.
+   * @param {number} [data.scale=1] - Escala del sprite.
+   */
   constructor(inputManager, scene, data) {
-
     this.scene = scene;
-    this.inputManager = inputManager; // ya configurada
+    this.inputManager = inputManager; 
     this.data = data;
+
+    // Crear el sprite del jugador
     this.sprite = scene.physics.add.sprite(
       this.data.posInicial.x,
       this.data.posInicial.y,
@@ -17,19 +33,23 @@ export default class PlayerManager {
       0 //frame inicial
     );
 
-    this.sprite.setScale(this.data.scale); // scale del initialData
+    this.sprite.setScale(this.data.scale); 
     this.speed = data.speed || 200;
     this.sprite.setCollideWorldBounds(false);
 
-    // Ajustar collider
+    // Ajustar el collider
     this.sprite.setSize(25, 32);
     this.sprite.setOffset(20, 12);
 
-    // Estado para evitar repetir animaciones constantemente
+    // Estado para controlar animaciones 
     this.currentAnim = null;
     this.lastDirection = 'down';
   }
 
+  /**
+   * Actualiza la posición y animación del jugador.
+   * Debe llamarse cada frame desde la escena.
+   */
   update() {
 
     if (!this.sprite || !this.sprite.body) return;
@@ -43,6 +63,7 @@ export default class PlayerManager {
       dir.x /= length;
       dir.y /= length;
     }
+
     body.setVelocity(dir.x * this.speed, dir.y * this.speed);
 
     // Si no te mueves, idle
@@ -74,6 +95,10 @@ export default class PlayerManager {
     console.log("Posicion del jugador:", this.sprite.x, this.sprite.y);
   }
 
+  /**
+   * Reproduce la animación si no es la misma que la actual.
+   * @param {string} key - Clave de la animación ('walk-up', 'walk-down', etc.).
+   */
   playAnim(key) {
     if (this.currentAnim !== key) {
       this.sprite.anims.play(key, true);
@@ -81,7 +106,9 @@ export default class PlayerManager {
     }
   }
 
-  // NUEVO idle según la última dirección guardada
+  /**
+   * Reproduce el frame idle según la última dirección del jugador.
+   */
   playIdle() {
     const idleFrames = {
       up: 7,
@@ -96,6 +123,10 @@ export default class PlayerManager {
     this.currentAnim = null;
   }
 
+  /**
+   * Devuelve el sprite del jugador.
+   * @returns {Phaser.GameObjects.Sprite}
+   */
   getSprite() {
     return this.sprite;
   }

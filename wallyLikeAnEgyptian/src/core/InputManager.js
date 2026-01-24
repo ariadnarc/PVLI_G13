@@ -1,22 +1,51 @@
 /**
- * JSDOC
- * YA
- * A
+ * @file InputManager.js
+ * @description
+ * Clase para gestionar inputs del jugador.
+ * Permite movimiento con cursores, detectar teclas individuales y botones interactivos.
+ * Se pueden activar/desactivar inputs temporalmente.
+ *
+ * Eventos emitidos:
+ *  - "move": { x, y } → vector de movimiento de cursores.
+ *  - "keyDown": keyName → tecla pulsada.
+ *  - "buttonPressed": button → botón interactivo pulsado.
  */
 
+/**
+ * Configuración opcional para InputManager.
+ * @typedef {Object} InputManagerConfig
+ * @property {boolean} [cursors=false] - Habilitar cursores.
+ * @property {string[]} [keys] - Array de nombres de teclas a habilitar.
+ */
+
+/**
+ * Clase que gestiona inputs de teclado y botones.
+ */
 export default class InputManager extends Phaser.Events.EventEmitter {
 
+  /**
+   * Crea un InputManager.
+   * @param {Phaser.Scene} scene - Escena de Phaser donde se gestionarán los inputs.
+   */
   constructor(scene) {
-    
     super();
     this.scene = scene;
+
+    /** @type {Phaser.Types.Input.Keyboard.CursorKeys|null} */
     this.cursors = null;
+
+    /** @type {Object.<string, Phaser.Input.Keyboard.Key>} */
     this.keys = {};
-    this.enabled = true;   // puedes activar/desactivar inputs
+
+    /** @type {boolean} */
+    this.enabled = true;   //Aactivar/desactivar inputs
   }
 
+  /**
+   * Configura los cursores y teclas individuales.
+   * @param {InputManagerConfig} [config={}]
+   */
   configure(config = {}) {
-
     const input = this.scene.input.keyboard;
 
     if (config.cursors) {
@@ -33,7 +62,10 @@ export default class InputManager extends Phaser.Events.EventEmitter {
     }
   }
 
-  // devuelve un vector de movimiento, usado por PlayerManager
+  /**
+   * Devuelve un vector de movimiento según los cursores.
+   * @returns {{x: number, y: number}}
+   */
   getMovementVector() {
     let x = 0, y = 0;
 
@@ -50,7 +82,11 @@ export default class InputManager extends Phaser.Events.EventEmitter {
     return { x, y };
   }
 
-  // registra un boton para poder ejecutar callbacks
+  /**
+   * Registra un botón interactivo de Phaser y asigna un callback al pulsarlo.
+   * @param {Phaser.GameObjects.GameObject} button
+   * @param {function} callback
+   */
   registerButton(button, callback) {
     button.setInteractive();
 
@@ -59,19 +95,20 @@ export default class InputManager extends Phaser.Events.EventEmitter {
         this.emit("buttonPressed", button);
         callback();
     });
-}
+  }
 
-  // gestión de inputs
+  /**
+   * Debe llamarse en el update de la escena.
+   * Emite los eventos correspondientes según inputs.
+   */s
   update() {
     if (!this.cursors && !this.keys) return;
 
-    // emite movimiento si hay cursores
     if (this.cursors) {
       const dir = this.getMovementVector();
       this.emit("move", dir);
     }
 
-    // emite keyDown para teclas individuales
     for (const keyName in this.keys) {
       const keyObj = this.keys[keyName];
       if (Phaser.Input.Keyboard.JustDown(keyObj)) {
