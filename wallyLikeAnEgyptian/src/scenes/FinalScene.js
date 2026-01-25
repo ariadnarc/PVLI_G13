@@ -171,9 +171,9 @@ export default class FinalScene extends Phaser.Scene {
 
         // Botón SÍ
         const yesButton = this.add.sprite(
-            width / 2 - 100,
-            height / 2 + 20,
-            'fondoBoton'
+            width / 2,
+            height / 2 + 50,
+            'fondoBotonYes'
         ).setInteractive({ useHandCursor: true }).setDepth(20);
 
         yesButton.on('pointerdown', () => {
