@@ -174,7 +174,13 @@ export default class FinalScene extends Phaser.Scene {
             width / 2,
             height / 2 + 50,
             'fondoBotonYes'
-        ).setInteractive({ useHandCursor: true }).setDepth(20);
+        );
+      
+        yesButton.setDisplaySize(250, 80);
+
+        yesButton.setInteractive({ useHandCursor: true });
+
+        yesButton.setDepth(20);
 
         yesButton.on('pointerdown', () => {
             this.soundManager?.stopMusic();
